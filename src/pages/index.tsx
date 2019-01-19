@@ -15,3 +15,22 @@ export default () => (
     <div css={styles}>Hello World!</div>
   </>
 );
+
+export const query = graphql`
+  {
+    allFile(
+      filter: { relativePath: { glob: "img/intro-bg*.jpg" } }
+      sort: { fields: [name] }
+    ) {
+      edges {
+        node {
+          childImageSharp {
+            fluid(quality: 80) {
+              ...GatsbyImageSharpFluid_withWebp
+            }
+          }
+        }
+      }
+    }
+  }
+`;
