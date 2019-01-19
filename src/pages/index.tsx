@@ -1,3 +1,8 @@
 import React from 'react';
+import { css } from '@emotion/core';
 
-export default () => <div>Hello World!</div>;
+const styles = css({
+  color: 'blue',
+});
+
+export default () => <div css={styles}>Hello World!</div>;
