@@ -6,7 +6,12 @@
   "repository": "git@github.com:screendriver/echooff.de.git",
   "author": "Christian Rackerseder <git@echooff.de>",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "develop": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
+  },
   "dependencies": {
     "gatsby": "2.0.91",
     "react": "16.7.0",
