@@ -1,6 +1,12 @@
 {
-  "name": "echooff.de.new",
-  "version": "1.0.0",
+  "name": "echooff.de",
+  "private": true,
+  "version": "0.0.1",
   "main": "index.js",
-  "license": "MIT"
+  "repository": "git@github.com:screendriver/echooff.de.git",
+  "author": "Christian Rackerseder <git@echooff.de>",
+  "license": "MIT",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
 }
