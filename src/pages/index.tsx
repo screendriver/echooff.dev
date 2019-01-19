@@ -1,18 +1,24 @@
 import 'modern-normalize';
 import React from 'react';
-import { css } from '@emotion/core';
+import { graphql } from 'gatsby';
+import { FluidObject } from 'gatsby-image';
 import { Head } from '../components/Head';
 import { GitHubCorner } from '../components/GitHubCorner';
+import { Header } from '../components/Header';
 
-const styles = css({
-  color: 'blue',
-});
+interface Props {
+  data: {
+    allFile: {
+      edges: [{ node: { childImageSharp: { fluid: FluidObject } } }];
+    };
+  };
+}
 
-export default () => (
+export default ({ data }: Props) => (
   <>
     <Head />
     <GitHubCorner />
-    <div css={styles}>Hello World!</div>
+    <Header edges={data.allFile.edges} />
   </>
 );
 
