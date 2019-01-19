@@ -8,7 +8,9 @@
   "license": "MIT",
   "scripts": {},
   "dependencies": {
-    "gatsby": "2.0.91"
+    "gatsby": "2.0.91",
+    "react": "16.7.0",
+    "react-dom": "16.7.0"
   },
   "devDependencies": {}
 }
