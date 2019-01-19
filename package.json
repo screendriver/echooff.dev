@@ -15,6 +15,7 @@
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
   },
   "dependencies": {
+    "@emotion/core": "10.0.6",
     "gatsby": "2.0.91",
     "react": "16.7.0",
     "react-dom": "16.7.0"
