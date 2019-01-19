@@ -27,6 +27,7 @@ const Svg = styled.svg({
   fill: '#151513',
   color: '#fff',
   position: 'absolute',
+  zIndex: 1,
   top: 0,
   border: 0,
   right: 0,
