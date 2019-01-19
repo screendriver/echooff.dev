@@ -1,0 +1,9 @@
+[build]
+  publish = "public"
+  command = "yarn lint && yarn type-check && yarn test && yarn build"
+  environment = { GIT_LFS_ENABLED = true, YARN_VERSION = "1.13.0" }
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
