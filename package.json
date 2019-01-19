@@ -7,6 +7,8 @@
   "author": "Christian Rackerseder <git@echooff.de>",
   "license": "MIT",
   "scripts": {},
-  "dependencies": {},
+  "dependencies": {
+    "gatsby": "2.0.91"
+  },
   "devDependencies": {}
 }
