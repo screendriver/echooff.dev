@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'src/**/*.tsx' 'test/**/*.ts' 'test/**/*.tsx'",
+    "type-check": "tsc --noEmit",
     "develop": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
