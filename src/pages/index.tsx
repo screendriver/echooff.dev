@@ -9,7 +9,7 @@ import { Navigation } from '../components/Navigation';
 
 interface Props {
   data: {
-    allFile: {
+    headerAllFile: {
       edges: [{ node: { childImageSharp: { fluid: FluidObject } } }];
     };
   };
@@ -19,14 +19,14 @@ export default ({ data }: Props) => (
   <>
     <Head />
     <GitHubCorner />
-    <Header edges={data.allFile.edges} />
+    <Header edges={data.headerAllFile.edges} />
     <Navigation />
   </>
 );
 
 export const query = graphql`
   {
-    allFile(
+    headerAllFile: allFile(
       filter: { relativePath: { glob: "img/intro-bg*.jpg" } }
       sort: { fields: [name] }
     ) {
