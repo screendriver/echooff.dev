@@ -91,7 +91,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
 
   public render() {
     return (
-      <HeaderStyled>
+      <HeaderStyled id="header">
         <ImgStyled fluid={this.state.fluid} />
         <Intro>
           <Hello>
