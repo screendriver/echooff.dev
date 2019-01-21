@@ -1,16 +1,22 @@
 import 'modern-normalize';
 import React from 'react';
 import { graphql } from 'gatsby';
-import { FluidObject } from 'gatsby-image';
+import { FixedObject, FluidObject } from 'gatsby-image';
 import { Head } from '../components/Head';
 import { GitHubCorner } from '../components/GitHubCorner';
 import { Header } from '../components/Header';
 import { Navigation } from '../components/Navigation';
+import { About } from '../components/About';
 
 interface Props {
   data: {
     headerAllFile: {
       edges: [{ node: { childImageSharp: { fluid: FluidObject } } }];
+    };
+    aboutFile: {
+      childImageSharp: {
+        fixed: FixedObject;
+      };
     };
   };
 }
@@ -21,6 +27,7 @@ export default ({ data }: Props) => (
     <GitHubCorner />
     <Header edges={data.headerAllFile.edges} />
     <Navigation />
+    <About image={data.aboutFile.childImageSharp.fixed} />
   </>
 );
 
