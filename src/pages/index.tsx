@@ -5,6 +5,7 @@ import { FluidObject } from 'gatsby-image';
 import { Head } from '../components/Head';
 import { GitHubCorner } from '../components/GitHubCorner';
 import { Header } from '../components/Header';
+import { Navigation } from '../components/Navigation';
 
 interface Props {
   data: {
@@ -19,6 +20,7 @@ export default ({ data }: Props) => (
     <Head />
     <GitHubCorner />
     <Header edges={data.allFile.edges} />
+    <Navigation />
   </>
 );
 
