@@ -7,7 +7,6 @@ interface AboutProps {
 }
 
 const AboutStyled = styled.div({
-  fontFamily: 'Open sans,sans-serif',
   padding: '100px 0',
   textAlign: 'center',
 });

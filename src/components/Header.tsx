@@ -14,7 +14,6 @@ interface HeaderState {
 
 const HeaderStyled = styled.header({
   color: 'white',
-  fontFamily: 'Open Sans, sans-serif',
   position: 'relative',
   '@media (max-width: 768px)': {
     textAlign: 'center',
