@@ -32,7 +32,6 @@ const Intro = styled.div({
   position: 'absolute',
   top: '39%',
   marginLeft: '8%',
-  width: '100%',
   '@media (max-width: 768px)': {
     top: '13%',
     marginLeft: 0,
