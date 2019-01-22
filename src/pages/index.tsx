@@ -7,6 +7,7 @@ import { GitHubCorner } from '../components/GitHubCorner';
 import { Header } from '../components/Header';
 import { Navigation } from '../components/Navigation';
 import { About } from '../components/About';
+import { Global } from '@emotion/core';
 
 interface Props {
   data: {
@@ -23,6 +24,11 @@ interface Props {
 
 export default ({ data }: Props) => (
   <>
+    <Global
+      styles={{
+        fontFamily: 'Open Sans, sans-serif',
+      }}
+    />
     <Head />
     <GitHubCorner />
     <Header edges={data.headerAllFile.edges} />

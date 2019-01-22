@@ -26,7 +26,6 @@ const ListItem = styled.li({});
 
 const Link = styled.a({
   display: 'block',
-  fontFamily: 'Open Sans,sans-serif',
   fontSize: 14,
   padding: 15,
   letterSpacing: 1,
