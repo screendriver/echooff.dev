@@ -8,6 +8,7 @@ const NavigationStyled = styled.nav({
   padding: 10,
   position: 'sticky',
   top: 0,
+  zIndex: 1,
   '& a': {
     color: '#f4f5f6',
     textDecoration: 'none',
