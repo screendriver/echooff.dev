@@ -52,9 +52,9 @@ export function Skills(props: SkillsProps) {
       <Title>Skills</Title>
       <HorizontalLine />
       <SkillsList>
-        {props.skills.map(skill => (
-          <ProgressWrapper key={skill.name}>
-            <ProgressStyled percent={skill.percent} description={skill.name} />
+        {props.skills.map(({ name, percent }) => (
+          <ProgressWrapper key={name}>
+            <ProgressStyled percent={percent} description={name} />
           </ProgressWrapper>
         ))}
       </SkillsList>
