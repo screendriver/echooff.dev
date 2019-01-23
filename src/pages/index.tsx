@@ -20,6 +20,9 @@ interface Props {
         fixed: FixedObject;
       };
     };
+    allSkillsJson: {
+      edges: [{ node: Skill }];
+    };
   };
 }
 
