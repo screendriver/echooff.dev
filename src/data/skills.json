@@ -1,0 +1,26 @@
+[
+  {
+    "name": "TypeScript",
+    "percent": 90
+  },
+  {
+    "name": "JavaScript",
+    "percent": 90
+  },
+  {
+    "name": "TDD",
+    "percent": 90
+  },
+  {
+    "name": "React",
+    "percent": 85
+  },
+  {
+    "name": "Node.js",
+    "percent": 75
+  },
+  {
+    "name": "CSS3",
+    "percent": 50
+  }
+]
