@@ -18,7 +18,7 @@
     "@emotion/core": "10.0.6",
     "@emotion/styled": "10.0.6",
     "gatsby": "2.0.93",
-    "gatsby-image": "2.0.26",
+    "gatsby-image": "2.0.27",
     "lodash.sample": "4.2.1",
     "modern-normalize": "0.5.0",
     "rc-progress": "2.3.0",
