@@ -2,12 +2,13 @@ import 'modern-normalize';
 import React from 'react';
 import { graphql } from 'gatsby';
 import { FixedObject, FluidObject } from 'gatsby-image';
+import { Global } from '@emotion/core';
 import { Head } from '../components/Head';
 import { GitHubCorner } from '../components/GitHubCorner';
 import { Header } from '../components/Header';
 import { Navigation } from '../components/Navigation';
 import { About } from '../components/About';
-import { Global } from '@emotion/core';
+import { Skills } from '../components/Skills';
 
 interface Props {
   data: {
