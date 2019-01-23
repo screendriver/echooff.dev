@@ -13,6 +13,7 @@ interface SkillsProps {
 
 const SkillsStyled = styled.div({
   backgroundColor: '#7bc3d1',
+  padding: '100px 0',
   textAlign: 'center',
 });
 
@@ -26,7 +27,23 @@ const HorizontalLine = styled.hr({
   width: 70,
   backgroundColor: 'rgba(255, 255, 255, 0.3)',
   border: 0,
-  marginBottom: 80,
+  marginBottom: 40,
+});
+
+const SkillsList = styled.div({
+  display: 'flex',
+  flexWrap: 'wrap',
+  justifyContent: 'space-evenly',
+  margin: '0 100px',
+});
+
+const ProgressWrapper = styled.div({
+  width: '33%',
+  marginTop: 40,
+});
+
+const ProgressStyled = styled(Progress)({
+  margin: '0 auto',
 });
 
 export function Skills(props: SkillsProps) {
@@ -34,9 +51,13 @@ export function Skills(props: SkillsProps) {
     <SkillsStyled>
       <Title>Skills</Title>
       <HorizontalLine />
-      {props.skills.map(skill => (
-        <Progress percent={skill.percent} description={skill.name} />
-      ))}
+      <SkillsList>
+        {props.skills.map(skill => (
+          <ProgressWrapper>
+            <ProgressStyled percent={skill.percent} description={skill.name} />
+          </ProgressWrapper>
+        ))}
+      </SkillsList>
     </SkillsStyled>
   );
 }
