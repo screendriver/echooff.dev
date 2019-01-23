@@ -8,7 +8,7 @@ import { GitHubCorner } from '../components/GitHubCorner';
 import { Header } from '../components/Header';
 import { Navigation } from '../components/Navigation';
 import { About } from '../components/About';
-import { Skills } from '../components/Skills';
+import { Skills, Skill } from '../components/Skills';
 
 interface Props {
   data: {
@@ -38,6 +38,12 @@ export default ({ data }: Props) => (
     <Header edges={data.headerAllFile.edges} />
     <Navigation />
     <About image={data.aboutFile.childImageSharp.fixed} />
+    <Skills
+      skills={data.allSkillsJson.edges.map<Skill>(({ node }) => ({
+        name: node.name,
+        percent: node.percent,
+      }))}
+    />
   </>
 );
 
