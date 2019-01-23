@@ -61,5 +61,13 @@ export const query = graphql`
         }
       }
     }
+    allSkillsJson {
+      edges {
+        node {
+          name
+          percent
+        }
+      }
+    }
   }
 `;
