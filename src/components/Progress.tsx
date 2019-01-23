@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 interface ProgressProps {
   percent: number;
   description: string;
+  className?: string;
 }
 
 const Wrapper = styled.div({
@@ -36,9 +37,9 @@ const Description = styled.h4({
   fontWeight: 600,
 });
 
-export function Progress({ percent, description }: ProgressProps) {
+export function Progress({ percent, description, className }: ProgressProps) {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <CircleWrapper>
         <Percent>{percent}</Percent>
         <Circle
