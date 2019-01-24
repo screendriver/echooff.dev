@@ -1,30 +1,14 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import Img, { FixedObject } from 'gatsby-image';
+import { Section, SectionTheme } from './Section';
 
 interface AboutProps {
   image: FixedObject;
 }
 
-const AboutStyled = styled.div({
-  padding: '100px 0',
-  textAlign: 'center',
-});
-
-const Title = styled.h1({
-  fontWeight: 400,
-  color: '#121d1f',
-});
-
-const Line = styled.hr({
-  height: 4,
-  width: 70,
-  backgroundColor: '#7bc3d1',
-  border: 0,
-  marginBottom: 80,
-});
-
 const AboutImage = styled(Img)({
+  marginTop: 40,
   borderRadius: 180,
   zIndex: -1,
 });
@@ -47,9 +31,7 @@ const GoneText = styled.h5({
 
 export function About({ image }: AboutProps) {
   return (
-    <AboutStyled id="about">
-      <Title>About</Title>
-      <Line />
+    <Section heading="About" theme={SectionTheme.White}>
       <AboutImage fixed={image} />
       <Text>
         JavaScript is everywhere. In the old days, being a JavaScript developer
@@ -63,6 +45,6 @@ export function About({ image }: AboutProps) {
         As a JavaScript developer today, you can target more platforms than any
         other high level language.
       </Text>
-    </AboutStyled>
+    </Section>
   );
 }
