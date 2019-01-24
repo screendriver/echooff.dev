@@ -10,6 +10,7 @@ import { Navigation } from '../components/Navigation';
 import { About } from '../components/About';
 import { Skills, Skill } from '../components/Skills';
 import { Portfolio } from '../components/Portfolio';
+import { Stats } from '../components/Stats';
 
 interface Props {
   data: {
@@ -46,6 +47,12 @@ export default ({ data }: Props) => (
       }))}
     />
     <Portfolio />
+    <Stats
+      linesOfCode={999999}
+      gitHubRepos={1}
+      gitHubStars={1}
+      yearsOfExperience={new Date().getFullYear() - 2001}
+    />
   </>
 );
 
