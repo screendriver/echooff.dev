@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { white, black } from '../colors';
 import { Section, SectionTheme } from './Section';
 
 interface StatsProps {
@@ -25,11 +26,11 @@ const StatList = styled.div({
 const Counter = styled.span({
   fontSize: 52,
   fontWeight: 600,
-  color: '#121d1f',
+  color: black,
 });
 
 const Text = styled.h4({
-  color: 'white',
+  color: white,
   fontSize: 20,
   fontWeight: 400,
 });

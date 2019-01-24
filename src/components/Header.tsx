@@ -2,6 +2,7 @@ import React from 'react';
 import Img, { FluidObject } from 'gatsby-image';
 import sample from 'lodash.sample';
 import styled from '@emotion/styled';
+import { white } from '../colors';
 import { LinkButton } from './LinkButton';
 
 interface HeaderProps {
@@ -13,7 +14,7 @@ interface HeaderState {
 }
 
 const HeaderStyled = styled.header({
-  color: 'white',
+  color: white,
   position: 'relative',
   '@media (max-width: 768px)': {
     textAlign: 'center',

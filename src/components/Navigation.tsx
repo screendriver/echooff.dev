@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { black, cyan, darkerWhite } from '../colors';
 
 const NavigationStyled = styled.nav({
-  backgroundColor: '#121d1f',
+  backgroundColor: black,
   display: 'flex',
   justifyContent: 'space-around',
   padding: 10,
@@ -10,7 +11,7 @@ const NavigationStyled = styled.nav({
   top: 0,
   zIndex: 1,
   '& a': {
-    color: '#f4f5f6',
+    color: darkerWhite,
     textDecoration: 'none',
   },
 });
@@ -31,10 +32,10 @@ const Link = styled.a({
   padding: 15,
   letterSpacing: 1,
   ':hover': {
-    color: '#7bc3d1',
+    color: cyan,
   },
   ':target': {
-    color: '#7bc3d1',
+    color: cyan,
   },
 });
 

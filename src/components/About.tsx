@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import Img, { FixedObject } from 'gatsby-image';
+import { grey } from '../colors';
 import { Section, SectionTheme } from './Section';
 
 interface AboutProps {
@@ -14,7 +15,7 @@ const AboutImage = styled(Img)({
 });
 
 const Text = styled.p({
-  color: '#656c6d',
+  color: grey,
   fontSize: 14,
   marginTop: 20,
   marginRight: '20%',
@@ -24,7 +25,7 @@ const Text = styled.p({
 
 const GoneText = styled.h5({
   textTransform: 'uppercase',
-  color: '#656c6d',
+  color: grey,
   fontSize: 14,
   fontWeight: 700,
 });
