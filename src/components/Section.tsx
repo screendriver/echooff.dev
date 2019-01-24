@@ -20,6 +20,7 @@ const SectionStyled = styled.section((props: ThemeProps) => ({
 }));
 
 const Heading = styled.h1((props: ThemeProps) => ({
+  fontSize: '2em',
   fontWeight: 400,
   color: props.theme === SectionTheme.White ? '#121d1f' : 'white',
 }));
@@ -30,7 +31,7 @@ const Line = styled.hr((props: ThemeProps) => ({
   backgroundColor:
     props.theme === SectionTheme.White ? '#7bc3d1' : 'rgba(255, 255, 255, 0.3)',
   border: 0,
-  marginBottom: 80,
+  marginBottom: 40,
 }));
 
 export const Section: FC<SectionProps> = props => {
