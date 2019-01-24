@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Section, SectionTheme } from './Section';
 import { Progress } from './Progress';
 
 export interface Skill {
@@ -10,25 +11,6 @@ export interface Skill {
 interface SkillsProps {
   skills: ReadonlyArray<Skill>;
 }
-
-const SkillsStyled = styled.div({
-  backgroundColor: '#7bc3d1',
-  padding: '100px 0',
-  textAlign: 'center',
-});
-
-const Title = styled.h1({
-  fontWeight: 400,
-  color: 'white',
-});
-
-const HorizontalLine = styled.hr({
-  height: 4,
-  width: 70,
-  backgroundColor: 'rgba(255, 255, 255, 0.3)',
-  border: 0,
-  marginBottom: 40,
-});
 
 const SkillsList = styled.div({
   display: 'flex',
@@ -48,9 +30,7 @@ const ProgressStyled = styled(Progress)({
 
 export function Skills(props: SkillsProps) {
   return (
-    <SkillsStyled>
-      <Title>Skills</Title>
-      <HorizontalLine />
+    <Section heading="Skills" theme={SectionTheme.Cyan}>
       <SkillsList>
         {props.skills.map(({ name, percent }) => (
           <ProgressWrapper key={name}>
@@ -58,6 +38,6 @@ export function Skills(props: SkillsProps) {
           </ProgressWrapper>
         ))}
       </SkillsList>
-    </SkillsStyled>
+    </Section>
   );
 }
