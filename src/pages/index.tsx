@@ -38,33 +38,36 @@ interface Props {
   };
 }
 
-export default ({ data }: Props) => (
-  <>
-    <Global
-      styles={{
-        fontFamily: 'Open Sans, sans-serif',
-      }}
-    />
-    <Head />
-    <GitHubCorner />
-    <Header edges={data.headerAllFile.edges} />
-    <Navigation />
-    <About image={data.aboutFile.childImageSharp.fixed} />
-    <Skills
-      skills={data.allSkillsJson.edges.map<Skill>(({ node }) => ({
-        name: node.name,
-        percent: node.percent,
-      }))}
-    />
-    <Portfolio />
-    <Stats
-      linesOfCode={999999}
-      gitHubRepos={1}
-      gitHubStars={1}
-      yearsOfExperience={new Date().getFullYear() - 2001}
-    />
-  </>
-);
+export default ({ data }: Props) => {
+  const gitHubUser = data.github.user;
+  return (
+    <>
+      <Global
+        styles={{
+          fontFamily: 'Open Sans, sans-serif',
+        }}
+      />
+      <Head />
+      <GitHubCorner />
+      <Header edges={data.headerAllFile.edges} />
+      <Navigation />
+      <About image={data.aboutFile.childImageSharp.fixed} />
+      <Skills
+        skills={data.allSkillsJson.edges.map<Skill>(({ node }) => ({
+          name: node.name,
+          percent: node.percent,
+        }))}
+      />
+      <Portfolio />
+      <Stats
+        linesOfCode={999999}
+        gitHubRepos={gitHubUser.repositories.totalCount}
+        gitHubStars={gitHubUser.starredRepositories.totalCount}
+        yearsOfExperience={new Date().getFullYear() - 2001}
+      />
+    </>
+  );
+};
 
 export const query = graphql`
   {
