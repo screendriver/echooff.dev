@@ -1,6 +1,7 @@
 import React from 'react';
 import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
+import { white, black } from '../colors';
 
 const wave = keyframes`
   0%,
@@ -24,8 +25,8 @@ const GitHubLink = styled.a({
 });
 
 const Svg = styled.svg({
-  fill: '#151513',
-  color: '#fff',
+  fill: black,
+  color: white,
   position: 'absolute',
   zIndex: 1,
   top: 0,

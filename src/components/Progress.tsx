@@ -1,6 +1,7 @@
 import React from 'react';
 import { Circle } from 'rc-progress';
 import styled from '@emotion/styled';
+import { white, black } from '../colors';
 
 interface ProgressProps {
   percent: number;
@@ -18,7 +19,7 @@ const CircleWrapper = styled.div({
 
 const Percent = styled.span({
   fontSize: 21,
-  color: '#121d1f',
+  color: black,
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -32,7 +33,7 @@ const Percent = styled.span({
 
 const Description = styled.h4({
   textAlign: 'center',
-  color: 'white',
+  color: white,
   fontSize: 20,
   fontWeight: 600,
 });
@@ -46,7 +47,7 @@ export function Progress({ percent, description, className }: ProgressProps) {
           percent={percent}
           strokeWidth="5"
           trailWidth="5"
-          trailColor="white"
+          trailColor={white}
           strokeColor="#121d1f"
           strokeLinecap="butt"
         />
