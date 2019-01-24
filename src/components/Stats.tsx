@@ -17,13 +17,28 @@ interface StatPrpops {
 const StatList = styled.div({
   display: 'flex',
   justifyContent: 'space-around',
+  marginTop: 100,
+  marginRight: '10%',
+  marginLeft: '10%',
+});
+
+const Counter = styled.span({
+  fontSize: 52,
+  fontWeight: 600,
+  color: '#121d1f',
+});
+
+const Text = styled.h4({
+  color: 'white',
+  fontSize: 20,
+  fontWeight: 400,
 });
 
 function Stat(props: StatPrpops) {
   return (
     <div>
-      <span>{props.counter}</span>
-      <h4>{props.text}</h4>
+      <Counter>{Number(props.counter).toLocaleString()}</Counter>
+      <Text>{props.text}</Text>
     </div>
   );
 }
