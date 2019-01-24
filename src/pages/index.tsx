@@ -87,5 +87,15 @@ export const query = graphql`
         }
       }
     }
+    github {
+      user(login: "screendriver") {
+        starredRepositories {
+          totalCount
+        }
+        repositories {
+          totalCount
+        }
+      }
+    }
   }
 `;
