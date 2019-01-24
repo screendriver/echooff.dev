@@ -9,6 +9,7 @@ import { Header } from '../components/Header';
 import { Navigation } from '../components/Navigation';
 import { About } from '../components/About';
 import { Skills, Skill } from '../components/Skills';
+import { Portfolio } from '../components/Portfolio';
 
 interface Props {
   data: {
@@ -44,6 +45,7 @@ export default ({ data }: Props) => (
         percent: node.percent,
       }))}
     />
+    <Portfolio />
   </>
 );
 
