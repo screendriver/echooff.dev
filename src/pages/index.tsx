@@ -25,6 +25,16 @@ interface Props {
     allSkillsJson: {
       edges: [{ node: Skill }];
     };
+    github: {
+      user: {
+        starredRepositories: {
+          totalCount: number;
+        };
+        repositories: {
+          totalCount: number;
+        };
+      };
+    };
   };
 }
 
