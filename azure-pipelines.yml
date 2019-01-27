@@ -17,3 +17,8 @@ steps:
     displayName: Build application
     env:
       GITHUB_TOKEN: $(GITHUB_TOKEN)
+
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'echooff.de'
+      targetPath: 'public'
