@@ -22,3 +22,9 @@ steps:
     inputs:
       artifactName: 'echooff.de'
       targetPath: 'public'
+
+  - script: yarn netlify deploy --prod
+    displayName: Production deploy to Netlify
+    env:
+      NETLIFY_AUTH_TOKEN: $(NETLIFY_AUTH_TOKEN)
+      NETLIFY_SITE_ID: $(NETLIFY_SITE_ID)
