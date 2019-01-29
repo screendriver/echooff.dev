@@ -1,6 +1,13 @@
 require('dotenv').config();
 
 module.exports = {
+  siteMetadata: {
+    title: 'echooff.de',
+    description: 'Full Stack JavaScript Engineer',
+    author: 'Christian Rackerseder',
+    keywords: 'TypeScript,JavaScript,HTML,CSS,Node.js,React,Vue',
+    favicon: 'favicon.png',
+  },
   plugins: [
     'gatsby-plugin-typescript',
     'gatsby-plugin-emotion',
