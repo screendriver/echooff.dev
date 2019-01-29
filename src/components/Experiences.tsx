@@ -9,10 +9,18 @@ export interface Experience {
   description: string;
 }
 
-export function Experiences() {
+interface ExperiencesProps {
+  experiences: ReadonlyArray<Experience>;
+}
+
+export function Experiences(props: ExperiencesProps) {
   return (
-    <Section heading="Some Stats" theme={SectionTheme.White}>
-      <div>bla</div>
+    <Section heading="Experience" theme={SectionTheme.White}>
+      <div>
+        {props.experiences.map(experience => (
+          <p>{experience.description}</p>
+        ))}
+      </div>
     </Section>
   );
 }
