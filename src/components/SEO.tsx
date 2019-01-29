@@ -19,8 +19,8 @@ export function SEO() {
   return (
     <StaticQuery
       query={query}
+      // tslint:disable-next-line jsx-no-lambda
       render={({ site: { siteMetadata } }: QueryResult) => {
-        console.log(siteMetadata);
         return (
           <Helmet title={siteMetadata.title}>
             <html lang="en" />
