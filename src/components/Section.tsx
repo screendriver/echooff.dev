@@ -4,7 +4,7 @@ import { white, black, cyan } from '../colors';
 
 export enum SectionTheme {
   Cyan,
-  White,
+  Light,
 }
 
 interface SectionProps {
@@ -23,14 +23,14 @@ const SectionStyled = styled.section((props: ThemeProps) => ({
 const Heading = styled.h1((props: ThemeProps) => ({
   fontSize: '2em',
   fontWeight: 400,
-  color: props.theme === SectionTheme.White ? black : white,
+  color: props.theme === SectionTheme.Light ? black : white,
 }));
 
 const Line = styled.hr((props: ThemeProps) => ({
   height: 4,
   width: 70,
   backgroundColor:
-    props.theme === SectionTheme.White ? cyan : 'rgba(255, 255, 255, 0.3)',
+    props.theme === SectionTheme.Light ? cyan : 'rgba(255, 255, 255, 0.3)',
   border: 0,
   marginBottom: 40,
 }));

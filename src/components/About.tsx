@@ -32,7 +32,7 @@ const GoneText = styled.h5({
 
 export function About({ image }: AboutProps) {
   return (
-    <Section heading="About" theme={SectionTheme.White}>
+    <Section heading="About" theme={SectionTheme.Light}>
       <AboutImage fixed={image} />
       <Text>
         JavaScript is everywhere. In the old days, being a JavaScript developer
