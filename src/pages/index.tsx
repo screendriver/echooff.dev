@@ -35,6 +35,9 @@ interface Props {
         };
       };
     };
+    allExperienceJson: {
+      edges: [{ node: Experience }];
+    };
   };
 }
 
