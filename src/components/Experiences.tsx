@@ -15,7 +15,7 @@ interface ExperiencesProps {
 
 export function Experiences(props: ExperiencesProps) {
   return (
-    <Section heading="Experience" theme={SectionTheme.White}>
+    <Section heading="Experience" theme={SectionTheme.Light}>
       <div>
         {props.experiences.map(experience => (
           <p>{experience.description}</p>
