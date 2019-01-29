@@ -1,0 +1,51 @@
+[
+  {
+    "from": "Apr 2017",
+    "to": "Present",
+    "heading": "Tourism",
+    "subheading": "Senior Software Engineer",
+    "description": "Full Stack JavaScript Developer."
+  },
+  {
+    "from": "Feb 2015",
+    "to": "Apr 2017",
+    "heading": "Mobile Workforce Management",
+    "subheading": "Senior Software Engineer",
+    "description": "Hybrid mobile apps with state of the art Web technologies like Cordova, ECMAScript 2015/2016/2017, Babel, React, Webpack, Mocha and Chai."
+  },
+  {
+    "from": "2013",
+    "to": "Feb 2015",
+    "heading": "Mobile Workforce Management",
+    "subheading": "Senior Software Engineer",
+    "description": "Native Android App. Written in Java."
+  },
+  {
+    "from": "2010",
+    "to": "2013",
+    "heading": "Mobile Workforce Management",
+    "subheading": "Software Engineer",
+    "description": "Native Windows Mobile App. Written with .NET Compact Framework."
+  },
+  {
+    "from": "2006",
+    "to": "2010",
+    "heading": "Mobile Workforce Management",
+    "subheading": "Software Engineer",
+    "description": "Desktop Browser and mobile Browser (Pocket Internet Explorer) App. Written in JavaSript based on Prototype.js"
+  },
+  {
+    "from": "2004",
+    "to": "2006",
+    "heading": "Intranet Security Application",
+    "subheading": "Web Developer",
+    "description": "Intranet Browser Application. Written in ASP.NET."
+  },
+  {
+    "from": "2001",
+    "to": "2004",
+    "heading": "IT System Administration",
+    "subheading": "Administrator",
+    "description": "User-Help-Desk."
+  }
+]
