@@ -3,7 +3,6 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import { FixedObject, FluidObject } from 'gatsby-image';
 import { Global } from '@emotion/core';
-import { Head } from '../components/Head';
 import { GitHubCorner } from '../components/GitHubCorner';
 import { Header } from '../components/Header';
 import { Navigation } from '../components/Navigation';
