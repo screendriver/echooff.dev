@@ -11,6 +11,7 @@ import { About } from '../components/About';
 import { Skills, Skill } from '../components/Skills';
 import { Portfolio } from '../components/Portfolio';
 import { Stats } from '../components/Stats';
+import { Experiences, Experience } from '../components/Experiences';
 
 interface Props {
   data: {
@@ -68,6 +69,7 @@ export default ({ data }: Props) => {
         gitHubStars={gitHubUser.starredRepositories.totalCount}
         yearsOfExperience={new Date().getFullYear() - 2001}
       />
+      <Experiences />
     </>
   );
 };
