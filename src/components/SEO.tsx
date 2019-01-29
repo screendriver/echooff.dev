@@ -36,7 +36,7 @@ export function SEO() {
   );
 }
 
-export const query = graphql`
+const query = graphql`
   query SEO {
     site {
       siteMetadata {
