@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
-import { white, black, cyan } from '../colors';
+import { white, black, cyan, light } from '../colors';
 
 export enum SectionTheme {
   Cyan,
@@ -15,7 +15,7 @@ interface SectionProps {
 type ThemeProps = Pick<SectionProps, 'theme'>;
 
 const SectionStyled = styled.section((props: ThemeProps) => ({
-  backgroundColor: props.theme === SectionTheme.Cyan ? cyan : undefined,
+  backgroundColor: props.theme === SectionTheme.Cyan ? cyan : light,
   padding: '100px 0',
   textAlign: 'center',
 }));
