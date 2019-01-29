@@ -110,5 +110,16 @@ export const query = graphql`
         }
       }
     }
+    allExperienceJson {
+      edges {
+        node {
+          from
+          to
+          heading
+          subheading
+          description
+        }
+      }
+    }
   }
 `;
