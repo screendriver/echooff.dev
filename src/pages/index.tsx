@@ -69,7 +69,17 @@ export default ({ data }: Props) => {
         gitHubStars={gitHubUser.starredRepositories.totalCount}
         yearsOfExperience={new Date().getFullYear() - 2001}
       />
-      <Experiences />
+      <Experiences
+        experiences={data.allExperienceJson.edges.map<Experience>(
+          ({ node }) => ({
+            from: node.from,
+            to: node.to,
+            heading: node.heading,
+            subheading: node.subheading,
+            description: node.description,
+          }),
+        )}
+      />
     </>
   );
 };
