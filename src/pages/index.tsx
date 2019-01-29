@@ -11,6 +11,7 @@ import { Skills, Skill } from '../components/Skills';
 import { Portfolio } from '../components/Portfolio';
 import { Stats } from '../components/Stats';
 import { Experiences, Experience } from '../components/Experiences';
+import { SEO } from '../components/SEO';
 
 interface Props {
   data: {
@@ -50,7 +51,7 @@ export default ({ data }: Props) => {
           fontFamily: 'Open Sans, sans-serif',
         }}
       />
-      <Head />
+      <SEO />
       <GitHubCorner />
       <Header edges={data.headerAllFile.edges} />
       <Navigation />
