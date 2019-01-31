@@ -11,7 +11,6 @@ interface AboutProps {
 const AboutImage = styled(Img)({
   marginTop: 40,
   borderRadius: 180,
-  zIndex: -1,
 });
 
 const Text = styled.p({
