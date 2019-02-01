@@ -10,7 +10,7 @@ import { About } from '../components/About';
 import { Skills, Skill } from '../components/Skills';
 import { Portfolio } from '../components/Portfolio';
 import { Stats } from '../components/Stats';
-import { Experiences, Experience } from '../components/Experiences';
+import { Experiences, Experience } from '../components/experiences';
 import { SEO } from '../components/SEO';
 
 interface Props {
