@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { white } from '../colors';
+import { white } from '../../colors';
 
 interface ExperienceCircleProps {
   from: string;
   to: string;
 }
 
-const Circle = styled.span({
+const CircleStyled = styled.span({
   border: '1px solid #eee',
   borderRadius: '50%',
   backgroundColor: white,
@@ -24,10 +24,10 @@ const Text = styled.span({
   lineHeight: '26px',
 });
 
-export function ExperienceCircle(props: ExperienceCircleProps) {
+export function Circle(props: ExperienceCircleProps) {
   return (
-    <Circle>
+    <CircleStyled>
       <Text>{props.to}</Text> <Text>-</Text> <Text>{props.from}</Text>
-    </Circle>
+    </CircleStyled>
   );
 }
