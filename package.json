@@ -24,7 +24,8 @@
     "rc-progress": "2.3.0",
     "react": "16.8.1",
     "react-dom": "16.8.1",
-    "react-helmet": "5.2.0"
+    "react-helmet": "5.2.0",
+    "use-set-interval": "1.0.0"
   },
   "devDependencies": {
     "@types/lodash.sample": "4.2.4",
