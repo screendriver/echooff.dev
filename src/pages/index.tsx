@@ -1,5 +1,5 @@
 import 'modern-normalize';
-import React from 'react';
+import React, { FC } from 'react';
 import { graphql } from 'gatsby';
 import { FixedObject, FluidObject } from 'gatsby-image';
 import { Global } from '@emotion/core';
@@ -13,7 +13,7 @@ import { Stats } from '../components/Stats';
 import { Experiences, Experience } from '../components/experiences';
 import { SEO } from '../components/SEO';
 
-interface Props {
+interface PageProps {
   data: {
     headerAllFile: {
       edges: [{ node: { childImageSharp: { fluid: FluidObject } } }];
@@ -42,7 +42,7 @@ interface Props {
   };
 }
 
-export default ({ data }: Props) => {
+const Page: FC<PageProps> = ({ data }) => {
   const gitHubUser = data.github.user;
   return (
     <>
@@ -83,6 +83,8 @@ export default ({ data }: Props) => {
     </>
   );
 };
+
+export default Page;
 
 export const query = graphql`
   {
