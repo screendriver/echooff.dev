@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, FC } from 'react';
+import useSetInterval from 'use-set-interval';
 import Img, { FluidObject } from 'gatsby-image';
 import sample from 'lodash.sample';
 import styled from '@emotion/styled';
@@ -7,10 +8,6 @@ import { LinkButton } from './LinkButton';
 
 interface HeaderProps {
   edges: [{ node: { childImageSharp: { fluid: FluidObject } } }];
-}
-
-interface HeaderState {
-  fluid: FluidObject;
 }
 
 const HeaderStyled = styled.header({
@@ -65,46 +62,23 @@ const Name = styled.span({
   fontWeight: 600,
 });
 
-export class Header extends React.Component<HeaderProps, HeaderState> {
-  private timer?: number;
-
-  public constructor(props: HeaderProps) {
-    super(props);
-    this.getRandomFluidImage = this.getRandomFluidImage.bind(this);
-    this.state = {
-      fluid: this.getRandomFluidImage(),
-    };
-  }
-
-  public componentDidMount() {
-    this.timer = window.setInterval(() => {
-      this.setState({
-        fluid: this.getRandomFluidImage(),
-      });
-    }, 20000);
-  }
-
-  public componentWillUnmount() {
-    clearInterval(this.timer);
-  }
-
-  public render() {
-    return (
-      <HeaderStyled id="header">
-        <ImgStyled fluid={this.state.fluid} />
-        <Intro>
-          <Hello>
-            Hello, I'm <Name>Christian</Name>
-          </Hello>
-          <JobTitle>Full Stack JavaScript Engineer</JobTitle>
-          <LinkButton href="#about">Learn more</LinkButton>
-        </Intro>
-      </HeaderStyled>
-    );
-  }
-
-  private getRandomFluidImage() {
-    const randomImage = sample(this.props.edges)!;
+export const Header: FC<HeaderProps> = props => {
+  function getRandomFluidImage(): FluidObject {
+    const randomImage = sample(props.edges)!;
     return randomImage.node.childImageSharp.fluid;
   }
-}
+  const [fluid, setFluid] = useState(getRandomFluidImage());
+  useSetInterval(() => setFluid(getRandomFluidImage()), 20000);
+  return (
+    <HeaderStyled id="header">
+      <ImgStyled fluid={fluid} />
+      <Intro>
+        <Hello>
+          Hello, I'm <Name>Christian</Name>
+        </Hello>
+        <JobTitle>Full Stack JavaScript Engineer</JobTitle>
+        <LinkButton href="#about">Learn more</LinkButton>
+      </Intro>
+    </HeaderStyled>
+  );
+};
