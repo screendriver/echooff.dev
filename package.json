@@ -15,8 +15,8 @@
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
   },
   "dependencies": {
-    "@emotion/core": "10.0.6",
-    "@emotion/styled": "10.0.6",
+    "@emotion/core": "10.0.7",
+    "@emotion/styled": "10.0.7",
     "gatsby": "2.0.107",
     "gatsby-image": "2.0.29",
     "lodash.sample": "4.2.1",
