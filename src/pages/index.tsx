@@ -74,9 +74,9 @@ const Page: FC<PageProps> = ({ data }) => {
           ({ node }) => ({
             from: node.from,
             to: node.to,
-            heading: node.heading,
-            subheading: node.subheading,
-            description: node.description,
+            industry: node.industry,
+            jobTitle: node.jobTitle,
+            jobDescription: node.jobDescription,
           }),
         )}
       />
@@ -132,9 +132,9 @@ export const query = graphql`
         node {
           from
           to
-          heading
-          subheading
-          description
+          industry
+          jobTitle
+          jobDescription
         }
       }
     }
