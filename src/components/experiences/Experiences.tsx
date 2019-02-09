@@ -34,7 +34,7 @@ export function Experiences(props: ExperiencesProps) {
       <Timeline>
         {props.experiences.map(experience => (
           <Moment>
-            <Description />
+            <Description experience={experience} />
             <Circle from={experience.from} to={experience.to} />
           </Moment>
         ))}
