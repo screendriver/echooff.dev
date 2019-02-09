@@ -32,10 +32,15 @@ export function Experiences(props: ExperiencesProps) {
   return (
     <Section heading="Experience" theme={SectionTheme.Light}>
       <Timeline>
-        {props.experiences.map(experience => (
+        {props.experiences.map((experience, index) => (
           <Moment>
-            <Description experience={experience} />
-            <Circle from={experience.from} to={experience.to} />
+            <Circle
+              from={experience.from}
+              to={experience.to}
+              childPosition={index % 2 ? 'right' : 'left'}
+            >
+              <Description experience={experience} />
+            </Circle>
           </Moment>
         ))}
       </Timeline>
