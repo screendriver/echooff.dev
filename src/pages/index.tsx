@@ -48,7 +48,9 @@ const Page: FC<PageProps> = ({ data }) => {
     <>
       <Global
         styles={{
-          fontFamily: 'Open Sans, sans-serif',
+          body: {
+            fontFamily: 'Open Sans, sans-serif',
+          },
         }}
       />
       <SEO />
