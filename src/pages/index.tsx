@@ -33,9 +33,6 @@ interface PageProps {
         };
       };
     };
-    allExperienceJson: {
-      edges: [{ node: Experience }];
-    };
   };
 }
 
@@ -63,17 +60,7 @@ const Page: FC<PageProps> = ({ data }) => {
         gitHubStars={gitHubUser.starredRepositories.totalCount}
         yearsOfExperience={new Date().getFullYear() - 2001}
       />
-      <Experiences
-        experiences={data.allExperienceJson.edges.map<Experience>(
-          ({ node }) => ({
-            from: node.from,
-            to: node.to,
-            industry: node.industry,
-            jobTitle: node.jobTitle,
-            jobDescription: node.jobDescription,
-          }),
-        )}
-      />
+      <Experiences />
     </>
   );
 };
@@ -110,17 +97,6 @@ export const query = graphql`
         }
         repositories {
           totalCount
-        }
-      }
-    }
-    allExperienceJson {
-      edges {
-        node {
-          from
-          to
-          industry
-          jobTitle
-          jobDescription
         }
       }
     }
