@@ -33,7 +33,7 @@ export function Experiences(props: ExperiencesProps) {
     <Section heading="Experience" theme={SectionTheme.Light}>
       <Timeline>
         {props.experiences.map((experience, index) => (
-          <Moment>
+          <Moment key={index}>
             <Circle
               from={experience.from}
               to={experience.to}
