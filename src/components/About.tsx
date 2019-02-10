@@ -1,11 +1,20 @@
 import React from 'react';
+import { graphql, StaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
 import Img, { FixedObject } from 'gatsby-image';
 import { grey } from '../colors';
 import { Section, SectionTheme } from './Section';
 
-interface AboutProps {
-  image: FixedObject;
+interface GraphQLData {
+  aboutFile: {
+    childImageSharp: {
+      fixed: FixedObject;
+    };
+  };
+}
+
+interface AboutComponentProps {
+  data: GraphQLData;
 }
 
 const AboutImage = styled(Img)({
@@ -29,7 +38,8 @@ const GoneText = styled.h5({
   fontWeight: 700,
 });
 
-export function About({ image }: AboutProps) {
+export function AboutComponent({ data }: AboutComponentProps) {
+  const image = data.aboutFile.childImageSharp.fixed;
   return (
     <Section heading="About" theme={SectionTheme.Light}>
       <AboutImage fixed={image} />
@@ -46,5 +56,26 @@ export function About({ image }: AboutProps) {
         other high level language.
       </Text>
     </Section>
+  );
+}
+
+const query = graphql`
+  query {
+    aboutFile: file(name: { eq: "about" }, extension: { eq: "jpg" }) {
+      childImageSharp {
+        fixed(quality: 75, width: 200) {
+          ...GatsbyImageSharpFixed_withWebp
+        }
+      }
+    }
+  }
+`;
+
+export function About() {
+  return (
+    <StaticQuery
+      query={query}
+      render={(data: GraphQLData) => <AboutComponent data={data} />}
+    />
   );
 }
