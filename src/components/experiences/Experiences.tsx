@@ -81,10 +81,8 @@ const query = graphql`
 `;
 
 export function Experiences() {
-  return (
-    <StaticQuery
-      query={query}
-      render={(data: GraphQLData) => <ExperiencesComponent data={data} />}
-    />
-  );
+  function render(data: GraphQLData) {
+    return <ExperiencesComponent data={data} />;
+  }
+  return <StaticQuery query={query} render={render} />;
 }

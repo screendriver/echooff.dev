@@ -111,10 +111,8 @@ const query = graphql`
 `;
 
 export function Header() {
-  return (
-    <StaticQuery
-      query={query}
-      render={(data: GraphQLData) => <HeaderComponent data={data} />}
-    />
-  );
+  function render(data: GraphQLData) {
+    return <HeaderComponent data={data} />;
+  }
+  return <StaticQuery query={query} render={render} />;
 }

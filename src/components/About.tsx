@@ -72,10 +72,8 @@ const query = graphql`
 `;
 
 export function About() {
-  return (
-    <StaticQuery
-      query={query}
-      render={(data: GraphQLData) => <AboutComponent data={data} />}
-    />
-  );
+  function render(data: GraphQLData) {
+    return <AboutComponent data={data} />;
+  }
+  return <StaticQuery query={query} render={render} />;
 }

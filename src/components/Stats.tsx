@@ -88,10 +88,8 @@ const query = graphql`
 `;
 
 export function Stats() {
-  return (
-    <StaticQuery
-      query={query}
-      render={(data: GraphQLData) => <StatsComponent data={data} />}
-    />
-  );
+  function render(data: GraphQLData) {
+    return <StatsComponent data={data} />;
+  }
+  return <StaticQuery query={query} render={render} />;
 }
