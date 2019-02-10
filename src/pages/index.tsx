@@ -7,10 +7,10 @@ import { GitHubCorner } from '../components/GitHubCorner';
 import { Header } from '../components/Header';
 import { Navigation } from '../components/Navigation';
 import { About } from '../components/About';
-import { Skills, Skill } from '../components/Skills';
+import { Skills } from '../components/Skills';
 import { Portfolio } from '../components/Portfolio';
 import { Stats } from '../components/Stats';
-import { Experiences, Experience } from '../components/experiences';
+import { Experiences } from '../components/experiences';
 import { SEO } from '../components/SEO';
 
 interface PageProps {
