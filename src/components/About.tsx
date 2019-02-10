@@ -38,7 +38,7 @@ const GoneText = styled.h5({
   fontWeight: 700,
 });
 
-export function AboutComponent({ data }: AboutComponentProps) {
+function AboutComponent({ data }: AboutComponentProps) {
   const image = data.aboutFile.childImageSharp.fixed;
   return (
     <Section heading="About" theme={SectionTheme.Light}>

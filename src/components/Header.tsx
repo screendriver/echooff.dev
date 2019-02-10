@@ -69,7 +69,7 @@ const Name = styled.span({
   fontWeight: 600,
 });
 
-export const HeaderComponent: FC<HeaderComponentProps> = ({ data }) => {
+const HeaderComponent: FC<HeaderComponentProps> = ({ data }) => {
   const edges = data.headerAllFile.edges;
   function getRandomFluidImage(): FluidObject {
     const randomImage = sample(edges)!;
