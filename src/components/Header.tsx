@@ -1,4 +1,5 @@
 import React, { useState, FC } from 'react';
+import { graphql, StaticQuery } from 'gatsby';
 import useSetInterval from 'use-set-interval';
 import Img, { FluidObject } from 'gatsby-image';
 import sample from 'lodash.sample';
@@ -6,8 +7,14 @@ import styled from '@emotion/styled';
 import { white } from '../colors';
 import { LinkButton } from './LinkButton';
 
-interface HeaderProps {
-  edges: [{ node: { childImageSharp: { fluid: FluidObject } } }];
+interface GraphQLData {
+  headerAllFile: {
+    edges: [{ node: { childImageSharp: { fluid: FluidObject } } }];
+  };
+}
+
+interface HeaderComponentProps {
+  data: GraphQLData;
 }
 
 const HeaderStyled = styled.header({
@@ -62,9 +69,10 @@ const Name = styled.span({
   fontWeight: 600,
 });
 
-export const Header: FC<HeaderProps> = props => {
+export const HeaderComponent: FC<HeaderComponentProps> = ({ data }) => {
+  const edges = data.headerAllFile.edges;
   function getRandomFluidImage(): FluidObject {
-    const randomImage = sample(props.edges)!;
+    const randomImage = sample(edges)!;
     return randomImage.node.childImageSharp.fluid;
   }
   const [fluid, setFluid] = useState(getRandomFluidImage());
@@ -82,3 +90,31 @@ export const Header: FC<HeaderProps> = props => {
     </HeaderStyled>
   );
 };
+
+const query = graphql`
+  query {
+    headerAllFile: allFile(
+      filter: { relativePath: { glob: "img/intro-bg*.jpg" } }
+      sort: { fields: [name] }
+    ) {
+      edges {
+        node {
+          childImageSharp {
+            fluid(quality: 80) {
+              ...GatsbyImageSharpFluid_withWebp
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export function Header() {
+  return (
+    <StaticQuery
+      query={query}
+      render={(data: GraphQLData) => <HeaderComponent data={data} />}
+    />
+  );
+}
