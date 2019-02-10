@@ -67,10 +67,8 @@ const query = graphql`
 `;
 
 export function Skills() {
-  return (
-    <StaticQuery
-      query={query}
-      render={(data: GraphQLData) => <SkillsComponent data={data} />}
-    />
-  );
+  function render(data: GraphQLData) {
+    return <SkillsComponent data={data} />;
+  }
+  return <StaticQuery query={query} render={render} />;
 }
