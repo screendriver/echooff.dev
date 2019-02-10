@@ -1,7 +1,6 @@
 import 'modern-normalize';
 import React, { FC } from 'react';
 import { graphql } from 'gatsby';
-import { FluidObject } from 'gatsby-image';
 import { Global } from '@emotion/core';
 import { GitHubCorner } from '../components/GitHubCorner';
 import { Header } from '../components/Header';
@@ -15,9 +14,6 @@ import { SEO } from '../components/SEO';
 
 interface PageProps {
   data: {
-    headerAllFile: {
-      edges: [{ node: { childImageSharp: { fluid: FluidObject } } }];
-    };
     github: {
       user: {
         starredRepositories: {
@@ -44,7 +40,7 @@ const Page: FC<PageProps> = ({ data }) => {
       />
       <SEO />
       <GitHubCorner />
-      <Header edges={data.headerAllFile.edges} />
+      <Header />
       <Navigation />
       <About />
       <Skills />
@@ -64,20 +60,6 @@ export default Page;
 
 export const query = graphql`
   {
-    headerAllFile: allFile(
-      filter: { relativePath: { glob: "img/intro-bg*.jpg" } }
-      sort: { fields: [name] }
-    ) {
-      edges {
-        node {
-          childImageSharp {
-            fluid(quality: 80) {
-              ...GatsbyImageSharpFluid_withWebp
-            }
-          }
-        }
-      }
-    }
     github {
       user(login: "screendriver") {
         starredRepositories {
