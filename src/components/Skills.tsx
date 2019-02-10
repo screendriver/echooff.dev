@@ -1,4 +1,5 @@
 import React from 'react';
+import { StaticQuery, graphql } from 'gatsby';
 import styled from '@emotion/styled';
 import { Section, SectionTheme } from './Section';
 import { Progress } from './Progress';
@@ -8,8 +9,14 @@ export interface Skill {
   percent: number;
 }
 
-interface SkillsProps {
-  skills: ReadonlyArray<Skill>;
+interface GraphQLData {
+  allSkillsJson: {
+    edges: [{ node: Skill }];
+  };
+}
+
+interface SkillsComponentProps {
+  data: GraphQLData;
 }
 
 const SkillsList = styled.div({
@@ -28,16 +35,42 @@ const ProgressStyled = styled(Progress)({
   margin: '0 auto',
 });
 
-export function Skills(props: SkillsProps) {
+function SkillsComponent({ data }: SkillsComponentProps) {
+  const skills = data.allSkillsJson.edges.map<Skill>(({ node }) => ({
+    name: node.name,
+    percent: node.percent,
+  }));
   return (
     <Section heading="Skills" theme={SectionTheme.Cyan}>
       <SkillsList>
-        {props.skills.map(({ name, percent }) => (
+        {skills.map(({ name, percent }) => (
           <ProgressWrapper key={name}>
             <ProgressStyled percent={percent} description={name} />
           </ProgressWrapper>
         ))}
       </SkillsList>
     </Section>
+  );
+}
+
+const query = graphql`
+  query {
+    allSkillsJson {
+      edges {
+        node {
+          name
+          percent
+        }
+      }
+    }
+  }
+`;
+
+export function Skills() {
+  return (
+    <StaticQuery
+      query={query}
+      render={(data: GraphQLData) => <SkillsComponent data={data} />}
+    />
   );
 }

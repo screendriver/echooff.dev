@@ -23,9 +23,6 @@ interface PageProps {
         fixed: FixedObject;
       };
     };
-    allSkillsJson: {
-      edges: [{ node: Skill }];
-    };
     github: {
       user: {
         starredRepositories: {
@@ -58,12 +55,7 @@ const Page: FC<PageProps> = ({ data }) => {
       <Header edges={data.headerAllFile.edges} />
       <Navigation />
       <About image={data.aboutFile.childImageSharp.fixed} />
-      <Skills
-        skills={data.allSkillsJson.edges.map<Skill>(({ node }) => ({
-          name: node.name,
-          percent: node.percent,
-        }))}
-      />
+      <Skills />
       <Portfolio />
       <Stats
         linesOfCode={999999}
@@ -108,14 +100,6 @@ export const query = graphql`
       childImageSharp {
         fixed(quality: 75, width: 200) {
           ...GatsbyImageSharpFixed_withWebp
-        }
-      }
-    }
-    allSkillsJson {
-      edges {
-        node {
-          name
-          percent
         }
       }
     }
