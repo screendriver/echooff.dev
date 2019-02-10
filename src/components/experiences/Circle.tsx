@@ -19,7 +19,6 @@ const CircleStyled = styled.span({
   display: 'inline-flex',
   justifyContent: 'center',
   flexDirection: 'column',
-  textTransform: 'uppercase',
   width: 150,
   height: 150,
   position: 'relative',
@@ -28,6 +27,7 @@ const CircleStyled = styled.span({
 const Text = styled.span({
   fontSize: 18,
   lineHeight: '26px',
+  textTransform: 'uppercase',
 });
 
 const ChildrenWrapper = styled.div(
@@ -35,8 +35,9 @@ const ChildrenWrapper = styled.div(
     const positionFlipped = props.childPosition === 'left' ? 'right' : 'left';
     return {
       position: 'absolute',
-      [positionFlipped]: 250,
-      width: 400,
+      top: 15,
+      [positionFlipped]: 200,
+      width: 350,
       textAlign: positionFlipped,
     };
   },
