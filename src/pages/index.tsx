@@ -1,7 +1,7 @@
 import 'modern-normalize';
 import React, { FC } from 'react';
 import { graphql } from 'gatsby';
-import { FixedObject, FluidObject } from 'gatsby-image';
+import { FluidObject } from 'gatsby-image';
 import { Global } from '@emotion/core';
 import { GitHubCorner } from '../components/GitHubCorner';
 import { Header } from '../components/Header';
@@ -17,11 +17,6 @@ interface PageProps {
   data: {
     headerAllFile: {
       edges: [{ node: { childImageSharp: { fluid: FluidObject } } }];
-    };
-    aboutFile: {
-      childImageSharp: {
-        fixed: FixedObject;
-      };
     };
     github: {
       user: {
@@ -51,7 +46,7 @@ const Page: FC<PageProps> = ({ data }) => {
       <GitHubCorner />
       <Header edges={data.headerAllFile.edges} />
       <Navigation />
-      <About image={data.aboutFile.childImageSharp.fixed} />
+      <About />
       <Skills />
       <Portfolio />
       <Stats
@@ -80,13 +75,6 @@ export const query = graphql`
               ...GatsbyImageSharpFluid_withWebp
             }
           }
-        }
-      }
-    }
-    aboutFile: file(name: { eq: "about" }, extension: { eq: "jpg" }) {
-      childImageSharp {
-        fixed(quality: 75, width: 200) {
-          ...GatsbyImageSharpFixed_withWebp
         }
       }
     }
