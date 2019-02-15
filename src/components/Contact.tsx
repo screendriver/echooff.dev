@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Twitter } from 'react-feather';
+import { MapPin, Twitter, GitHub } from 'react-feather';
 import { Section, SectionTheme } from './Section';
 
 export function Contact() {
@@ -11,6 +11,9 @@ export function Contact() {
       </a>
       <a href="https://twitter.com/CallistoShip">
         <Twitter />
+      </a>
+      <a href="https://github.com/screendriver">
+        <GitHub />
       </a>
     </Section>
   );
