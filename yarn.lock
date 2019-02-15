@@ -1121,10 +1121,10 @@
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.2.tgz#0e670ea254d559241b6eeb3894f8754991e73220"
   integrity sha512-ui3WwXmjTaY73fOQ3/m3nnajU/Orhi6cEu5rzX+BrAAJxa3eITXZ5ch9suPqtM03OWhAHhPSyBGCN4UKoxO20Q==
 
-"@types/lodash.sample@4.2.4":
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/@types/lodash.sample/-/lodash.sample-4.2.4.tgz#d979476e1b5b05781adad5185027cd286bf4e963"
-  integrity sha512-6TFpHgqLDu8Dmpn6xfzzjKC/25leqA1sV3CJt7LbXrLCkbnaSGaax3WKacvllaS3FOdBocVLgXU/nVqdKERl9A==
+"@types/lodash.sample@4.2.5":
+  version "4.2.5"
+  resolved "https://registry.yarnpkg.com/@types/lodash.sample/-/lodash.sample-4.2.5.tgz#cd9beed7daf60ccc578202d0beacefa5ef51d831"
+  integrity sha512-JRwic6Hm107S9br9MDfRgE52ZRc5SIdni9iq5VeApsW9edKaxVN6TR1u7KpfdzUp52M4RBopqRYy51zVxuIT1Q==
   dependencies:
     "@types/lodash" "*"
 
