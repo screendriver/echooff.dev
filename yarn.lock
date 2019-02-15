@@ -1168,10 +1168,10 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.1.tgz#48fd98c1561fe718b61733daed46ff115b496e18"
   integrity sha512-eqz8c/0kwNi/OEHQfvIuJVLTst3in0e7uTKeuY+WL/zfKn0xVujOTp42bS/vUUokhK5P2BppLd9JXMOMHcgbjA==
 
-"@types/rc-progress@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@types/rc-progress/-/rc-progress-2.2.0.tgz#9d14fffec828157c3f7ab7004c062ce62de0261a"
-  integrity sha512-yhE72smF4ENdDxd451FiYn6e7DrN6+PeuyiZJUloRkn296qyfBQOhQBpEppxlNaPp6g+19hxPruhprdFZg+LLA==
+"@types/rc-progress@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@types/rc-progress/-/rc-progress-2.2.1.tgz#a39693cb395ee191dd51e2a15691cd0f4ea8cb58"
+  integrity sha512-kwFAP9R2eAItLNom79UD0yxtbr3vBQdMSsEC3Vci45GFuGuyE0Hrv+AYqCHWHJVz2cyt+0kmwSVwMzKLPS/jlA==
   dependencies:
     "@types/react" "*"
 
