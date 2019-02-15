@@ -10,6 +10,7 @@ import { Portfolio } from '../components/Portfolio';
 import { Stats } from '../components/Stats';
 import { Experiences } from '../components/experiences';
 import { SEO } from '../components/SEO';
+import { Contact } from '../components/Contact';
 
 export default function Page() {
   return (
@@ -30,6 +31,7 @@ export default function Page() {
       <Portfolio />
       <Stats />
       <Experiences />
+      <Contact />
     </>
   );
 }
