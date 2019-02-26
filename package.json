@@ -39,7 +39,7 @@
     "gatsby-plugin-sharp": "2.0.22",
     "gatsby-plugin-typescript": "2.0.9",
     "gatsby-plugin-web-font-loader": "1.0.4",
-    "gatsby-source-filesystem": "2.0.20",
+    "gatsby-source-filesystem": "2.0.23",
     "gatsby-source-graphql": "2.0.10",
     "gatsby-transformer-json": "2.1.8",
     "gatsby-transformer-sharp": "2.1.13",
