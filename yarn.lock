@@ -1219,6 +1219,11 @@
   resolved "https://registry.yarnpkg.com/@types/tmp/-/tmp-0.0.32.tgz#0d3cb31022f8427ea58c008af32b80da126ca4e3"
   integrity sha1-DTyzECL4Qn6ljACK8yuA2hJspOM=
 
+"@types/use-set-interval@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/use-set-interval/-/use-set-interval-1.0.0.tgz#39dd540fb1f4b83d45c6b4b21f9d5abe4fbb6bbd"
+  integrity sha512-qDCduoK+ghCtyCvJLYmM9e7En3SPvISY5uvw4oDPDQNFpYNYmZgXjcNyDxqgbfK57H4YHbL3JXhByOvIiLKJ3Q==
+
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.7.11.tgz#b988582cafbb2b095e8b556526f30c90d057cace"
