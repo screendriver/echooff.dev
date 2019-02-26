@@ -11,6 +11,7 @@ import { Stats } from '../components/Stats';
 import { Experiences } from '../components/experiences';
 import { SEO } from '../components/SEO';
 import { Contact } from '../components/Contact';
+import { Footer } from '../components/Footer';
 
 export default function Page() {
   return (
@@ -32,6 +33,7 @@ export default function Page() {
       <Stats />
       <Experiences />
       <Contact />
+      <Footer />
     </>
   );
 }
