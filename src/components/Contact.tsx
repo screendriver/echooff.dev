@@ -9,6 +9,7 @@ import {
 import styled from '@emotion/styled';
 import { Section, SectionTheme } from './Section';
 import { black, white } from '../colors';
+import { ContactForm } from './ContactForm';
 
 const LinkList = styled.div({
   display: 'flex',
@@ -53,6 +54,7 @@ export function Contact() {
           <p>Threema ID: 9TWBW4XN</p>
         </BigLink>
       </LinkList>
+      <ContactForm />
       <SmallLinkList>
         <SmallLink href="https://twitter.com/CallistoShip">
           <Twitter />
