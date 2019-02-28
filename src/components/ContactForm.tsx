@@ -1,10 +1,4 @@
-import React, {
-  FormEvent,
-  Dispatch,
-  ChangeEvent,
-  useState,
-  SetStateAction,
-} from 'react';
+import React, { Dispatch, ChangeEvent, useState, SetStateAction } from 'react';
 
 interface State {
   name: string;
@@ -22,12 +16,6 @@ function handleInputChange(setState: Dispatch<SetStateAction<State>>) {
   };
 }
 
-function handleSubmit(_state: State) {
-  return (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
-}
-
 const initialState: State = {
   name: '',
   email: '',
@@ -39,7 +27,8 @@ export function ContactForm() {
   return (
     <>
       <h3>Leave me a message</h3>
-      <form onSubmit={handleSubmit(state)}>
+      <form name="contact" method="POST" data-netlify="true">
+        <input type="hidden" name="form-name" value="contact" />
         <input
           name="name"
           type="text"
