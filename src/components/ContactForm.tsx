@@ -8,6 +8,10 @@ import React, {
 import ky from 'ky';
 import formurlencoded from 'form-urlencoded';
 
+interface Props {
+  onFormSent(): void;
+}
+
 interface State {
   name: string;
   email: string;
@@ -30,7 +34,11 @@ const initialState: State = {
   message: '',
 };
 
-function handleSubmit(state: State, setState: Dispatch<SetStateAction<State>>) {
+function handleSubmit(
+  props: Props,
+  state: State,
+  setState: Dispatch<SetStateAction<State>>,
+) {
   return async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await ky.post('/', {
@@ -38,10 +46,11 @@ function handleSubmit(state: State, setState: Dispatch<SetStateAction<State>>) {
       body: formurlencoded({ 'form-name': 'contact', ...state }),
     });
     setState(initialState);
+    props.onFormSent();
   };
 }
 
-export function ContactForm() {
+export function ContactForm(props: Props) {
   const [state, setState] = useState<State>(initialState);
   return (
     <>
@@ -50,7 +59,7 @@ export function ContactForm() {
         name="contact"
         method="POST"
         data-netlify="true"
-        onSubmit={handleSubmit(state, setState)}
+        onSubmit={handleSubmit(props, state, setState)}
       >
         <input type="hidden" name="form-name" value="contact" />
         <input
