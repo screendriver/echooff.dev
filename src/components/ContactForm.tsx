@@ -5,6 +5,7 @@ import React, {
   SetStateAction,
   FormEvent,
 } from 'react';
+import formurlencoded from 'form-urlencoded';
 
 interface State {
   name: string;
@@ -22,12 +23,6 @@ function handleInputChange(setState: Dispatch<SetStateAction<State>>) {
   };
 }
 
-function encode(data: any) {
-  return Object.keys(data)
-    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
-    .join('&');
-}
-
 const initialState: State = {
   name: '',
   email: '',
@@ -40,7 +35,7 @@ function handleSubmit(state: State, setState: Dispatch<SetStateAction<State>>) {
     await fetch('/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: encode({ 'form-name': 'contact', ...state }),
+      body: formurlencoded({ 'form-name': 'contact', ...state }),
     });
     setState(initialState);
   };
