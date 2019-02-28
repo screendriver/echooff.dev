@@ -5,6 +5,7 @@ import React, {
   SetStateAction,
   FormEvent,
 } from 'react';
+import ky from 'ky';
 import formurlencoded from 'form-urlencoded';
 
 interface State {
@@ -32,8 +33,7 @@ const initialState: State = {
 function handleSubmit(state: State, setState: Dispatch<SetStateAction<State>>) {
   return async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await fetch('/', {
-      method: 'POST',
+    await ky.post('/', {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: formurlencoded({ 'form-name': 'contact', ...state }),
     });
