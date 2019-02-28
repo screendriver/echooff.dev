@@ -1111,6 +1111,11 @@
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
   integrity sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
 
+"@types/form-urlencoded@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/form-urlencoded/-/form-urlencoded-2.0.0.tgz#c2261384b701b48ed36acb76914b93bc35c2057c"
+  integrity sha512-YSOtk4tKFNUTlh+e8T4TBEDVVT2E1C9gKoF0+7ArcM1YZqQ8L7lUr4DxJpCS0jY6xm7GmATev46neF3rUfwuKA==
+
 "@types/get-port@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@types/get-port/-/get-port-0.0.4.tgz#eb6bb7423d9f888b632660dc7d2fd3e69a35643e"
@@ -5104,6 +5109,11 @@ form-data@~2.3.2:
     asynckit "^0.4.0"
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
+
+form-urlencoded@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/form-urlencoded/-/form-urlencoded-3.0.0.tgz#7f5da60c0a110c333549aacbaf9f7ded65936ea1"
+  integrity sha512-zSgBjyO5Yo3TCfElJKqlSBGOEq8lZjltZAYqew4X5trf4AbH4sZhBesvywy7IpD1mfbu8JS6733V3zv3YdIW1g==
 
 forwarded@~0.1.2:
   version "0.1.2"
