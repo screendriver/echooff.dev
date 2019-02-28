@@ -1,4 +1,10 @@
-import React, { Dispatch, ChangeEvent, useState, SetStateAction } from 'react';
+import React, {
+  Dispatch,
+  ChangeEvent,
+  useState,
+  SetStateAction,
+  FormEvent,
+} from 'react';
 
 interface State {
   name: string;
@@ -16,18 +22,41 @@ function handleInputChange(setState: Dispatch<SetStateAction<State>>) {
   };
 }
 
+function encode(data: any) {
+  return Object.keys(data)
+    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+    .join('&');
+}
+
 const initialState: State = {
   name: '',
   email: '',
   message: '',
 };
 
+function handleSubmit(state: State, setState: Dispatch<SetStateAction<State>>) {
+  return async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: encode({ 'form-name': 'contact', ...state }),
+    });
+    setState(initialState);
+  };
+}
+
 export function ContactForm() {
   const [state, setState] = useState<State>(initialState);
   return (
     <>
       <h3>Leave me a message</h3>
-      <form name="contact" method="POST" data-netlify="true">
+      <form
+        name="contact"
+        method="POST"
+        data-netlify="true"
+        onSubmit={handleSubmit(state, setState)}
+      >
         <input type="hidden" name="form-name" value="contact" />
         <input
           name="name"
