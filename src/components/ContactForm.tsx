@@ -55,6 +55,11 @@ const Submit = styled.input({
   color: white,
   margin: '0 140px',
   padding: '10px 20px',
+  transition: 'box-shadow 0.2s',
+  ':hover': {
+    cursor: 'pointer',
+    boxShadow: '0 0 10px white',
+  },
 });
 
 interface Props {
