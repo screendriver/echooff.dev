@@ -9,6 +9,7 @@ export enum SectionTheme {
 
 interface SectionProps {
   heading: string;
+  id: HTMLHeadingElement['id'];
   theme: SectionTheme;
 }
 
@@ -37,7 +38,7 @@ const Line = styled.hr((props: ThemeProps) => ({
 
 export const Section: FC<SectionProps> = props => {
   return (
-    <SectionStyled theme={props.theme}>
+    <SectionStyled id={props.id} theme={props.theme}>
       <Heading theme={props.theme}>{props.heading}</Heading>
       <Line theme={props.theme} />
       {props.children}

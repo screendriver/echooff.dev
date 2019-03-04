@@ -49,7 +49,7 @@ function handleFormSent(setFormSent: Dispatch<SetStateAction<boolean>>) {
 export function Contact() {
   const [formSent, setFormSent] = useState(false);
   return (
-    <Section heading="Contact" theme={SectionTheme.Cyan}>
+    <Section heading="Contact" id="contact" theme={SectionTheme.Cyan}>
       <LinkList>
         <BigLink href="https://www.openstreetmap.org/search?query=munich%20germany#map=11/48.1551/11.5418">
           <MapPin />

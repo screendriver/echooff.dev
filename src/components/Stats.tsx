@@ -58,7 +58,7 @@ function Stat(props: StatPrpops) {
 function StatsComponent({ data }: StatsComponentProps) {
   const { repositories, starredRepositories } = data.github.user;
   return (
-    <Section heading="Some Stats" theme={SectionTheme.Cyan}>
+    <Section heading="Some Stats" id="stats" theme={SectionTheme.Cyan}>
       <StatList>
         <Stat counter={999999} text="Lines of Code" />
         <Stat counter={repositories.totalCount} text="GitHub Repos" />
