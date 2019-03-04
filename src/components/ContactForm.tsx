@@ -32,6 +32,7 @@ const commonStyle = {
   height: 34,
   width: '47%',
   padding: '6px 12px',
+  outline: 'unset',
 };
 
 const Input = styled.input(commonStyle);
