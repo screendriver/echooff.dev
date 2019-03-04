@@ -8,7 +8,7 @@ import React, {
 import styled from '@emotion/styled';
 import ky from 'ky';
 import formurlencoded from 'form-urlencoded';
-import { white } from '../colors';
+import { white, grey } from '../colors';
 
 const Heading = styled.h3({
   color: white,
@@ -61,6 +61,11 @@ const Submit = styled.input({
     cursor: 'pointer',
     boxShadow: '0 0 10px white',
   },
+  ':disabled': {
+    cursor: 'not-allowed',
+    boxShadow: 'none',
+    color: grey,
+  },
 });
 
 interface Props {
@@ -71,6 +76,7 @@ interface State {
   name: string;
   email: string;
   message: string;
+  submitDisabled: boolean;
 }
 
 function handleInputChange(setState: Dispatch<SetStateAction<State>>) {
@@ -87,6 +93,7 @@ const initialState: State = {
   name: '',
   email: '',
   message: '',
+  submitDisabled: false,
 };
 
 function handleSubmit(
@@ -96,9 +103,11 @@ function handleSubmit(
 ) {
   return async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setState(prevState => ({ ...prevState, submitDisabled: true }));
+    const { submitDisabled, ...formValues } = state;
     await ky.post('/', {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: formurlencoded({ 'form-name': 'contact', ...state }),
+      body: formurlencoded({ 'form-name': 'contact', ...formValues }),
     });
     setState(initialState);
     props.onFormSent();
@@ -106,7 +115,7 @@ function handleSubmit(
 }
 
 export function ContactForm(props: Props) {
-  const [state, setState] = useState<State>(initialState);
+  const [state, setState] = useState(initialState);
   return (
     <>
       <Heading>Leave me a message</Heading>
@@ -143,7 +152,11 @@ export function ContactForm(props: Props) {
           required={true}
           onChange={handleInputChange(setState)}
         />
-        <Submit type="submit" value="Send Message" />
+        <Submit
+          type="submit"
+          value="Send Message"
+          disabled={state.submitDisabled}
+        />
       </Form>
     </>
   );
