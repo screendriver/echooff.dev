@@ -53,13 +53,13 @@ export function Navigation() {
           <Link href="#about">About</Link>
         </ListItem>
         <ListItem>
-          <Link href="#skils">Skills</Link>
+          <Link href="#skills">Skills</Link>
         </ListItem>
         <ListItem>
           <Link href="#portfolio">Portfolio</Link>
         </ListItem>
         <ListItem>
-          <Link href="#resume">Resume</Link>
+          <Link href="#experience">Resume</Link>
         </ListItem>
         <ListItem>
           <Link href="#contact">Contact</Link>

@@ -41,7 +41,7 @@ const GoneText = styled.h5({
 function AboutComponent({ data }: AboutComponentProps) {
   const image = data.aboutFile.childImageSharp.fixed;
   return (
-    <Section heading="About" theme={SectionTheme.Light}>
+    <Section heading="About" id="about" theme={SectionTheme.Light}>
       <AboutImage fixed={image} />
       <Text>
         JavaScript is everywhere. In the old days, being a JavaScript developer

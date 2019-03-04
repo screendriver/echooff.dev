@@ -46,7 +46,7 @@ function ExperiencesComponent({ data }: ExperiencesComponentProps) {
     }),
   );
   return (
-    <Section heading="Experience" theme={SectionTheme.Light}>
+    <Section heading="Experience" id="experience" theme={SectionTheme.Light}>
       <Timeline>
         {experiences.map((experience, index) => (
           <Moment key={index}>

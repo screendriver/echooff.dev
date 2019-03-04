@@ -41,7 +41,7 @@ function SkillsComponent({ data }: SkillsComponentProps) {
     percent: node.percent,
   }));
   return (
-    <Section heading="Skills" theme={SectionTheme.Cyan}>
+    <Section heading="Skills" id="skills" theme={SectionTheme.Cyan}>
       <SkillsList>
         {skills.map(({ name, percent }) => (
           <ProgressWrapper key={name}>
