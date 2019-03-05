@@ -5,6 +5,7 @@ import React, {
   SetStateAction,
   FormEvent,
 } from 'react';
+import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import ky from 'ky';
 import formurlencoded from 'form-urlencoded';
@@ -24,7 +25,7 @@ const Form = styled.form({
   width: 500,
 });
 
-const commonStyle = {
+const inputStyle = css({
   backgroundColor: 'rgba(255, 255, 255, 0.8)',
   color: '#2c3e50',
   borderWidth: 0,
@@ -33,12 +34,11 @@ const commonStyle = {
   width: '47%',
   padding: '6px 12px',
   outline: 'unset',
-};
+});
 
-const Input = styled.input(commonStyle);
+const Input = styled.input(inputStyle);
 
-const TextArea = styled.textarea({
-  ...commonStyle,
+const TextArea = styled.textarea(inputStyle, {
   height: 'initial',
   width: 'initial',
   marginBottom: 20,
