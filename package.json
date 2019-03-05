@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@types/form-urlencoded": "2.0.0",
-    "@types/lodash.sample": "4.2.5",
+    "@types/lodash.sample": "4.2.6",
     "@types/rc-progress": "2.2.1",
     "@types/react": "16.8.6",
     "@types/react-dom": "16.8.2",
