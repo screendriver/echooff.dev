@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { Menu } from 'react-feather';
 import { black, cyan, darkerWhite } from '../colors';
@@ -28,7 +28,6 @@ const ListItem = styled.li();
 const ListItemMenu = styled.li({
   display: 'none',
   margin: 'auto',
-  paddingRight: 15,
 });
 
 const NavigationStyled = styled.nav({
@@ -39,30 +38,59 @@ const NavigationStyled = styled.nav({
   position: 'sticky',
   top: 0,
   zIndex: 1,
-  '@media screen and (max-width: 600px)': {
-    justifyContent: 'space-between',
-    [ListItem as any]: {
-      display: 'none',
-    },
-    [ListItemMenu as any]: {
-      display: 'initial',
+});
+
+const List = styled.ul(
+  {
+    display: 'flex',
+    listStyleType: 'none',
+    margin: 0,
+    padding: 0,
+    textTransform: 'uppercase',
+    '@media screen and (max-width: 600px)': {
+      justifyContent: 'space-between',
+      [ListItemMenu as any]: {
+        display: 'initial',
+      },
+      [ListItem as any]: {
+        display: 'none',
+      },
     },
   },
-});
+  (props: { mobileMenuVisible: boolean }) => {
+    return props.mobileMenuVisible
+      ? {
+          flexDirection: 'column',
+          [ListItem as any]: {
+            display: 'initial',
+          },
+        }
+      : {
+          flexDirection: 'row',
+        };
+  },
+);
 
-const List = styled.ul({
-  display: 'flex',
-  listStyleType: 'none',
-  margin: 0,
-  padding: 0,
-  textTransform: 'uppercase',
-});
+function handleMenuClick(
+  setMobileMenuVisible: React.Dispatch<React.SetStateAction<boolean>>,
+) {
+  return () => {
+    setMobileMenuVisible(prevState => !prevState);
+  };
+}
 
 export function Navigation() {
+  const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
   return (
     <NavigationStyled>
       <MeLink href="#header">Christian Rackerseder</MeLink>
-      <List>
+      <List mobileMenuVisible={mobileMenuVisible}>
+        <ListItemMenu>
+          <Menu
+            color={darkerWhite}
+            onClick={handleMenuClick(setMobileMenuVisible)}
+          />
+        </ListItemMenu>
         <ListItem>
           <Link href="#about">About</Link>
         </ListItem>
@@ -78,9 +106,6 @@ export function Navigation() {
         <ListItem>
           <Link href="#contact">Contact</Link>
         </ListItem>
-        <ListItemMenu>
-          <Menu color={darkerWhite} />
-        </ListItemMenu>
       </List>
     </NavigationStyled>
   );
