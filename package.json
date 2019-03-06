@@ -40,7 +40,7 @@
     "@types/use-set-interval": "1.0.0",
     "gatsby-plugin-emotion": "4.0.4",
     "gatsby-plugin-react-helmet": "3.0.8",
-    "gatsby-plugin-sharp": "2.0.24",
+    "gatsby-plugin-sharp": "2.0.25",
     "gatsby-plugin-typescript": "2.0.10",
     "gatsby-plugin-web-font-loader": "1.0.4",
     "gatsby-source-filesystem": "2.0.23",
