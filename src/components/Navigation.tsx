@@ -27,6 +27,7 @@ const ListItem = styled.li();
 
 const MenuLink = styled.a({
   display: 'none',
+  padding: 15,
 });
 
 const NavigationStyled = styled.nav({
