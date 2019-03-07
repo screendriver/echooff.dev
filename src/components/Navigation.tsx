@@ -25,19 +25,26 @@ const MeLink = styled(Link)({
 
 const ListItem = styled.li();
 
-const ListItemMenu = styled.li({
+const MenuLink = styled.a({
   display: 'none',
-  margin: 'auto',
 });
 
 const NavigationStyled = styled.nav({
   backgroundColor: black,
   display: 'flex',
   justifyContent: 'space-around',
+  flexWrap: 'wrap',
   padding: 10,
   position: 'sticky',
   top: 0,
   zIndex: 1,
+  '@media screen and (max-width: 600px)': {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    [MenuLink as any]: {
+      display: 'initial',
+    },
+  },
 });
 
 const List = styled.ul(
@@ -48,10 +55,8 @@ const List = styled.ul(
     padding: 0,
     textTransform: 'uppercase',
     '@media screen and (max-width: 600px)': {
-      justifyContent: 'space-between',
-      [ListItemMenu as any]: {
-        display: 'initial',
-      },
+      width: '100%',
+      flexDirection: 'column',
       [ListItem as any]: {
         display: 'none',
       },
@@ -84,13 +89,13 @@ export function Navigation() {
   return (
     <NavigationStyled>
       <MeLink href="#header">Christian Rackerseder</MeLink>
+      <MenuLink>
+        <Menu
+          color={darkerWhite}
+          onClick={handleMenuClick(setMobileMenuVisible)}
+        />
+      </MenuLink>
       <List mobileMenuVisible={mobileMenuVisible}>
-        <ListItemMenu>
-          <Menu
-            color={darkerWhite}
-            onClick={handleMenuClick(setMobileMenuVisible)}
-          />
-        </ListItemMenu>
         <ListItem>
           <Link href="#about">About</Link>
         </ListItem>
