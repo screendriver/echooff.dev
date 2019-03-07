@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { Menu } from 'react-feather';
-import { black, cyan, darkerWhite } from '../colors';
+import { black, cyan, darkerWhite, grey } from '../colors';
 
 const Link = styled.a({
   display: 'block',
@@ -56,6 +56,10 @@ const List = styled.ul(
     padding: 0,
     textTransform: 'uppercase',
     '@media screen and (max-width: 600px)': {
+      '::before': {
+        content: '""',
+        borderBottom: `1px solid ${grey}`,
+      },
       width: '100%',
       flexDirection: 'column',
       [ListItem as any]: {
