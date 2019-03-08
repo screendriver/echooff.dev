@@ -56,10 +56,6 @@ const List = styled.ul(
     padding: 0,
     textTransform: 'uppercase',
     '@media screen and (max-width: 600px)': {
-      '::before': {
-        content: '""',
-        borderBottom: `1px solid ${grey}`,
-      },
       width: '100%',
       flexDirection: 'column',
       [ListItem as any]: {
@@ -67,18 +63,28 @@ const List = styled.ul(
       },
     },
   },
-  (props: { mobileMenuVisible: boolean }) => {
-    return props.mobileMenuVisible
+  (props: { mobileMenuVisible: boolean }) =>
+    props.mobileMenuVisible
       ? {
           flexDirection: 'column',
           [ListItem as any]: {
             display: 'initial',
           },
+          '@media screen and (max-width: 600px)': {
+            '::before': {
+              content: '""',
+              borderBottom: `1px solid ${grey}`,
+            },
+          },
         }
       : {
           flexDirection: 'row',
-        };
-  },
+          '@media screen and (max-width: 600px)': {
+            '::before': {
+              content: '""',
+            },
+          },
+        },
 );
 
 function handleMenuClick(
