@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
-import { white, black } from '../colors';
+import { white, black, cyan } from '../colors';
 
 interface LinkButtonProps {
   href: string;
@@ -8,6 +8,7 @@ interface LinkButtonProps {
 
 const Link = styled.a({
   color: white,
+  backgroundColor: cyan,
   display: 'inline-block',
   border: '1px solid white',
   padding: '10px 20px',
