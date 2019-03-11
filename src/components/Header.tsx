@@ -20,49 +20,50 @@ interface HeaderComponentProps {
 const HeaderStyled = styled.header({
   color: white,
   position: 'relative',
-  '@media (max-width: 768px)': {
-    textAlign: 'center',
-  },
 });
 
 const ImgStyled = styled(Img)({
-  height: 720,
-  '@media (max-width: 768px)': {
-    height: 380,
+  height: 380,
+  '@media (min-width: 768px)': {
+    height: 720,
   },
 });
 
 const Intro = styled.div({
   position: 'absolute',
-  top: '39%',
-  marginLeft: '8%',
-  '@media (max-width: 768px)': {
-    top: '13%',
-    marginLeft: 0,
+  top: 0,
+  height: '100%',
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  '@media (min-width: 320px)': {
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  '@media (min-width: 768px)': {
+    alignItems: 'flex-start',
+  },
+  '@media (min-width: 1024px)': {
+    paddingLeft: '10%',
   },
 });
 
 const Hello = styled.h1({
-  fontSize: 60,
-  fontWeight: 500,
-  letterSpacing: -2,
-  marginBottom: 25,
-  '@media (max-width: 768px)': {
-    fontSize: 36,
-    fontWeight: 700,
-    marginBottom: 10,
+  fontSize: 36,
+  marginBottom: 0,
+  textAlign: 'center',
+  '@media (min-width: 768px)': {
+    fontSize: 60,
   },
 });
 
 const JobTitle = styled.h2({
-  fontSize: 20,
+  fontSize: 18,
   fontFamily: 'Lato, sans-serif',
   fontWeight: 'lighter',
-  marginBottom: 40,
-  '@media (max-width: 768px)': {
-    fontSize: 14,
-    marginBottom: 20,
-  },
+  marginBottom: 45,
 });
 
 const Name = styled.span({
