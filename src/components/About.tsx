@@ -18,17 +18,22 @@ interface AboutComponentProps {
 }
 
 const AboutImage = styled(Img)({
-  marginTop: 40,
   borderRadius: 180,
+  marginTop: 40,
+  marginBottom: 20,
 });
 
 const Text = styled.p({
   color: grey,
   fontSize: 14,
-  marginTop: 20,
-  marginRight: '20%',
-  marginLeft: '20%',
-  textAlign: 'left',
+  textAlign: 'justify',
+  '@media (min-width: 768px)': {
+    marginLeft: '10%',
+    marginRight: '10%',
+  },
+  '@media (min-width: 1024px)': {
+    width: 700,
+  },
 });
 
 const GoneText = styled.h5({
