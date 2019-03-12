@@ -17,13 +17,14 @@ type ThemeProps = Pick<SectionProps, 'theme'>;
 
 const SectionStyled = styled.section((props: ThemeProps) => ({
   backgroundColor: props.theme === SectionTheme.Cyan ? cyan : light,
-  padding: '100px 0',
-  textAlign: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  padding: '50px 15px',
 }));
 
 const Heading = styled.h1((props: ThemeProps) => ({
-  fontSize: '2em',
-  fontWeight: 400,
+  fontSize: 32,
   color: props.theme === SectionTheme.Light ? black : white,
 }));
 
@@ -33,7 +34,6 @@ const Line = styled.hr((props: ThemeProps) => ({
   backgroundColor:
     props.theme === SectionTheme.Light ? cyan : 'rgba(255, 255, 255, 0.3)',
   border: 0,
-  marginBottom: 40,
 }));
 
 export const Section: FC<SectionProps> = props => {
