@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { Menu } from 'react-feather';
-import { black, cyan, darkerWhite, grey } from '../colors';
+import { darkerWhite, black, grey, cyan } from '../colors';
 
 const Link = styled.a({
-  display: 'block',
-  fontSize: 14,
-  padding: 15,
   letterSpacing: 1,
   color: darkerWhite,
   textDecoration: 'none',
@@ -23,68 +20,59 @@ const MeLink = styled(Link)({
   fontWeight: 600,
 });
 
-const ListItem = styled.li();
+const ListItem = styled.li({
+  paddingTop: 13,
+  paddingBottom: 13,
+  ':last-child': {
+    paddingBottom: 0,
+  },
+  '@media screen and (min-width: 768px)': {
+    [Link as any]: {
+      padding: 13,
+    },
+  },
+});
 
 const MenuLink = styled.a({
-  display: 'none',
-  padding: 15,
+  '@media screen and (min-width: 768px)': {
+    display: 'none',
+  },
 });
 
 const NavigationStyled = styled.nav({
   backgroundColor: black,
   display: 'flex',
-  justifyContent: 'space-around',
+  justifyContent: 'space-between',
+  alignItems: 'center',
   flexWrap: 'wrap',
-  padding: 10,
+  padding: 15,
   position: 'sticky',
   top: 0,
-  zIndex: 1,
-  '@media screen and (max-width: 600px)': {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    [MenuLink as any]: {
-      display: 'initial',
-    },
+  '@media screen and (min-width: 768px)': {
+    justifyContent: 'space-around',
   },
 });
 
 const List = styled.ul(
   {
-    display: 'flex',
     listStyleType: 'none',
-    margin: 0,
     padding: 0,
+    display: 'none',
+    width: '100%',
     textTransform: 'uppercase',
-    '@media screen and (max-width: 600px)': {
-      width: '100%',
-      flexDirection: 'column',
-      [ListItem as any]: {
-        display: 'none',
-      },
+    fontSize: 14,
+    borderTop: `1px solid ${grey}`,
+    '@media screen and (min-width: 768px)': {
+      display: 'flex',
+      justifyContent: 'space-between',
+      borderTop: 'none',
+      width: 'initial',
+      margin: 0,
+      marginRight: 15,
     },
   },
   (props: { mobileMenuVisible: boolean }) =>
-    props.mobileMenuVisible
-      ? {
-          flexDirection: 'column',
-          [ListItem as any]: {
-            display: 'initial',
-          },
-          '@media screen and (max-width: 600px)': {
-            '::before': {
-              content: '""',
-              borderBottom: `1px solid ${grey}`,
-            },
-          },
-        }
-      : {
-          flexDirection: 'row',
-          '@media screen and (max-width: 600px)': {
-            '::before': {
-              content: '""',
-            },
-          },
-        },
+    props.mobileMenuVisible ? { display: 'block' } : {},
 );
 
 function handleMenuClick(
