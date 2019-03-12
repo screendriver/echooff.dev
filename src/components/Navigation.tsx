@@ -48,6 +48,7 @@ const NavigationStyled = styled.nav({
   padding: 15,
   position: 'sticky',
   top: 0,
+  zIndex: 1,
   '@media screen and (min-width: 768px)': {
     justifyContent: 'space-around',
   },
