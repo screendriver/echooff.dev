@@ -21,14 +21,25 @@ interface SkillsComponentProps {
 
 const SkillsList = styled.div({
   display: 'flex',
+  flexDirection: 'column',
   flexWrap: 'wrap',
   justifyContent: 'space-evenly',
-  margin: '0 100px',
+  '@media (min-width: 425px)': {
+    flexDirection: 'row',
+  },
 });
 
 const ProgressWrapper = styled.div({
-  width: '33%',
-  marginTop: 40,
+  marginBottom: 40,
+  ':nth-last-child(-n+2)': {
+    marginBottom: 0,
+  },
+  '@media (min-width: 425px)': {
+    width: '50%',
+  },
+  '@media (min-width: 1024px)': {
+    width: '33%',
+  },
 });
 
 const ProgressStyled = styled(Progress)({

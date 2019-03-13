@@ -10,7 +10,10 @@ interface ProgressProps {
 }
 
 const Wrapper = styled.div({
-  width: 150,
+  width: 100,
+  '@media (min-width: 768px)': {
+    width: 150,
+  },
 });
 
 const CircleWrapper = styled.div({
@@ -40,19 +43,21 @@ const Description = styled.h4({
 
 export function Progress({ percent, description, className }: ProgressProps) {
   return (
-    <Wrapper className={className}>
-      <CircleWrapper>
-        <Percent>{percent}</Percent>
-        <Circle
-          percent={percent}
-          strokeWidth="5"
-          trailWidth="5"
-          trailColor={white}
-          strokeColor="#121d1f"
-          strokeLinecap="butt"
-        />
-      </CircleWrapper>
+    <>
+      <Wrapper className={className}>
+        <CircleWrapper>
+          <Percent>{percent}</Percent>
+          <Circle
+            percent={percent}
+            strokeWidth="5"
+            trailWidth="5"
+            trailColor={white}
+            strokeColor="#121d1f"
+            strokeLinecap="butt"
+          />
+        </CircleWrapper>
+      </Wrapper>
       <Description>{description}</Description>
-    </Wrapper>
+    </>
   );
 }
