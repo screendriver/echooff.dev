@@ -31,6 +31,7 @@ const Heading = styled.h1((props: ThemeProps) => ({
 const Line = styled.hr((props: ThemeProps) => ({
   height: 4,
   width: 70,
+  marginBottom: 40,
   backgroundColor:
     props.theme === SectionTheme.Light ? cyan : 'rgba(255, 255, 255, 0.3)',
   border: 0,

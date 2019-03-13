@@ -19,7 +19,6 @@ interface AboutComponentProps {
 
 const AboutImage = styled(Img)({
   borderRadius: 180,
-  marginTop: 40,
   marginBottom: 20,
 });
 
