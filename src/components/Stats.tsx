@@ -28,10 +28,16 @@ interface StatPrpops {
 
 const StatList = styled.div({
   display: 'flex',
-  justifyContent: 'space-around',
-  marginTop: 100,
-  marginRight: '10%',
-  marginLeft: '10%',
+  flexDirection: 'column',
+  justifyContent: 'space-evenly',
+  alignItems: 'center',
+  width: '100%',
+  '@media (min-width: 768px)': {
+    flexDirection: 'row',
+  },
+  '@media (min-width: 1024px)': {
+    width: '80%',
+  },
 });
 
 const Counter = styled.span({
@@ -48,7 +54,7 @@ const Text = styled.h4({
 
 function Stat(props: StatPrpops) {
   return (
-    <div>
+    <div style={{ textAlign: 'center' }}>
       <Counter>{Number(props.counter).toLocaleString()}</Counter>
       <Text>{props.text}</Text>
     </div>
