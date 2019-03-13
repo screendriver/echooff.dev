@@ -15,8 +15,8 @@
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
   },
   "dependencies": {
-    "@emotion/core": "10.0.7",
-    "@emotion/styled": "10.0.7",
+    "@emotion/core": "10.0.9",
+    "@emotion/styled": "10.0.9",
     "form-urlencoded": "3.0.0",
     "gatsby": "2.1.24",
     "gatsby-image": "2.0.31",
