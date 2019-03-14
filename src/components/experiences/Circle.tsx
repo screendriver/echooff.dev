@@ -1,16 +1,12 @@
-import React, { FC } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { white } from '../../colors';
+import { Experience } from '.';
 
 interface ExperienceCircleProps {
-  from: string;
-  to: string;
-  childPosition: 'left' | 'right';
+  experience: Experience;
+  className?: string;
 }
-
-const Wrapper = styled.div({
-  position: 'relative',
-});
 
 const CircleStyled = styled.span({
   border: '1px solid #eee',
@@ -18,40 +14,37 @@ const CircleStyled = styled.span({
   backgroundColor: white,
   display: 'inline-flex',
   justifyContent: 'center',
+  alignItems: 'center',
   flexDirection: 'column',
-  width: 150,
-  height: 150,
+  width: 80,
+  height: 80,
   position: 'relative',
+  '@media (min-width: 768px)': {
+    width: 100,
+    height: 100,
+  },
+  '@media (min-width: 1024px)': {
+    width: 150,
+    height: 150,
+  },
 });
 
 const Text = styled.span({
-  fontSize: 18,
-  lineHeight: '26px',
+  fontSize: 12,
   textTransform: 'uppercase',
+  '@media (min-width: 768px)': {
+    fontSize: 14,
+  },
+  '@media (min-width: 1024px)': {
+    fontSize: 18,
+  },
 });
 
-const ChildrenWrapper = styled.div(
-  (props: Pick<ExperienceCircleProps, 'childPosition'>) => {
-    const positionFlipped = props.childPosition === 'left' ? 'right' : 'left';
-    return {
-      position: 'absolute',
-      top: 15,
-      [positionFlipped]: 200,
-      width: 350,
-      textAlign: positionFlipped,
-    };
-  },
-);
-
-export const Circle: FC<ExperienceCircleProps> = props => {
+export function Circle(props: ExperienceCircleProps) {
+  const { experience } = props;
   return (
-    <Wrapper>
-      <CircleStyled>
-        <Text>{props.to}</Text> <Text>-</Text> <Text>{props.from}</Text>
-        <ChildrenWrapper childPosition={props.childPosition}>
-          {props.children}
-        </ChildrenWrapper>
-      </CircleStyled>
-    </Wrapper>
+    <CircleStyled className={props.className}>
+      <Text>{experience.to}</Text> <Text>-</Text> <Text>{experience.from}</Text>
+    </CircleStyled>
   );
-};
+}

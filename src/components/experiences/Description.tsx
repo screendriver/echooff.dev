@@ -5,6 +5,7 @@ import { black, grey } from '../../colors';
 
 interface DescriptionProps {
   experience: Experience;
+  className?: string;
 }
 
 const Industry = styled.h4({
@@ -32,9 +33,12 @@ const JobDescription = styled.p({
   lineHeight: '20px',
 });
 
-export const Description: FC<DescriptionProps> = ({ experience }) => {
+export const Description: FC<DescriptionProps> = ({
+  className,
+  experience,
+}) => {
   return (
-    <div>
+    <div className={className}>
       <Industry>{experience.industry}</Industry>
       <JobTitle>{experience.jobTitle}</JobTitle>
       <JobDescription>{experience.jobDescription}</JobDescription>
