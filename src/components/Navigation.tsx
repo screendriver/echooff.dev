@@ -103,7 +103,7 @@ export function Navigation() {
           <Link href="#skills">Skills</Link>
         </ListItem>
         <ListItem>
-          <Link href="#portfolio">Portfolio</Link>
+          <Link href="#passions">Passions</Link>
         </ListItem>
         <ListItem>
           <Link href="#experience">Resume</Link>
