@@ -25,7 +25,10 @@ const HeaderStyled = styled.header({
 const ImgStyled = styled(Img)({
   height: 380,
   '@media (min-width: 768px)': {
-    height: 720,
+    height: 450,
+  },
+  '@media (min-width: 1024px)': {
+    height: '100%',
   },
 });
 
