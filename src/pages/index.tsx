@@ -6,7 +6,7 @@ import { Header } from '../components/Header';
 import { Navigation } from '../components/Navigation';
 import { About } from '../components/About';
 import { Skills } from '../components/Skills';
-import { Portfolio } from '../components/Portfolio';
+import { Passions } from '../components/Passions';
 import { Stats } from '../components/Stats';
 import { Experiences } from '../components/experiences';
 import { SEO } from '../components/SEO';
@@ -29,7 +29,7 @@ export default function Page() {
       <Navigation />
       <About />
       <Skills />
-      <Portfolio />
+      <Passions />
       <Stats />
       <Experiences />
       <Contact />
