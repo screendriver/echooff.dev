@@ -22,7 +22,14 @@ const Form = styled.form({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  width: 500,
+  alignItems: 'center',
+  width: '100%',
+  '@media (min-width: 425px)': {
+    width: '80%',
+  },
+  '@media (min-width: 768px)': {
+    width: 500,
+  },
 });
 
 const inputStyle = css({
@@ -31,31 +38,39 @@ const inputStyle = css({
   borderWidth: 0,
   borderRadius: 4,
   height: 34,
-  width: '47%',
   padding: '6px 12px',
   outline: 'unset',
 });
 
-const Input = styled.input(inputStyle);
+const Input = styled.input(inputStyle, {
+  marginBottom: 20,
+  '@media (min-width: 768px)': {
+    width: '48%',
+  },
+});
 
 const TextArea = styled.textarea(inputStyle, {
   height: 'initial',
-  width: 'initial',
-  marginBottom: 20,
+  width: '100%',
 });
 
 const Row = styled.div({
   display: 'flex',
+  flexDirection: 'column',
   justifyContent: 'space-between',
-  marginBottom: 20,
+  width: '100%',
+  '@media (min-width: 768px)': {
+    flexDirection: 'row',
+  },
 });
 
 const Submit = styled.input({
   backgroundColor: 'transparent',
   border: `1px solid ${white}`,
   color: white,
-  margin: '0 140px',
+  marginTop: 20,
   padding: '10px 20px',
+  width: 200,
   transition: 'box-shadow 0.2s',
   ':hover': {
     cursor: 'pointer',
@@ -147,6 +162,7 @@ export function ContactForm(props: Props) {
         <TextArea
           name="message"
           rows={4}
+          // cols={10}
           placeholder="Message"
           value={state.message}
           required={true}

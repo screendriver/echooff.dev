@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 import {
   MapPin,
   MessageSquare,
@@ -9,8 +9,8 @@ import {
 import styled from '@emotion/styled';
 import { Section, SectionTheme } from './Section';
 import { black, white } from '../colors';
-// import { ContactForm } from './ContactForm';
-// import { ContactFormSent } from './ContactFormSent';
+import { ContactForm } from './ContactForm';
+import { ContactFormSent } from './ContactFormSent';
 
 const LinkList = styled.div({
   width: '100%',
@@ -47,12 +47,12 @@ const SmallLink = styled.a({
   },
 });
 
-// function handleFormSent(setFormSent: Dispatch<SetStateAction<boolean>>) {
-//   return () => setFormSent(true);
-// }
+function handleFormSent(setFormSent: Dispatch<SetStateAction<boolean>>) {
+  return () => setFormSent(true);
+}
 
 export function Contact() {
-  // const [formSent, setFormSent] = useState(false);
+  const [formSent, setFormSent] = useState(false);
   return (
     <Section heading="Contact" id="contact" theme={SectionTheme.Cyan}>
       <LinkList>
@@ -65,11 +65,11 @@ export function Contact() {
           <p>Threema ID: 9TWBW4XN</p>
         </BigLink>
       </LinkList>
-      {/* {formSent ? (
+      {formSent ? (
         <ContactFormSent />
       ) : (
         <ContactForm onFormSent={handleFormSent(setFormSent)} />
-      )} */}
+      )}
       <SmallLinkList>
         <SmallLink href="https://twitter.com/CallistoShip">
           <Twitter />
