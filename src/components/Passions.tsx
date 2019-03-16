@@ -19,7 +19,7 @@ const List = styled.ul({
   margin: 0,
   padding: 0,
   '@media (min-width: 1024px)': {
-    width: '70%',
+    width: 800,
   },
 });
 
