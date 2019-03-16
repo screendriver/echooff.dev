@@ -84,6 +84,14 @@ function handleMenuClick(
   };
 }
 
+function handleLinkClick(
+  setMobileMenuVisible: React.Dispatch<React.SetStateAction<boolean>>,
+) {
+  return () => {
+    setMobileMenuVisible(false);
+  };
+}
+
 export function Navigation() {
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
   return (
@@ -97,19 +105,35 @@ export function Navigation() {
       </MenuLink>
       <List mobileMenuVisible={mobileMenuVisible}>
         <ListItem>
-          <Link href="#about">About</Link>
+          <Link href="#about" onClick={handleLinkClick(setMobileMenuVisible)}>
+            About
+          </Link>
         </ListItem>
         <ListItem>
-          <Link href="#skills">Skills</Link>
+          <Link href="#skills" onClick={handleLinkClick(setMobileMenuVisible)}>
+            Skills
+          </Link>
         </ListItem>
         <ListItem>
-          <Link href="#passions">Passions</Link>
+          <Link
+            href="#passions"
+            onClick={handleLinkClick(setMobileMenuVisible)}
+          >
+            Passions
+          </Link>
         </ListItem>
         <ListItem>
-          <Link href="#experience">Resume</Link>
+          <Link
+            href="#experience"
+            onClick={handleLinkClick(setMobileMenuVisible)}
+          >
+            Resume
+          </Link>
         </ListItem>
         <ListItem>
-          <Link href="#contact">Contact</Link>
+          <Link href="#contact" onClick={handleLinkClick(setMobileMenuVisible)}>
+            Contact
+          </Link>
         </ListItem>
       </List>
     </NavigationStyled>
