@@ -24,7 +24,7 @@ const SkillsList = styled.div({
   flexDirection: 'column',
   flexWrap: 'wrap',
   justifyContent: 'space-evenly',
-  '@media (min-width: 425px)': {
+  '@media (min-width: 375px)': {
     flexDirection: 'row',
   },
 });
@@ -34,7 +34,7 @@ const ProgressWrapper = styled.div({
   ':nth-last-child(-n+2)': {
     marginBottom: 0,
   },
-  '@media (min-width: 425px)': {
+  '@media (min-width: 375px)': {
     width: '50%',
   },
   '@media (min-width: 1024px)': {
