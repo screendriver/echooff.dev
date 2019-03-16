@@ -1,21 +1,42 @@
 import React from 'react';
-import { Activity, Check, Compass, Cloud, Zap } from 'react-feather';
+import {
+  Activity,
+  Check,
+  Compass,
+  Cloud,
+  Zap,
+  Server,
+  Layers,
+} from 'react-feather';
 import styled from '@emotion/styled';
 import { Section, SectionTheme } from './Section';
 
 const List = styled.ul({
   display: 'flex',
   justifyContent: 'space-evenly',
-  width: '70%',
+  flexWrap: 'wrap',
   listStyleType: 'none',
   margin: 0,
   padding: 0,
+  '@media (min-width: 1024px)': {
+    width: '70%',
+  },
 });
 
 const ListItem = styled.li({
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'column',
+  width: 140,
+  marginBottom: 20,
+  ':last-child': {
+    marginBottom: 0,
+  },
+  '@media (min-width: 768px)': {
+    ':nth-last-child(-n+3)': {
+      marginBottom: 0,
+    },
+  },
 });
 
 export function Passions() {
@@ -39,8 +60,16 @@ export function Passions() {
           <p>Performance</p>
         </ListItem>
         <ListItem>
+          <Server size={30} />
+          <p>Serverless</p>
+        </ListItem>
+        <ListItem>
           <Cloud size={30} />
           <p>Cloud computing</p>
+        </ListItem>
+        <ListItem>
+          <Layers size={30} />
+          <p>JAMstack</p>
         </ListItem>
       </List>
     </Section>
