@@ -10,6 +10,7 @@ module.exports = {
     siteUrl: 'https://www.echooff.de',
   },
   plugins: [
+    'gatsby-plugin-sitemap',
     'gatsby-plugin-robots-txt',
     'gatsby-plugin-typescript',
     'gatsby-plugin-emotion',
