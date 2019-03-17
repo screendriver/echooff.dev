@@ -10,6 +10,11 @@ interface GraphQLData {
   headerAllFile: {
     edges: [{ node: { childImageSharp: { fluid: FluidObject } } }];
   };
+  site: {
+    siteMetadata: {
+      description: string;
+    };
+  };
 }
 
 interface HeaderComponentProps {
@@ -89,7 +94,7 @@ const HeaderComponent: FC<HeaderComponentProps> = ({ data }) => {
         <Hello>
           Hello, I'm <Name>Christian</Name>
         </Hello>
-        <JobTitle>Full-Stack JavaScript Engineer</JobTitle>
+        <JobTitle>{data.site.siteMetadata.description}</JobTitle>
       </Intro>
     </HeaderStyled>
   );
@@ -109,6 +114,11 @@ const query = graphql`
             }
           }
         }
+      }
+    }
+    site {
+      siteMetadata {
+        description
       }
     }
   }
