@@ -2,7 +2,7 @@ require('dotenv').config();
 
 module.exports = {
   siteMetadata: {
-    title: 'echooff.de',
+    title: 'echooff.de - Full-Stack JavaScript Engineer',
     description: 'Full Stack JavaScript Engineer',
     author: 'Christian Rackerseder',
     keywords: 'TypeScript,JavaScript,HTML,CSS,Node.js,React,Vue',
