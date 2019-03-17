@@ -64,8 +64,10 @@ const Hello = styled.h1({
 const JobTitle = styled.h2({
   fontSize: 18,
   fontFamily: 'Lato, sans-serif',
-  fontWeight: 'lighter',
-  marginBottom: 45,
+  fontWeight: 400,
+  '@media (min-width: 768px)': {
+    marginLeft: 4,
+  },
 });
 
 const Name = styled.span({
