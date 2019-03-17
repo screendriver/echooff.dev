@@ -26,14 +26,6 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-web-font-loader',
-      options: {
-        google: {
-          families: ['Open Sans', 'Lato'],
-        },
-      },
-    },
-    {
       resolve: 'gatsby-source-graphql',
       options: {
         typeName: 'GitHub',
