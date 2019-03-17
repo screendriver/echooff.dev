@@ -33,7 +33,7 @@ const ListItem = styled.li({
     marginBottom: 0,
   },
   '@media (min-width: 768px)': {
-    ':nth-last-child(-n+3)': {
+    ':nth-last-of-type(-n+3)': {
       marginBottom: 0,
     },
   },

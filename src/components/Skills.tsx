@@ -31,11 +31,14 @@ const SkillsList = styled.div({
 
 const ProgressWrapper = styled.div({
   marginBottom: 40,
-  ':nth-last-child(-n+2)': {
+  ':last-child': {
     marginBottom: 0,
   },
   '@media (min-width: 375px)': {
     width: '50%',
+    ':nth-last-of-type(-n+3)': {
+      marginBottom: 0,
+    },
   },
   '@media (min-width: 1024px)': {
     width: '33%',
