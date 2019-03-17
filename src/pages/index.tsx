@@ -1,4 +1,6 @@
 import 'modern-normalize';
+import 'typeface-open-sans';
+import 'typeface-lato';
 import React from 'react';
 import { Global } from '@emotion/core';
 import { GitHubCorner } from '../components/GitHubCorner';
