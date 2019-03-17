@@ -5,7 +5,6 @@ import Img, { FluidObject } from 'gatsby-image';
 import sample from 'lodash.sample';
 import styled from '@emotion/styled';
 import { white } from '../colors';
-import { LinkButton } from './LinkButton';
 
 interface GraphQLData {
   headerAllFile: {
@@ -89,7 +88,6 @@ const HeaderComponent: FC<HeaderComponentProps> = ({ data }) => {
           Hello, I'm <Name>Christian</Name>
         </Hello>
         <JobTitle>Full Stack JavaScript Engineer</JobTitle>
-        <LinkButton href="#about">Learn more</LinkButton>
       </Intro>
     </HeaderStyled>
   );
