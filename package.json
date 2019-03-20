@@ -37,7 +37,7 @@
     "@types/lodash.sample": "4.2.6",
     "@types/rc-progress": "2.2.1",
     "@types/react": "16.8.8",
-    "@types/react-dom": "16.8.2",
+    "@types/react-dom": "16.8.3",
     "@types/react-helmet": "5.0.8",
     "@types/use-set-interval": "1.0.0",
     "gatsby-plugin-emotion": "4.0.6",
