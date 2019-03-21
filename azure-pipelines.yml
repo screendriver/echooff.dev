@@ -10,7 +10,7 @@ steps:
   - script: yarn install
     displayName: Install dependencies
 
-  - script: yarn lint && yarn type-check
+  - script: yarn lint && yarn compile
     displayName: Running tests
 
   - script: yarn build
