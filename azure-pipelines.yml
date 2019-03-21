@@ -23,6 +23,12 @@ steps:
     env:
       GITHUB_TOKEN: $(GITHUB_TOKEN)
 
+  - task: PublishPipelineArtifact@0
+    condition: failed()
+    inputs:
+      artifactName: 'VisualRegressionResults'
+      targetPath: 'test/visual/backstop_data'
+
   - script: yarn build
     displayName: Build application for production
     env:
