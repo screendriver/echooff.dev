@@ -11,6 +11,7 @@
     "compile": "tsc",
     "develop": "GATSBY_GRAPHQL_IDE=playground gatsby develop",
     "build": "gatsby build",
+    "build:visual": "GATSBY_RANDOM_HEADER_IMAGE=false gatsby build",
     "serve": "gatsby serve",
     "test:visual": "node dist/test/visual/run.js test",
     "test:visual:approve": "node dist/test/visual/run.js approve",
