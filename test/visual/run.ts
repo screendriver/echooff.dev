@@ -13,7 +13,7 @@ async function run() {
   const url = await listen(server);
   const config = createConfig(url);
   try {
-    await backstop(process.argv[2], config);
+    await backstop(process.argv[2], { docker: true });
   } finally {
     server.close();
   }
