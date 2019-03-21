@@ -2,6 +2,7 @@
 .vscode
 .env
 .DS_Store
+dist
 node_modules
 public
 yarn-error.log
