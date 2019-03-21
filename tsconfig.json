@@ -19,6 +19,6 @@
     "plugins": [{ "name": "typescript-tslint-plugin" }],
     "typeRoots": ["./typings", "./node_modules/@types"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules"]
 }
