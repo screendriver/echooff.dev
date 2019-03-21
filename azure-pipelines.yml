@@ -1,5 +1,13 @@
+resources:
+  containers:
+    - container: backstopjs
+      image: backstopjs/backstopjs
+
 pool:
   vmImage: Ubuntu-16.04
+
+services:
+  backstopjs: backstopjs
 
 steps:
   - task: NodeTool@0
