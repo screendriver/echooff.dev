@@ -12,6 +12,8 @@
     "develop": "GATSBY_GRAPHQL_IDE=playground gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
+    "test:visual": "node dist/test/visual/run.js test",
+    "test:visual:approve": "node dist/test/visual/run.js approve",
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
   },
   "dependencies": {
