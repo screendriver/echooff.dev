@@ -40,7 +40,8 @@
   "scenarios": [
     {
       "label": "Homepage",
-      "url": "http://localhost:9000"
+      "url": "http://localhost:9000",
+      "delay": 1000
     }
   ],
   "paths": {
