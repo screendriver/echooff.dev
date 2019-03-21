@@ -44,7 +44,7 @@
     "@types/react-dom": "16.8.3",
     "@types/react-helmet": "5.0.8",
     "@types/use-set-interval": "1.0.0",
-    "backstopjs": "3.8.8",
+    "backstopjs": "https://github.com/gyanta/BackstopJS.git#docker_args",
     "gatsby-plugin-emotion": "4.0.6",
     "gatsby-plugin-netlify": "2.0.13",
     "gatsby-plugin-react-helmet": "3.0.10",
