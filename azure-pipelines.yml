@@ -11,10 +11,10 @@ steps:
     displayName: Install dependencies
 
   - script: yarn lint
-    displayName: Lint
+    displayName: Lint source code
 
   - script: yarn compile
-    displayName: Compile
+    displayName: Compile source code
 
   - script: |
       yarn build:visual
