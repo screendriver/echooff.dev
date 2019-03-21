@@ -40,7 +40,7 @@
   "scenarios": [
     {
       "label": "Homepage",
-      "url": "http://host.docker.internal:9000"
+      "url": "http://localhost:9000"
     }
   ],
   "paths": {
