@@ -1,6 +1,5 @@
 import micro from 'micro';
 import handler from 'serve-handler';
-import listen from 'test-listen';
 import backstop from 'backstopjs';
 
 async function run() {
@@ -9,9 +8,7 @@ async function run() {
       public: 'public',
     });
   });
-
-  const url = await listen(server);
-  const config = createConfig(url);
+  await server.listen(9000);
   try {
     await backstop(process.argv[2], { docker: true });
   } finally {
