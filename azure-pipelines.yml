@@ -16,13 +16,12 @@ steps:
   - script: yarn compile
     displayName: Compile
 
-  - script: yarn build:visual
-    displayName: Build application for visual regression tests
+  - script: |
+      yarn build:visual
+      yarn test:visual
+    displayName: Run visual regression tests
     env:
       GITHUB_TOKEN: $(GITHUB_TOKEN)
-
-  - script: yarn test:visual
-    displayName: Run visual regression tests
 
   - script: yarn build
     displayName: Build application for production
