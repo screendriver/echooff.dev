@@ -3,6 +3,7 @@ import 'typeface-open-sans';
 import 'typeface-lato';
 import React from 'react';
 import { Global } from '@emotion/core';
+import { createConfig } from '../shared/config';
 import { GitHubCorner } from '../components/GitHubCorner';
 import { Header } from '../components/Header';
 import { Navigation } from '../components/Navigation';
@@ -14,6 +15,8 @@ import { Experiences } from '../components/experiences';
 import { SEO } from '../components/SEO';
 import { Contact } from '../components/Contact';
 import { Footer } from '../components/Footer';
+
+const config = createConfig();
 
 export default function Page() {
   return (
@@ -27,7 +30,7 @@ export default function Page() {
       />
       <SEO />
       <GitHubCorner />
-      <Header />
+      <Header config={config} />
       <Navigation />
       <About />
       <Skills />
