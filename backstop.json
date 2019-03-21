@@ -57,5 +57,5 @@
   },
   "asyncCaptureLimit": 5,
   "asyncCompareLimit": 50,
-  "dockerRunExtraArgs": "-t=false"
+  "dockerRunExtraArgs": "-t=false --net='host'"
 }
