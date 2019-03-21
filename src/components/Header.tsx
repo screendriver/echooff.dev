@@ -5,6 +5,7 @@ import Img, { FluidObject } from 'gatsby-image';
 import sample from 'lodash.sample';
 import styled from '@emotion/styled';
 import { white } from '../colors';
+import { Config } from '../shared/config';
 
 interface GraphQLData {
   headerAllFile: {
@@ -19,6 +20,7 @@ interface GraphQLData {
 
 interface HeaderComponentProps {
   data: GraphQLData;
+  randomHeaderImage: boolean;
 }
 
 const HeaderStyled = styled.header({
@@ -79,14 +81,24 @@ const Name = styled.span({
   fontWeight: 600,
 });
 
-const HeaderComponent: FC<HeaderComponentProps> = ({ data }) => {
+function getHeaderImage(
+  randomHeaderImage: boolean,
+  edges: GraphQLData['headerAllFile']['edges'],
+): FluidObject {
+  const edge = randomHeaderImage ? sample(edges) : edges[0];
+  return edge!.node.childImageSharp.fluid;
+}
+
+const HeaderComponent: FC<HeaderComponentProps> = ({
+  randomHeaderImage,
+  data,
+}) => {
   const edges = data.headerAllFile.edges;
-  function getRandomFluidImage(): FluidObject {
-    const randomImage = sample(edges)!;
-    return randomImage.node.childImageSharp.fluid;
-  }
-  const [fluid, setFluid] = useState(getRandomFluidImage());
-  useSetInterval(() => setFluid(getRandomFluidImage()), 20000);
+  const [fluid, setFluid] = useState(getHeaderImage(randomHeaderImage, edges));
+  useSetInterval(
+    () => setFluid(getHeaderImage(randomHeaderImage, edges)),
+    20000,
+  );
   return (
     <HeaderStyled id="header">
       <ImgStyled fluid={fluid} />
@@ -124,9 +136,18 @@ const query = graphql`
   }
 `;
 
-export function Header() {
+interface HeaderProps {
+  config: Config;
+}
+
+export function Header(props: HeaderProps) {
   function render(data: GraphQLData) {
-    return <HeaderComponent data={data} />;
+    return (
+      <HeaderComponent
+        randomHeaderImage={props.config.randomHeaderImage}
+        data={data}
+      />
+    );
   }
   return <StaticQuery query={query} render={render} />;
 }
