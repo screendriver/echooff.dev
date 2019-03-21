@@ -24,10 +24,18 @@ steps:
       GITHUB_TOKEN: $(GITHUB_TOKEN)
 
   - task: PublishPipelineArtifact@0
+    displayName: Publish visual regression HTML report
     condition: failed()
     inputs:
       artifactName: 'VisualRegressionResults'
       targetPath: 'test/visual/backstop_data'
+
+  - task: PublishTestResults@2
+    displayName: Publish visual regression test results
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: JUnit
+      testResultsFiles: test/visual/backstop_data/ci_report/xunit.xml
 
   - script: yarn build
     displayName: Build application for production
