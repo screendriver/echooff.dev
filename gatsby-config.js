@@ -7,7 +7,7 @@ module.exports = {
     author: 'Christian Rackerseder',
     keywords: 'TypeScript,JavaScript,HTML,CSS,Node.js,React,Vue',
     favicon: 'favicon.png',
-    siteUrl: 'https://www.echooff.de',
+    siteUrl: 'https://www.echooff.dev',
   },
   plugins: [
     'gatsby-plugin-sitemap',

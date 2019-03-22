@@ -46,7 +46,7 @@ const OctoArm = styled.path({
 export function GitHubCorner() {
   return (
     <GitHubLink
-      href="https://github.com/screendriver/echooff.de"
+      href="https://github.com/screendriver/echooff.dev"
       aria-label="View source on GitHub"
     >
       <Svg viewBox="0 0 250 250" aria-hidden="true">
