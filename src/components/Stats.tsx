@@ -23,7 +23,7 @@ interface StatsComponentProps {
   data: GraphQLData;
 }
 
-interface StatPrpops {
+interface StatProps {
   counter: number;
   text: string;
 }
@@ -54,7 +54,7 @@ const Text = styled.h4({
   fontWeight: 400,
 });
 
-function Stat(props: StatPrpops) {
+function Stat(props: StatProps) {
   return (
     <div style={{ textAlign: 'center' }}>
       <Counter>{Number(props.counter).toLocaleString()}</Counter>
