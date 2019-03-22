@@ -35,7 +35,7 @@ export default function Page() {
       <About />
       <Skills />
       <Passions />
-      <Stats />
+      <Stats config={config} />
       <Experiences />
       <Contact />
       <Footer />
