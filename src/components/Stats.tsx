@@ -3,6 +3,7 @@ import { graphql, StaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
 import { white, black } from '../colors';
 import { Section, SectionTheme } from './Section';
+import { Config } from '../shared/config';
 
 interface GraphQLData {
   github: {
@@ -18,10 +19,11 @@ interface GraphQLData {
 }
 
 interface StatsComponentProps {
+  staticNumbers: boolean;
   data: GraphQLData;
 }
 
-interface StatPrpops {
+interface StatProps {
   counter: number;
   text: string;
 }
@@ -52,7 +54,7 @@ const Text = styled.h4({
   fontWeight: 400,
 });
 
-function Stat(props: StatPrpops) {
+function Stat(props: StatProps) {
   return (
     <div style={{ textAlign: 'center' }}>
       <Counter>{Number(props.counter).toLocaleString()}</Counter>
@@ -61,16 +63,22 @@ function Stat(props: StatPrpops) {
   );
 }
 
-function StatsComponent({ data }: StatsComponentProps) {
+function StatsComponent({ data, staticNumbers }: StatsComponentProps) {
   const { repositories, starredRepositories } = data.github.user;
   return (
     <Section heading="Some Stats" id="stats" theme={SectionTheme.Cyan}>
       <StatList>
         <Stat counter={999999} text="Lines of Code" />
-        <Stat counter={repositories.totalCount} text="GitHub Repos" />
-        <Stat counter={starredRepositories.totalCount} text="GitHub Stars" />
         <Stat
-          counter={new Date().getFullYear() - 2001}
+          counter={staticNumbers ? 58 : repositories.totalCount}
+          text="GitHub Repos"
+        />
+        <Stat
+          counter={staticNumbers ? 596 : starredRepositories.totalCount}
+          text="GitHub Stars"
+        />
+        <Stat
+          counter={staticNumbers ? 18 : new Date().getFullYear() - 2001}
           text="Years of Experience"
         />
       </StatList>
@@ -93,9 +101,18 @@ const query = graphql`
   }
 `;
 
-export function Stats() {
+interface StatsProps {
+  config: Config;
+}
+
+export function Stats(props: StatsProps) {
   function render(data: GraphQLData) {
-    return <StatsComponent data={data} />;
+    return (
+      <StatsComponent
+        staticNumbers={props.config.visualRegressionTest}
+        data={data}
+      />
+    );
   }
   return <StaticQuery query={query} render={render} />;
 }

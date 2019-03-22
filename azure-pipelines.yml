@@ -39,10 +39,12 @@ steps:
 
   - script: yarn build
     displayName: Build application for production
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     env:
       GITHUB_TOKEN: $(GITHUB_TOKEN)
 
   - task: PublishPipelineArtifact@0
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     inputs:
       artifactName: 'echooff.de'
       targetPath: 'public'
