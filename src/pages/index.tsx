@@ -38,7 +38,7 @@ export default function Page() {
       <Stats config={config} />
       <Experiences />
       <Contact />
-      <Footer />
+      <Footer config={config} />
     </>
   );
 }
