@@ -1,9 +1,9 @@
 export interface Config {
-  randomHeaderImage: boolean;
+  visualRegressionTest: boolean;
 }
 
 export function createConfig(): Config {
   return {
-    randomHeaderImage: process.env.GATSBY_RANDOM_HEADER_IMAGE !== 'false',
+    visualRegressionTest: process.env.GATSBY_VISUAL_REGRESSION_TEST === 'true',
   };
 }
