@@ -144,7 +144,7 @@ export function Header(props: HeaderProps) {
   function render(data: GraphQLData) {
     return (
       <HeaderComponent
-        randomHeaderImage={props.config.randomHeaderImage}
+        randomHeaderImage={!props.config.visualRegressionTest}
         data={data}
       />
     );
