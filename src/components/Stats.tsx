@@ -78,7 +78,7 @@ function StatsComponent({ data, staticNumbers }: StatsComponentProps) {
           text="GitHub Stars"
         />
         <Stat
-          counter={new Date().getFullYear() - 2001}
+          counter={staticNumbers ? 18 : new Date().getFullYear() - 2001}
           text="Years of Experience"
         />
       </StatList>
