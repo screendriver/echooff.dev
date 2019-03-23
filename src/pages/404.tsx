@@ -17,11 +17,15 @@ const globalStyles = css({
 });
 
 const Content = styled.div({
+  display: 'none',
   padding: '5rem 3rem 0 25rem',
   position: 'relative',
   zIndex: 10,
   fontFamily: 'Source Sans Pro, sans-serif',
   color: '#FFF',
+  '@media (min-width: 1024px)': {
+    display: 'block',
+  },
 });
 
 const Hello = styled.h3({
