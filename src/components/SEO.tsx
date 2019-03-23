@@ -15,14 +15,19 @@ interface QueryResult {
   };
 }
 
-export function SEO() {
+interface SEOProps {
+  title?: string;
+}
+
+export function SEO(props: SEOProps) {
   return (
     <StaticQuery
       query={query}
       // tslint:disable-next-line jsx-no-lambda
       render={({ site: { siteMetadata } }: QueryResult) => {
+        const { title = siteMetadata.title } = props;
         return (
-          <Helmet title={siteMetadata.title}>
+          <Helmet title={title}>
             <html lang="en" />
             <link rel="shortcut icon" href={siteMetadata.favicon} />
             <meta name="theme-color" content={cyan} />
