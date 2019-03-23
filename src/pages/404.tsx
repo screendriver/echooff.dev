@@ -215,7 +215,7 @@ export default function NotFound() {
           body: globalStyles,
         }}
       />
-      <SEO />
+      <SEO title="Error - Page not found" />
       <YetiSVG />
       <Content>
         <Hello>Hello?? Is somebody there?!?</Hello>
