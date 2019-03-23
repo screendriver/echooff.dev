@@ -34,6 +34,7 @@
     "react-helmet": "5.2.0",
     "typeface-lato": "0.0.54",
     "typeface-open-sans": "0.0.54",
+    "typeface-source-sans-pro": "0.0.54",
     "use-set-interval": "1.0.0"
   },
   "devDependencies": {
