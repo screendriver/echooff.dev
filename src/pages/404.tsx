@@ -1,4 +1,5 @@
 import 'modern-normalize';
+import 'typeface-source-sans-pro';
 import React, { useEffect } from 'react';
 import { css, Global } from '@emotion/core';
 import styled from '@emotion/styled';
@@ -19,7 +20,7 @@ const Content = styled.div({
   padding: '5rem 3rem 0 25rem',
   position: 'relative',
   zIndex: 10,
-  fontFamily: "'Source Sans Pro', sans-serif",
+  fontFamily: 'Source Sans Pro, sans-serif',
   color: '#FFF',
 });
 
