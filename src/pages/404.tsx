@@ -203,6 +203,9 @@ function run() {
 
   goDark();
   yetiTL.play();
+  return () => {
+    yetiTL.clear();
+  };
 }
 
 export default function NotFound() {
