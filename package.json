@@ -23,6 +23,7 @@
     "form-urlencoded": "3.0.0",
     "gatsby": "2.2.1",
     "gatsby-image": "2.0.34",
+    "gsap": "2.1.2",
     "ky": "0.9.0",
     "lodash.sample": "4.2.1",
     "modern-normalize": "0.5.0",
@@ -33,10 +34,12 @@
     "react-helmet": "5.2.0",
     "typeface-lato": "0.0.54",
     "typeface-open-sans": "0.0.54",
+    "typeface-source-sans-pro": "0.0.54",
     "use-set-interval": "1.0.0"
   },
   "devDependencies": {
     "@types/form-urlencoded": "2.0.0",
+    "@types/gsap": "1.20.2",
     "@types/lodash.sample": "4.2.6",
     "@types/micro": "7.3.3",
     "@types/rc-progress": "2.2.1",
