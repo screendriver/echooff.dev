@@ -25,6 +25,7 @@ export default function Page() {
         styles={{
           body: {
             fontFamily: 'Open Sans, sans-serif',
+            WebkitFontSmoothing: 'antialiased',
           },
         }}
       />
