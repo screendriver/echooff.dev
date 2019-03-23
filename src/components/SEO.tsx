@@ -24,7 +24,6 @@ export function SEO() {
         return (
           <Helmet title={siteMetadata.title}>
             <html lang="en" />
-            <link rel="preconnect" href="//fonts.googleapis.com" />
             <link rel="shortcut icon" href={siteMetadata.favicon} />
             <meta name="theme-color" content={cyan} />
             <meta name="description" content={siteMetadata.description} />
