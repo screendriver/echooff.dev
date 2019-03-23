@@ -11,7 +11,7 @@ const globalStyles = css({
   margin: 0,
   padding: 0,
   fontSize: 16,
-  '-webkit-font-smoothing': 'antialiased',
+  WebkitFontSmoothing: 'antialiased',
   backgroundColor: '#09334f',
   position: 'relative',
 });
