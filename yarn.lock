@@ -1149,6 +1149,11 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/gsap@1.20.2":
+  version "1.20.2"
+  resolved "https://registry.yarnpkg.com/@types/gsap/-/gsap-1.20.2.tgz#038d0e81a8dd50b9b6894f34f3cd4045f71c62b8"
+  integrity sha512-i9nUsnS32+VTgoX5IlaCYukJpCoB3c6h3bZvO67aIRdb3z8NFTWgeUDpQutLyb1ujowp6nw37qLQNvEowqq8yw==
+
 "@types/history@*":
   version "4.7.2"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.2.tgz#0e670ea254d559241b6eeb3894f8754991e73220"
@@ -6165,6 +6170,11 @@ graphql@^14.1.1:
   integrity sha512-C5zDzLqvfPAgTtP8AUPIt9keDabrdRAqSWjj2OPRKrKxI9Fb65I36s1uCs1UUBFnSWTdO7hyHi7z1ZbwKMKF6Q==
   dependencies:
     iterall "^1.2.2"
+
+gsap@2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/gsap/-/gsap-2.1.2.tgz#2ad017608f883379e546d8bcc3046182083d4da2"
+  integrity sha512-7saMzK2HQ3OD4/hbygtkh0uAK8LUqcom6abL4YqGttyxAQdEvywQOw5VK3obKQ7GaLU8KhszArKJPxIKe8mbvg==
 
 gud@^1.0.0:
   version "1.0.0"
@@ -12287,6 +12297,11 @@ typeface-open-sans@0.0.54:
   version "0.0.54"
   resolved "https://registry.yarnpkg.com/typeface-open-sans/-/typeface-open-sans-0.0.54.tgz#20f5b5ea5c7f95d89dc1f8b2d2b1457680129cee"
   integrity sha512-w6wOd6EicZdZKf0jSU/K3EzEi3zFgvWQSN7NOpRIQI5KeMWmC5Pg/lqtBVJHB0pRChYRmLdhf4h8ROur0A3JZQ==
+
+typeface-source-sans-pro@0.0.54:
+  version "0.0.54"
+  resolved "https://registry.yarnpkg.com/typeface-source-sans-pro/-/typeface-source-sans-pro-0.0.54.tgz#a570edf565d338b622487ec1ebe2389eb1eed62f"
+  integrity sha512-4nsvldyZsOBuvR4oEuUMTquJFVssP4iIVnMEIU4paCWo2940b6r/t95sk7KwDpCablS8DprM/YlhpgqnS7gpKg==
 
 typescript-estree@^18.1.0:
   version "18.1.0"

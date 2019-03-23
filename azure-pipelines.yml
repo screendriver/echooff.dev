@@ -55,3 +55,10 @@ steps:
     env:
       NETLIFY_AUTH_TOKEN: $(NETLIFY_AUTH_TOKEN)
       NETLIFY_SITE_ID: $(NETLIFY_SITE_ID)
+
+  - script: yarn netlify deploy
+    displayName: Branch deploy to Netlify
+    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+    env:
+      NETLIFY_AUTH_TOKEN: $(NETLIFY_AUTH_TOKEN)
+      NETLIFY_SITE_ID: $(NETLIFY_SITE_ID)
