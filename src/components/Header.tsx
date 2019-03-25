@@ -4,7 +4,7 @@ import useSetInterval from 'use-set-interval';
 import Img, { FluidObject } from 'gatsby-image';
 import sample from 'lodash.sample';
 import styled from '@emotion/styled';
-import { white } from '../colors';
+import { white, black } from '../colors';
 import { Config } from '../shared/config';
 
 interface GraphQLData {
@@ -63,6 +63,7 @@ const Hello = styled.h1({
   fontSize: 36,
   marginBottom: 0,
   textAlign: 'center',
+  textShadow: `5px 5px 10px ${black}`,
   '@media (min-width: 768px)': {
     fontSize: 60,
   },
