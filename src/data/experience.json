@@ -1,10 +1,17 @@
 [
   {
-    "from": "Apr 2017",
+    "from": "Apr 2019",
     "to": "Present",
+    "industry": "Entertainment",
+    "jobTitle": "Senior Software Architect",
+    "jobDescription": "Full-Stack TypeScript / JavaScript Engineer"
+  },
+  {
+    "from": "Apr 2017",
+    "to": "Apr 2019",
     "industry": "Tourism",
     "jobTitle": "Senior Software Engineer",
-    "jobDescription": "Full Stack JavaScript Developer"
+    "jobDescription": "Full-Stack TypeScript / JavaScript Engineer"
   },
   {
     "from": "Feb 2015",
