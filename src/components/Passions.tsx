@@ -44,10 +44,6 @@ export function Passions() {
     <Section heading="Passions" id="passions" theme={SectionTheme.Light}>
       <List>
         <ListItem>
-          <Activity size={30} />
-          <p>Agile</p>
-        </ListItem>
-        <ListItem>
           <Check size={30} />
           <p>TDD</p>
         </ListItem>
@@ -64,12 +60,16 @@ export function Passions() {
           <p>Serverless</p>
         </ListItem>
         <ListItem>
-          <Cloud size={30} />
-          <p>Cloud computing</p>
-        </ListItem>
-        <ListItem>
           <Layers size={30} />
           <p>JAMstack</p>
+        </ListItem>
+        <ListItem>
+          <Cloud size={30} />
+          <p>Cloud</p>
+        </ListItem>
+        <ListItem>
+          <Activity size={30} />
+          <p>Agile</p>
         </ListItem>
       </List>
     </Section>
