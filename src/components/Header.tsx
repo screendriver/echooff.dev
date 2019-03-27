@@ -123,7 +123,9 @@ const HeaderComponent: FC<HeaderComponentProps> = ({
   }, timeToImageChange);
   return (
     <HeaderStyled id="header">
-      <LoadingIndicator start={imgLoaded} runTime={timeToImageChange} />
+      {randomHeaderImage ? (
+        <LoadingIndicator start={imgLoaded} runTime={timeToImageChange} />
+      ) : null}
       <ImgStyled fluid={fluid} onLoad={() => setImgLoaded(true)} />
       <Intro>
         <Hello>
