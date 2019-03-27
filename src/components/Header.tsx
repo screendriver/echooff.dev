@@ -87,7 +87,7 @@ const Name = styled.span({
   fontWeight: 600,
 });
 
-const timeToImageChange = 20000;
+const timeToImageChange = 10000;
 
 function randomEdge(
   edges: GraphQLData['headerAllFile']['edges'],
