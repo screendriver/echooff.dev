@@ -20,7 +20,7 @@ const Indicator = styled.div(
   },
   ({ indicatorWidth, runTime }: IndicatorProps) => ({
     width: `${indicatorWidth}%`,
-    transition: `width ${runTime}ms linear`,
+    transition: indicatorWidth !== 0 ? `width ${runTime}ms linear` : undefined,
   }),
 );
 
@@ -32,7 +32,5 @@ interface LoadingIndicatorProps {
 export function LoadingIndicator(props: LoadingIndicatorProps) {
   const [width, setWidth] = useState(0);
   useEffect(() => setWidth(props.start ? 100 : 0), [props.start]);
-  return props.start ? (
-    <Indicator indicatorWidth={width} runTime={props.runTime} />
-  ) : null;
+  return <Indicator indicatorWidth={width} runTime={props.runTime} />;
 }
