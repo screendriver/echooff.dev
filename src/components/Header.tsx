@@ -6,7 +6,6 @@ import sample from 'lodash.sample';
 import styled from '@emotion/styled';
 import { white, black } from '../colors';
 import { Config } from '../shared/config';
-import { LoadingIndicator } from './LoadingIndicator';
 
 interface Edge {
   node: { childImageSharp: { fluid: FluidObject } };
@@ -127,9 +126,7 @@ const HeaderComponent: FC<HeaderComponentProps> = ({
   );
   return (
     <HeaderStyled id="header">
-      {randomHeaderImage ? (
-        <LoadingIndicator start={imgLoaded} runTime={timeToImageChange} />
-      ) : null}
+      <ImgStyled fluid={fluid} />
       <ImgStyled fluid={fluid} onLoad={() => setImgLoaded(true)} />
       <Intro>
         <Hello>
