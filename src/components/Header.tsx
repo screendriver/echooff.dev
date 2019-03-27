@@ -1,6 +1,5 @@
-import React, { useState, FC } from 'react';
+import React, { FC } from 'react';
 import { graphql, StaticQuery } from 'gatsby';
-import useInterval from '@rooks/use-interval';
 import Img, { FluidObject } from 'gatsby-image';
 import sample from 'lodash.sample';
 import styled from '@emotion/styled';
@@ -86,27 +85,12 @@ const Name = styled.span({
   fontWeight: 600,
 });
 
-const timeToImageChange = 10000;
-
-function randomEdge(
-  edges: GraphQLData['headerAllFile']['edges'],
-  previousHeaderImageSrc?: string,
-): Edge {
-  const edge = sample(edges) as Edge;
-  return edge.node.childImageSharp.fluid.src === previousHeaderImageSrc
-    ? randomEdge(edges, previousHeaderImageSrc)
-    : edge;
-}
-
 function getHeaderImage(
   randomHeaderImage: boolean,
   edges: GraphQLData['headerAllFile']['edges'],
-  previousHeaderImageSrc?: string,
 ): FluidObject {
-  const edge = randomHeaderImage
-    ? randomEdge(edges, previousHeaderImageSrc)
-    : edges[0];
-  return edge.node.childImageSharp.fluid;
+  const edge = randomHeaderImage ? sample(edges) : edges[0];
+  return edge!.node.childImageSharp.fluid;
 }
 
 const HeaderComponent: FC<HeaderComponentProps> = ({
@@ -114,20 +98,10 @@ const HeaderComponent: FC<HeaderComponentProps> = ({
   data,
 }) => {
   const edges = data.headerAllFile.edges;
-  const [fluid, setFluid] = useState(getHeaderImage(randomHeaderImage, edges));
-  const [imgLoaded, setImgLoaded] = useState(false);
-  useInterval(
-    () => {
-      setImgLoaded(false);
-      setFluid(getHeaderImage(randomHeaderImage, edges, fluid.src));
-    },
-    timeToImageChange,
-    true,
-  );
+  const fluid = getHeaderImage(randomHeaderImage, edges);
   return (
     <HeaderStyled id="header">
       <ImgStyled fluid={fluid} />
-      <ImgStyled fluid={fluid} onLoad={() => setImgLoaded(true)} />
       <Intro>
         <Hello>
           Hello, I'm <Name>Christian</Name>
