@@ -6,6 +6,7 @@ import sample from 'lodash.sample';
 import styled from '@emotion/styled';
 import { white, black } from '../colors';
 import { Config } from '../shared/config';
+import { LoadingIndicator } from './LoadingIndicator';
 
 interface GraphQLData {
   headerAllFile: {
@@ -82,6 +83,8 @@ const Name = styled.span({
   fontWeight: 600,
 });
 
+const timeToImageChange = 20000;
+
 function getHeaderImage(
   randomHeaderImage: boolean,
   edges: GraphQLData['headerAllFile']['edges'],
@@ -96,13 +99,15 @@ const HeaderComponent: FC<HeaderComponentProps> = ({
 }) => {
   const edges = data.headerAllFile.edges;
   const [fluid, setFluid] = useState(getHeaderImage(randomHeaderImage, edges));
-  useSetInterval(
-    () => setFluid(getHeaderImage(randomHeaderImage, edges)),
-    20000,
-  );
+  const [imgLoaded, setImgLoaded] = useState(false);
+  useSetInterval(() => {
+    setImgLoaded(false);
+    setFluid(getHeaderImage(randomHeaderImage, edges));
+  }, timeToImageChange);
   return (
     <HeaderStyled id="header">
-      <ImgStyled fluid={fluid} />
+      <LoadingIndicator start={imgLoaded} runTime={timeToImageChange} />
+      <ImgStyled fluid={fluid} onLoad={() => setImgLoaded(true)} />
       <Intro>
         <Hello>
           Hello, I'm <Name>Christian</Name>
