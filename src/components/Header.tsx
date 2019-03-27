@@ -8,9 +8,13 @@ import { white, black } from '../colors';
 import { Config } from '../shared/config';
 import { LoadingIndicator } from './LoadingIndicator';
 
+interface Edge {
+  node: { childImageSharp: { fluid: FluidObject } };
+}
+
 interface GraphQLData {
   headerAllFile: {
-    edges: [{ node: { childImageSharp: { fluid: FluidObject } } }];
+    edges: Edge[];
   };
   site: {
     siteMetadata: {
@@ -85,12 +89,25 @@ const Name = styled.span({
 
 const timeToImageChange = 20000;
 
+function randomEdge(
+  edges: GraphQLData['headerAllFile']['edges'],
+  previousHeaderImageSrc?: string,
+): Edge {
+  const edge = sample(edges) as Edge;
+  return edge.node.childImageSharp.fluid.src === previousHeaderImageSrc
+    ? randomEdge(edges, previousHeaderImageSrc)
+    : edge;
+}
+
 function getHeaderImage(
   randomHeaderImage: boolean,
   edges: GraphQLData['headerAllFile']['edges'],
+  previousHeaderImageSrc?: string,
 ): FluidObject {
-  const edge = randomHeaderImage ? sample(edges) : edges[0];
-  return edge!.node.childImageSharp.fluid;
+  const edge = randomHeaderImage
+    ? randomEdge(edges, previousHeaderImageSrc)
+    : edges[0];
+  return edge.node.childImageSharp.fluid;
 }
 
 const HeaderComponent: FC<HeaderComponentProps> = ({
@@ -102,7 +119,7 @@ const HeaderComponent: FC<HeaderComponentProps> = ({
   const [imgLoaded, setImgLoaded] = useState(false);
   useSetInterval(() => {
     setImgLoaded(false);
-    setFluid(getHeaderImage(randomHeaderImage, edges));
+    setFluid(getHeaderImage(randomHeaderImage, edges, fluid.src));
   }, timeToImageChange);
   return (
     <HeaderStyled id="header">
