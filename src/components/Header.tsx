@@ -1,6 +1,6 @@
 import React, { useState, FC } from 'react';
 import { graphql, StaticQuery } from 'gatsby';
-import useSetInterval from 'use-set-interval';
+import useInterval from '@rooks/use-interval';
 import Img, { FluidObject } from 'gatsby-image';
 import sample from 'lodash.sample';
 import styled from '@emotion/styled';
@@ -117,10 +117,14 @@ const HeaderComponent: FC<HeaderComponentProps> = ({
   const edges = data.headerAllFile.edges;
   const [fluid, setFluid] = useState(getHeaderImage(randomHeaderImage, edges));
   const [imgLoaded, setImgLoaded] = useState(false);
-  useSetInterval(() => {
-    setImgLoaded(false);
-    setFluid(getHeaderImage(randomHeaderImage, edges, fluid.src));
-  }, timeToImageChange);
+  useInterval(
+    () => {
+      setImgLoaded(false);
+      setFluid(getHeaderImage(randomHeaderImage, edges, fluid.src));
+    },
+    timeToImageChange,
+    true,
+  );
   return (
     <HeaderStyled id="header">
       {randomHeaderImage ? (
