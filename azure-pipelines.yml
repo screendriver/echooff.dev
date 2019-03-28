@@ -43,12 +43,6 @@ steps:
     env:
       GITHUB_TOKEN: $(GITHUB_TOKEN)
 
-  - task: PublishPipelineArtifact@0
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    inputs:
-      artifactName: 'echooff.dev'
-      targetPath: 'public'
-
   - script: yarn netlify deploy --prod
     displayName: Production deploy to Netlify
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
