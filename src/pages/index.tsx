@@ -33,12 +33,14 @@ export default function Page() {
       <GitHubCorner />
       <Header config={config} />
       <Navigation />
-      <About />
-      <Skills />
-      <Passions />
-      <Stats config={config} />
-      <Experiences />
-      <Contact />
+      <main>
+        <About />
+        <Skills />
+        <Passions />
+        <Stats config={config} />
+        <Experiences />
+        <Contact />
+      </main>
       <Footer config={config} />
     </>
   );
