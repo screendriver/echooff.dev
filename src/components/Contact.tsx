@@ -12,6 +12,14 @@ import { black, white } from '../colors';
 import { ContactForm } from './ContactForm';
 import { ContactFormSent } from './ContactFormSent';
 
+const Address = styled.address({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  width: '100%',
+  fontStyle: 'normal',
+});
+
 const LinkList = styled.div({
   width: '100%',
   display: 'flex',
@@ -55,32 +63,34 @@ export function Contact() {
   const [formSent, setFormSent] = useState(false);
   return (
     <Section heading="Contact" id="contact" theme={SectionTheme.Cyan}>
-      <LinkList>
-        <BigLink href="https://www.openstreetmap.org/search?query=munich%20germany#map=11/48.1551/11.5418">
-          <MapPin />
-          <p>Munich, Germany</p>
-        </BigLink>
-        <BigLink href="threema://add?id=9TWBW4XN">
-          <MessageSquare />
-          <p>Threema ID: 9TWBW4XN</p>
-        </BigLink>
-      </LinkList>
-      {formSent ? (
-        <ContactFormSent />
-      ) : (
-        <ContactForm onFormSent={handleFormSent(setFormSent)} />
-      )}
-      <SmallLinkList>
-        <SmallLink href="https://twitter.com/CallistoShip">
-          <Twitter />
-        </SmallLink>
-        <SmallLink href="https://github.com/screendriver">
-          <GitHub color={white} />
-        </SmallLink>
-        <SmallLink href="https://www.linkedin.com/in/christian-rackerseder-81a906177/">
-          <Linkedin color={white} />
-        </SmallLink>
-      </SmallLinkList>
+      <Address>
+        <LinkList>
+          <BigLink href="https://www.openstreetmap.org/search?query=munich%20germany#map=11/48.1551/11.5418">
+            <MapPin />
+            <p>Munich, Germany</p>
+          </BigLink>
+          <BigLink href="threema://add?id=9TWBW4XN">
+            <MessageSquare />
+            <p>Threema ID: 9TWBW4XN</p>
+          </BigLink>
+        </LinkList>
+        {formSent ? (
+          <ContactFormSent />
+        ) : (
+          <ContactForm onFormSent={handleFormSent(setFormSent)} />
+        )}
+        <SmallLinkList>
+          <SmallLink href="https://twitter.com/CallistoShip">
+            <Twitter />
+          </SmallLink>
+          <SmallLink href="https://github.com/screendriver">
+            <GitHub color={white} />
+          </SmallLink>
+          <SmallLink href="https://www.linkedin.com/in/christian-rackerseder-81a906177/">
+            <Linkedin color={white} />
+          </SmallLink>
+        </SmallLinkList>
+      </Address>
     </Section>
   );
 }
