@@ -7,7 +7,7 @@
   "author": "Christian Rackerseder <git@echooff.de>",
   "license": "MIT",
   "scripts": {
-    "lint": "tslint -c tslint.json 'src/**/*.ts' 'src/**/*.tsx' 'test/**/*.ts' 'test/**/*.tsx'",
+    "lint": "tslint -c tslint.json 'src/**/*.ts?(x)' 'test/**/*.ts?(x)'",
     "compile": "tsc",
     "develop": "GATSBY_GRAPHQL_IDE=playground gatsby develop",
     "build": "gatsby build",
