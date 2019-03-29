@@ -58,5 +58,5 @@
   },
   "asyncCaptureLimit": 5,
   "asyncCompareLimit": 50,
-  "dockerRunExtraArgs": "-t=false --net='host'"
+  "dockerCommandTemplate": "docker run --rm -i --net='host' --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}"
 }
