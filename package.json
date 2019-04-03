@@ -42,7 +42,7 @@
     "@types/lodash.sample": "4.2.6",
     "@types/micro": "7.3.3",
     "@types/rc-progress": "2.2.1",
-    "@types/react": "16.8.10",
+    "@types/react": "16.8.12",
     "@types/react-dom": "16.8.3",
     "@types/react-helmet": "5.0.8",
     "backstopjs": "4.0.3",
