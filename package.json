@@ -15,7 +15,8 @@
     "serve": "gatsby serve",
     "test:visual": "node dist/test/visual/run.js test",
     "test:visual:approve": "node dist/test/visual/run.js approve",
-    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
+    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\"",
+    "copy:paste:detector": "jscpd src test typings"
   },
   "dependencies": {
     "@emotion/core": "10.0.10",
