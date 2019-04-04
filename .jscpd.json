@@ -1,5 +1,6 @@
 {
   "output": "./dist",
+  "ignore": ["**/backstop_data/**"],
   "minLines": 3,
   "threshold": 0,
   "reporters": ["html", "console", "badge"],
