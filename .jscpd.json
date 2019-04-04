@@ -2,7 +2,7 @@
   "output": "./dist",
   "ignore": ["**/backstop_data/**"],
   "minLines": 3,
-  "threshold": 0,
+  "threshold": 0.1,
   "reporters": ["html", "console", "badge"],
   "absolute": true,
   "gitignore": true,
