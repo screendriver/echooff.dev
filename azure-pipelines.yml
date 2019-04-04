@@ -13,6 +13,15 @@ steps:
   - script: yarn lint
     displayName: Lint source code
 
+  - script: yarn copy:paste:detector
+    displayName: Copy/Paste detector
+
+  - task: PublishPipelineArtifact@0
+    displayName: Publish jscpd HTML report
+    inputs:
+      artifactName: 'CopyPasteDetectorReport'
+      targetPath: 'dist/jscpd-report.html'
+
   - script: yarn compile
     displayName: Compile source code
 
