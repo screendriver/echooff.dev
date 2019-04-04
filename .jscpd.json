@@ -1,0 +1,8 @@
+{
+  "output": "./dist",
+  "minLines": 3,
+  "threshold": 0,
+  "reporters": ["html", "console"],
+  "absolute": true,
+  "gitignore": true
+}
