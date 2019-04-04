@@ -2182,6 +2182,11 @@ backstopjs@4.0.3:
     super-simple-web-server "^1.1.1"
     temp "^0.8.3"
 
+badgen@^2.5.0:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/badgen/-/badgen-2.7.1.tgz#2150e250117298f7cdc9ee3ca180ccb0257012c0"
+  integrity sha512-CLaw1TOll1T4H0GPq521IuK+mQ5QvdOAqQy6kwCFrs6raWZ375ceby8WO4xINZcFB9M7eR7EgVEHLZhbyKp3Ow==
+
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
@@ -7611,6 +7616,14 @@ jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
   integrity sha1-peZUwuWi3rXyAdls77yoDA7y9RM=
+
+jscpd-badge-reporter@1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/jscpd-badge-reporter/-/jscpd-badge-reporter-1.1.3.tgz#469d84d50c2b04f597d3a6f9f182f19b8e87e893"
+  integrity sha512-jHCgZCFSxFD1lGyyVxqJT6QcE+TNjciWix5rfr9B4O/qkNas397ocN+CJtoq7R/Lt3pw79pZw9D4RmJzTsbqeg==
+  dependencies:
+    badgen "^2.5.0"
+    fs-extra "^7.0.1"
 
 jscpd@2.0.7:
   version "2.0.7"
