@@ -18,6 +18,7 @@ steps:
 
   - task: PublishPipelineArtifact@0
     displayName: Publish jscpd HTML report
+    condition: failed()
     inputs:
       artifactName: 'CopyPasteDetectorReport'
       targetPath: 'dist/jscpd-report.html'
