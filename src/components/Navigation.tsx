@@ -54,7 +54,7 @@ const NavigationStyled = styled.nav({
   },
 });
 
-const List = styled.ul(
+const List = styled.ul<{ mobileMenuVisible: boolean }>(
   {
     listStyleType: 'none',
     padding: 0,
@@ -72,8 +72,7 @@ const List = styled.ul(
       marginRight: 15,
     },
   },
-  (props: { mobileMenuVisible: boolean }) =>
-    props.mobileMenuVisible ? { display: 'block' } : {},
+  props => (props.mobileMenuVisible ? { display: 'block' } : {}),
 );
 
 function handleMenuClick(
