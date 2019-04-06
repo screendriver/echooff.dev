@@ -43,7 +43,7 @@ const CircleStyled = styled(Circle)({
   },
 });
 
-const DescriptionStyled = styled(Description)(
+const DescriptionStyled = styled(Description)<{ position: 'left' | 'right' }>(
   {
     width: '65%',
     '@media (min-width: 375px)': {
@@ -56,7 +56,7 @@ const DescriptionStyled = styled(Description)(
       width: 'calc(50% - 95px)',
     },
   },
-  (props: { position: 'left' | 'right' }) => {
+  props => {
     return {
       '@media (min-width: 768px)': {
         order: props.position === 'left' ? -1 : 1,
@@ -66,7 +66,7 @@ const DescriptionStyled = styled(Description)(
   },
 );
 
-const Moment = styled.li(
+const Moment = styled.li<{ justifyContent: CSSProperties['justifyContent'] }>(
   {
     display: 'flex',
     marginBottom: 50,
@@ -78,7 +78,7 @@ const Moment = styled.li(
       marginBottom: 100,
     },
   },
-  (props: { justifyContent: CSSProperties['justifyContent'] }) => {
+  props => {
     return {
       '@media (min-width: 768px)': { justifyContent: props.justifyContent },
     };
