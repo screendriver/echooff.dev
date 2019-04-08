@@ -29,6 +29,9 @@ steps:
   - script: yarn compile
     displayName: Compile source code
 
+  - script: yarn test
+    displayName: Run unit tests
+
   - script: |
       yarn build:visual
       yarn test:visual
