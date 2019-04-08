@@ -38,6 +38,12 @@ steps:
       testRunTitle: Test results for JavaScript
     condition: succeededOrFailed()
 
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/dist/coverage/cobertura-coverage.xml
+      reportDirectory: $(System.DefaultWorkingDirectory)/dist/coverage
+
   - script: |
       yarn build:visual
       yarn test:visual
