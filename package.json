@@ -16,7 +16,7 @@
     "serve": "gatsby serve",
     "test:visual": "node dist/test/visual/run.js test",
     "test:visual:approve": "node dist/test/visual/run.js approve",
-    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\"",
+    "test": "jest",
     "copy:paste:detector": "jscpd src test typings"
   },
   "dependencies": {
