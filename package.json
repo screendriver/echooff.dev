@@ -64,6 +64,7 @@
     "micro": "9.3.3",
     "netlify-cli": "2.11.7",
     "prettier": "1.17.0",
+    "react-testing-library": "6.1.2",
     "serve-handler": "6.0.0",
     "tslint": "5.15.0",
     "tslint-config-prettier": "1.18.0",
