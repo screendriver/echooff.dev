@@ -1113,34 +1113,34 @@
   resolved "https://registry.yarnpkg.com/@oclif/screen/-/screen-1.0.4.tgz#b740f68609dfae8aa71c3a6cab15d816407ba493"
   integrity sha512-60CHpq+eqnTxLZQ4PGHYNwUX572hgpMHGPtTWMjdTMsAvlm69lZV/4ly6O3sAYkomo4NggGcomrDpBe34rxUqw==
 
-"@octokit/endpoint@^3.2.0":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@octokit/endpoint/-/endpoint-3.2.3.tgz#bd9aea60cd94ce336656b57a5c9cb7f10be8f4f3"
-  integrity sha512-yUPCt4vMIOclox13CUxzuKiPJIFo46b/6GhUnUTw5QySczN1L0DtSxgmIZrZV4SAb9EyAqrceoyrWoYVnfF2AA==
+"@octokit/endpoint@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@octokit/endpoint/-/endpoint-4.0.0.tgz#97032a6690ef1cf9576ab1b1582c0ac837e3b5b6"
+  integrity sha512-b8sptNUekjREtCTJFpOfSIL4SKh65WaakcyxWzRcSPOk5RxkZJ/S8884NGZFxZ+jCB2rDURU66pSHn14cVgWVg==
   dependencies:
     deepmerge "3.2.0"
     is-plain-object "^2.0.4"
     universal-user-agent "^2.0.1"
     url-template "^2.0.8"
 
-"@octokit/request@2.4.2":
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/@octokit/request/-/request-2.4.2.tgz#87c36e820dd1e43b1629f4f35c95b00cd456320b"
-  integrity sha512-lxVlYYvwGbKSHXfbPk5vxEA8w4zHOH1wobado4a9EfsyD3Cbhuhus1w0Ye9Ro0eMubGO8kNy5d+xNFisM3Tvaw==
+"@octokit/request@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@octokit/request/-/request-3.0.0.tgz#304a279036b2dc89e7fba7cb30c9e6a9b1f4d2df"
+  integrity sha512-DZqmbm66tq+a9FtcKrn0sjrUpi0UaZ9QPUCxxyk/4CJ2rseTMpAWRf6gCwOSUCzZcx/4XVIsDk+kz5BVdaeenA==
   dependencies:
-    "@octokit/endpoint" "^3.2.0"
+    "@octokit/endpoint" "^4.0.0"
     deprecation "^1.0.1"
     is-plain-object "^2.0.4"
     node-fetch "^2.3.0"
     once "^1.4.0"
     universal-user-agent "^2.0.1"
 
-"@octokit/rest@^16.23.3":
-  version "16.23.3"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.23.3.tgz#bc8b28b9d5336dcf1c82284330fb3ad3f4251cb3"
-  integrity sha512-kwL6gtvWC5j9mXK9O6V7wCwdGDUIoT2im1CfExqCunOHTcs4SPC1V29ajAPJ5sz2sErt0abiQzGORZBZ4GVbEw==
+"@octokit/rest@^16.23.4":
+  version "16.23.4"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.23.4.tgz#4d8bcb1cc0cf6eeb8865632d4d60d79fc3425bbf"
+  integrity sha512-fQuYQ0vgNLkzeN0KEsqN0aS6EPzcuaePT5M5cE5qnKayaxFwRIQOMhNR/rTmEqo/zDK/20ZAcHsgLKodSsJtww==
   dependencies:
-    "@octokit/request" "2.4.2"
+    "@octokit/request" "3.0.0"
     atob-lite "^2.0.0"
     before-after-hook "^1.4.0"
     btoa-lite "^1.0.0"
@@ -9071,10 +9071,10 @@ neo-async@^2.5.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.0.tgz#b9d15e4d71c6762908654b5183ed38b753340835"
   integrity sha512-MFh0d/Wa7vkKO3Y3LlacqAEeHK0mckVqzDieUKTT+KGxi+zIpeVsFxymkIiRpbpDziHc290Xr9A1O4Om7otoRA==
 
-netlify-cli@2.11.3:
-  version "2.11.3"
-  resolved "https://registry.yarnpkg.com/netlify-cli/-/netlify-cli-2.11.3.tgz#e35ce2d6eda240f92769e3a558e6ea2c26250f87"
-  integrity sha512-bTizEwnhPhz3S2E61XQSfgM5L/N/RG0uWRPWe5Z+Kvtc8MCwfGLSsgybjBHXTKIS4+rIMB9hckysPJFr7fpHzg==
+netlify-cli@2.11.4:
+  version "2.11.4"
+  resolved "https://registry.yarnpkg.com/netlify-cli/-/netlify-cli-2.11.4.tgz#dc8836c2beba8fb53f49002c33240f84d9b09d16"
+  integrity sha512-r6bkh855XkGiOqaj5wSLovCdhbl+Dk1gvu56S0AopiSSyMcf8iibWr6PZ/9fA+92xUQUOp2hNF/CVO77spWLZQ==
   dependencies:
     "@iarna/toml" "^2.2.3"
     "@oclif/command" "^1.5.12"
@@ -9083,7 +9083,7 @@ netlify-cli@2.11.3:
     "@oclif/plugin-help" "^2.1.6"
     "@oclif/plugin-not-found" "^1.1.4"
     "@oclif/plugin-plugins" "^1.7.8"
-    "@octokit/rest" "^16.23.3"
+    "@octokit/rest" "^16.23.4"
     ansi-styles "^3.2.1"
     ascii-table "0.0.9"
     chalk "^2.4.2"
@@ -9107,7 +9107,7 @@ netlify-cli@2.11.3:
     log-symbols "^2.2.0"
     make-dir "^2.1.0"
     netlify "^2.4.1"
-    netlify-dev-plugin "^1.0.2"
+    netlify-dev-plugin "^1.0.5"
     node-fetch "^2.2.0"
     ora "^3.4.0"
     p-wait-for "^2.0.0"
@@ -9118,10 +9118,10 @@ netlify-cli@2.11.3:
     uuid "^3.3.2"
     write-file-atomic "^2.4.2"
 
-netlify-dev-plugin@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/netlify-dev-plugin/-/netlify-dev-plugin-1.0.2.tgz#56437dbd29a54139a3293ca8e59b1d557e86ec93"
-  integrity sha512-X44IauUDum6EjAJygbJ84lYfgT4tmdPvBw+ZFVSCejW/YEtqRLsVNuwThT/HAfYo9WlxkBaafbiXNgF6rocAKQ==
+netlify-dev-plugin@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/netlify-dev-plugin/-/netlify-dev-plugin-1.0.5.tgz#863c858e81b2ea5de5240f778959519330d251b2"
+  integrity sha512-O8KQyKt92jvhpQnEMrEcxZcggVsjCIoAi7TDCvQnGRQn6SEJEiNMLfMIUQeX5W/74kOv4dDvxeoEBw7kakBb7Q==
   dependencies:
     "@netlify/cli-utils" "^1.0.1"
     "@netlify/rules-proxy" "^0.1.2"
