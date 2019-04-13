@@ -1,8 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
+.emotion-0 {
+  width: 600px;
+  height: 470px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
 <svg
-  class="css-c0mkbc"
+  class="emotion-0"
   id="yetiSVG"
   viewBox="0 0 600 470"
   xmlns:xlink="http://www.w3.org/1999/xlink"
