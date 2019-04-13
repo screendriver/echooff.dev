@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.ts?(x)' 'test/**/*.ts?(x)'",
+    "prettier:check": "prettier --check 'src/**/*.ts?(x)' 'test/**/*.ts?(x)' 'typings/**/*.ts'",
     "compile": "tsc",
     "develop": "GATSBY_GRAPHQL_IDE=playground gatsby develop",
     "build": "gatsby build",
