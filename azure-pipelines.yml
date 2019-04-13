@@ -29,6 +29,21 @@ steps:
   - script: yarn compile
     displayName: Compile source code
 
+  - script: yarn test:unit
+    displayName: Run unit tests
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: 'dist/junit.xml'
+      testRunTitle: Test results for JavaScript
+    condition: succeededOrFailed()
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/dist/coverage/cobertura-coverage.xml
+      reportDirectory: $(System.DefaultWorkingDirectory)/dist/coverage
+
   - script: |
       yarn build:visual
       yarn test:visual
