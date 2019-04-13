@@ -13,6 +13,9 @@ steps:
   - script: yarn lint
     displayName: Lint source code
 
+  - script: yarn prettier:check
+    displayName: Check code format
+
   - script: yarn copy:paste:detector
     displayName: Copy/Paste detector
 
