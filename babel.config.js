@@ -8,6 +8,7 @@ module.exports = {
         },
       },
     ],
+    'babel-preset-gatsby',
     '@babel/preset-react',
     '@babel/preset-typescript',
   ],
