@@ -9,6 +9,7 @@
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.ts?(x)' 'test/**/*.ts?(x)'",
     "prettier:check": "prettier --check 'src/**/*.ts?(x)' 'test/**/*.ts?(x)' 'typings/**/*.ts'",
+    "copy:paste:detector": "jscpd src test typings",
     "compile": "tsc",
     "develop": "GATSBY_GRAPHQL_IDE=playground gatsby develop",
     "build": "gatsby build",
@@ -16,8 +17,7 @@
     "serve": "gatsby serve",
     "test:visual": "node dist/test/visual/run.js test",
     "test:visual:approve": "node dist/test/visual/run.js approve",
-    "test": "jest",
-    "copy:paste:detector": "jscpd src test typings"
+    "test:unit": "jest"
   },
   "dependencies": {
     "@emotion/core": "10.0.10",
