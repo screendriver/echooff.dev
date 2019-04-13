@@ -121,7 +121,7 @@ module.exports = {
   setupFilesAfterEnv: ['react-testing-library/cleanup-after-each'],
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
-  // snapshotSerializers: [],
+  snapshotSerializers: ['jest-emotion'],
 
   // The test environment that will be used for testing
   // testEnvironment: "jest-environment-jsdom",
