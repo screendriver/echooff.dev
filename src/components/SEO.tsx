@@ -1,7 +1,6 @@
 import React from 'react';
 import { graphql, StaticQuery } from 'gatsby';
-import Helmet from 'react-helmet';
-import { cyan } from '../colors';
+import { SEOPure } from './SEOPure';
 
 interface QueryResult {
   site: {
@@ -26,16 +25,7 @@ export function SEO(props: SEOProps) {
       // tslint:disable-next-line jsx-no-lambda
       render={({ site: { siteMetadata } }: QueryResult) => {
         const { title = siteMetadata.title } = props;
-        return (
-          <Helmet title={title}>
-            <html lang="en" />
-            <link rel="shortcut icon" href={siteMetadata.favicon} />
-            <meta name="theme-color" content={cyan} />
-            <meta name="description" content={siteMetadata.description} />
-            <meta name="keywords" content={siteMetadata.keywords} />
-            <meta name="author" content={siteMetadata.author} />
-          </Helmet>
-        );
+        return <SEOPure {...siteMetadata} title={title} />;
       }}
     />
   );
