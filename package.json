@@ -15,7 +15,7 @@
     "build": "gatsby build",
     "build:visual": "GATSBY_VISUAL_REGRESSION_TEST=true gatsby build",
     "serve": "gatsby serve",
-    "test:e2e": "testcafe chrome:headless 'test/e2e/**/*.ts'",
+    "test:e2e": "testcafe chrome:headless 'test/e2e/**/*.ts' --app 'serve public'",
     "test:visual": "node dist/test/visual/run.js test",
     "test:visual:approve": "node dist/test/visual/run.js approve",
     "test:unit": "jest"
