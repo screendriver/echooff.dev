@@ -67,7 +67,6 @@
     "gatsby-source-graphql": "2.0.18",
     "gatsby-transformer-json": "2.1.11",
     "gatsby-transformer-sharp": "2.1.18",
-    "jest": "24.7.1",
     "jest-emotion": "10.0.10",
     "jest-junit": "6.3.0",
     "jscpd": "2.0.13",
