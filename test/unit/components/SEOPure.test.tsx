@@ -1,6 +1,8 @@
+import test from 'tape';
 import React from 'react';
 import { render } from 'react-testing-library';
 import Helmet from 'react-helmet';
+import '../../setup';
 import { SEOPure, SEOPureProps } from '../../../src/components/SEOPure';
 
 const props: SEOPureProps = {
@@ -11,28 +13,32 @@ const props: SEOPureProps = {
   favicon: 'icon.png',
 };
 
-test('renders a title', async () => {
+test('renders a title', async t => {
+  t.plan(1);
   render(<SEOPure {...props} />);
   const { title } = Helmet.peek();
-  expect(title).toEqual('test title');
+  t.equal(title, 'test title');
 });
 
-test('renders lang "en" HTML attribute', () => {
+test('renders lang "en" HTML attribute', t => {
+  t.plan(1);
   render(<SEOPure {...props} />);
   const { htmlAttributes } = Helmet.peek();
-  expect(htmlAttributes).toEqual({ lang: 'en' });
+  t.deepEqual(htmlAttributes, { lang: 'en' });
 });
 
-test('renders a favicon', () => {
+test('renders a favicon', t => {
+  t.plan(1);
   render(<SEOPure {...props} />);
   const { linkTags } = Helmet.peek() as any;
-  expect(linkTags).toEqual([{ rel: 'shortcut icon', href: 'icon.png' }]);
+  t.deepEqual(linkTags, [{ rel: 'shortcut icon', href: 'icon.png' }]);
 });
 
-test('renders meta tags', () => {
+test('renders meta tags', t => {
+  t.plan(1);
   render(<SEOPure {...props} />);
   const { metaTags } = Helmet.peek() as any;
-  expect(metaTags).toEqual([
+  t.deepEqual(metaTags, [
     { name: 'theme-color', content: '#7bc3d1' },
     { name: 'description', content: 'my description' },
     { name: 'keywords', content: 'key,words' },
