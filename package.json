@@ -48,6 +48,7 @@
     "@types/react": "16.8.13",
     "@types/react-dom": "16.8.4",
     "@types/react-helmet": "5.0.8",
+    "@types/tape": "4.2.33",
     "backstopjs": "4.0.3",
     "gatsby-plugin-emotion": "4.0.6",
     "gatsby-plugin-netlify": "2.0.13",
