@@ -29,7 +29,7 @@ steps:
   - script: yarn compile
     displayName: Compile source code
 
-  - script: yarn test:unit
+  - script: yarn test:unit:ci
     displayName: Run unit tests
 
   - task: PublishTestResults@2
