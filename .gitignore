@@ -1,7 +1,9 @@
 .cache
+.nyc_output
 .vscode
 .env
 .DS_Store
+coverage
 dist
 node_modules
 public

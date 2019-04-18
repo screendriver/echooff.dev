@@ -1,0 +1,12 @@
+{
+  "all": true,
+  "include": [
+    "dist/src/**/*.js"
+  ],
+  "exclude-after-remap": false,
+  "reporter": [
+    "lcov",
+    "cobertura",
+    "text-summary"
+  ]
+}
