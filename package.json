@@ -18,7 +18,7 @@
     "test:e2e": "testcafe chrome:headless 'test/e2e/**/*.ts' --app 'serve public'",
     "test:visual": "node dist/test/visual/run.js test",
     "test:visual:approve": "node dist/test/visual/run.js approve",
-    "test:unit": "jest"
+    "test:unit": "tape -r source-map-support/register -r jsdom-global/register -r './dist/test/setup.js' 'dist/test/unit/**/*.js'"
   },
   "dependencies": {
     "@emotion/core": "10.0.10",
