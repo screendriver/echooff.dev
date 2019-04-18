@@ -44,12 +44,16 @@ steps:
       summaryFileLocation: $(System.DefaultWorkingDirectory)/dist/coverage/cobertura-coverage.xml
       reportDirectory: $(System.DefaultWorkingDirectory)/dist/coverage
 
-  - script: |
-      yarn build:visual
-      yarn test:visual
-    displayName: Run visual regression tests
+  - script: yarn build:visual
+    displayName: Build application for visual regression and e2e tests
     env:
       GITHUB_TOKEN: $(GITHUB_TOKEN)
+
+  - script: yarn test:e2e
+    displayName: Run e2e tests
+
+  - script: yarn test:visual
+    displayName: Run visual regression tests
 
   - task: PublishPipelineArtifact@0
     displayName: Publish visual regression HTML report
