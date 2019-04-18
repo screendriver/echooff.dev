@@ -29,20 +29,20 @@ steps:
   - script: yarn compile
     displayName: Compile source code
 
-  - script: yarn test:unit
+  - script: yarn test:unit:ci
     displayName: Run unit tests
 
   - task: PublishTestResults@2
     inputs:
-      testResultsFiles: 'dist/junit.xml'
+      testResultsFiles: 'dist/test-results.xml'
       testRunTitle: Test results for JavaScript
     condition: succeededOrFailed()
 
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: Cobertura
-      summaryFileLocation: $(System.DefaultWorkingDirectory)/dist/coverage/cobertura-coverage.xml
-      reportDirectory: $(System.DefaultWorkingDirectory)/dist/coverage
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml
+      reportDirectory: $(System.DefaultWorkingDirectory)/coverage
 
   - script: yarn build:visual
     displayName: Build application for visual regression and e2e tests
