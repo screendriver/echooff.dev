@@ -68,6 +68,7 @@
     "react-testing-library": "6.1.2",
     "serve": "11.0.0",
     "serve-handler": "6.0.0",
+    "tape": "4.10.1",
     "testcafe": "1.1.2",
     "tslint": "5.16.0",
     "tslint-config-prettier": "1.18.0",
