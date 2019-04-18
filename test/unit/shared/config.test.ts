@@ -1,8 +1,8 @@
-import test from 'tape';
+import test, { Test, TestCase } from 'tape';
 import { createConfig } from '../../../src/shared/config';
 
-function withDeleteEnvs(testFn: test.TestCase) {
-  return (t: test.Test) => {
+function withDeleteEnvs(testFn: TestCase): TestCase {
+  return (t: Test) => {
     testFn(t);
     delete process.env.GATSBY_VISUAL_REGRESSION_TEST;
   };
