@@ -34,7 +34,7 @@ steps:
 
   - task: PublishTestResults@2
     inputs:
-      testResultsFiles: 'dist/junit.xml'
+      testResultsFiles: 'dist/test-results.xml'
       testRunTitle: Test results for JavaScript
     condition: succeededOrFailed()
 
