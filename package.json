@@ -46,7 +46,6 @@
     "@babel/preset-typescript": "7.3.3",
     "@types/form-urlencoded": "2.0.0",
     "@types/gsap": "1.20.2",
-    "@types/jest": "24.0.11",
     "@types/lodash.sample": "4.2.6",
     "@types/micro": "7.3.3",
     "@types/rc-progress": "2.2.1",
