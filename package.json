@@ -73,6 +73,7 @@
     "serve": "11.0.0",
     "serve-handler": "6.0.0",
     "source-map-support": "0.5.12",
+    "tap-xunit": "2.3.0",
     "tape": "4.10.1",
     "testcafe": "1.1.2",
     "tslint": "5.16.0",
