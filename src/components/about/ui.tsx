@@ -37,13 +37,13 @@ export function AboutUi({ fixedImage }: AboutUiProps) {
   return (
     <Section heading="About" id="about" theme={SectionTheme.Light}>
       <AboutImage fixed={fixedImage} />
-      <Text data-testid="everywhere">
+      <Text>
         JavaScript is everywhere. In the old days, being a JavaScript developer
         meant that you were a front end web developer. Forever bound to the
         browser.
       </Text>
-      <GoneText data-testid="gone">Those days are gone.</GoneText>
-      <Text data-testid="rise">
+      <GoneText>Those days are gone.</GoneText>
+      <Text>
         The rise of Node.js ushered in a new era. An era where being a
         JavaScript developer doesn’t necessarily mean a front-end web developer.
         As a JavaScript developer today, you can target more platforms than any
