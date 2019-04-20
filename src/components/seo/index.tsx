@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql, StaticQuery } from 'gatsby';
-import { SEOPure } from './SEOPure';
+import { SeoUi } from './ui';
 
 interface QueryResult {
   site: {
@@ -25,7 +25,7 @@ export function SEO(props: SEOProps) {
       // tslint:disable-next-line jsx-no-lambda
       render={({ site: { siteMetadata } }: QueryResult) => {
         const { title = siteMetadata.title } = props;
-        return <SEOPure {...siteMetadata} title={title} />;
+        return <SeoUi {...siteMetadata} title={title} />;
       }}
     />
   );
