@@ -144,6 +144,7 @@ export function ContactForm(props: Props) {
         <Row>
           <Input
             name="name"
+            aria-label="name"
             type="text"
             placeholder="Name"
             value={state.name}
@@ -152,6 +153,7 @@ export function ContactForm(props: Props) {
           />
           <Input
             name="email"
+            aria-label="email"
             type="email"
             placeholder="Email"
             value={state.email}
@@ -161,6 +163,7 @@ export function ContactForm(props: Props) {
         </Row>
         <TextArea
           name="message"
+          aria-label="message"
           rows={4}
           // cols={10}
           placeholder="Message"
