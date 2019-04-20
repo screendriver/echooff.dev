@@ -16,38 +16,33 @@ const props: AboutUiProps = {
 test(
   'renders a "JavaScript is everywhere" paragraph',
   withCleanup(t => {
-    t.plan(2);
-    const { getByTestId } = render(<AboutUi {...props} />);
-    const everywhere = getByTestId('everywhere');
-    t.equal(
-      everywhere.textContent,
+    t.plan(1);
+    const { getByText } = render(<AboutUi {...props} />);
+    getByText(
       'JavaScript is everywhere. In the old days, being a JavaScript developer meant that you were a front end web developer. Forever bound to the browser.',
     );
-    t.equal(everywhere.tagName, 'P');
+    t.pass();
   }),
 );
 
 test(
   'renders a "Those days are gone" heading',
   withCleanup(t => {
-    t.plan(2);
-    const { getByTestId } = render(<AboutUi {...props} />);
-    const gone = getByTestId('gone');
-    t.equal(gone.textContent, 'Those days are gone.');
-    t.equal(gone.tagName, 'H5');
+    t.plan(1);
+    const { getByText } = render(<AboutUi {...props} />);
+    getByText('Those days are gone.');
+    t.pass();
   }),
 );
 
 test(
   'renders a "The rise of Node.js" paragraph',
   withCleanup(t => {
-    t.plan(2);
-    const { getByTestId } = render(<AboutUi {...props} />);
-    const rise = getByTestId('rise');
-    t.equal(
-      rise.textContent,
+    t.plan(1);
+    const { getByText } = render(<AboutUi {...props} />);
+    getByText(
       'The rise of Node.js ushered in a new era. An era where being a JavaScript developer doesn’t necessarily mean a front-end web developer. As a JavaScript developer today, you can target more platforms than any other high level language.',
     );
-    t.equal(rise.tagName, 'P');
+    t.pass();
   }),
 );
