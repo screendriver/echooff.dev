@@ -1,8 +1,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
-import { cyan } from '../colors';
+import { cyan } from '../../colors';
 
-export interface SEOPureProps {
+export interface SeoUiProps {
   title: string;
   description: string;
   author: string;
@@ -10,13 +10,13 @@ export interface SEOPureProps {
   favicon: string;
 }
 
-export function SEOPure({
+export function SeoUi({
   title,
   description,
   author,
   keywords,
   favicon,
-}: SEOPureProps) {
+}: SeoUiProps) {
   return (
     <Helmet title={title}>
       <html lang="en" />

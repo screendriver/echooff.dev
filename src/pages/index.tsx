@@ -12,7 +12,7 @@ import { Skills } from '../components/Skills';
 import { Passions } from '../components/Passions';
 import { Stats } from '../components/Stats';
 import { Experiences } from '../components/experiences';
-import { SEO } from '../components/SEO';
+import { SEO } from '../components/seo';
 import { Contact } from '../components/Contact';
 import { Footer } from '../components/Footer';
 

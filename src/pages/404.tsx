@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { css, Global } from '@emotion/core';
 import styled from '@emotion/styled';
 import { TweenMax, TimelineMax, Power1 } from 'gsap';
-import { SEO } from '../components/SEO';
+import { SEO } from '../components/seo';
 import { YetiSVG } from '../components/YetiSVG';
 
 const globalStyles = css({
