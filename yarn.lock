@@ -1146,10 +1146,10 @@
     once "^1.4.0"
     universal-user-agent "^2.0.1"
 
-"@octokit/rest@^16.24.2":
-  version "16.24.3"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.24.3.tgz#5f844be604826b352d9683a133839341db2bed23"
-  integrity sha512-fBr2ziN4WT9G9sYTfnNVI/0wCb68ZI5isNU48lfWXQDyAy4ftlrh0SkIbhL7aigXUjcY0cX5J46ypyRPH0/U0g==
+"@octokit/rest@^16.24.3":
+  version "16.25.0"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.25.0.tgz#1111dc2b2058bc77442fd7fbd295dab3991b62bf"
+  integrity sha512-QKIzP0gNYjyIGmY3Gpm3beof0WFwxFR+HhRZ+Wi0fYYhkEUvkJiXqKF56Pf5glzzfhEwOrggfluEld5F/ZxsKw==
   dependencies:
     "@octokit/request" "3.0.0"
     atob-lite "^2.0.0"
@@ -9200,6 +9200,11 @@ junit-report-builder@^1.3.1:
     mkdirp "^0.5.0"
     xmlbuilder "^10.0.0"
 
+jwt-decode@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-2.2.0.tgz#7d86bd56679f58ce6a84704a657dd392bba81a79"
+  integrity sha1-fYa9VmefWM5qhHBKZX3TkruoGnk=
+
 kebab-hash@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/kebab-hash/-/kebab-hash-0.1.2.tgz#dfb7949ba34d8e70114ea7d83e266e5e2a4abaac"
@@ -10375,10 +10380,10 @@ netlify-cli-logo@^1.0.0:
   dependencies:
     chalk "^2.4.2"
 
-netlify-cli@2.11.10:
-  version "2.11.10"
-  resolved "https://registry.yarnpkg.com/netlify-cli/-/netlify-cli-2.11.10.tgz#c9c52b2be8bcb1b6c946b8c2e22f2789f1ce576c"
-  integrity sha512-1cpPrWLC6K70SxsDhnXuYgtYvqxxEoytpKlIk9p5TZehMs3j9LffjA2eB4Z8L4bvnU8d4TQ+tRSaYV3D50j6tg==
+netlify-cli@2.11.11:
+  version "2.11.11"
+  resolved "https://registry.yarnpkg.com/netlify-cli/-/netlify-cli-2.11.11.tgz#66dab4b3031780757af00b4498e54c77bc60d061"
+  integrity sha512-hV8PvY79mznAHre546ui+A50H59p0Aol4hJlKWUfROrGI3s01rmPX3I3dlzB0o25f/6TbfV2rlkY6Hwq9GuNJw==
   dependencies:
     "@netlify/cli-utils" "^1.0.2"
     "@oclif/command" "^1.5.13"
@@ -10387,7 +10392,7 @@ netlify-cli@2.11.10:
     "@oclif/plugin-help" "^2.1.6"
     "@oclif/plugin-not-found" "^1.1.4"
     "@oclif/plugin-plugins" "^1.7.8"
-    "@octokit/rest" "^16.24.2"
+    "@octokit/rest" "^16.24.3"
     ansi-styles "^3.2.1"
     ascii-table "0.0.9"
     chalk "^2.4.2"
@@ -10405,8 +10410,8 @@ netlify-cli@2.11.10:
     lodash.isempty "^4.4.0"
     lodash.isequal "^4.5.0"
     log-symbols "^2.2.0"
-    netlify "^2.4.2"
-    netlify-dev-plugin "^1.0.11"
+    netlify "^2.4.3"
+    netlify-dev-plugin "^1.0.12"
     node-fetch "^2.2.0"
     ora "^3.4.0"
     p-wait-for "^2.0.0"
@@ -10415,10 +10420,10 @@ netlify-cli@2.11.10:
     random-item "^1.0.0"
     update-notifier "^2.5.0"
 
-netlify-dev-plugin@^1.0.11:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/netlify-dev-plugin/-/netlify-dev-plugin-1.0.11.tgz#712e5ff214a6eceb1d8113cc6a9e31de5bdaea9c"
-  integrity sha512-qyh9y4xTjya0tSHo1TYZl1+WQ9Ht2zJiCkNWgpH8yKRKD5m8TLbLL+WR+1FYPoJQpEn99tTN0HMHkFExBWUl6w==
+netlify-dev-plugin@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/netlify-dev-plugin/-/netlify-dev-plugin-1.0.12.tgz#befa3b6740f0b6ab57b436f7ad6655975c1ad084"
+  integrity sha512-Igr3rI2fZ5A9yTDpT9pVBaCmaQKjZbOCO9ff9CMWYb00zGWsdzy0TUyJZSHggaUPHA8Jp7XzPzSEh9QShNSZUQ==
   dependencies:
     "@netlify/cli-utils" "^1.0.1"
     "@netlify/rules-proxy" "^0.1.3"
@@ -10442,6 +10447,7 @@ netlify-dev-plugin@^1.0.11:
     http-proxy "^1.17.0"
     inquirer "^6.2.2"
     inquirer-autocomplete-prompt "^1.0.1"
+    jwt-decode "^2.2.0"
     netlify "2.4.1"
     netlify-cli-logo "^1.0.0"
     node-fetch "^2.3.0"
@@ -10499,7 +10505,7 @@ netlify@2.4.1:
     through2-map "^3.0.0"
     util.promisify "^1.0.0"
 
-netlify@^2.2.1, netlify@^2.4.2:
+netlify@^2.2.1, netlify@^2.4.3:
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/netlify/-/netlify-2.4.3.tgz#396763befad54c887e824b2de3c145a794e84d33"
   integrity sha512-QjtY605N0gCDFoxvEBF+Rb8Vile2A3RFHI6p/D+o+zwdMXiX+17STlbTgYvJ4W8Eae+YLxxxKe/zEPY7xbiq6g==
