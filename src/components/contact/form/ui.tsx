@@ -1,15 +1,7 @@
-import React, {
-  Dispatch,
-  ChangeEvent,
-  useState,
-  SetStateAction,
-  FormEvent,
-} from 'react';
+import React, { ChangeEvent } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import ky from 'ky-universal';
-import formurlencoded from 'form-urlencoded';
-import { white, grey } from '../../colors';
+import { white, grey } from '../../../colors';
 
 const Heading = styled.h3({
   color: white,
@@ -83,54 +75,18 @@ const Submit = styled.input({
   },
 });
 
-interface Props {
-  onFormSent(): void;
-}
-
-interface State {
+export interface Props {
   name: string;
   email: string;
   message: string;
   submitDisabled: boolean;
+  onInputChange(
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ): void;
+  onSubmit(): void;
 }
 
-function handleInputChange(setState: Dispatch<SetStateAction<State>>) {
-  return (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    event.persist();
-    setState(prevState => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
-  };
-}
-
-const initialState: State = {
-  name: '',
-  email: '',
-  message: '',
-  submitDisabled: false,
-};
-
-function handleSubmit(
-  props: Props,
-  state: State,
-  setState: Dispatch<SetStateAction<State>>,
-) {
-  return async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setState(prevState => ({ ...prevState, submitDisabled: true }));
-    const { submitDisabled, ...formValues } = state;
-    await ky.post('/', {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: formurlencoded({ 'form-name': 'contact', ...formValues }),
-    });
-    setState(initialState);
-    props.onFormSent();
-  };
-}
-
-export function ContactForm(props: Props) {
-  const [state, setState] = useState(initialState);
+export function FormUi(props: Props) {
   return (
     <>
       <Heading>Leave me a message</Heading>
@@ -138,43 +94,42 @@ export function ContactForm(props: Props) {
         name="contact"
         method="POST"
         data-netlify="true"
-        onSubmit={handleSubmit(props, state, setState)}
+        onSubmit={props.onSubmit}
       >
         <input type="hidden" name="form-name" value="contact" />
         <Row>
           <Input
             name="name"
-            aria-label="name"
+            aria-label="Name"
             type="text"
             placeholder="Name"
-            value={state.name}
+            value={props.name}
             required={true}
-            onChange={handleInputChange(setState)}
+            onChange={props.onInputChange}
           />
           <Input
             name="email"
-            aria-label="email"
+            aria-label="Email"
             type="email"
             placeholder="Email"
-            value={state.email}
+            value={props.email}
             required={true}
-            onChange={handleInputChange(setState)}
+            onChange={props.onInputChange}
           />
         </Row>
         <TextArea
           name="message"
-          aria-label="message"
+          aria-label="Message"
           rows={4}
-          // cols={10}
           placeholder="Message"
-          value={state.message}
+          value={props.message}
           required={true}
-          onChange={handleInputChange(setState)}
+          onChange={props.onInputChange}
         />
         <Submit
           type="submit"
           value="Send Message"
-          disabled={state.submitDisabled}
+          disabled={props.submitDisabled}
         />
       </Form>
     </>
