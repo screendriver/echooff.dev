@@ -1,21 +1,8 @@
 import React from 'react';
-import { graphql, StaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
 import Img, { FixedObject } from 'gatsby-image';
-import { grey } from '../colors';
-import { Section, SectionTheme } from './Section';
-
-interface GraphQLData {
-  aboutFile: {
-    childImageSharp: {
-      fixed: FixedObject;
-    };
-  };
-}
-
-interface AboutComponentProps {
-  data: GraphQLData;
-}
+import { grey } from '../../colors';
+import { Section, SectionTheme } from '../Section';
 
 const AboutImage = styled(Img)({
   borderRadius: 180,
@@ -42,18 +29,21 @@ const GoneText = styled.h5({
   fontWeight: 700,
 });
 
-function AboutComponent({ data }: AboutComponentProps) {
-  const image = data.aboutFile.childImageSharp.fixed;
+export interface AboutUiProps {
+  fixedImage: FixedObject;
+}
+
+export function AboutUi({ fixedImage }: AboutUiProps) {
   return (
     <Section heading="About" id="about" theme={SectionTheme.Light}>
-      <AboutImage fixed={image} />
-      <Text>
+      <AboutImage fixed={fixedImage} />
+      <Text data-testid="everywhere">
         JavaScript is everywhere. In the old days, being a JavaScript developer
         meant that you were a front end web developer. Forever bound to the
         browser.
       </Text>
-      <GoneText>Those days are gone.</GoneText>
-      <Text>
+      <GoneText data-testid="gone">Those days are gone.</GoneText>
+      <Text data-testid="rise">
         The rise of Node.js ushered in a new era. An era where being a
         JavaScript developer doesn’t necessarily mean a front-end web developer.
         As a JavaScript developer today, you can target more platforms than any
@@ -61,23 +51,4 @@ function AboutComponent({ data }: AboutComponentProps) {
       </Text>
     </Section>
   );
-}
-
-const query = graphql`
-  query {
-    aboutFile: file(name: { eq: "about" }, extension: { eq: "jpg" }) {
-      childImageSharp {
-        fixed(quality: 75, width: 200) {
-          ...GatsbyImageSharpFixed_withWebp
-        }
-      }
-    }
-  }
-`;
-
-export function About() {
-  function render(data: GraphQLData) {
-    return <AboutComponent data={data} />;
-  }
-  return <StaticQuery query={query} render={render} />;
 }
