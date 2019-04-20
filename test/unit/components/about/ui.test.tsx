@@ -9,9 +9,22 @@ const props: AboutUiProps = {
     width: 800,
     height: 600,
     src: 'myImage.png',
-    srcSet: 'myImage.png',
+    srcSet: 'myImage.png 1x',
   },
 };
+
+test(
+  'renders an about image',
+  withCleanup(async t => {
+    t.plan(4);
+    const { getByAltText } = render(<AboutUi {...props} />);
+    const image = getByAltText('My face');
+    t.equal(image.getAttribute('src'), 'myImage.png');
+    t.equal(image.getAttribute('srcset'), 'myImage.png 1x');
+    t.equal(image.getAttribute('width'), '800');
+    t.equal(image.getAttribute('height'), '600');
+  }),
+);
 
 test(
   'renders a "JavaScript is everywhere" paragraph',
