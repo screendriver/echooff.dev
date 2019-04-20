@@ -36,7 +36,7 @@ export interface AboutUiProps {
 export function AboutUi({ fixedImage }: AboutUiProps) {
   return (
     <Section heading="About" id="about" theme={SectionTheme.Light}>
-      <AboutImage fixed={fixedImage} />
+      <AboutImage alt="My face" fixed={fixedImage} />
       <Text>
         JavaScript is everywhere. In the old days, being a JavaScript developer
         meant that you were a front end web developer. Forever bound to the
