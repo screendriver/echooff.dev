@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import ky from 'ky';
+import ky from 'ky-universal';
 import formurlencoded from 'form-urlencoded';
 import { white, grey } from '../../colors';
 
