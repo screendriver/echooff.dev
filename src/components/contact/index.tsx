@@ -7,10 +7,10 @@ import {
   Linkedin,
 } from 'react-feather';
 import styled from '@emotion/styled';
-import { Section, SectionTheme } from './Section';
-import { black, white } from '../colors';
-import { ContactForm } from './ContactForm';
-import { ContactFormSent } from './ContactFormSent';
+import { Section, SectionTheme } from '../Section';
+import { black, white } from '../../colors';
+import { ContactForm } from './form';
+import { ContactFormSent } from './formSent';
 
 const Address = styled.address({
   display: 'flex',

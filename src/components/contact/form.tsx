@@ -9,7 +9,7 @@ import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import ky from 'ky';
 import formurlencoded from 'form-urlencoded';
-import { white, grey } from '../colors';
+import { white, grey } from '../../colors';
 
 const Heading = styled.h3({
   color: white,
