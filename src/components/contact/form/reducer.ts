@@ -14,7 +14,29 @@ export const initialState: State = {
   name: '',
   email: '',
   message: '',
+  submitDisabled: false,
 };
+
+export function changeName(value: string): Action {
+  return {
+    type: 'change-name',
+    value,
+  };
+}
+
+export function changeEmail(value: string): Action {
+  return {
+    type: 'change-email',
+    value,
+  };
+}
+
+export function changeMessage(value: string): Action {
+  return {
+    type: 'change-message',
+    value,
+  };
+}
 
 function assertUnreachable(_x: never): never {
   throw new Error('Should not occur');
