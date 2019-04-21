@@ -3,6 +3,7 @@ export interface State {
   readonly email: string;
   readonly message: string;
   readonly submitDisabled: boolean;
+  readonly formSent: boolean;
 }
 
 interface StringAction {
@@ -11,7 +12,7 @@ interface StringAction {
 }
 
 interface BooleanAction {
-  type: 'set-submit-disabled';
+  type: 'set-submit-disabled' | 'form-sent';
   value: boolean;
 }
 
@@ -22,6 +23,7 @@ export const initialState: State = {
   email: '',
   message: '',
   submitDisabled: false,
+  formSent: false,
 };
 
 export function changeName(value: string): StringAction {
@@ -52,6 +54,13 @@ export function setSubmitDisabled(disabled: boolean): BooleanAction {
   };
 }
 
+export function setFormSent(sent: boolean): BooleanAction {
+  return {
+    type: 'form-sent',
+    value: sent,
+  };
+}
+
 function assertUnreachable(x: never): never {
   throw new Error('Unexpected object: ' + x);
 }
@@ -66,6 +75,8 @@ export function reducer(state: State, action: Action): State {
       return { ...state, message: action.value };
     case 'set-submit-disabled':
       return { ...state, submitDisabled: action.value };
+    case 'form-sent':
+      return { ...state, formSent: action.value };
     default:
       return assertUnreachable(action);
   }
