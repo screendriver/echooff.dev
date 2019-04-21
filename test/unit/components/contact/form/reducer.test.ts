@@ -7,6 +7,7 @@ import {
   changeEmail,
   changeMessage,
   setSubmitDisabled,
+  setFormSent,
 } from '../../../../../src/components/contact/form/reducer';
 
 test('initial state', t => {
@@ -16,6 +17,7 @@ test('initial state', t => {
     email: '',
     message: '',
     submitDisabled: false,
+    formSent: false,
   };
   t.deepEqual(initialState, expected);
 });
@@ -28,6 +30,7 @@ test('change name', t => {
     email: '',
     message: '',
     submitDisabled: false,
+    formSent: false,
   };
   t.deepEqual(actual, expected);
 });
@@ -40,6 +43,7 @@ test('change email', t => {
     email: 'foo@example.com',
     message: '',
     submitDisabled: false,
+    formSent: false,
   };
   t.deepEqual(actual, expected);
 });
@@ -52,6 +56,7 @@ test('change message', t => {
     email: '',
     message: 'Test',
     submitDisabled: false,
+    formSent: false,
   };
   t.deepEqual(actual, expected);
 });
@@ -64,6 +69,20 @@ test('change submitDisabled', t => {
     email: '',
     message: '',
     submitDisabled: true,
+    formSent: false,
+  };
+  t.deepEqual(actual, expected);
+});
+
+test('change formSent', t => {
+  t.plan(1);
+  const actual = reducer(initialState, setFormSent(true));
+  const expected: State = {
+    name: '',
+    email: '',
+    message: '',
+    submitDisabled: false,
+    formSent: true,
   };
   t.deepEqual(actual, expected);
 });
