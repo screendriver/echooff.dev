@@ -3,6 +3,9 @@ import {
   reducer,
   initialState,
   State,
+  changeName,
+  changeEmail,
+  changeMessage,
 } from '../../../../../src/components/contact/form/reducer';
 
 test('initial state', t => {
@@ -11,45 +14,43 @@ test('initial state', t => {
     name: '',
     email: '',
     message: '',
+    submitDisabled: false,
   };
   t.deepEqual(initialState, expected);
 });
 
-test('set name on change-name action', t => {
+test('change name', t => {
   t.plan(1);
-  const actual = reducer(initialState, { type: 'change-name', value: 'Me' });
+  const actual = reducer(initialState, changeName('Me'));
   const expected: State = {
     name: 'Me',
     email: '',
     message: '',
+    submitDisabled: false,
   };
   t.deepEqual(actual, expected);
 });
 
 test('set email on change-email action', t => {
   t.plan(1);
-  const actual = reducer(initialState, {
-    type: 'change-email',
-    value: 'foo@example.com',
-  });
+  const actual = reducer(initialState, changeEmail('foo@example.com'));
   const expected: State = {
     name: '',
     email: 'foo@example.com',
     message: '',
+    submitDisabled: false,
   };
   t.deepEqual(actual, expected);
 });
 
 test('set message on change-message action', t => {
   t.plan(1);
-  const actual = reducer(initialState, {
-    type: 'change-message',
-    value: 'Test',
-  });
+  const actual = reducer(initialState, changeMessage('Test'));
   const expected: State = {
     name: '',
     email: '',
     message: 'Test',
+    submitDisabled: false,
   };
   t.deepEqual(actual, expected);
 });
