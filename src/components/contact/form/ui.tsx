@@ -80,7 +80,7 @@ export interface Props {
   email: string;
   message: string;
   submitDisabled: boolean;
-  onInputChange(
+  onInputChange?(
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ): void;
   onSubmit?(event: FormEvent<HTMLFormElement>): void;
