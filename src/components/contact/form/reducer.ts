@@ -5,10 +5,17 @@ export interface State {
   readonly submitDisabled: boolean;
 }
 
-export interface Action {
+interface StringAction {
   type: 'change-name' | 'change-email' | 'change-message';
   value: string;
 }
+
+interface BooleanAction {
+  type: 'set-submit-disabled';
+  value: boolean;
+}
+
+export type Action = StringAction | BooleanAction;
 
 export const initialState: State = {
   name: '',
@@ -17,29 +24,36 @@ export const initialState: State = {
   submitDisabled: false,
 };
 
-export function changeName(value: string): Action {
+export function changeName(value: string): StringAction {
   return {
     type: 'change-name',
     value,
   };
 }
 
-export function changeEmail(value: string): Action {
+export function changeEmail(value: string): StringAction {
   return {
     type: 'change-email',
     value,
   };
 }
 
-export function changeMessage(value: string): Action {
+export function changeMessage(value: string): StringAction {
   return {
     type: 'change-message',
     value,
   };
 }
 
-function assertUnreachable(_x: never): never {
-  throw new Error('Should not occur');
+export function setSubmitDisabled(disabled: boolean): BooleanAction {
+  return {
+    type: 'set-submit-disabled',
+    value: disabled,
+  };
+}
+
+function assertUnreachable(x: never): never {
+  throw new Error('Unexpected object: ' + x);
 }
 
 export function reducer(state: State, action: Action): State {
@@ -50,7 +64,9 @@ export function reducer(state: State, action: Action): State {
       return { ...state, email: action.value };
     case 'change-message':
       return { ...state, message: action.value };
+    case 'set-submit-disabled':
+      return { ...state, submitDisabled: action.value };
     default:
-      return assertUnreachable(action.type);
+      return assertUnreachable(action);
   }
 }
