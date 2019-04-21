@@ -128,6 +128,7 @@ export function FormUi(props: Props) {
         />
         <Submit
           type="submit"
+          data-testid="Send Message"
           value="Send Message"
           disabled={props.submitDisabled}
         />
