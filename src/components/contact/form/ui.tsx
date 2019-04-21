@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, FormEvent } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { white, grey } from '../../../colors';
@@ -83,7 +83,7 @@ export interface Props {
   onInputChange(
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ): void;
-  onSubmit(): void;
+  onSubmit?(event: FormEvent<HTMLFormElement>): void;
 }
 
 export function FormUi(props: Props) {
