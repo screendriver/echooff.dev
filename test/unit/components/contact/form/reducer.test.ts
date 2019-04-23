@@ -1,5 +1,6 @@
 import test from 'tape';
 import {
+  Action,
   reducer,
   initialState,
   State,
@@ -85,4 +86,11 @@ test('change formSent', t => {
     formSent: true,
   };
   t.deepEqual(actual, expected);
+});
+
+test('throw error on unknown action type', t => {
+  t.plan(1);
+  t.throws(() => {
+    reducer(initialState, ({ type: 'unknown' } as unknown) as Action);
+  });
 });
