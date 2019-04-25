@@ -71,7 +71,7 @@
     "netlify-cli": "2.11.13",
     "nyc": "14.0.0",
     "prettier": "1.17.0",
-    "react-testing-library": "6.1.2",
+    "react-testing-library": "7.0.0",
     "serve": "11.0.0",
     "serve-handler": "6.0.0",
     "sinon": "7.3.2",
