@@ -68,7 +68,7 @@
     "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
     "micro": "9.3.3",
-    "netlify-cli": "2.11.13",
+    "netlify-cli": "2.11.14",
     "nyc": "14.0.0",
     "prettier": "1.17.0",
     "react-testing-library": "6.1.2",
