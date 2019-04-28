@@ -76,7 +76,7 @@ export function Contact() {
           <SmallLink href="https://github.com/screendriver">
             <GitHub color={white} />
           </SmallLink>
-          <SmallLink href="https://www.linkedin.com/in/christian-rackerseder-81a906177/">
+          <SmallLink href="https://www.linkedin.com/in/unicornyuppie">
             <Linkedin color={white} />
           </SmallLink>
         </SmallLinkList>
