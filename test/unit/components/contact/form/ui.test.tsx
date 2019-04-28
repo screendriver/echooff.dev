@@ -52,8 +52,8 @@ test(
   'render a enabled submit button',
   withCleanup(t => {
     t.plan(1);
-    const { getByValue } = renderFormUi({ submitDisabled: false });
-    const submit = getByValue('Send Message') as HTMLInputElement;
+    const { getByDisplayValue } = renderFormUi({ submitDisabled: false });
+    const submit = getByDisplayValue('Send Message') as HTMLInputElement;
     t.equal(submit.disabled, false);
   }),
 );
@@ -62,8 +62,8 @@ test(
   'render a disabled submit button',
   withCleanup(t => {
     t.plan(1);
-    const { getByValue } = renderFormUi({ submitDisabled: true });
-    const submit = getByValue('Send Message') as HTMLInputElement;
+    const { getByDisplayValue } = renderFormUi({ submitDisabled: true });
+    const submit = getByDisplayValue('Send Message') as HTMLInputElement;
     t.equal(submit.disabled, true);
   }),
 );
