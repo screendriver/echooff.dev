@@ -3085,10 +3085,10 @@ backoff@^2.5.0:
   dependencies:
     precond "0.2"
 
-backstopjs@4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/backstopjs/-/backstopjs-4.0.3.tgz#902824b4c03f3d8934359fbb49bf7adb3f18f230"
-  integrity sha512-uplxhGLRoyKE55+pQVQIQp1dLcXr0MBkuiB2EzDfobLfYp1llnOqs5ap6+uF+qFYt09r1lqko/fwY4glJ8sstw==
+backstopjs@4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/backstopjs/-/backstopjs-4.0.5.tgz#39cb6b2d9ee6a198e0347d6d0fd96c06d0a240e1"
+  integrity sha512-/h/TTZ8mR/DvqeBgIocdcevooxyj51I+IM6GT4LOkTspV/5Jdb0BZX1Jvduo7QenLc+EBxpVJ1BE5Gn+fh7uVw==
   dependencies:
     chalk "^1.1.3"
     chromy "0.5.11"
@@ -3105,7 +3105,7 @@ backstopjs@4.0.3:
     p-map "^1.1.1"
     path "^0.12.7"
     portfinder "^1.0.17"
-    puppeteer "^1.13.0"
+    puppeteer "^1.15.0"
     super-simple-web-server "^1.1.1"
     temp "^0.8.3"
 
@@ -12571,7 +12571,7 @@ punycode@^1.2.4, punycode@^1.3.2, punycode@^1.4.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
   integrity sha1-wNWmOycYgArY4esPpSachN1BhF4=
 
-puppeteer@^1.13.0:
+puppeteer@^1.15.0:
   version "1.15.0"
   resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-1.15.0.tgz#1680fac13e51f609143149a5b7fa99eec392b34f"
   integrity sha512-D2y5kwA9SsYkNUmcBzu9WZ4V1SGHiQTmgvDZSx6sRYFsgV25IebL4V6FaHjF6MbwLK9C6f3G3pmck9qmwM8H3w==
