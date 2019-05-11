@@ -1,12 +1,7 @@
-.cache
-.nyc_output
-.vscode
 .env
-.DS_Store
-coverage
-dist
 node_modules
 public
+target
 yarn-error.log
 test/visual/backstop_data/bitmaps_test
 test/visual/backstop_data/ci_report

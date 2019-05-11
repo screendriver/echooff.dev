@@ -16,10 +16,10 @@
     "build:visual": "GATSBY_VISUAL_REGRESSION_TEST=true gatsby build",
     "serve": "gatsby serve",
     "test:e2e": "testcafe chrome:headless 'test/e2e/**/*.ts' --app 'serve public'",
-    "test:visual": "node dist/test/visual/run.js test",
-    "test:visual:approve": "node dist/test/visual/run.js approve",
-    "test:unit": "nyc tape -r source-map-support/register -r jsdom-global/register -r './dist/test/setup.js' 'dist/test/unit/**/*.js'",
-    "test:unit:ci": "yarn test:unit | tap-xunit > dist/test-results.xml"
+    "test:visual": "node target/test/visual/run.js test",
+    "test:visual:approve": "node target/test/visual/run.js approve",
+    "test:unit": "nyc tape -r source-map-support/register -r jsdom-global/register -r './target/test/setup.js' 'target/test/unit/**/*.js'",
+    "test:unit:ci": "yarn test:unit | tap-xunit > target/test-results.xml"
   },
   "dependencies": {
     "@emotion/core": "10.0.10",
