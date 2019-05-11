@@ -16,8 +16,8 @@
     "build:visual": "GATSBY_VISUAL_REGRESSION_TEST=true gatsby build",
     "serve": "gatsby serve",
     "test:e2e": "testcafe chrome:headless 'test/e2e/**/*.ts' --app 'serve public'",
-    "test:visual": "node target/test/visual/run.js test",
-    "test:visual:approve": "node target/test/visual/run.js approve",
+    "test:visual": "node -r esm target/test/visual/run.js test",
+    "test:visual:approve": "node -r esm target/test/visual/run.js approve",
     "test:unit": "nyc tape -r esm -r source-map-support/register -r jsdom-global/register -r './target/test/setup.js' 'target/test/unit/**/*.js'",
     "test:unit:ci": "yarn test:unit | tap-xunit > target/test-results.xml"
   },

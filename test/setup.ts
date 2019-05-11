@@ -5,4 +5,4 @@ declare global {
 }
 window.Date = Date;
 
-export = {};
+export default {};
