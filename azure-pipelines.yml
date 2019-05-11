@@ -41,8 +41,8 @@ steps:
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: Cobertura
-      summaryFileLocation: $(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml
-      reportDirectory: $(System.DefaultWorkingDirectory)/coverage
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/target/coverage/cobertura-coverage.xml
+      reportDirectory: $(System.DefaultWorkingDirectory)/target/coverage
 
   - script: yarn build:visual
     displayName: Build application for visual regression and e2e tests
