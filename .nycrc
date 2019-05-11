@@ -1,7 +1,10 @@
 {
   "include": [
-    "dist/src/**/*.js"
+    "target/src/**/*.js"
   ],
+  "report-dir": "target/coverage",
+  "temp-dir": "target/.nyc_output",
+  "cache-dir": "target/.cache",
   "exclude-after-remap": false,
   "reporter": [
     "lcov",

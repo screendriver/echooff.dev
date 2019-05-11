@@ -24,7 +24,7 @@ steps:
     condition: failed()
     inputs:
       artifactName: 'CopyPasteDetectorReport'
-      targetPath: 'dist/jscpd-report.html'
+      targetPath: 'target/jscpd-report.html'
 
   - script: yarn compile
     displayName: Compile source code
@@ -34,7 +34,7 @@ steps:
 
   - task: PublishTestResults@2
     inputs:
-      testResultsFiles: 'dist/test-results.xml'
+      testResultsFiles: 'target/test-results.xml'
       testRunTitle: Test results for JavaScript
     condition: succeededOrFailed()
 

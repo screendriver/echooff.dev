@@ -1,5 +1,5 @@
 {
-  "output": "./dist",
+  "output": "./target",
   "ignore": ["**/backstop_data/**"],
   "minLines": 3,
   "threshold": 0.1,
