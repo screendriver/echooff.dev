@@ -51,7 +51,7 @@
     "@types/react-helmet": "5.0.8",
     "@types/sinon": "7.0.11",
     "@types/tape": "4.2.33",
-    "backstopjs": "4.0.5",
+    "backstopjs": "4.0.6",
     "esm": "3.2.25",
     "gatsby-plugin-emotion": "4.0.6",
     "gatsby-plugin-netlify": "2.0.17",
