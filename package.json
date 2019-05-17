@@ -71,7 +71,7 @@
     "micro": "9.3.4",
     "netlify-cli": "2.11.18",
     "nyc": "14.1.1",
-    "prettier": "1.17.0",
+    "prettier": "1.17.1",
     "react-testing-library": "7.0.0",
     "serve": "11.0.0",
     "serve-handler": "6.0.0",
