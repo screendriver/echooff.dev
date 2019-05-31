@@ -1,5 +1,5 @@
 import { Test, TestCase } from 'tape';
-import { cleanup } from 'react-testing-library';
+import { cleanup } from '@testing-library/react';
 
 export function withCleanup(testCase: TestCase): TestCase {
   return (t: Test) => {
