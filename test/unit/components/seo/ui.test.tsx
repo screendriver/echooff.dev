@@ -1,6 +1,6 @@
 import React from 'react';
 import test from 'tape';
-import { render } from 'react-testing-library';
+import { render } from '@testing-library/react';
 import Helmet from 'react-helmet';
 import { withCleanup } from '../../../cleanup';
 import { SeoUi, SeoUiProps } from '../../../../src/components/seo/ui';

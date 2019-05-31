@@ -1,6 +1,6 @@
 import React from 'react';
 import test from 'tape';
-import { render } from 'react-testing-library';
+import { render } from '@testing-library/react';
 import sinon from 'sinon';
 import { withCleanup } from '../../../../cleanup';
 import { FormUi, Props } from '../../../../../src/components/contact/form/ui';
