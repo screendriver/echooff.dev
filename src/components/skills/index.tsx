@@ -1,8 +1,8 @@
 import React from 'react';
 import { StaticQuery, graphql } from 'gatsby';
 import styled from '@emotion/styled';
-import { Section, SectionTheme } from './Section';
-import { Progress } from './Progress';
+import { Section, SectionTheme } from '../Section';
+import { Progress } from '../Progress';
 
 export interface Skill {
   name: string;
