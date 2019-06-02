@@ -8,7 +8,7 @@ import { GitHubCorner } from '../components/GitHubCorner';
 import { Header } from '../components/Header';
 import { Navigation } from '../components/Navigation';
 import { About } from '../components/about';
-import { Skills } from '../components/Skills';
+import { Skills } from '../components/skills';
 import { Passions } from '../components/Passions';
 import { Stats } from '../components/Stats';
 import { Experiences } from '../components/experiences';
