@@ -1,23 +1,12 @@
 import React from 'react';
-import { StaticQuery, graphql } from 'gatsby';
 import styled from '@emotion/styled';
 import { Section, SectionTheme } from '../Section';
-import { Progress } from '../Progress';
-
-export interface Skill {
-  name: string;
-  percent: number;
-}
-
-interface GraphQLData {
-  allSkillsJson: {
-    edges: [{ node: Skill }];
-  };
-}
-
-interface SkillsComponentProps {
-  data: GraphQLData;
-}
+import { Card } from './card';
+import { TypeScriptIcon } from './icons/typescript';
+import { JavaScriptIcon } from './icons/javascript';
+import { ReactIcon } from './icons/react';
+import { NodejsIcon } from './icons/nodejs';
+import { Css3Icon } from './icons/css3';
 
 const SkillsList = styled.div({
   display: 'flex',
@@ -29,60 +18,46 @@ const SkillsList = styled.div({
   },
 });
 
-const ProgressWrapper = styled.div({
-  marginBottom: 40,
-  ':last-child': {
-    marginBottom: 0,
-  },
-  '@media (min-width: 375px)': {
-    width: '50%',
-    ':nth-last-of-type(-n+3)': {
-      marginBottom: 0,
-    },
-  },
-  '@media (min-width: 1024px)': {
-    width: '33%',
-  },
-});
-
-const ProgressStyled = styled(Progress)({
-  margin: '0 auto',
-});
-
-function SkillsComponent({ data }: SkillsComponentProps) {
-  const skills = data.allSkillsJson.edges.map<Skill>(({ node }) => ({
-    name: node.name,
-    percent: node.percent,
-  }));
+export function Skills() {
   return (
     <Section heading="Skills" id="skills" theme={SectionTheme.Cyan}>
       <SkillsList>
-        {skills.map(({ name, percent }) => (
-          <ProgressWrapper key={name}>
-            <ProgressStyled percent={percent} description={name} />
-          </ProgressWrapper>
-        ))}
+        <Card
+          linkTo="https://www.typescriptlang.org"
+          linkText="TypeScript"
+          icon={<TypeScriptIcon />}
+          description="is a typed
+            superset of JavaScript that compiles to plain JavaScript."
+        />
+        <Card
+          linkTo="https://www.ecma-international.org/publications/standards/Ecma-262.htm"
+          linkText="JavaScript"
+          icon={<JavaScriptIcon />}
+          description="is a high-level, interpreted programming language that conforms to
+          the ECMAScript specification."
+        />
+        <Card
+          linkTo="https://reactjs.org"
+          linkText="JavaScript"
+          icon={<ReactIcon />}
+          description="is a library for building
+          user interfaces."
+        />
+        {/* <Card
+          linkTo="https://nodejs.org"
+          linkText="Node.js"
+          icon={<NodejsIcon />}
+          description="is a JavaScript runtime
+          built on Chrome's V8 JavaScript engine."
+        />
+        <Card
+          linkTo="https://www.w3.org/Style/CSS/"
+          linkText="Cascading Style Sheets (CSS)"
+          icon={<Css3Icon />}
+          description="is a simple mechanism for adding style (e.g., fonts, colors,
+            spacing) to Web documents."
+        /> */}
       </SkillsList>
     </Section>
   );
-}
-
-const query = graphql`
-  query {
-    allSkillsJson {
-      edges {
-        node {
-          name
-          percent
-        }
-      }
-    }
-  }
-`;
-
-export function Skills() {
-  function render(data: GraphQLData) {
-    return <SkillsComponent data={data} />;
-  }
-  return <StaticQuery query={query} render={render} />;
 }
