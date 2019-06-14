@@ -6890,10 +6890,10 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-form-urlencoded@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/form-urlencoded/-/form-urlencoded-3.0.0.tgz#7f5da60c0a110c333549aacbaf9f7ded65936ea1"
-  integrity sha512-zSgBjyO5Yo3TCfElJKqlSBGOEq8lZjltZAYqew4X5trf4AbH4sZhBesvywy7IpD1mfbu8JS6733V3zv3YdIW1g==
+form-urlencoded@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/form-urlencoded/-/form-urlencoded-3.0.1.tgz#876bc2ff674a128ccf756387109618f2c7c87483"
+  integrity sha512-uwjLzzsa8CeDxj+H1Vs8V9TAUyta7SB1ez1oWvOgtyAKJWuUJjGKoIv7kajnC9L5lTxqu74JevuMj3KrFYwkcg==
 
 forwarded@~0.1.2:
   version "0.1.2"
