@@ -49,8 +49,8 @@ export function Progress({ percent, description, className }: ProgressProps) {
           <Percent>{percent}</Percent>
           <Circle
             percent={percent}
-            strokeWidth="5"
-            trailWidth="5"
+            strokeWidth={5}
+            trailWidth={5}
             trailColor={white}
             strokeColor="#121d1f"
             strokeLinecap="butt"
