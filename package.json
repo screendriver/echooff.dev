@@ -80,7 +80,7 @@
     "tap-xunit": "2.4.1",
     "tape": "4.10.2",
     "testcafe": "1.2.1",
-    "tslint": "5.17.0",
+    "tslint": "5.18.0",
     "tslint-config-prettier": "1.18.0",
     "tslint-react": "4.0.0",
     "typescript": "3.5.2"
