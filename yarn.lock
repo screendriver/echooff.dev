@@ -3130,10 +3130,10 @@ backoff@^2.5.0:
   dependencies:
     precond "0.2"
 
-backstopjs@4.1.8:
-  version "4.1.8"
-  resolved "https://registry.yarnpkg.com/backstopjs/-/backstopjs-4.1.8.tgz#92e5a14b76d78bde1655c5fca9aac532011c1736"
-  integrity sha512-SaZMzhM9aMaKWb0y8TFZ2WdO/q3gA01DIMUuF9ZIwA/3j3rtmXb7slXRk+gf0HB9sW79s8jeqke99pKhtZMiJw==
+backstopjs@4.1.9:
+  version "4.1.9"
+  resolved "https://registry.yarnpkg.com/backstopjs/-/backstopjs-4.1.9.tgz#be83582de10eff4e2ec33c99d3cdd37d7e205526"
+  integrity sha512-gTo2OSO5NIB57dOpqVXZ8BVr3iW1ZQVTPl6Gl9f0k5+QCQxS2Gh9U82UKMn1Y9KxnjJJN1a1iCYoEcda/YXbVg==
   dependencies:
     chalk "^1.1.3"
     chromy "0.5.11"
