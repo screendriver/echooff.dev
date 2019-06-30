@@ -40,7 +40,7 @@ export function Skills() {
         />
         <Card
           linkTo="https://reactjs.org"
-          linkText="JavaScript"
+          linkText="React"
           icon={<ReactIcon />}
           description="is a library for building
           user interfaces."
