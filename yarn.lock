@@ -7992,6 +7992,11 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
+hex-to-rgba@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/hex-to-rgba/-/hex-to-rgba-2.0.0.tgz#fd24d87c0d0ce75289f7659ec4597ab33589b9b3"
+  integrity sha512-atEl2Uz9hrVWI4kC1d+10bNYIMtu1Cg6f15HFVg28M8gr8MT8QYScOTXHpfhTR5uIQcFk4end6jokh2/UVhWyQ==
+
 highlight-es@^1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/highlight-es/-/highlight-es-1.0.3.tgz#12abc300a27e686f6f18010134e3a5c6d2fe6930"
