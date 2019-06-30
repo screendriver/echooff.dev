@@ -22,8 +22,8 @@
     "test:unit:ci": "yarn test:unit | tap-xunit > target/test-results.xml"
   },
   "dependencies": {
-    "@emotion/core": "10.0.10",
-    "@emotion/styled": "10.0.12",
+    "@emotion/core": "10.0.14",
+    "@emotion/styled": "10.0.14",
     "form-urlencoded": "3.0.1",
     "gatsby": "2.10.0",
     "gatsby-image": "2.2.1",
