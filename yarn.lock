@@ -1455,13 +1455,6 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
   integrity sha512-ce5d3q03Ex0sy4R14722Rmt6MT07Ua+k4FwDfdcToYJcMKNtRVQvJ6JCAPdAmAnbRb6CsX6aYb9m96NGod9uTw==
 
-"@types/rc-progress@2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@types/rc-progress/-/rc-progress-2.2.1.tgz#a39693cb395ee191dd51e2a15691cd0f4ea8cb58"
-  integrity sha512-kwFAP9R2eAItLNom79UD0yxtbr3vBQdMSsEC3Vci45GFuGuyE0Hrv+AYqCHWHJVz2cyt+0kmwSVwMzKLPS/jlA==
-  dependencies:
-    "@types/react" "*"
-
 "@types/reach__router@^1.0.0":
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@types/reach__router/-/reach__router-1.2.4.tgz#44a701fdf15934880f6dfdef38ca49bc30e2d372"
@@ -3062,20 +3055,20 @@ babel-register@^6.26.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-runtime@6.x, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
-  version "6.26.0"
-  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
-  integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
-  dependencies:
-    core-js "^2.4.0"
-    regenerator-runtime "^0.11.0"
-
 babel-runtime@^5.6.15, babel-runtime@^5.8.34:
   version "5.8.38"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-5.8.38.tgz#1c0b02eb63312f5f087ff20450827b425c9d4c19"
   integrity sha1-HAsC62MxL18If/IEUIJ7QlydTBk=
   dependencies:
     core-js "^1.0.0"
+
+babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
+  version "6.26.0"
+  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
+  integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
+  dependencies:
+    core-js "^2.4.0"
+    regenerator-runtime "^0.11.0"
 
 babel-template@^6.24.1, babel-template@^6.26.0:
   version "6.26.0"
@@ -12447,7 +12440,7 @@ prompts@^2.1.0:
     kleur "^3.0.2"
     sisteransi "^1.0.0"
 
-prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -12771,14 +12764,6 @@ raw-loader@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/raw-loader/-/raw-loader-0.5.1.tgz#0c3d0beaed8a01c966d9787bf778281252a979aa"
   integrity sha1-DD0L6u2KAclm2Xh793goElKpeao=
-
-rc-progress@2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/rc-progress/-/rc-progress-2.4.1.tgz#dab669e51c0bf7470eca069e03c1fcaae555846f"
-  integrity sha512-J66eNptJOhzKR+5ClG/VF+83cMsKtuxKEegWXfJ367teGAn/m6QFFCXy9zP+EfZ5CfJLm2jYfr7+zW53JpCw5w==
-  dependencies:
-    babel-runtime "6.x"
-    prop-types "^15.5.8"
 
 rc@^1.0.1, rc@^1.1.6, rc@^1.2.7:
   version "1.2.8"
