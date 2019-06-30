@@ -13,10 +13,16 @@ const SkillsList = styled.div({
   display: 'flex',
   flexDirection: 'column',
   flexWrap: 'wrap',
-  width: 800,
   justifyContent: 'space-evenly',
   '@media (min-width: 375px)': {
     flexDirection: 'row',
+    width: 300,
+  },
+  '@media (min-width: 768px)': {
+    width: 700,
+  },
+  '@media (min-width: 1024px)': {
+    width: 800,
   },
 });
 
