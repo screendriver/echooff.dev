@@ -27,6 +27,9 @@ export default function Page() {
             fontFamily: 'Open Sans, sans-serif',
             WebkitFontSmoothing: 'antialiased',
           },
+          a: {
+            textDecoration: 'none',
+          },
         }}
       />
       <SEO />
