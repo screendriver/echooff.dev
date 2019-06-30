@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { white, black, darkerWhite, cyan } from '../../colors';
+import hexToRgba from 'hex-to-rgba';
+import { black, darkerWhite, cyan, white } from '../../colors';
 
 interface CardProps {
   linkTo: string;
@@ -10,20 +11,28 @@ interface CardProps {
   className?: string;
 }
 
-const IconLink = styled.a({
-  position: 'absolute',
-  top: -15,
-  width: 70,
+const Link = styled.a({
+  color: black,
+  padding: 20,
+  position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  height: '100%',
+});
+
+const Icon = styled.span({
+  height: 50,
 });
 
 const Description = styled.p({
-  marginTop: 80,
-  // textAlign: 'center',
+  fontSize: 14,
   lineHeight: 1.35,
-  '& a': {
+  textAlign: 'center',
+  marginTop: 25,
+  '& span': {
     color: black,
     fontWeight: 'bold',
-    textDecoration: 'none',
     position: 'relative',
     '::after': {
       content: '""',
@@ -39,27 +48,38 @@ const Description = styled.p({
 });
 
 const Section = styled.section({
-  position: 'relative',
-  display: 'flex',
-  justifyContent: 'center',
-  backgroundColor: white,
+  backgroundColor: hexToRgba(white, '0.4'),
   width: 250,
-  height: 200,
-  padding: 10,
-  borderRadius: 4,
+  height: 190,
+  marginBottom: 40,
+  borderRadius: 10,
   boxShadow:
     '0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); ',
+  transition: 'background-color 150ms',
+  ':hover': {
+    backgroundColor: hexToRgba(white, '0.5'),
+  },
+  ':nth-last-of-type(1)': {
+    marginBottom: 0,
+  },
+  '@media (min-width: 768px)': {
+    ':nth-last-of-type(-n+3)': {
+      marginBottom: 0,
+    },
+  },
 });
 
 export function Card(props: CardProps) {
   return (
     <Section>
-      <IconLink className={props.className} href={props.linkTo}>
-        {props.icon}
-      </IconLink>
-      <Description>
-        <a href={props.linkTo}>{props.linkText}</a> {props.description}
-      </Description>
+      <Link href={props.linkTo}>
+        <Icon className={props.className} title={props.linkText}>
+          {props.icon}
+        </Icon>
+        <Description>
+          <span>{props.linkText}</span> {props.description}
+        </Description>
+      </Link>
     </Section>
   );
 }
