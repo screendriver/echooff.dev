@@ -7,6 +7,7 @@ import { JavaScriptIcon } from './icons/javascript';
 import { ReactIcon } from './icons/react';
 import { NodejsIcon } from './icons/nodejs';
 import { Css3Icon } from './icons/css3';
+import { ElmIcon } from './icons/elm';
 
 const SkillsList = styled.div({
   display: 'flex',
@@ -43,7 +44,7 @@ export function Skills() {
           description="is a library for building
           user interfaces."
         />
-        {/* <Card
+        <Card
           linkTo="https://nodejs.org"
           linkText="Node.js"
           icon={<NodejsIcon />}
@@ -56,7 +57,13 @@ export function Skills() {
           icon={<Css3Icon />}
           description="is a simple mechanism for adding style (e.g., fonts, colors,
             spacing) to Web documents."
-        /> */}
+        />
+        <Card
+          linkTo="https://elm-lang.org"
+          linkText="elm"
+          icon={<ElmIcon />}
+          description="is a delightful language for reliable webapps."
+        />
       </SkillsList>
     </Section>
   );
