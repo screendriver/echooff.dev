@@ -44,7 +44,8 @@ export function Circle(props: ExperienceCircleProps) {
   const { experience } = props;
   return (
     <CircleStyled className={props.className}>
-      <Text>{experience.to}</Text> <Text>-</Text> <Text>{experience.from}</Text>
+      <Text aria-label="Experience to">{experience.to}</Text> <Text>-</Text>{' '}
+      <Text aria-label="Experience from">{experience.from}</Text>
     </CircleStyled>
   );
 }
