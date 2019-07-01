@@ -8,7 +8,7 @@ function renderCard() {
   const props: CardProps = {
     linkTo: '/blog',
     linkText: 'My blog',
-    icon: <svg />,
+    icon: <svg data-testid="test-svg" />,
     description: 'This is a test',
   };
   return render(<Card {...props} />);
@@ -20,6 +20,36 @@ test(
     t.plan(1);
     const { getByTitle } = renderCard();
     getByTitle('My blog');
+    t.pass();
+  }),
+);
+
+test(
+  '<Card /> renders given icon',
+  withCleanup(t => {
+    t.plan(1);
+    const { getByTestId } = renderCard();
+    getByTestId('test-svg');
+    t.pass();
+  }),
+);
+
+test(
+  '<Card /> renders given linkText',
+  withCleanup(t => {
+    t.plan(1);
+    const { getByText } = renderCard();
+    getByText('My blog');
+    t.pass();
+  }),
+);
+
+test(
+  '<Card /> renders given description',
+  withCleanup(t => {
+    t.plan(1);
+    const { getByText } = renderCard();
+    getByText('This is a test');
     t.pass();
   }),
 );
