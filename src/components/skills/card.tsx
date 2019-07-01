@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import hexToRgba from 'hex-to-rgba';
 import { black, darkerWhite, cyan, white } from '../../colors';
 
-interface CardProps {
+export interface CardProps {
   linkTo: string;
   linkText: string;
   icon: JSX.Element;
@@ -72,10 +72,8 @@ const Section = styled.section({
 export function Card(props: CardProps) {
   return (
     <Section>
-      <Link href={props.linkTo}>
-        <Icon className={props.className} title={props.linkText}>
-          {props.icon}
-        </Icon>
+      <Link href={props.linkTo} title={props.linkText}>
+        <Icon className={props.className}>{props.icon}</Icon>
         <Description>
           <span>{props.linkText}</span> {props.description}
         </Description>
