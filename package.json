@@ -18,8 +18,10 @@
     "test:e2e": "testcafe chrome:headless 'test/e2e/**/*.ts' --app 'serve public'",
     "test:visual": "node -r esm target/test/visual/run.js test",
     "test:visual:approve": "node -r esm target/test/visual/run.js approve",
-    "test:unit": "nyc tape -r esm -r source-map-support/register -r jsdom-global/register -r './target/test/setup.js' 'target/test/unit/**/*.js'",
-    "test:unit:ci": "yarn test:unit | tap-xunit > target/test-results.xml"
+    "test:unit:base": "tape -r esm -r source-map-support/register -r jsdom-global/register -r './target/test/setup.js' 'target/test/unit/**/*.js'",
+    "test:unit": "yarn test:unit:base | tap-nirvana",
+    "test:unit:ci": "npm run test:unit:coverage | tap-xunit > target/test-results.xml",
+    "test:unit:coverage": "nyc npm run test:unit:base"
   },
   "dependencies": {
     "@emotion/core": "10.0.14",
