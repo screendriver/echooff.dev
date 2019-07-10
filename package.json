@@ -74,7 +74,7 @@
     "netlify-cli": "2.11.23",
     "nyc": "14.1.1",
     "prettier": "1.18.2",
-    "serve": "11.0.2",
+    "serve": "11.1.0",
     "serve-handler": "6.0.3",
     "sinon": "7.3.2",
     "source-map-support": "0.5.12",
