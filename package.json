@@ -43,7 +43,7 @@
     "typeface-source-sans-pro": "0.0.75"
   },
   "devDependencies": {
-    "@testing-library/react": "8.0.4",
+    "@testing-library/react": "8.0.5",
     "@types/form-urlencoded": "2.0.1",
     "@types/gsap": "1.20.2",
     "@types/lodash.sample": "4.2.6",
