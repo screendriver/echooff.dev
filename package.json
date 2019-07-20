@@ -71,7 +71,7 @@
     "jsdom": "15.1.1",
     "jsdom-global": "3.0.2",
     "micro": "9.3.4",
-    "netlify-cli": "2.11.23",
+    "netlify-cli": "2.11.29",
     "nyc": "14.1.1",
     "prettier": "1.18.2",
     "serve": "11.1.0",
