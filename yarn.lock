@@ -14206,20 +14206,6 @@ serialize-javascript@^1.7.0:
   resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-1.7.0.tgz#d6e0dfb2a3832a8c94468e6eb1db97e55a192a65"
   integrity sha512-ke8UG8ulpFOxO8f8gRYabHQe/ZntKlcig2Mp+8+URDP1D8vJZ0KUt7LYo07q25Z/+JVSgpr/cui9PIp5H6/+nA==
 
-serve-handler@6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/serve-handler/-/serve-handler-6.0.3.tgz#6139dfd70152cdba739b16037a4196eaa6907510"
-  integrity sha512-Y+vA9myB4dOYLRK83G7h775zWUrESFpgDp3iKxca3I+T9Pcb22VSn6jU1wfc3bPk5AT/FKl+GgkgkQJHNP2Lfg==
-  dependencies:
-    bytes "3.0.0"
-    content-disposition "0.5.2"
-    fast-url-parser "1.1.3"
-    mime-types "2.1.18"
-    minimatch "3.0.4"
-    path-is-inside "1.0.2"
-    path-to-regexp "2.2.1"
-    range-parser "1.2.0"
-
 serve-handler@6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/serve-handler/-/serve-handler-6.1.0.tgz#f1606dc6ff8f9029a1ee042c11dfe7903a5cb92e"
