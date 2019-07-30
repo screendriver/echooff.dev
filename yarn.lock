@@ -7183,10 +7183,10 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-form-urlencoded@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/form-urlencoded/-/form-urlencoded-3.0.1.tgz#876bc2ff674a128ccf756387109618f2c7c87483"
-  integrity sha512-uwjLzzsa8CeDxj+H1Vs8V9TAUyta7SB1ez1oWvOgtyAKJWuUJjGKoIv7kajnC9L5lTxqu74JevuMj3KrFYwkcg==
+form-urlencoded@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/form-urlencoded/-/form-urlencoded-4.0.0.tgz#52d327a5ee01543213d097c0e1858d26416e32ab"
+  integrity sha512-tUHIz8E23GdqGVGcoxWfuWqvvPKADrmbN/pmOW6z0LX0/1csIszOBI56u4H7lVoKk4a+iZvfzATo1yteJULmtQ==
 
 forwarded@~0.1.2:
   version "0.1.2"
