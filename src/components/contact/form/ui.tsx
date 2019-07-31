@@ -100,7 +100,6 @@ export function FormUi(props: Props) {
         <Row>
           <Input
             name="name"
-            aria-label="Name"
             type="text"
             placeholder="Name"
             value={props.name}
@@ -109,7 +108,6 @@ export function FormUi(props: Props) {
           />
           <Input
             name="email"
-            aria-label="Email"
             type="email"
             placeholder="Email"
             value={props.email}
@@ -119,7 +117,6 @@ export function FormUi(props: Props) {
         </Row>
         <TextArea
           name="message"
-          aria-label="Message"
           rows={4}
           placeholder="Message"
           value={props.message}
@@ -128,7 +125,6 @@ export function FormUi(props: Props) {
         />
         <Submit
           type="submit"
-          data-testid="Send Message"
           value="Send Message"
           disabled={props.submitDisabled}
         />

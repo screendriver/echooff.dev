@@ -22,8 +22,8 @@ test(
   'render given name in an input',
   withCleanup(t => {
     t.plan(1);
-    const { getByLabelText } = renderFormUi({ name: 'My name' });
-    const input = getByLabelText('Name') as HTMLInputElement;
+    const { getByPlaceholderText } = renderFormUi({ name: 'My name' });
+    const input = getByPlaceholderText('Name') as HTMLInputElement;
     t.equal(input.value, 'My name');
   }),
 );
@@ -32,8 +32,8 @@ test(
   'render given email in an input',
   withCleanup(t => {
     t.plan(1);
-    const { getByLabelText } = renderFormUi({ email: 'foo@example.com' });
-    const input = getByLabelText('Email') as HTMLInputElement;
+    const { getByPlaceholderText } = renderFormUi({ email: 'foo@example.com' });
+    const input = getByPlaceholderText('Email') as HTMLInputElement;
     t.equal(input.value, 'foo@example.com');
   }),
 );
@@ -42,8 +42,8 @@ test(
   'render given message in a textarea',
   withCleanup(t => {
     t.plan(1);
-    const { getByLabelText } = renderFormUi({ message: 'My message' });
-    const textarea = getByLabelText('Message') as HTMLTextAreaElement;
+    const { getByPlaceholderText } = renderFormUi({ message: 'My message' });
+    const textarea = getByPlaceholderText('Message') as HTMLTextAreaElement;
     t.equal(textarea.value, 'My message');
   }),
 );
