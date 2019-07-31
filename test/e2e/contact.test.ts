@@ -12,11 +12,11 @@ fixture('Contact form')
   .requestHooks(mock);
 
 test('show "Thank you" message after submitting contact form', async t => {
-  const nameInput = Selector('input[aria-label="Name"]');
-  const emailInput = Selector('input[aria-label="Email"]');
-  const messageInput = Selector('textarea[aria-label="Message"]');
+  const nameInput = Selector('input[placeholder="Name"]');
+  const emailInput = Selector('input[placeholder="Email"]');
+  const messageInput = Selector('textarea[placeholder="Message"]');
   const submit = Selector('input[type="submit"]').withAttribute(
-    'data-testid',
+    'value',
     'Send Message',
   );
   await t
