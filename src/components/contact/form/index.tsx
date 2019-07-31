@@ -11,7 +11,6 @@ import {
   setFormSent,
 } from './reducer';
 import { FormUi } from './ui';
-import { sendForm } from './send';
 import { FormSent } from './formSent';
 
 function handleInputChange(dispatch: Dispatch<Action>) {
@@ -31,18 +30,26 @@ function handleInputChange(dispatch: Dispatch<Action>) {
   };
 }
 
-function handleSubmit(state: State, dispatch: Dispatch<Action>) {
+function handleSubmit(
+  state: State,
+  dispatch: Dispatch<Action>,
+  onSubmit: Props['onSubmit'],
+) {
   return async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(setSubmitDisabled(true));
     const { name, email, message } = state;
-    await sendForm({ name, email, message });
+    await onSubmit({ name, email, message });
     dispatch(setSubmitDisabled(false));
     dispatch(setFormSent(true));
   };
 }
 
-export function Form() {
+export interface Props {
+  onSubmit(formValues: Pick<State, 'name' | 'email' | 'message'>): void;
+}
+
+export function Form(props: Props) {
   const [state, dispatch] = useReducer(reducer, initialState);
   return state.formSent ? (
     <FormSent />
@@ -53,7 +60,7 @@ export function Form() {
       message={state.message}
       submitDisabled={state.submitDisabled}
       onInputChange={handleInputChange(dispatch)}
-      onSubmit={handleSubmit(state, dispatch)}
+      onSubmit={handleSubmit(state, dispatch, props.onSubmit)}
     />
   );
 }

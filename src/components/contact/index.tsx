@@ -10,6 +10,7 @@ import styled from '@emotion/styled';
 import { Section, SectionTheme } from '../Section';
 import { black, white } from '../../colors';
 import { Form } from './form';
+import { sendForm } from './form/send';
 
 const Address = styled.address({
   display: 'flex',
@@ -68,7 +69,7 @@ export function Contact() {
             <p>Threema ID: 9TWBW4XN</p>
           </BigLink>
         </LinkList>
-        <Form />
+        <Form onSubmit={sendForm} />
         <SmallLinkList>
           <SmallLink href="https://twitter.com/CallistoShip">
             <Twitter />
