@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "../../target/src/functions"
+  },
+  "include": ["./**/*"],
+  "exclude": ["node_modules"]
+}
