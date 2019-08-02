@@ -1,5 +1,6 @@
 [build]
   publish = "public"
+  functions = "target/src/functions/"
 
 [[redirects]]
   from = "https://echooff.de/*"
