@@ -9,7 +9,7 @@ import {
   Layers,
 } from 'react-feather';
 import styled from '@emotion/styled';
-import { Section, SectionTheme } from './Section';
+import { Section, ColorScheme } from './Section';
 
 const List = styled.ul({
   display: 'flex',
@@ -41,7 +41,7 @@ const ListItem = styled.li({
 
 export function Passions() {
   return (
-    <Section heading="Passions" id="passions" theme={SectionTheme.Light}>
+    <Section heading="Passions" id="passions" colorScheme={ColorScheme.Light}>
       <List>
         <ListItem>
           <Check size={30} />

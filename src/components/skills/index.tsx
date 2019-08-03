@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Section, SectionTheme } from '../Section';
-import { Card } from './card';
+import { Section, ColorScheme } from '../Section';
+import { Card } from './Card';
 import { TypeScriptIcon } from './icons/typescript';
 import { JavaScriptIcon } from './icons/javascript';
 import { ReactIcon } from './icons/react';
@@ -28,7 +28,7 @@ const SkillsList = styled.div({
 
 export function Skills() {
   return (
-    <Section heading="Skills" id="skills" theme={SectionTheme.Cyan}>
+    <Section heading="Skills" id="skills" colorScheme={ColorScheme.Cyan}>
       <SkillsList>
         <Card
           linkTo="https://www.typescriptlang.org"

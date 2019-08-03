@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { white, black, cyan, light } from '../colors';
 
-export enum SectionTheme {
+export enum ColorScheme {
   Cyan,
   Light,
 }
@@ -10,38 +10,38 @@ export enum SectionTheme {
 interface SectionProps {
   heading: string;
   id: HTMLHeadingElement['id'];
-  theme: SectionTheme;
+  colorScheme: ColorScheme;
 }
 
-type ThemeProps = Pick<SectionProps, 'theme'>;
+type ColorSchemeProps = Pick<SectionProps, 'colorScheme'>;
 
-const SectionStyled = styled.section((props: ThemeProps) => ({
-  backgroundColor: props.theme === SectionTheme.Cyan ? cyan : light,
+const SectionStyled = styled.section<ColorSchemeProps>(props => ({
+  backgroundColor: props.colorScheme === ColorScheme.Cyan ? cyan : light,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   padding: '50px 15px',
 }));
 
-const Heading = styled.h1((props: ThemeProps) => ({
+const Heading = styled.h1<ColorSchemeProps>(props => ({
   fontSize: 32,
-  color: props.theme === SectionTheme.Light ? black : white,
+  color: props.colorScheme === ColorScheme.Light ? black : white,
 }));
 
-const Line = styled.hr((props: ThemeProps) => ({
+const Line = styled.hr<ColorSchemeProps>(props => ({
   height: 4,
   width: 70,
   marginBottom: 40,
   backgroundColor:
-    props.theme === SectionTheme.Light ? cyan : 'rgba(255, 255, 255, 0.3)',
+    props.colorScheme === ColorScheme.Light ? cyan : 'rgba(255, 255, 255, 0.3)',
   border: 0,
 }));
 
 export const Section: FC<SectionProps> = props => {
   return (
-    <SectionStyled id={props.id} theme={props.theme}>
-      <Heading theme={props.theme}>{props.heading}</Heading>
-      <Line theme={props.theme} />
+    <SectionStyled id={props.id} colorScheme={props.colorScheme}>
+      <Heading colorScheme={props.colorScheme}>{props.heading}</Heading>
+      <Line colorScheme={props.colorScheme} />
       {props.children}
     </SectionStyled>
   );
