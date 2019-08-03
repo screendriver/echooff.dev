@@ -2,7 +2,7 @@ import React from 'react';
 import { graphql, StaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
 import { white, black } from '../colors';
-import { Section, SectionTheme } from './Section';
+import { Section, ColorScheme } from './Section';
 import { Config } from '../shared/config';
 
 interface GraphQLData {
@@ -66,7 +66,7 @@ function Stat(props: StatProps) {
 function StatsComponent({ data, staticNumbers }: StatsComponentProps) {
   const { repositories, starredRepositories } = data.github.user;
   return (
-    <Section heading="Some Stats" id="stats" theme={SectionTheme.Cyan}>
+    <Section heading="Some Stats" id="stats" colorScheme={ColorScheme.Cyan}>
       <StatList>
         <Stat counter={999999} text="Lines of Code" />
         <Stat

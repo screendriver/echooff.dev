@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Img, { FixedObject } from 'gatsby-image';
 import { grey } from '../../colors';
-import { Section, SectionTheme } from '../Section';
+import { Section, ColorScheme } from '../Section';
 
 const AboutImage = styled(Img)({
   borderRadius: 180,
@@ -35,7 +35,7 @@ export interface AboutUiProps {
 
 export function AboutUi({ fixedImage }: AboutUiProps) {
   return (
-    <Section heading="About" id="about" theme={SectionTheme.Light}>
+    <Section heading="About" id="about" colorScheme={ColorScheme.Light}>
       <AboutImage alt="My face" fixed={fixedImage} />
       <Text>
         JavaScript is everywhere. In the old days, being a JavaScript developer

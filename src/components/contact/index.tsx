@@ -7,7 +7,7 @@ import {
   Linkedin,
 } from 'react-feather';
 import styled from '@emotion/styled';
-import { Section, SectionTheme } from '../Section';
+import { Section, ColorScheme } from '../Section';
 import { black, white } from '../../colors';
 import { Form } from './form';
 import { sendForm } from './form/send';
@@ -57,7 +57,7 @@ const SmallLink = styled.a({
 
 export function Contact() {
   return (
-    <Section heading="Contact" id="contact" theme={SectionTheme.Cyan}>
+    <Section heading="Contact" id="contact" colorScheme={ColorScheme.Cyan}>
       <Address>
         <LinkList>
           <BigLink href="https://www.openstreetmap.org/search?query=munich%20germany#map=11/48.1551/11.5418">

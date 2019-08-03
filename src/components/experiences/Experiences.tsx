@@ -1,7 +1,7 @@
 import React, { CSSProperties } from 'react';
 import { graphql, StaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
-import { Section, SectionTheme } from '../Section';
+import { Section, ColorScheme } from '../Section';
 import { Circle } from './Circle';
 import { Description } from './Description';
 import { Experience } from '.';
@@ -96,7 +96,11 @@ function ExperiencesComponent({ data }: ExperiencesComponentProps) {
     }),
   );
   return (
-    <Section heading="Experience" id="experience" theme={SectionTheme.Light}>
+    <Section
+      heading="Experience"
+      id="experience"
+      colorScheme={ColorScheme.Light}
+    >
       <Timeline>
         {experiences.map((experience, index) => (
           <Moment
