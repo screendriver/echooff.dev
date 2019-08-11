@@ -79,7 +79,7 @@
     "prettier": "1.18.2",
     "serve": "11.1.0",
     "serve-handler": "6.1.1",
-    "sinon": "7.3.2",
+    "sinon": "7.4.1",
     "source-map-support": "0.5.13",
     "tap-nirvana": "1.1.0",
     "tap-xunit": "2.4.1",
