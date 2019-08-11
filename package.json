@@ -47,7 +47,7 @@
   "devDependencies": {
     "@testing-library/react": "9.1.0",
     "@types/form-urlencoded": "2.0.1",
-    "@types/got": "9.6.5",
+    "@types/got": "9.6.6",
     "@types/gsap": "1.20.2",
     "@types/lodash.sample": "4.2.6",
     "@types/micro": "7.3.3",
