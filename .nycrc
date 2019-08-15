@@ -11,7 +11,7 @@
   "exclude-after-remap": false,
   "reporter": [
     "lcov",
-    "cobertura",
+    "text",
     "text-summary"
   ]
 }
