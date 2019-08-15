@@ -43,7 +43,7 @@
     "typeface-source-sans-pro": "0.0.75"
   },
   "devDependencies": {
-    "@testing-library/react": "9.1.1",
+    "@testing-library/react": "9.1.2",
     "@types/form-urlencoded": "2.0.1",
     "@types/got": "9.6.6",
     "@types/gsap": "1.20.2",
@@ -54,6 +54,7 @@
     "@types/react-helmet": "5.0.9",
     "@types/sinon": "7.0.13",
     "@types/tape": "4.2.33",
+    "@types/testing-library__react": "9.1.0",
     "backstopjs": "4.1.9",
     "esm": "3.2.25",
     "gatsby-plugin-emotion": "4.1.2",
