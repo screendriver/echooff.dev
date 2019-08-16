@@ -10,7 +10,7 @@
     "lint": "tslint -c tslint.json 'src/**/*.ts?(x)' 'test/**/*.ts?(x)'",
     "prettier:check": "prettier --check 'src/**/*.ts?(x)' 'test/**/*.ts?(x)' 'typings/**/*.ts'",
     "copy:paste:detector": "jscpd src test typings",
-    "compile": "tsc && tsc -p src/functions/",
+    "compile": "tsc",
     "develop": "GATSBY_GRAPHQL_IDE=playground gatsby develop",
     "build": "gatsby build",
     "build:visual": "GATSBY_VISUAL_REGRESSION_TEST=true gatsby build",

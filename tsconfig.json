@@ -20,5 +20,5 @@
     "typeRoots": ["./typings", "./node_modules/@types"]
   },
   "include": ["src/**/*", "test/**/*"],
-  "exclude": ["node_modules", "src/functions"]
+  "exclude": ["node_modules"]
 }
