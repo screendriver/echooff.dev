@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql, StaticQuery } from 'gatsby';
+import { graphql, useStaticQuery } from 'gatsby';
 import { SeoUi } from './ui';
 
 interface QueryResult {
@@ -18,19 +18,6 @@ interface SEOProps {
   title?: string;
 }
 
-export function SEO(props: SEOProps) {
-  return (
-    <StaticQuery
-      query={query}
-      // tslint:disable-next-line jsx-no-lambda
-      render={({ site: { siteMetadata } }: QueryResult) => {
-        const { title = siteMetadata.title } = props;
-        return <SeoUi {...siteMetadata} title={title} />;
-      }}
-    />
-  );
-}
-
 const query = graphql`
   query SEO {
     site {
@@ -44,3 +31,11 @@ const query = graphql`
     }
   }
 `;
+
+export function SEO(props: SEOProps) {
+  const {
+    site: { siteMetadata },
+  } = useStaticQuery<QueryResult>(query);
+  const { title = siteMetadata.title } = props;
+  return <SeoUi {...siteMetadata} title={title} />;
+}

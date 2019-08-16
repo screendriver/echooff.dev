@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql, StaticQuery } from 'gatsby';
+import { graphql, useStaticQuery } from 'gatsby';
 import { FixedObject } from 'gatsby-image';
 import { AboutUi } from './ui';
 
@@ -23,10 +23,7 @@ const query = graphql`
   }
 `;
 
-function renderAboutUi(data: GraphQLData) {
-  return <AboutUi fixedImage={data.aboutFile.childImageSharp.fixed} />;
-}
-
 export function About() {
-  return <StaticQuery query={query} render={renderAboutUi} />;
+  const data = useStaticQuery<GraphQLData>(query);
+  return <AboutUi fixedImage={data.aboutFile.childImageSharp.fixed} />;
 }
