@@ -22,7 +22,7 @@
     "test:unit:coverage": "nyc tape -r esm -r source-map-support/register -r jsdom-global/register -r './target/test/setup.js' 'target/test/unit/**/*.js' | tap-nyc"
   },
   "dependencies": {
-    "@emotion/core": "10.0.15",
+    "@emotion/core": "10.0.16",
     "@emotion/styled": "10.0.15",
     "@types/aws-lambda": "8.10.31",
     "form-urlencoded": "4.0.0",
