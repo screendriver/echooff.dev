@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react';
-import { graphql, StaticQuery } from 'gatsby';
+import { graphql, useStaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
 import { Section, ColorScheme } from '../Section';
 import { Circle } from './Circle';
@@ -136,8 +136,6 @@ const query = graphql`
 `;
 
 export function Experiences() {
-  function render(data: GraphQLData) {
-    return <ExperiencesComponent data={data} />;
-  }
-  return <StaticQuery query={query} render={render} />;
+  const data = useStaticQuery<GraphQLData>(query);
+  return <ExperiencesComponent data={data} />;
 }

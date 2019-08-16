@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { graphql, StaticQuery } from 'gatsby';
+import { graphql, useStaticQuery } from 'gatsby';
 import Img, { FluidObject } from 'gatsby-image';
 import sample from 'lodash.sample';
 import styled from '@emotion/styled';
@@ -141,13 +141,11 @@ interface HeaderProps {
 }
 
 export function Header(props: HeaderProps) {
-  function render(data: GraphQLData) {
-    return (
-      <HeaderComponent
-        randomHeaderImage={!props.config.visualRegressionTest}
-        data={data}
-      />
-    );
-  }
-  return <StaticQuery query={query} render={render} />;
+  const data = useStaticQuery<GraphQLData>(query);
+  return (
+    <HeaderComponent
+      randomHeaderImage={!props.config.visualRegressionTest}
+      data={data}
+    />
+  );
 }

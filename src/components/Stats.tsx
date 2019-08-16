@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql, StaticQuery } from 'gatsby';
+import { graphql, useStaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
 import { white, black } from '../colors';
 import { Section, ColorScheme } from './Section';
@@ -106,13 +106,11 @@ interface StatsProps {
 }
 
 export function Stats(props: StatsProps) {
-  function render(data: GraphQLData) {
-    return (
-      <StatsComponent
-        staticNumbers={props.config.visualRegressionTest}
-        data={data}
-      />
-    );
-  }
-  return <StaticQuery query={query} render={render} />;
+  const data = useStaticQuery<GraphQLData>(query);
+  return (
+    <StatsComponent
+      staticNumbers={props.config.visualRegressionTest}
+      data={data}
+    />
+  );
 }
