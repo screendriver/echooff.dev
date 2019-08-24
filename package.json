@@ -56,6 +56,7 @@
     "@types/tape": "4.2.33",
     "@types/testing-library__react": "9.1.1",
     "backstopjs": "4.1.9",
+    "eslint": "6.2.2",
     "esm": "3.2.25",
     "gatsby-plugin-emotion": "4.1.4",
     "gatsby-plugin-netlify": "2.1.10",
