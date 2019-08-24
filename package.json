@@ -55,6 +55,7 @@
     "@types/sinon": "7.0.13",
     "@types/tape": "4.2.33",
     "@types/testing-library__react": "9.1.1",
+    "@typescript-eslint/eslint-plugin": "2.0.0",
     "@typescript-eslint/parser": "2.0.0",
     "backstopjs": "4.1.9",
     "eslint": "6.2.2",
