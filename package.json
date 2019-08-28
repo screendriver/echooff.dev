@@ -83,7 +83,7 @@
     "tap-nirvana": "1.1.0",
     "tap-nyc": "1.0.3",
     "tape": "4.11.0",
-    "testcafe": "1.4.1",
+    "testcafe": "1.4.2",
     "tslint": "5.19.0",
     "tslint-config-prettier": "1.18.0",
     "tslint-react": "4.0.0",
