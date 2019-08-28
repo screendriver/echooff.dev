@@ -7,7 +7,7 @@
   "author": "Christian Rackerseder <git@echooff.de>",
   "license": "MIT",
   "scripts": {
-    "lint": "tslint -c tslint.json 'src/**/*.ts?(x)' 'test/**/*.ts?(x)'",
+    "lint": "eslint --ignore-path .gitignore . --ext ts,tsx src test",
     "prettier:check": "prettier --check 'src/**/*.ts?(x)' 'test/**/*.ts?(x)' 'typings/**/*.ts'",
     "copy:paste:detector": "jscpd src test typings",
     "compile": "tsc",
@@ -55,7 +55,14 @@
     "@types/sinon": "7.0.13",
     "@types/tape": "4.2.33",
     "@types/testing-library__react": "9.1.1",
+    "@typescript-eslint/eslint-plugin": "2.0.0",
+    "@typescript-eslint/parser": "2.0.0",
     "backstopjs": "4.1.9",
+    "eslint": "6.2.2",
+    "eslint-config-prettier": "6.1.0",
+    "eslint-plugin-prettier": "3.1.0",
+    "eslint-plugin-react": "7.14.3",
+    "eslint-plugin-testcafe": "0.2.1",
     "esm": "3.2.25",
     "gatsby-plugin-emotion": "4.1.4",
     "gatsby-plugin-netlify": "2.1.10",
@@ -84,9 +91,6 @@
     "tap-nyc": "1.0.3",
     "tape": "4.11.0",
     "testcafe": "1.4.2",
-    "tslint": "5.19.0",
-    "tslint-config-prettier": "1.18.0",
-    "tslint-react": "4.0.0",
     "typescript": "3.6.2"
   }
 }

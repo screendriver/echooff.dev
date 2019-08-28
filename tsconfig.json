@@ -16,7 +16,6 @@
     "incremental": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "plugins": [{ "name": "typescript-tslint-plugin" }],
     "typeRoots": ["./typings", "./node_modules/@types"]
   },
   "include": ["src/**/*", "test/**/*"],
