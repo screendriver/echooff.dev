@@ -104,7 +104,7 @@ const HeaderComponent: FC<HeaderComponentProps> = ({
       <ImgStyled fluid={fluid} />
       <Intro>
         <Hello>
-          Hello, I'm <Name>Christian</Name>
+          Hello, I&apos;m <Name>Christian</Name>
         </Hello>
         <JobTitle>{data.site.siteMetadata.description}</JobTitle>
       </Intro>

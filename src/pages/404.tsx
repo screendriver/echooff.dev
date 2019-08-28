@@ -63,6 +63,41 @@ function run() {
     'M161.2 118.9c0 2.2-1.8 4-4 4s-4-1.8-4-4c0-1 .4-2 1.1-2.7.7-.8 1.8-1.3 2.9-1.3 2.2 0 4 1.7 4 4z';
   const mouthShape3 =
     'M149.2 116.7c-4.6 3.7-6.7 8.8-5.2 14.6.1.3.1.5.2.8.6 1.5 2.4 2.3 3.9 1.7l11.2-4.4 11.2-4.4c1.5-.6 2.3-2.4 1.7-3.9-.1-.3-.2-.5-.4-.7-2.8-5.2-8.2-7.2-14-6.9-3.6.2-5.9 1.1-8.6 3.2z';
+
+  function goDark() {
+    TweenMax.set('#light', { visibility: 'hidden' });
+
+    TweenMax.set('.lettersSide', {
+      fill: lettersSideDark,
+      stroke: lettersStrokeDark,
+    });
+    TweenMax.set('.lettersFront', {
+      fill: lettersFrontDark,
+      stroke: lettersStrokeDark,
+    });
+    TweenMax.set('#lettersShadow', { opacity: 0.05 });
+
+    TweenMax.set('.hlFur', { fill: furDarkColor });
+    TweenMax.set('.hlSkin', { fill: skinDarkColor });
+  }
+
+  function goLight() {
+    TweenMax.set('#light', { visibility: 'visible' });
+
+    TweenMax.set('.lettersSide', {
+      fill: lettersSideLight,
+      stroke: lettersStrokeLight,
+    });
+    TweenMax.set('.lettersFront', {
+      fill: lettersFrontLight,
+      stroke: lettersStrokeLight,
+    });
+    TweenMax.set('#lettersShadow', { opacity: 0.2 });
+
+    TweenMax.set('.hlFur', { fill: furLightColor });
+    TweenMax.set('.hlSkin', { fill: skinLightColor });
+  }
+
   const chatterTL = new TimelineMax({ paused: true, repeat: -1, yoyo: true });
   chatterTL
     .to(
@@ -89,6 +124,7 @@ function run() {
     .to(['#armL', '#flashlightFront'], 0.075, { x: 0 }, '2.725')
     .to(['#armL', '#flashlightFront'], 0.075, { x: 7 }, '2.8')
     .to(['#armL', '#flashlightFront'], 0.075, { x: 0 }, '2.875')
+    // eslint-disable-next-line
     // @ts-ignore
     .addCallback(goLight, '3.2')
     .addCallback(goDark, '3.3')
@@ -171,40 +207,6 @@ function run() {
     .to(['#armL', '#flashlightFront'], 0.075, { x: 0 }, '11.725')
     .to(['#armL', '#flashlightFront'], 0.075, { x: 7 }, '11.8')
     .to(['#armL', '#flashlightFront'], 0.075, { x: 0 }, '11.875');
-
-  function goDark() {
-    TweenMax.set('#light', { visibility: 'hidden' });
-
-    TweenMax.set('.lettersSide', {
-      fill: lettersSideDark,
-      stroke: lettersStrokeDark,
-    });
-    TweenMax.set('.lettersFront', {
-      fill: lettersFrontDark,
-      stroke: lettersStrokeDark,
-    });
-    TweenMax.set('#lettersShadow', { opacity: 0.05 });
-
-    TweenMax.set('.hlFur', { fill: furDarkColor });
-    TweenMax.set('.hlSkin', { fill: skinDarkColor });
-  }
-
-  function goLight() {
-    TweenMax.set('#light', { visibility: 'visible' });
-
-    TweenMax.set('.lettersSide', {
-      fill: lettersSideLight,
-      stroke: lettersStrokeLight,
-    });
-    TweenMax.set('.lettersFront', {
-      fill: lettersFrontLight,
-      stroke: lettersStrokeLight,
-    });
-    TweenMax.set('#lettersShadow', { opacity: 0.2 });
-
-    TweenMax.set('.hlFur', { fill: furLightColor });
-    TweenMax.set('.hlSkin', { fill: skinLightColor });
-  }
 
   goDark();
   yetiTL.play();
