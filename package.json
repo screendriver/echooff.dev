@@ -7,7 +7,7 @@
   "author": "Christian Rackerseder <git@echooff.de>",
   "license": "MIT",
   "scripts": {
-    "lint": "tslint -c tslint.json 'src/**/*.ts?(x)' 'test/**/*.ts?(x)'",
+    "lint": "eslint --ignore-path .gitignore . --ext ts,tsx src test",
     "prettier:check": "prettier --check 'src/**/*.ts?(x)' 'test/**/*.ts?(x)' 'typings/**/*.ts'",
     "copy:paste:detector": "jscpd src test typings",
     "compile": "tsc",
