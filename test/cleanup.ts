@@ -2,8 +2,8 @@ import { Test, TestCase } from 'tape';
 import { cleanup } from '@testing-library/react';
 
 export function withCleanup(testCase: TestCase): TestCase {
-  return async (t: Test) => {
-    await testCase(t);
+  return (t: Test) => {
+    testCase(t);
     cleanup();
   };
 }

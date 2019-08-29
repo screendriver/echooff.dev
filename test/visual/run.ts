@@ -8,7 +8,7 @@ async function run() {
       public: 'public',
     });
   });
-  await server.listen(9000);
+  server.listen(9000);
   try {
     await backstop(process.argv[2], { docker: true });
   } catch (e) {

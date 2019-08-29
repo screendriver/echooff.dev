@@ -15,7 +15,7 @@ const props: SeoUiProps = {
 
 test(
   'renders a title',
-  withCleanup(async t => {
+  withCleanup(t => {
     t.plan(1);
     render(<SeoUi {...props} />);
     const { title } = Helmet.peek();
