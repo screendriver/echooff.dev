@@ -35,11 +35,11 @@ function handleSubmit(
   dispatch: Dispatch<Action>,
   onSubmit: Props['onSubmit'],
 ) {
-  return async (event: FormEvent<HTMLFormElement>) => {
+  return (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(setSubmitDisabled(true));
     const { name, email, message } = state;
-    await onSubmit({ name, email, message });
+    onSubmit({ name, email, message });
     dispatch(setSubmitDisabled(false));
     dispatch(setFormSent(true));
   };

@@ -15,7 +15,7 @@ const props: AboutUiProps = {
 
 test(
   'renders an about image',
-  withCleanup(async t => {
+  withCleanup(t => {
     t.plan(4);
     const { getByAltText } = render(<AboutUi {...props} />);
     const image = getByAltText('My face');
