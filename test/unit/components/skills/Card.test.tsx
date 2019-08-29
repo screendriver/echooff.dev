@@ -1,8 +1,6 @@
 import React from 'react';
-import test from 'tape';
 import { render } from '@testing-library/react';
 import { Card, CardProps } from '../../../../src/components/skills/Card';
-import { withCleanup } from '../../../cleanup';
 
 function renderCard() {
   const props: CardProps = {
@@ -14,42 +12,22 @@ function renderCard() {
   return render(<Card {...props} />);
 }
 
-test(
-  '<Card /> renders a link that links to given "linkTo" prop',
-  withCleanup(t => {
-    t.plan(1);
-    const { getByTitle } = renderCard();
-    getByTitle('My blog');
-    t.pass();
-  }),
-);
+test('<Card /> renders a link that links to given "linkTo" prop', () => {
+  const { getByTitle } = renderCard();
+  getByTitle('My blog');
+});
 
-test(
-  '<Card /> renders given icon',
-  withCleanup(t => {
-    t.plan(1);
-    const { getByTestId } = renderCard();
-    getByTestId('test-svg');
-    t.pass();
-  }),
-);
+test('<Card /> renders given icon', () => {
+  const { getByTestId } = renderCard();
+  getByTestId('test-svg');
+});
 
-test(
-  '<Card /> renders given linkText',
-  withCleanup(t => {
-    t.plan(1);
-    const { getByText } = renderCard();
-    getByText('My blog');
-    t.pass();
-  }),
-);
+test('<Card /> renders given linkText', () => {
+  const { getByText } = renderCard();
+  getByText('My blog');
+});
 
-test(
-  '<Card /> renders given description',
-  withCleanup(t => {
-    t.plan(1);
-    const { getByText } = renderCard();
-    getByText('This is a test');
-    t.pass();
-  }),
-);
+test('<Card /> renders given description', () => {
+  const { getByText } = renderCard();
+  getByText('This is a test');
+});

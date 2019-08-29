@@ -1,7 +1,5 @@
 import React from 'react';
-import test from 'tape';
 import { render } from '@testing-library/react';
-import { withCleanup } from '../../../cleanup';
 import { AboutUi, AboutUiProps } from '../../../../src/components/about/ui';
 
 const props: AboutUiProps = {
@@ -13,49 +11,30 @@ const props: AboutUiProps = {
   },
 };
 
-test(
-  'renders an about image',
-  withCleanup(t => {
-    t.plan(4);
-    const { getByAltText } = render(<AboutUi {...props} />);
-    const image = getByAltText('My face');
-    t.equal(image.getAttribute('src'), 'myImage.png');
-    t.equal(image.getAttribute('srcset'), 'myImage.png 1x');
-    t.equal(image.getAttribute('width'), '800');
-    t.equal(image.getAttribute('height'), '600');
-  }),
-);
+test('renders an about image', () => {
+  const { getByAltText } = render(<AboutUi {...props} />);
+  const image = getByAltText('My face');
+  expect(image.getAttribute('src')).toBe('myImage.png');
+  expect(image.getAttribute('srcset')).toBe('myImage.png 1x');
+  expect(image.getAttribute('width')).toBe('800');
+  expect(image.getAttribute('height')).toBe('600');
+});
 
-test(
-  'renders a "JavaScript is everywhere" paragraph',
-  withCleanup(t => {
-    t.plan(1);
-    const { getByText } = render(<AboutUi {...props} />);
-    getByText(
-      'JavaScript is everywhere. In the old days, being a JavaScript developer meant that you were a front end web developer. Forever bound to the browser.',
-    );
-    t.pass();
-  }),
-);
+test('renders a "JavaScript is everywhere" paragraph', () => {
+  const { getByText } = render(<AboutUi {...props} />);
+  getByText(
+    'JavaScript is everywhere. In the old days, being a JavaScript developer meant that you were a front end web developer. Forever bound to the browser.',
+  );
+});
 
-test(
-  'renders a "Those days are gone" heading',
-  withCleanup(t => {
-    t.plan(1);
-    const { getByText } = render(<AboutUi {...props} />);
-    getByText('Those days are gone.');
-    t.pass();
-  }),
-);
+test('renders a "Those days are gone" heading', () => {
+  const { getByText } = render(<AboutUi {...props} />);
+  getByText('Those days are gone.');
+});
 
-test(
-  'renders a "The rise of Node.js" paragraph',
-  withCleanup(t => {
-    t.plan(1);
-    const { getByText } = render(<AboutUi {...props} />);
-    getByText(
-      'The rise of Node.js ushered in a new era. An era where being a JavaScript developer doesn’t necessarily mean a front-end web developer. As a JavaScript developer today, you can target more platforms than any other high level language.',
-    );
-    t.pass();
-  }),
-);
+test('renders a "The rise of Node.js" paragraph', () => {
+  const { getByText } = render(<AboutUi {...props} />);
+  getByText(
+    'The rise of Node.js ushered in a new era. An era where being a JavaScript developer doesn’t necessarily mean a front-end web developer. As a JavaScript developer today, you can target more platforms than any other high level language.',
+  );
+});
