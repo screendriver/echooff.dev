@@ -6,7 +6,7 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "tsconfigRootDir": "./"
+    "project": "./tsconfig.json"
   },
   "extends": [
     "eslint:recommended",
