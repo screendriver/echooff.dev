@@ -6,7 +6,6 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "project": "./tsconfig.json",
     "tsconfigRootDir": "./"
   },
   "extends": [
