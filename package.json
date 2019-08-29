@@ -7,7 +7,7 @@
   "author": "Christian Rackerseder <git@echooff.de>",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint --ignore-path .gitignore . --ext ts,tsx src test",
+    "lint": "eslint --ignore-path .gitignore --ext ts,tsx src test",
     "copy:paste:detector": "jscpd src test typings",
     "compile": "tsc",
     "develop": "GATSBY_GRAPHQL_IDE=playground gatsby develop",
