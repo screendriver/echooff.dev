@@ -6,5 +6,12 @@
   "lockFileMaintenance": { "enabled": true },
   "nvm": {
     "enabled": false
-  }
+  },
+  "packageRules": [
+    {
+      "packagePatterns": ["^gatsby"],
+      "groupName": "gatsby packages",
+      "extends": ["schedule:earlyMondays"]
+    }
+  ]
 }
