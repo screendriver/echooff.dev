@@ -54,3 +54,8 @@ jobs:
         with:
           event: netlify-deploy-succeeded
           key: ${{ secrets.IFTTT_NETLIFY_DEPLOY_SUCCEEDED_KEY }}
+      - name: Lighthouse Audit
+        if: github.ref == 'refs/heads/master'
+        uses: jakejarvis/lighthouse-action@master
+        with:
+          url: https://www.echooff.dev
