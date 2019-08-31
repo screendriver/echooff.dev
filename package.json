@@ -20,8 +20,8 @@
     "test:unit": "jest test/unit"
   },
   "dependencies": {
-    "@emotion/core": "10.0.16",
-    "@emotion/styled": "10.0.15",
+    "@emotion/core": "10.0.17",
+    "@emotion/styled": "10.0.17",
     "@types/aws-lambda": "8.10.31",
     "form-urlencoded": "4.0.0",
     "gatsby": "2.14.1",
