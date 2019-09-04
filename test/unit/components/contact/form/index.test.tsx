@@ -1,45 +1,46 @@
+import test from 'ava';
+import sinon from 'sinon';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, cleanup } from '@testing-library/react';
 import { Form, Props } from '../../../../../src/components/contact/form/';
 
 function renderForm(overrides: Partial<Props> = {}) {
   const props: Props = {
-    onSubmit: jest.fn(),
+    onSubmit: sinon.fake(),
     ...overrides,
   };
   return render(<Form {...props} />);
 }
 
-test('renders a "Leave me a message" text', () => {
+test.afterEach(cleanup);
+
+test('renders a "Leave me a message" text', t => {
   const { queryByText } = renderForm();
   const actual = queryByText('Leave me a message');
   const expected = null;
-  expect(actual).not.toEqual(expected);
+  t.not(actual, expected);
 });
 
-test('renders a required "Name" input field', () => {
+test('renders a required "Name" input field', t => {
   const { getByPlaceholderText } = renderForm();
   const actual = getByPlaceholderText('Name') as HTMLInputElement;
-  const expected = true;
-  expect(actual.required).toEqual(expected);
+  t.is(actual.required, true);
 });
 
-test('renders a required "Email" input field', () => {
+test('renders a required "Email" input field', t => {
   const { getByPlaceholderText } = renderForm();
   const actual = getByPlaceholderText('Email') as HTMLInputElement;
-  const expected = true;
-  expect(actual.required).toBe(expected);
+  t.is(actual.required, true);
 });
 
-test('renders a required "Message" textarea', () => {
+test('renders a required "Message" textarea', t => {
   const { getByPlaceholderText } = renderForm();
   const actual = getByPlaceholderText('Message') as HTMLTextAreaElement;
-  const expected = true;
-  expect(actual.required).toBe(expected);
+  t.is(actual.required, true);
 });
 
-test('calls given onSubmit callback when form is submitted', () => {
-  const onSubmit = jest.fn();
+test('calls given onSubmit callback when form is submitted', t => {
+  const onSubmit = sinon.fake();
   const { getByPlaceholderText, getByDisplayValue } = renderForm({
     onSubmit,
   });
@@ -55,9 +56,10 @@ test('calls given onSubmit callback when form is submitted', () => {
     target: { name: 'message', value: 'Test text' },
   });
   fireEvent.click(submitButton);
-  expect(onSubmit).toHaveBeenCalledWith({
+  sinon.assert.calledWith(onSubmit, {
     name: 'My name',
     email: 'test@example.com',
     message: 'Test text',
   });
+  t.pass();
 });
