@@ -1,7 +1,7 @@
 import test from 'ava';
 import sinon from 'sinon';
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import { FormUi, Props } from '../../../../../src/components/contact/form/ui';
 
 function renderFormUi(overrides: Partial<Props>) {
@@ -16,6 +16,8 @@ function renderFormUi(overrides: Partial<Props>) {
   };
   return render(<FormUi {...props} />);
 }
+
+test.afterEach(cleanup);
 
 test('render given name in an input', t => {
   const { getByPlaceholderText } = renderFormUi({ name: 'My name' });

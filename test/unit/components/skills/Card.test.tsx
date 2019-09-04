@@ -1,6 +1,6 @@
 import test from 'ava';
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import { Card, CardProps } from '../../../../src/components/skills/Card';
 
 function renderCard() {
@@ -12,6 +12,8 @@ function renderCard() {
   };
   return render(<Card {...props} />);
 }
+
+test.afterEach(cleanup);
 
 test('<Card /> renders a link that links to given "linkTo" prop', t => {
   const { getByTitle } = renderCard();

@@ -1,6 +1,6 @@
 import test from 'ava';
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import { Circle } from '../../../../src/components/experiences/Circle';
 import { Experience } from '../../../../src/components/experiences';
 
@@ -14,6 +14,8 @@ function renderCircle(className?: string) {
   };
   return render(<Circle className={className} experience={experience} />);
 }
+
+test.afterEach(cleanup);
 
 test('<Circle /> accepts and renders a CSS className', t => {
   const { container } = renderCircle('css-awesome');
