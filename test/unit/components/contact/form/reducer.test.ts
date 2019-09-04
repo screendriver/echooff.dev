@@ -1,3 +1,4 @@
+import test from 'ava';
 import {
   Action,
   reducer,
@@ -10,7 +11,7 @@ import {
   setFormSent,
 } from '../../../../../src/components/contact/form/reducer';
 
-test('initial state', () => {
+test('initial state', t => {
   const expected: State = {
     name: '',
     email: '',
@@ -18,10 +19,10 @@ test('initial state', () => {
     submitDisabled: false,
     formSent: false,
   };
-  expect(initialState).toEqual(expected);
+  t.deepEqual(initialState, expected);
 });
 
-test('change name', () => {
+test('change name', t => {
   const actual = reducer(initialState, changeName('Me'));
   const expected: State = {
     name: 'Me',
@@ -30,10 +31,10 @@ test('change name', () => {
     submitDisabled: false,
     formSent: false,
   };
-  expect(actual).toEqual(expected);
+  t.deepEqual(actual, expected);
 });
 
-test('change email', () => {
+test('change email', t => {
   const actual = reducer(initialState, changeEmail('foo@example.com'));
   const expected: State = {
     name: '',
@@ -42,10 +43,10 @@ test('change email', () => {
     submitDisabled: false,
     formSent: false,
   };
-  expect(actual).toEqual(expected);
+  t.deepEqual(actual, expected);
 });
 
-test('change message', () => {
+test('change message', t => {
   const actual = reducer(initialState, changeMessage('Test'));
   const expected: State = {
     name: '',
@@ -54,10 +55,10 @@ test('change message', () => {
     submitDisabled: false,
     formSent: false,
   };
-  expect(actual).toEqual(expected);
+  t.deepEqual(actual, expected);
 });
 
-test('change submitDisabled', () => {
+test('change submitDisabled', t => {
   const actual = reducer(initialState, setSubmitDisabled(true));
   const expected: State = {
     name: '',
@@ -66,10 +67,10 @@ test('change submitDisabled', () => {
     submitDisabled: true,
     formSent: false,
   };
-  expect(actual).toEqual(expected);
+  t.deepEqual(actual, expected);
 });
 
-test('change formSent', () => {
+test('change formSent', t => {
   const actual = reducer(initialState, setFormSent(true));
   const expected: State = {
     name: '',
@@ -78,11 +79,11 @@ test('change formSent', () => {
     submitDisabled: false,
     formSent: true,
   };
-  expect(actual).toEqual(expected);
+  t.deepEqual(actual, expected);
 });
 
-test('throw error on unknown action type', () => {
-  expect(() => {
+test('throw error on unknown action type', t => {
+  t.throws(() => {
     reducer(initialState, ({ type: 'unknown' } as unknown) as Action);
-  }).toThrow();
+  });
 });
