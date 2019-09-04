@@ -17,7 +17,7 @@
     "test:e2e": "testcafe chrome:headless,firefox:headless 'test/e2e/**/*.ts' --app 'serve public'",
     "test:visual": "node target/test/visual/run.js test",
     "test:visual:approve": "node target/test/visual/run.js approve",
-    "test:unit": "ava"
+    "test:unit": "ava --serial"
   },
   "dependencies": {
     "@emotion/core": "10.0.17",
