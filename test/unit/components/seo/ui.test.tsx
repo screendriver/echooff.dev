@@ -1,6 +1,6 @@
 import test from 'ava';
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import Helmet from 'react-helmet';
 import { SeoUi, SeoUiProps } from '../../../../src/components/seo/ui';
 
@@ -11,6 +11,8 @@ const props: SeoUiProps = {
   keywords: 'key,words',
   favicon: 'icon.png',
 };
+
+test.afterEach(cleanup);
 
 test('renders a title', t => {
   render(<SeoUi {...props} />);

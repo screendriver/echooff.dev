@@ -1,6 +1,6 @@
 import test from 'ava';
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import { AboutUi, AboutUiProps } from '../../../../src/components/about/ui';
 
 const props: AboutUiProps = {
@@ -11,6 +11,8 @@ const props: AboutUiProps = {
     srcSet: 'myImage.png 1x',
   },
 };
+
+test.afterEach(cleanup);
 
 test('renders an about image', t => {
   const { getByAltText } = render(<AboutUi {...props} />);
