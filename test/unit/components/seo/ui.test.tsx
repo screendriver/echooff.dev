@@ -1,3 +1,4 @@
+import test from 'ava';
 import React from 'react';
 import { render } from '@testing-library/react';
 import Helmet from 'react-helmet';
@@ -11,28 +12,28 @@ const props: SeoUiProps = {
   favicon: 'icon.png',
 };
 
-test('renders a title', () => {
+test('renders a title', t => {
   render(<SeoUi {...props} />);
   const { title } = Helmet.peek();
-  expect(title).toBe('test title');
+  t.is(title as unknown, 'test title');
 });
 
-test('renders lang "en" HTML attribute', () => {
+test('renders lang "en" HTML attribute', t => {
   render(<SeoUi {...props} />);
   const { htmlAttributes } = Helmet.peek();
-  expect(htmlAttributes).toEqual({ lang: 'en' });
+  t.deepEqual(htmlAttributes as unknown, { lang: 'en' });
 });
 
-test('renders a favicon', () => {
+test('renders a favicon', t => {
   render(<SeoUi {...props} />);
   const { linkTags } = Helmet.peek() as any;
-  expect(linkTags).toEqual([{ rel: 'shortcut icon', href: 'icon.png' }]);
+  t.deepEqual(linkTags, [{ rel: 'shortcut icon', href: 'icon.png' }]);
 });
 
-test('renders meta tags', () => {
+test('renders meta tags', t => {
   render(<SeoUi {...props} />);
   const { metaTags } = Helmet.peek() as any;
-  expect(metaTags).toEqual([
+  t.deepEqual(metaTags, [
     { name: 'theme-color', content: '#7bc3d1' },
     { name: 'description', content: 'my description' },
     { name: 'keywords', content: 'key,words' },

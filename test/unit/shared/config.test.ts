@@ -1,16 +1,17 @@
+import test from 'ava';
 import { createConfig } from '../../../src/shared/config';
 
-afterEach(() => {
+test.afterEach(() => {
   delete process.env.GATSBY_VISUAL_REGRESSION_TEST;
 });
 
-test('visualRegressionTest is true when GATSBY_VISUAL_REGRESSION_TEST is "true"', () => {
+test('visualRegressionTest is true when GATSBY_VISUAL_REGRESSION_TEST is "true"', t => {
   process.env.GATSBY_VISUAL_REGRESSION_TEST = 'true';
   const { visualRegressionTest } = createConfig();
-  expect(visualRegressionTest).toBe(true);
+  t.is(visualRegressionTest, true);
 });
 
-test('visualRegressionTest is false when GATSBY_VISUAL_REGRESSION_TEST is not set', () => {
+test('visualRegressionTest is false when GATSBY_VISUAL_REGRESSION_TEST is not set', t => {
   const { visualRegressionTest } = createConfig();
-  expect(visualRegressionTest).toBe(false);
+  t.is(visualRegressionTest, false);
 });
