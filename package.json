@@ -14,9 +14,8 @@
     "build": "gatsby build",
     "build:visual": "GATSBY_VISUAL_REGRESSION_TEST=true gatsby build",
     "serve": "gatsby serve",
-    "test:e2e": "testcafe chrome:headless,firefox:headless 'test/e2e/**/*.ts' --app 'serve public'",
-    "test:visual": "node target/test/visual/run.js test",
-    "test:visual:approve": "node target/test/visual/run.js approve",
+    "test:e2e": "testcafe chrome:headless,firefox:headless 'test/e2e/**/*.ts' --app 'gatsby serve'",
+    "test:visual": "percy exec -- testcafe chrome:headless 'test/visual/**/*.js' --app 'gatsby serve'",
     "test:unit": "ava --serial",
     "test:unit:coverage": "nyc ava --serial"
   },
@@ -42,6 +41,7 @@
     "typeface-source-sans-pro": "0.0.75"
   },
   "devDependencies": {
+    "@percy/testcafe": "0.2.0",
     "@testing-library/react": "9.1.4",
     "@types/form-urlencoded": "2.0.1",
     "@types/got": "9.6.7",
@@ -56,7 +56,6 @@
     "@typescript-eslint/eslint-plugin": "2.2.0",
     "@typescript-eslint/parser": "2.2.0",
     "ava": "2.3.0",
-    "backstopjs": "4.1.9",
     "eslint": "6.3.0",
     "eslint-config-prettier": "6.2.0",
     "eslint-plugin-prettier": "3.1.0",

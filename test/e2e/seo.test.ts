@@ -1,6 +1,6 @@
 import { Selector } from 'testcafe';
 
-fixture('SEO').page('http://localhost:5000');
+fixture('SEO').page('http://localhost:9000');
 
 test('title', async t => {
   await t
