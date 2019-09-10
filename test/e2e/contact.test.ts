@@ -1,6 +1,6 @@
 import { Selector, RequestLogger, RequestMock } from 'testcafe';
 
-const url = 'http://localhost:5000';
+const url = 'http://localhost:9000';
 
 const logger = RequestLogger(
   { url, method: 'POST', isAjax: true },
