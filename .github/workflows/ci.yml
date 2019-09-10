@@ -37,6 +37,8 @@ jobs:
         run: yarn test:e2e
       - name: Run visual regression tests
         run: yarn test:visual
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
       - name: Build application for production
         if: github.ref == 'refs/heads/master'
         run: yarn build
