@@ -1,4 +1,5 @@
 {
+  "all": true,
   "include": [
     "target/src/**/*.js"
   ],
