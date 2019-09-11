@@ -1,4 +1,4 @@
-import percySnapshot from '@percy/testcafe';
+import * as percySnapshot from '@percy/testcafe';
 
 fixture('Visual').page('http://localhost:9000');
 
