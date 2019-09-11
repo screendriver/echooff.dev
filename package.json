@@ -14,8 +14,8 @@
     "build": "gatsby build",
     "build:visual": "GATSBY_VISUAL_REGRESSION_TEST=true gatsby build",
     "serve": "gatsby serve",
-    "test:e2e": "testcafe chrome:headless,firefox:headless 'test/e2e/**/*.ts' --app 'gatsby serve'",
-    "test:visual": "percy exec -- testcafe chrome:headless 'test/visual/**/*.js' --app 'gatsby serve'",
+    "test:e2e": "testcafe chrome:headless,firefox:headless test/e2e/ --app 'gatsby serve'",
+    "test:visual": "percy exec -- testcafe chrome:headless test/visual/ --app 'gatsby serve'",
     "test:unit": "ava --serial",
     "test:unit:coverage": "nyc ava --serial"
   },
