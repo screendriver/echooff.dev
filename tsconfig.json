@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2018",
-    "module": "commonjs",
+    "module": "es2015",
     "outDir": "target",
     "moduleResolution": "node",
     "jsx": "react",
