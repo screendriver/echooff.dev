@@ -44,7 +44,9 @@ export default function Page() {
         <Experiences />
         <Contact />
       </main>
-      <Footer config={config} />
+      <Footer
+        date={config.visualRegressionTest ? new Date(2019, 0) : new Date()}
+      />
     </>
   );
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { black, darkGrey, cyan } from '../colors';
-import { Config } from '../shared/config';
 
 const FooterStyled = styled.footer({
   backgroundColor: black,
@@ -18,16 +17,15 @@ const FooterStyled = styled.footer({
   },
 });
 
-interface FooterProps {
-  config: Config;
+export interface FooterProps {
+  date: Date;
 }
 
-export function Footer({ config: { visualRegressionTest } }: FooterProps) {
+export function Footer({ date }: FooterProps) {
   return (
     <FooterStyled>
-      Copyright &copy; {visualRegressionTest ? 2019 : new Date().getFullYear()}{' '}
-      Christian Rackerseder. Design inspired by{' '}
-      <a href="http://www.templatewire.com/">TemplateWire</a>
+      Copyright &copy; {date.getFullYear()} Christian Rackerseder. Design
+      inspired by <a href="http://www.templatewire.com/">TemplateWire</a>
     </FooterStyled>
   );
 }
