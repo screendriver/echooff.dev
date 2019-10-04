@@ -60,7 +60,7 @@
     "eslint-config-prettier": "6.3.0",
     "eslint-plugin-ava": "9.0.0",
     "eslint-plugin-prettier": "3.1.1",
-    "eslint-plugin-react": "7.14.3",
+    "eslint-plugin-react": "7.15.1",
     "eslint-plugin-testcafe": "0.2.1",
     "esm": "3.2.25",
     "gatsby-plugin-emotion": "4.1.9",
