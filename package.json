@@ -52,7 +52,7 @@
     "@types/react-dom": "16.9.1",
     "@types/react-helmet": "5.0.11",
     "@types/sinon": "7.5.0",
-    "@types/testing-library__react": "9.1.1",
+    "@types/testing-library__react": "9.1.2",
     "@typescript-eslint/eslint-plugin": "2.3.3",
     "@typescript-eslint/parser": "2.3.3",
     "ava": "2.4.0",
