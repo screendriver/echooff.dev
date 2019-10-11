@@ -40,6 +40,9 @@
     "typeface-open-sans": "0.0.75",
     "typeface-source-sans-pro": "0.0.75"
   },
+  "resolutions": {
+    "@percy/agent": "0.19.1"
+  },
   "devDependencies": {
     "@percy/testcafe": "0.2.0",
     "@testing-library/react": "9.3.0",
