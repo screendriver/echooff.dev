@@ -1478,10 +1478,10 @@
     once "^1.4.0"
     universal-user-agent "^4.0.0"
 
-"@percy/agent@~0":
-  version "0.18.4"
-  resolved "https://registry.yarnpkg.com/@percy/agent/-/agent-0.18.4.tgz#a9759af1fe1a617fbe0f7611bc19da31914ed47b"
-  integrity sha512-WfXAlqgdYB7TUdjXjIuE2BOewy5mCsdddHr/alLvB0/NgCH8Cvc3F3I9BVrx8Cx/2B9+dAo8gTXfIpEoVJ2L3Q==
+"@percy/agent@0.19.1", "@percy/agent@~0":
+  version "0.19.1"
+  resolved "https://registry.yarnpkg.com/@percy/agent/-/agent-0.19.1.tgz#83ee56836ac701b41a9df8b14de56373d89a038d"
+  integrity sha512-3X/0AkAyoKP9Nehz5fJae4qFn3t/Pb7jKhj9aJGlMRt6GxNtKS6cYMJtv+LLFu7y2PUeur5phmUNZTUVI0ln8Q==
   dependencies:
     "@oclif/command" "1.5.16"
     "@oclif/config" "^1"
@@ -16778,7 +16778,12 @@ typeface-source-sans-pro@0.0.75:
   resolved "https://registry.yarnpkg.com/typeface-source-sans-pro/-/typeface-source-sans-pro-0.0.75.tgz#33e60ea079738c2dbdb2d0aa28f899f565e1646e"
   integrity sha512-8aI6ywe+5py1MoMQjdnuQKepOATSLpFoyatVMweF6JNUD8cu+sWaVEfZBN08CRxPrSC4KYTArf6prrQzcqpyQA==
 
-typescript@3.6.3, typescript@^3.3.3, typescript@^3.4.5:
+typescript@3.6.4:
+  version "3.6.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.4.tgz#b18752bb3792bc1a0281335f7f6ebf1bbfc5b91d"
+  integrity sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==
+
+typescript@^3.3.3, typescript@^3.4.5:
   version "3.6.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.3.tgz#fea942fabb20f7e1ca7164ff626f1a9f3f70b4da"
   integrity sha512-N7bceJL1CtRQ2RiG0AQME13ksR7DiuQh/QehubYcghzv20tnh+MQnQIuJddTmsbqYj+dztchykemz0zFzlvdQw==
