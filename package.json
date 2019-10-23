@@ -20,8 +20,8 @@
     "test:unit:coverage": "nyc ava --serial"
   },
   "dependencies": {
-    "@emotion/core": "10.0.21",
-    "@emotion/styled": "10.0.17",
+    "@emotion/core": "10.0.22",
+    "@emotion/styled": "10.0.22",
     "@types/aws-lambda": "8.10.33",
     "form-urlencoded": "4.0.1",
     "gatsby": "2.17.1",
