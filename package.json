@@ -87,6 +87,6 @@
     "prettier": "1.18.2",
     "sinon": "7.5.0",
     "testcafe": "1.6.0",
-    "typescript": "3.6.4"
+    "typescript": "3.7.2"
   }
 }
