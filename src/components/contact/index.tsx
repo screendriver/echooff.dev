@@ -66,7 +66,7 @@ export function Contact() {
           </BigLink>
           <BigLink href="https://threema.id/9TWBW4XN">
             <MessageSquare />
-            <p>Threema ID: 9TWBW4XN</p>
+            <p>Threema</p>
           </BigLink>
         </LinkList>
         <Form onSubmit={sendForm} />
