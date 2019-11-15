@@ -64,7 +64,7 @@ export function Contact() {
             <MapPin />
             <p>Munich, Germany</p>
           </BigLink>
-          <BigLink href="threema://add?id=9TWBW4XN">
+          <BigLink href="https://threema.id/9TWBW4XN">
             <MessageSquare />
             <p>Threema ID: 9TWBW4XN</p>
           </BigLink>
