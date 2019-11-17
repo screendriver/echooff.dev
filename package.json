@@ -60,7 +60,6 @@
     "@types/testing-library__react": "9.1.2",
     "@typescript-eslint/eslint-plugin": "2.7.0",
     "@typescript-eslint/parser": "2.7.0",
-    "ava": "2.4.0",
     "chai": "4.2.0",
     "eslint": "6.6.0",
     "eslint-config-prettier": "6.6.0",
