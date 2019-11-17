@@ -1,7 +1,9 @@
 {
   "all": true,
+  "extension": [".ts", ".tsx"],
+  "require": ["ts-node/register/transpile-only"],
   "include": [
-    "target/src/**/*.js"
+    "src/**/*"
   ],
   "report-dir": "target/coverage",
   "temp-dir": "target/.nyc_output",
