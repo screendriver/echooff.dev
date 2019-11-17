@@ -16,8 +16,8 @@
     "serve": "gatsby serve",
     "test:e2e": "testcafe chrome:headless,firefox:headless test/e2e/ --app 'gatsby serve'",
     "test:visual": "percy exec -- testcafe chrome:headless test/visual/ --app 'gatsby serve'",
-    "test:unit": "ava --serial",
-    "test:unit:coverage": "nyc ava --serial"
+    "test:unit": "mocha",
+    "test:unit:coverage": "nyc mocha"
   },
   "dependencies": {
     "@emotion/core": "10.0.22",
@@ -46,22 +46,24 @@
   "devDependencies": {
     "@percy/testcafe": "0.2.0",
     "@testing-library/react": "9.3.2",
+    "@types/chai": "4.2.5",
     "@types/form-urlencoded": "2.0.1",
     "@types/got": "9.6.9",
     "@types/gsap": "1.20.2",
     "@types/lodash.sample": "4.2.6",
     "@types/micro": "7.3.3",
+    "@types/mocha": "5.2.7",
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.4",
     "@types/react-helmet": "5.0.14",
     "@types/sinon": "7.5.0",
+    "@types/sinon-chai": "3.2.3",
     "@types/testing-library__react": "9.1.2",
     "@typescript-eslint/eslint-plugin": "2.7.0",
     "@typescript-eslint/parser": "2.7.0",
-    "ava": "2.4.0",
+    "chai": "4.2.0",
     "eslint": "6.6.0",
     "eslint-config-prettier": "6.6.0",
-    "eslint-plugin-ava": "9.0.0",
     "eslint-plugin-prettier": "3.1.1",
     "eslint-plugin-react": "7.16.0",
     "eslint-plugin-testcafe": "0.2.1",
@@ -82,11 +84,14 @@
     "jsdom": "15.2.1",
     "jsdom-global": "3.0.2",
     "micro": "9.3.4",
+    "mocha": "6.2.2",
     "netlify-cli": "2.21.0",
     "nyc": "14.1.1",
     "prettier": "1.19.1",
     "sinon": "7.5.0",
+    "sinon-chai": "3.3.0",
     "testcafe": "1.6.1",
+    "ts-node": "8.5.2",
     "typescript": "3.7.2"
   }
 }

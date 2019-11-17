@@ -1,9 +1,7 @@
-import test from 'ava';
+import { expect } from 'chai';
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
 import { Footer, FooterProps } from '../../../src/components/Footer';
-
-test.afterEach(cleanup);
 
 function renderFooter() {
   const props: FooterProps = {
@@ -12,14 +10,20 @@ function renderFooter() {
   return render(<Footer {...props} />);
 }
 
-test('<Footer /> renders given copyright date', t => {
-  const { getByText } = renderFooter();
-  const element = getByText('Copyright', { exact: false });
-  t.is(element.textContent!.includes('2019'), true);
-});
+suite('<Footer />', () => {
+  teardown(cleanup);
 
-test('<Footer /> renders an "inspired by" link', t => {
-  const { getByText } = renderFooter();
-  const element = getByText('TemplateWire');
-  t.is(element.getAttribute('href'), 'http://www.templatewire.com/');
+  test('<Footer /> renders given copyright date', () => {
+    const { getByText } = renderFooter();
+    const element = getByText('Copyright', { exact: false });
+    expect(element.textContent).to.includes('2019');
+  });
+
+  test('<Footer /> renders an "inspired by" link', () => {
+    const { getByText } = renderFooter();
+    const element = getByText('TemplateWire');
+    expect(element.getAttribute('href')).to.equal(
+      'http://www.templatewire.com/',
+    );
+  });
 });

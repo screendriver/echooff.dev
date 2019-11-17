@@ -1,4 +1,4 @@
-import test from 'ava';
+import { expect } from 'chai';
 import sinon from 'sinon';
 import React from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react';
@@ -12,54 +12,55 @@ function renderForm(overrides: Partial<Props> = {}) {
   return render(<Form {...props} />);
 }
 
-test.afterEach(cleanup);
+suite('<Form />', () => {
+  teardown(cleanup);
 
-test('renders a "Leave me a message" text', t => {
-  const { queryByText } = renderForm();
-  const actual = queryByText('Leave me a message');
-  const expected = null;
-  t.not(actual, expected);
-});
-
-test('renders a required "Name" input field', t => {
-  const { getByPlaceholderText } = renderForm();
-  const actual = getByPlaceholderText('Name') as HTMLInputElement;
-  t.is(actual.required, true);
-});
-
-test('renders a required "Email" input field', t => {
-  const { getByPlaceholderText } = renderForm();
-  const actual = getByPlaceholderText('Email') as HTMLInputElement;
-  t.is(actual.required, true);
-});
-
-test('renders a required "Message" textarea', t => {
-  const { getByPlaceholderText } = renderForm();
-  const actual = getByPlaceholderText('Message') as HTMLTextAreaElement;
-  t.is(actual.required, true);
-});
-
-test('calls given onSubmit callback when form is submitted', t => {
-  const onSubmit = sinon.fake();
-  const { getByPlaceholderText, getByDisplayValue } = renderForm({
-    onSubmit,
+  test('renders a "Leave me a message" text', () => {
+    const { queryByText } = renderForm();
+    const actual = queryByText('Leave me a message');
+    const expected = null;
+    expect(actual).to.not.equal(expected);
   });
-  const name = getByPlaceholderText('Name') as HTMLInputElement;
-  const email = getByPlaceholderText('Email') as HTMLInputElement;
-  const message = getByPlaceholderText('Message') as HTMLTextAreaElement;
-  const submitButton = getByDisplayValue('Send Message') as HTMLInputElement;
-  fireEvent.change(name, { target: { name: 'name', value: 'My name' } });
-  fireEvent.change(email, {
-    target: { name: 'email', value: 'test@example.com' },
+
+  test('renders a required "Name" input field', () => {
+    const { getByPlaceholderText } = renderForm();
+    const actual = getByPlaceholderText('Name') as HTMLInputElement;
+    expect(actual.required).to.equal(true);
   });
-  fireEvent.change(message, {
-    target: { name: 'message', value: 'Test text' },
+
+  test('renders a required "Email" input field', () => {
+    const { getByPlaceholderText } = renderForm();
+    const actual = getByPlaceholderText('Email') as HTMLInputElement;
+    expect(actual.required).to.equal(true);
   });
-  fireEvent.click(submitButton);
-  sinon.assert.calledWith(onSubmit, {
-    name: 'My name',
-    email: 'test@example.com',
-    message: 'Test text',
+
+  test('renders a required "Message" textarea', () => {
+    const { getByPlaceholderText } = renderForm();
+    const actual = getByPlaceholderText('Message') as HTMLTextAreaElement;
+    expect(actual.required).to.equal(true);
   });
-  t.pass();
+
+  test('calls given onSubmit callback when form is submitted', () => {
+    const onSubmit = sinon.fake();
+    const { getByPlaceholderText, getByDisplayValue } = renderForm({
+      onSubmit,
+    });
+    const name = getByPlaceholderText('Name') as HTMLInputElement;
+    const email = getByPlaceholderText('Email') as HTMLInputElement;
+    const message = getByPlaceholderText('Message') as HTMLTextAreaElement;
+    const submitButton = getByDisplayValue('Send Message') as HTMLInputElement;
+    fireEvent.change(name, { target: { name: 'name', value: 'My name' } });
+    fireEvent.change(email, {
+      target: { name: 'email', value: 'test@example.com' },
+    });
+    fireEvent.change(message, {
+      target: { name: 'message', value: 'Test text' },
+    });
+    fireEvent.click(submitButton);
+    expect(onSubmit).to.have.been.calledWith({
+      name: 'My name',
+      email: 'test@example.com',
+      message: 'Test text',
+    });
+  });
 });

@@ -1,4 +1,4 @@
-import test from 'ava';
+import { expect } from 'chai';
 import sinon from 'sinon';
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
@@ -17,34 +17,36 @@ function renderFormUi(overrides: Partial<Props>) {
   return render(<FormUi {...props} />);
 }
 
-test.afterEach(cleanup);
+suite('<Contact />', () => {
+  teardown(cleanup);
 
-test('render given name in an input', t => {
-  const { getByPlaceholderText } = renderFormUi({ name: 'My name' });
-  const input = getByPlaceholderText('Name') as HTMLInputElement;
-  t.is(input.value, 'My name');
-});
+  test('render given name in an input', () => {
+    const { getByPlaceholderText } = renderFormUi({ name: 'My name' });
+    const input = getByPlaceholderText('Name') as HTMLInputElement;
+    expect(input.value).to.equal('My name');
+  });
 
-test('render given email in an input', t => {
-  const { getByPlaceholderText } = renderFormUi({ email: 'foo@example.com' });
-  const input = getByPlaceholderText('Email') as HTMLInputElement;
-  t.is(input.value, 'foo@example.com');
-});
+  test('render given email in an input', () => {
+    const { getByPlaceholderText } = renderFormUi({ email: 'foo@example.com' });
+    const input = getByPlaceholderText('Email') as HTMLInputElement;
+    expect(input.value).to.equal('foo@example.com');
+  });
 
-test('render given message in a textarea', t => {
-  const { getByPlaceholderText } = renderFormUi({ message: 'My message' });
-  const textarea = getByPlaceholderText('Message') as HTMLTextAreaElement;
-  t.is(textarea.value, 'My message');
-});
+  test('render given message in a textarea', () => {
+    const { getByPlaceholderText } = renderFormUi({ message: 'My message' });
+    const textarea = getByPlaceholderText('Message') as HTMLTextAreaElement;
+    expect(textarea.value).to.equal('My message');
+  });
 
-test('render a enabled submit button', t => {
-  const { getByDisplayValue } = renderFormUi({ submitDisabled: false });
-  const submit = getByDisplayValue('Send Message') as HTMLInputElement;
-  t.is(submit.disabled, false);
-});
+  test('render a enabled submit button', () => {
+    const { getByDisplayValue } = renderFormUi({ submitDisabled: false });
+    const submit = getByDisplayValue('Send Message') as HTMLInputElement;
+    expect(submit.disabled).to.equal(false);
+  });
 
-test('render a disabled submit button', t => {
-  const { getByDisplayValue } = renderFormUi({ submitDisabled: true });
-  const submit = getByDisplayValue('Send Message') as HTMLInputElement;
-  t.is(submit.disabled, true);
+  test('render a disabled submit button', () => {
+    const { getByDisplayValue } = renderFormUi({ submitDisabled: true });
+    const submit = getByDisplayValue('Send Message') as HTMLInputElement;
+    expect(submit.disabled).to.equal(true);
+  });
 });
