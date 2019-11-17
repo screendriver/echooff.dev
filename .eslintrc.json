@@ -16,10 +16,9 @@
     "plugin:react/recommended",
     "plugin:prettier/recommended",
     "prettier/@typescript-eslint",
-    "plugin:testcafe/recommended",
-    "plugin:ava/recommended"
+    "plugin:testcafe/recommended"
   ],
-  "plugins": ["@typescript-eslint", "react", "testcafe", "ava"],
+  "plugins": ["@typescript-eslint", "react", "testcafe"],
   "env": {
     "browser": true,
     "node": true
@@ -32,7 +31,6 @@
   "rules": {
     "react/prop-types": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/unbound-method": "off",
-    "ava/no-ignored-test-files": "off"
+    "@typescript-eslint/unbound-method": "off"
   }
 }
