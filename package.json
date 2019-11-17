@@ -16,8 +16,8 @@
     "serve": "gatsby serve",
     "test:e2e": "testcafe chrome:headless,firefox:headless test/e2e/ --app 'gatsby serve'",
     "test:visual": "percy exec -- testcafe chrome:headless test/visual/ --app 'gatsby serve'",
-    "test:unit": "ava --serial",
-    "test:unit:coverage": "nyc ava --serial"
+    "test:unit": "mocha",
+    "test:unit:coverage": "nyc mocha"
   },
   "dependencies": {
     "@emotion/core": "10.0.22",
