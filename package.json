@@ -46,6 +46,7 @@
   "devDependencies": {
     "@percy/testcafe": "0.2.0",
     "@testing-library/react": "9.3.2",
+    "@types/chai": "4.2.5",
     "@types/form-urlencoded": "2.0.1",
     "@types/got": "9.6.9",
     "@types/gsap": "1.20.2",
@@ -60,6 +61,7 @@
     "@typescript-eslint/eslint-plugin": "2.7.0",
     "@typescript-eslint/parser": "2.7.0",
     "ava": "2.4.0",
+    "chai": "4.2.0",
     "eslint": "6.6.0",
     "eslint-config-prettier": "6.6.0",
     "eslint-plugin-ava": "9.0.0",
