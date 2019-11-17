@@ -1,17 +1,19 @@
-import test from 'ava';
+import { expect } from 'chai';
 import { createConfig } from '../../../src/shared/config';
 
-test.afterEach(() => {
-  delete process.env.GATSBY_VISUAL_REGRESSION_TEST;
-});
+suite('config', () => {
+  teardown(() => {
+    delete process.env.GATSBY_VISUAL_REGRESSION_TEST;
+  });
 
-test('visualRegressionTest is true when GATSBY_VISUAL_REGRESSION_TEST is "true"', t => {
-  process.env.GATSBY_VISUAL_REGRESSION_TEST = 'true';
-  const { visualRegressionTest } = createConfig();
-  t.is(visualRegressionTest, true);
-});
+  test('visualRegressionTest is true when GATSBY_VISUAL_REGRESSION_TEST is "true"', () => {
+    process.env.GATSBY_VISUAL_REGRESSION_TEST = 'true';
+    const { visualRegressionTest } = createConfig();
+    expect(visualRegressionTest).to.equal(true);
+  });
 
-test('visualRegressionTest is false when GATSBY_VISUAL_REGRESSION_TEST is not set', t => {
-  const { visualRegressionTest } = createConfig();
-  t.is(visualRegressionTest, false);
+  test('visualRegressionTest is false when GATSBY_VISUAL_REGRESSION_TEST is not set', () => {
+    const { visualRegressionTest } = createConfig();
+    expect(visualRegressionTest).to.equal(false);
+  });
 });

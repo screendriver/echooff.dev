@@ -1,4 +1,4 @@
-import test from 'ava';
+import { expect } from 'chai';
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
 import { Circle } from '../../../../src/components/experiences/Circle';
@@ -15,22 +15,22 @@ function renderCircle(className?: string) {
   return render(<Circle className={className} experience={experience} />);
 }
 
-test.afterEach(cleanup);
+suite('<Circle />', () => {
+  teardown(cleanup);
 
-test('<Circle /> accepts and renders a CSS className', t => {
-  const { container } = renderCircle('css-awesome');
-  const actual = container.querySelector('.css-awesome');
-  t.not(actual, null);
-});
+  test('<Circle /> accepts and renders a CSS className', () => {
+    const { container } = renderCircle('css-awesome');
+    const actual = container.querySelector('.css-awesome');
+    expect(actual).to.not.equal(null);
+  });
 
-test('<Circle /> renders experience "to"', t => {
-  const { getByLabelText } = renderCircle();
-  getByLabelText('Experience to');
-  t.pass();
-});
+  test('<Circle /> renders experience "to"', () => {
+    const { getByLabelText } = renderCircle();
+    getByLabelText('Experience to');
+  });
 
-test('<Circle /> renders experience "from"', t => {
-  const { getByLabelText } = renderCircle();
-  getByLabelText('Experience from');
-  t.pass();
+  test('<Circle /> renders experience "from"', () => {
+    const { getByLabelText } = renderCircle();
+    getByLabelText('Experience from');
+  });
 });
