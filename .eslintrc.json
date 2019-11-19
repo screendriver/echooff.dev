@@ -16,9 +16,10 @@
     "plugin:react/recommended",
     "plugin:prettier/recommended",
     "prettier/@typescript-eslint",
-    "plugin:testcafe/recommended"
+    "plugin:testcafe/recommended",
+    "plugin:mocha/recommended"
   ],
-  "plugins": ["@typescript-eslint", "react", "testcafe"],
+  "plugins": ["@typescript-eslint", "react", "testcafe", "mocha"],
   "env": {
     "browser": true,
     "node": true
