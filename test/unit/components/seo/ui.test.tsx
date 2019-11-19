@@ -12,16 +12,16 @@ const props: SeoUiProps = {
   favicon: 'icon.png',
 };
 
-suite('<SeoUi />', () => {
+suite('<SeoUi />', function() {
   teardown(cleanup);
 
-  test('renders a title', () => {
+  test('renders a title', function() {
     render(<SeoUi {...props} />);
     const { title } = Helmet.peek();
     assert.equal(title, ('test title' as unknown) as HelmetDatum);
   });
 
-  test('renders lang "en" HTML attribute', () => {
+  test('renders lang "en" HTML attribute', function() {
     render(<SeoUi {...props} />);
     const { htmlAttributes } = Helmet.peek();
     assert.deepEqual(htmlAttributes, ({
@@ -29,13 +29,13 @@ suite('<SeoUi />', () => {
     } as unknown) as HelmetHTMLElementDatum);
   });
 
-  test('renders a favicon', () => {
+  test('renders a favicon', function() {
     render(<SeoUi {...props} />);
     const { linkTags } = Helmet.peek() as any;
     assert.deepEqual(linkTags, [{ rel: 'shortcut icon', href: 'icon.png' }]);
   });
 
-  test('renders meta tags', () => {
+  test('renders meta tags', function() {
     render(<SeoUi {...props} />);
     const { metaTags } = Helmet.peek() as any;
     assert.deepEqual(metaTags, [

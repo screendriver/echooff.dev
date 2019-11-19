@@ -17,34 +17,34 @@ function renderFormUi(overrides: Partial<Props>) {
   return render(<FormUi {...props} />);
 }
 
-suite('<Contact />', () => {
+suite('<Contact />', function() {
   teardown(cleanup);
 
-  test('render given name in an input', () => {
+  test('render given name in an input', function() {
     const { getByPlaceholderText } = renderFormUi({ name: 'My name' });
     const input = getByPlaceholderText('Name') as HTMLInputElement;
     assert.equal(input.value, 'My name');
   });
 
-  test('render given email in an input', () => {
+  test('render given email in an input', function() {
     const { getByPlaceholderText } = renderFormUi({ email: 'foo@example.com' });
     const input = getByPlaceholderText('Email') as HTMLInputElement;
     assert.equal(input.value, 'foo@example.com');
   });
 
-  test('render given message in a textarea', () => {
+  test('render given message in a textarea', function() {
     const { getByPlaceholderText } = renderFormUi({ message: 'My message' });
     const textarea = getByPlaceholderText('Message') as HTMLTextAreaElement;
     assert.equal(textarea.value, 'My message');
   });
 
-  test('render a enabled submit button', () => {
+  test('render a enabled submit button', function() {
     const { getByDisplayValue } = renderFormUi({ submitDisabled: false });
     const submit = getByDisplayValue('Send Message') as HTMLInputElement;
     assert.isFalse(submit.disabled);
   });
 
-  test('render a disabled submit button', () => {
+  test('render a disabled submit button', function() {
     const { getByDisplayValue } = renderFormUi({ submitDisabled: true });
     const submit = getByDisplayValue('Send Message') as HTMLInputElement;
     assert.isTrue(submit.disabled);
