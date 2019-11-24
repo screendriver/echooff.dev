@@ -5,7 +5,6 @@
     "outDir": "target",
     "moduleResolution": "node",
     "jsx": "react",
-    "noEmitOnError": true,
     "importHelpers": true,
     "sourceMap": true,
     "strict": true,
