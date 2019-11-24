@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { assert } from 'chai';
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
 import { Circle } from '../../../../src/components/experiences/Circle';
@@ -21,7 +21,7 @@ suite('<Circle />', () => {
   test('<Circle /> accepts and renders a CSS className', () => {
     const { container } = renderCircle('css-awesome');
     const actual = container.querySelector('.css-awesome');
-    expect(actual).to.not.equal(null);
+    assert.isNotNull(actual);
   });
 
   test('<Circle /> renders experience "to"', () => {

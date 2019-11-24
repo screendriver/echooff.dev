@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { assert } from 'chai';
 import sinon from 'sinon';
 import React from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react';
@@ -19,25 +19,25 @@ suite('<Form />', () => {
     const { queryByText } = renderForm();
     const actual = queryByText('Leave me a message');
     const expected = null;
-    expect(actual).to.not.equal(expected);
+    assert.notEqual(actual, expected);
   });
 
   test('renders a required "Name" input field', () => {
     const { getByPlaceholderText } = renderForm();
     const actual = getByPlaceholderText('Name') as HTMLInputElement;
-    expect(actual.required).to.equal(true);
+    assert.isTrue(actual.required);
   });
 
   test('renders a required "Email" input field', () => {
     const { getByPlaceholderText } = renderForm();
     const actual = getByPlaceholderText('Email') as HTMLInputElement;
-    expect(actual.required).to.equal(true);
+    assert.isTrue(actual.required);
   });
 
   test('renders a required "Message" textarea', () => {
     const { getByPlaceholderText } = renderForm();
     const actual = getByPlaceholderText('Message') as HTMLTextAreaElement;
-    expect(actual.required).to.equal(true);
+    assert.isTrue(actual.required);
   });
 
   test('calls given onSubmit callback when form is submitted', () => {
@@ -57,7 +57,7 @@ suite('<Form />', () => {
       target: { name: 'message', value: 'Test text' },
     });
     fireEvent.click(submitButton);
-    expect(onSubmit).to.have.been.calledWith({
+    sinon.assert.calledWith(onSubmit, {
       name: 'My name',
       email: 'test@example.com',
       message: 'Test text',

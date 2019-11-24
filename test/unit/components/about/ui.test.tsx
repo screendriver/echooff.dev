@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { assert } from 'chai';
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
 import { AboutUi, AboutUiProps } from '../../../../src/components/about/ui';
@@ -18,10 +18,10 @@ suite('<AboutUi />', () => {
   test('renders an about image', () => {
     const { getByAltText } = render(<AboutUi {...props} />);
     const image = getByAltText('My face');
-    expect(image.getAttribute('src')).to.equal('myImage.png');
-    expect(image.getAttribute('srcset')).to.equal('myImage.png 1x');
-    expect(image.getAttribute('width')).to.equal('800');
-    expect(image.getAttribute('height')).to.equal('600');
+    assert.equal(image.getAttribute('src'), 'myImage.png');
+    assert.equal(image.getAttribute('srcset'), 'myImage.png 1x');
+    assert.equal(image.getAttribute('width'), '800');
+    assert.equal(image.getAttribute('height'), '600');
   });
 
   test('renders a "JavaScript is everywhere" paragraph', () => {
