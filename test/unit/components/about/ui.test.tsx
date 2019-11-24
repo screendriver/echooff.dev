@@ -12,10 +12,10 @@ const props: AboutUiProps = {
   },
 };
 
-suite('<AboutUi />', () => {
+suite('<AboutUi />', function() {
   teardown(cleanup);
 
-  test('renders an about image', () => {
+  test('renders an about image', function() {
     const { getByAltText } = render(<AboutUi {...props} />);
     const image = getByAltText('My face');
     assert.equal(image.getAttribute('src'), 'myImage.png');
@@ -24,19 +24,19 @@ suite('<AboutUi />', () => {
     assert.equal(image.getAttribute('height'), '600');
   });
 
-  test('renders a "JavaScript is everywhere" paragraph', () => {
+  test('renders a "JavaScript is everywhere" paragraph', function() {
     const { getByText } = render(<AboutUi {...props} />);
     getByText(
       'JavaScript is everywhere. In the old days, being a JavaScript developer meant that you were a front end web developer. Forever bound to the browser.',
     );
   });
 
-  test('renders a "Those days are gone" heading', () => {
+  test('renders a "Those days are gone" heading', function() {
     const { getByText } = render(<AboutUi {...props} />);
     getByText('Those days are gone.');
   });
 
-  test('renders a "The rise of Node.js" paragraph', () => {
+  test('renders a "The rise of Node.js" paragraph', function() {
     const { getByText } = render(<AboutUi {...props} />);
     getByText(
       'The rise of Node.js ushered in a new era. An era where being a JavaScript developer doesn’t necessarily mean a front-end web developer. As a JavaScript developer today, you can target more platforms than any other high level language.',
