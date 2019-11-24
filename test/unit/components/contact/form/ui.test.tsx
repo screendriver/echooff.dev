@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { assert } from 'chai';
 import sinon from 'sinon';
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
@@ -23,30 +23,30 @@ suite('<Contact />', () => {
   test('render given name in an input', () => {
     const { getByPlaceholderText } = renderFormUi({ name: 'My name' });
     const input = getByPlaceholderText('Name') as HTMLInputElement;
-    expect(input.value).to.equal('My name');
+    assert.equal(input.value, 'My name');
   });
 
   test('render given email in an input', () => {
     const { getByPlaceholderText } = renderFormUi({ email: 'foo@example.com' });
     const input = getByPlaceholderText('Email') as HTMLInputElement;
-    expect(input.value).to.equal('foo@example.com');
+    assert.equal(input.value, 'foo@example.com');
   });
 
   test('render given message in a textarea', () => {
     const { getByPlaceholderText } = renderFormUi({ message: 'My message' });
     const textarea = getByPlaceholderText('Message') as HTMLTextAreaElement;
-    expect(textarea.value).to.equal('My message');
+    assert.equal(textarea.value, 'My message');
   });
 
   test('render a enabled submit button', () => {
     const { getByDisplayValue } = renderFormUi({ submitDisabled: false });
     const submit = getByDisplayValue('Send Message') as HTMLInputElement;
-    expect(submit.disabled).to.equal(false);
+    assert.isFalse(submit.disabled);
   });
 
   test('render a disabled submit button', () => {
     const { getByDisplayValue } = renderFormUi({ submitDisabled: true });
     const submit = getByDisplayValue('Send Message') as HTMLInputElement;
-    expect(submit.disabled).to.equal(true);
+    assert.isTrue(submit.disabled);
   });
 });

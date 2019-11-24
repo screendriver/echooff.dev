@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { assert } from 'chai';
 import {
   Action,
   reducer,
@@ -20,7 +20,7 @@ suite('reducer', () => {
       submitDisabled: false,
       formSent: false,
     };
-    expect(initialState).to.deep.equal(expected);
+    assert.deepEqual(initialState, expected);
   });
 
   test('change name', () => {
@@ -32,7 +32,7 @@ suite('reducer', () => {
       submitDisabled: false,
       formSent: false,
     };
-    expect(actual).to.deep.equal(expected);
+    assert.deepEqual(actual, expected);
   });
 
   test('change email', () => {
@@ -44,7 +44,7 @@ suite('reducer', () => {
       submitDisabled: false,
       formSent: false,
     };
-    expect(actual).to.deep.equal(expected);
+    assert.deepEqual(actual, expected);
   });
 
   test('change message', () => {
@@ -56,7 +56,7 @@ suite('reducer', () => {
       submitDisabled: false,
       formSent: false,
     };
-    expect(actual).to.deep.equal(expected);
+    assert.deepEqual(actual, expected);
   });
 
   test('change submitDisabled', () => {
@@ -68,7 +68,7 @@ suite('reducer', () => {
       submitDisabled: true,
       formSent: false,
     };
-    expect(actual).to.deep.equal(expected);
+    assert.deepEqual(actual, expected);
   });
 
   test('change formSent', () => {
@@ -80,12 +80,12 @@ suite('reducer', () => {
       submitDisabled: false,
       formSent: true,
     };
-    expect(actual).to.deep.equal(expected);
+    assert.deepEqual(actual, expected);
   });
 
   test('throw error on unknown action type', () => {
-    expect(() =>
+    assert.throw(() =>
       reducer(initialState, ({ type: 'unknown' } as unknown) as Action),
-    ).to.throw();
+    );
   });
 });
