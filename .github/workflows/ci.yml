@@ -57,6 +57,8 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
       - name: Lighthouse Audit
         if: github.ref == 'refs/heads/master'
-        uses: jakejarvis/lighthouse-action@master
+        uses: treosh/lighthouse-ci-action@v2
         with:
-          url: https://www.echooff.dev
+          urls: |
+            https://www.echooff.dev
+          temporaryPublicStorage: true
