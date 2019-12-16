@@ -11,7 +11,9 @@
     {
       "packagePatterns": ["^gatsby"],
       "groupName": "gatsby packages",
-      "extends": ["schedule:earlyMondays"]
+      "extends": ["schedule:earlyMondays"],
+      "automerge": true,
+      "automergeType": "branch"
     }
   ]
 }
