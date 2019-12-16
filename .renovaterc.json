@@ -14,6 +14,13 @@
       "extends": ["schedule:earlyMondays"],
       "automerge": true,
       "automergeType": "branch"
+    },
+    {
+      "packagePatterns": ["eslint"],
+      "groupName": "eslint",
+      "extends": ["schedule:earlyMondays"],
+      "automerge": true,
+      "automergeType": "branch"
     }
   ]
 }
