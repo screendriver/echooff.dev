@@ -10,7 +10,7 @@
   "packageRules": [
     {
       "packagePatterns": ["^@types/"],
-      "groupName": "@types/ packages",
+      "groupName": "definitely typed packages",
       "automerge": true,
       "automergeType": "branch"
     },
@@ -23,7 +23,7 @@
     },
     {
       "packagePatterns": ["eslint"],
-      "groupName": "eslint",
+      "groupName": "eslint packages",
       "extends": ["schedule:earlyMondays"],
       "automerge": true,
       "automergeType": "branch"
