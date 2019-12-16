@@ -12,6 +12,12 @@
   },
   "packageRules": [
     {
+      "depTypeList": ["dependencies", "devDependencies"],
+      "updateTypes": ["minor", "patch"],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
       "packagePatterns": ["^@types/"],
       "groupName": "definitely typed packages",
       "automerge": true,
@@ -19,6 +25,7 @@
     },
     {
       "packagePatterns": ["^gatsby"],
+      "updateTypes": ["minor", "patch"],
       "groupName": "gatsby packages",
       "extends": ["schedule:earlyMondays"],
       "automerge": true,
