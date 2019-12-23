@@ -3,4 +3,5 @@ module.exports = {
   require: ['esm', 'ts-node/register/transpile-only', './test/setup.ts'],
   extension: ['ts', 'tsx'],
   ui: 'tdd',
+  reporter: 'dot',
 };
