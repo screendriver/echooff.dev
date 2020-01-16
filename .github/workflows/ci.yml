@@ -8,7 +8,7 @@ on:
     branches:
       - '**'
   schedule:
-    - cron: '0 0 */1 * *'
+    - cron: '0 0 * * MON,THU' # At 00:00 on Monday and Thursday
 
 jobs:
   build:
