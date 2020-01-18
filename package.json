@@ -88,7 +88,7 @@
     "prettier": "1.19.1",
     "sinon": "8.0.4",
     "testcafe": "1.7.1",
-    "ts-node": "8.5.4",
+    "ts-node": "8.6.2",
     "typescript": "3.7.5"
   }
 }
