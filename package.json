@@ -52,7 +52,7 @@
     "@types/micro": "7.3.3",
     "@types/mocha": "5.2.7",
     "@types/react": "16.9.17",
-    "@types/react-dom": "16.9.4",
+    "@types/react-dom": "16.9.5",
     "@types/react-helmet": "5.0.15",
     "@types/sinon": "7.5.1",
     "@types/testing-library__react": "9.1.2",
