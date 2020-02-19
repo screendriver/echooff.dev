@@ -23,7 +23,7 @@
     "@emotion/core": "10.0.27",
     "@emotion/styled": "10.0.27",
     "@types/aws-lambda": "8.10.40",
-    "form-urlencoded": "4.1.1",
+    "form-urlencoded": "4.1.3",
     "gatsby": "2.18.12",
     "gatsby-image": "2.2.36",
     "gsap": "2.1.3",
