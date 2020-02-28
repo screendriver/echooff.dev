@@ -2,41 +2,21 @@
   "extends": ["config:base"],
   "commitMessagePrefix": "⬆️ ",
   "labels": ["renovate"],
-  "rebaseStalePrs": false,
-  "lockFileMaintenance": {
-    "enabled": true,
-    "automerge": true
-  },
   "nvm": {
     "enabled": false
   },
   "packageRules": [
     {
-      "depTypeList": ["dependencies", "devDependencies"],
-      "updateTypes": ["minor", "patch"],
-      "automerge": true,
-      "automergeType": "branch"
-    },
-    {
       "packagePatterns": ["^@types/"],
-      "groupName": "definitely typed packages",
-      "automerge": true,
-      "automergeType": "branch"
+      "groupName": "definitely typed packages"
     },
     {
       "packagePatterns": ["^gatsby"],
-      "updateTypes": ["minor", "patch"],
-      "groupName": "gatsby packages",
-      "extends": ["schedule:earlyMondays"],
-      "automerge": true,
-      "automergeType": "branch"
+      "groupName": "gatsby packages"
     },
     {
       "packagePatterns": ["eslint"],
-      "groupName": "eslint packages",
-      "extends": ["schedule:earlyMondays"],
-      "automerge": true,
-      "automergeType": "branch"
+      "groupName": "eslint packages"
     }
   ]
 }
