@@ -20,7 +20,7 @@
     "test:unit:coverage": "nyc mocha"
   },
   "dependencies": {
-    "@emotion/core": "10.0.27",
+    "@emotion/core": "10.0.28",
     "@emotion/styled": "10.0.27",
     "@types/aws-lambda": "8.10.40",
     "form-urlencoded": "4.1.3",
