@@ -40,7 +40,7 @@
     "typeface-source-sans-pro": "1.1.5"
   },
   "resolutions": {
-    "@percy/agent": "0.19.1"
+    "@percy/agent": "0.26.0"
   },
   "devDependencies": {
     "@percy/testcafe": "0.2.0",
