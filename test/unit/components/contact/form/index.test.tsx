@@ -12,35 +12,35 @@ function renderForm(overrides: Partial<Props> = {}) {
   return render(<Form {...props} />);
 }
 
-suite('<Form />', function() {
+suite('<Form />', function () {
   teardown(cleanup);
 
-  test('renders a "Leave me a message" text', function() {
+  test('renders a "Leave me a message" text', function () {
     const { queryByText } = renderForm();
     const actual = queryByText('Leave me a message');
     const expected = null;
     assert.notEqual(actual, expected);
   });
 
-  test('renders a required "Name" input field', function() {
+  test('renders a required "Name" input field', function () {
     const { getByPlaceholderText } = renderForm();
     const actual = getByPlaceholderText('Name') as HTMLInputElement;
     assert.isTrue(actual.required);
   });
 
-  test('renders a required "Email" input field', function() {
+  test('renders a required "Email" input field', function () {
     const { getByPlaceholderText } = renderForm();
     const actual = getByPlaceholderText('Email') as HTMLInputElement;
     assert.isTrue(actual.required);
   });
 
-  test('renders a required "Message" textarea', function() {
+  test('renders a required "Message" textarea', function () {
     const { getByPlaceholderText } = renderForm();
     const actual = getByPlaceholderText('Message') as HTMLTextAreaElement;
     assert.isTrue(actual.required);
   });
 
-  test('calls given onSubmit callback when form is submitted', function() {
+  test('calls given onSubmit callback when form is submitted', function () {
     const onSubmit = sinon.fake();
     const { getByPlaceholderText, getByDisplayValue } = renderForm({
       onSubmit,

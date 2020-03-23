@@ -17,11 +17,9 @@ const mock = RequestMock()
   })
   .respond({}, 200);
 
-fixture('Contact form')
-  .page(url)
-  .requestHooks(mock, logger);
+fixture('Contact form').page(url).requestHooks(mock, logger);
 
-test('show "Thank you" message after submitting contact form', async t => {
+test('show "Thank you" message after submitting contact form', async (t) => {
   const nameInput = Selector('input[placeholder="Name"]');
   const emailInput = Selector('input[placeholder="Email"]');
   const messageInput = Selector('textarea[placeholder="Message"]');

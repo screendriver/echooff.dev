@@ -15,21 +15,21 @@ function renderCircle(className?: string) {
   return render(<Circle className={className} experience={experience} />);
 }
 
-suite('<Circle />', function() {
+suite('<Circle />', function () {
   teardown(cleanup);
 
-  test('<Circle /> accepts and renders a CSS className', function() {
+  test('<Circle /> accepts and renders a CSS className', function () {
     const { container } = renderCircle('css-awesome');
     const actual = container.querySelector('.css-awesome');
     assert.isNotNull(actual);
   });
 
-  test('<Circle /> renders experience "to"', function() {
+  test('<Circle /> renders experience "to"', function () {
     const { getByLabelText } = renderCircle();
     getByLabelText('Experience to');
   });
 
-  test('<Circle /> renders experience "from"', function() {
+  test('<Circle /> renders experience "from"', function () {
     const { getByLabelText } = renderCircle();
     getByLabelText('Experience from');
   });

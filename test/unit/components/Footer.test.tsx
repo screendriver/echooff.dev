@@ -10,16 +10,16 @@ function renderFooter() {
   return render(<Footer {...props} />);
 }
 
-suite('<Footer />', function() {
+suite('<Footer />', function () {
   teardown(cleanup);
 
-  test('<Footer /> renders given copyright date', function() {
+  test('<Footer /> renders given copyright date', function () {
     const { getByText } = renderFooter();
     const element = getByText('Copyright', { exact: false });
     assert.include(element.textContent, '2019');
   });
 
-  test('<Footer /> renders an "inspired by" link', function() {
+  test('<Footer /> renders an "inspired by" link', function () {
     const { getByText } = renderFooter();
     const element = getByText('TemplateWire');
     assert.equal(element.getAttribute('href'), 'http://www.templatewire.com/');
