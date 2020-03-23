@@ -56,7 +56,7 @@ const DescriptionStyled = styled(Description)<{ position: 'left' | 'right' }>(
       width: 'calc(50% - 95px)',
     },
   },
-  props => {
+  (props) => {
     return {
       '@media (min-width: 768px)': {
         order: props.position === 'left' ? -1 : 1,
@@ -78,7 +78,7 @@ const Moment = styled.li<{ justifyContent: CSSProperties['justifyContent'] }>(
       marginBottom: 100,
     },
   },
-  props => {
+  (props) => {
     return {
       '@media (min-width: 768px)': { justifyContent: props.justifyContent },
     };

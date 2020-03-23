@@ -72,14 +72,14 @@ const List = styled.ul<{ mobileMenuVisible: boolean }>(
       marginRight: 15,
     },
   },
-  props => (props.mobileMenuVisible ? { display: 'block' } : {}),
+  (props) => (props.mobileMenuVisible ? { display: 'block' } : {}),
 );
 
 function handleMenuClick(
   setMobileMenuVisible: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
   return () => {
-    setMobileMenuVisible(prevState => !prevState);
+    setMobileMenuVisible((prevState) => !prevState);
   };
 }
 

@@ -11,8 +11,8 @@ import {
   setFormSent,
 } from '../../../../../src/components/contact/form/reducer';
 
-suite('reducer', function() {
-  test('initial state', function() {
+suite('reducer', function () {
+  test('initial state', function () {
     const expected: State = {
       name: '',
       email: '',
@@ -23,7 +23,7 @@ suite('reducer', function() {
     assert.deepEqual(initialState, expected);
   });
 
-  test('change name', function() {
+  test('change name', function () {
     const actual = reducer(initialState, changeName('Me'));
     const expected: State = {
       name: 'Me',
@@ -35,7 +35,7 @@ suite('reducer', function() {
     assert.deepEqual(actual, expected);
   });
 
-  test('change email', function() {
+  test('change email', function () {
     const actual = reducer(initialState, changeEmail('foo@example.com'));
     const expected: State = {
       name: '',
@@ -47,7 +47,7 @@ suite('reducer', function() {
     assert.deepEqual(actual, expected);
   });
 
-  test('change message', function() {
+  test('change message', function () {
     const actual = reducer(initialState, changeMessage('Test'));
     const expected: State = {
       name: '',
@@ -59,7 +59,7 @@ suite('reducer', function() {
     assert.deepEqual(actual, expected);
   });
 
-  test('change submitDisabled', function() {
+  test('change submitDisabled', function () {
     const actual = reducer(initialState, setSubmitDisabled(true));
     const expected: State = {
       name: '',
@@ -71,7 +71,7 @@ suite('reducer', function() {
     assert.deepEqual(actual, expected);
   });
 
-  test('change formSent', function() {
+  test('change formSent', function () {
     const actual = reducer(initialState, setFormSent(true));
     const expected: State = {
       name: '',
@@ -83,7 +83,7 @@ suite('reducer', function() {
     assert.deepEqual(actual, expected);
   });
 
-  test('throw error on unknown action type', function() {
+  test('throw error on unknown action type', function () {
     assert.throw(() =>
       reducer(initialState, ({ type: 'unknown' } as unknown) as Action),
     );

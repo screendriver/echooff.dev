@@ -15,7 +15,7 @@ interface SectionProps {
 
 type ColorSchemeProps = Pick<SectionProps, 'colorScheme'>;
 
-const SectionStyled = styled.section<ColorSchemeProps>(props => ({
+const SectionStyled = styled.section<ColorSchemeProps>((props) => ({
   backgroundColor: props.colorScheme === ColorScheme.Cyan ? cyan : light,
   display: 'flex',
   flexDirection: 'column',
@@ -23,12 +23,12 @@ const SectionStyled = styled.section<ColorSchemeProps>(props => ({
   padding: '50px 15px',
 }));
 
-const Heading = styled.h1<ColorSchemeProps>(props => ({
+const Heading = styled.h1<ColorSchemeProps>((props) => ({
   fontSize: 32,
   color: props.colorScheme === ColorScheme.Light ? black : white,
 }));
 
-const Line = styled.hr<ColorSchemeProps>(props => ({
+const Line = styled.hr<ColorSchemeProps>((props) => ({
   height: 4,
   width: 70,
   marginBottom: 40,
@@ -37,7 +37,7 @@ const Line = styled.hr<ColorSchemeProps>(props => ({
   border: 0,
 }));
 
-export const Section: FC<SectionProps> = props => {
+export const Section: FC<SectionProps> = (props) => {
   return (
     <SectionStyled id={props.id} colorScheme={props.colorScheme}>
       <Heading colorScheme={props.colorScheme}>{props.heading}</Heading>
