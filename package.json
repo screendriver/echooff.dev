@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@percy/testcafe": "0.2.0",
-    "@testing-library/react": "10.0.1",
+    "@testing-library/react": "9.5.0",
     "@types/chai": "4.2.11",
     "@types/form-urlencoded": "2.0.1",
     "@types/gsap": "1.20.2",
