@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
-import Helmet, { HelmetHTMLElementDatum, HelmetDatum } from 'react-helmet';
+import { Helmet, HelmetHTMLElementDatum, HelmetDatum } from 'react-helmet';
 import { SeoUi, SeoUiProps } from '../../../../src/components/seo/ui';
 
 const props: SeoUiProps = {
