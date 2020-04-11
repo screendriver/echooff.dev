@@ -34,7 +34,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-feather": "2.0.4",
-    "react-helmet": "5.2.1",
+    "react-helmet": "6.0.0",
     "typeface-lato": "0.0.75",
     "typeface-open-sans": "0.0.75",
     "typeface-source-sans-pro": "1.1.5"
