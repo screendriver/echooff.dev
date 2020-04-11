@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - master
+      - '**'
   schedule:
     - cron: '0 0 * * MON,THU' # At 00:00 on Monday and Thursday
 
