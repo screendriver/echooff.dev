@@ -84,7 +84,7 @@
     "micro": "9.3.4",
     "mocha": "7.1.1",
     "netlify-cli": "2.43.0",
-    "nyc": "15.0.0",
+    "nyc": "15.0.1",
     "prettier": "2.0.4",
     "sinon": "9.0.2",
     "testcafe": "1.8.3",
