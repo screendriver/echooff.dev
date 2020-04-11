@@ -86,7 +86,7 @@
     "netlify-cli": "2.40.0",
     "nyc": "15.0.0",
     "prettier": "2.0.4",
-    "sinon": "9.0.1",
+    "sinon": "9.0.2",
     "testcafe": "1.8.3",
     "ts-node": "8.8.1",
     "typescript": "3.8.3"
