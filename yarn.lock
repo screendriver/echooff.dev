@@ -12403,10 +12403,10 @@ nested-error-stacks@^2.0.0, nested-error-stacks@^2.1.0:
   resolved "https://registry.yarnpkg.com/nested-error-stacks/-/nested-error-stacks-2.1.0.tgz#0fbdcf3e13fe4994781280524f8b96b0cdff9c61"
   integrity sha512-AO81vsIO1k1sM4Zrd6Hu7regmJN1NSiAja10gc4bX3F0wd+9rQmcuHQaHVQCYIEC8iFXnE+mavh23GOt7wBgug==
 
-netlify-cli@2.43.0:
-  version "2.43.0"
-  resolved "https://registry.yarnpkg.com/netlify-cli/-/netlify-cli-2.43.0.tgz#9e88d8bb324d3a123ee4cdad61a05a0abcb58ea7"
-  integrity sha512-VqPYci1/yFWgAN6PCbhFxkhf4ZP3MjU6IajyzvXrZBvsWyBjnqGExUhyTuDer4PkjU624Cx5XkaA4CM0Nvbclw==
+netlify-cli@2.44.0:
+  version "2.44.0"
+  resolved "https://registry.yarnpkg.com/netlify-cli/-/netlify-cli-2.44.0.tgz#f10250264ee469eb36ef26d7ffdc7f98a75fc622"
+  integrity sha512-Vh2hz66kov9iT0ynWxXehPqG0+oL83riGYueFwtkHpaCWIynZDNwGdXeBc9RF+m3apVC0TETIsI59Rz1I32pvQ==
   dependencies:
     "@netlify/build" "^0.2.6"
     "@netlify/config" "^0.9.1"
@@ -12485,6 +12485,7 @@ netlify-cli@2.43.0:
     update-notifier "^2.5.0"
     uuid "^3.3.3"
     wait-port "^0.2.2"
+    which "^2.0.2"
     winston "^3.2.1"
     wrap-ansi "^6.0.0"
     write-file-atomic "^3.0.0"
