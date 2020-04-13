@@ -1,5 +1,6 @@
 {
   "extends": ["config:base"],
+  "schedule": "schedule:weekly",
   "commitMessagePrefix": "⬆️ ",
   "labels": ["renovate"],
   "nvm": {
