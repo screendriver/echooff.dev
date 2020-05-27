@@ -82,7 +82,6 @@
     "jsdom-global": "3.0.2",
     "micro": "9.3.4",
     "mocha": "7.1.2",
-    "netlify-cli": "2.51.0",
     "nyc": "15.0.1",
     "prettier": "2.0.5",
     "sinon": "9.0.2",
