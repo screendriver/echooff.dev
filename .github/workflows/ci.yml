@@ -67,10 +67,9 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-      - name: Lighthouse Audit
-        if: github.ref == 'refs/heads/master'
-        uses: treosh/lighthouse-ci-action@v2
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v3
         with:
           urls: |
-            https://www.echooff.dev
+            ${{ steps.deploy-to-netlify.outputs.deploy-url }}
           temporaryPublicStorage: true
