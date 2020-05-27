@@ -19,28 +19,28 @@ jobs:
         with:
           node-version: '14.x'
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
       - name: Check source code
         run: |
-          yarn lint
-          yarn copy:paste:detector
+          npm run lint
+          npm run copy:paste:detector
       - name: Compile source code
-        run: yarn compile
+        run: npm run compile
       - name: Run unit tests
-        run: yarn test:unit:coverage
+        run: npm run test:unit:coverage
       - name: Build application for visual regression and e2e tests
-        run: yarn build:visual
+        run: npm run build:visual
         env:
           GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
       - name: Run e2e tests
-        run: yarn test:e2e
+        run: npm run test:e2e
       - name: Run visual regression tests
-        run: yarn test:visual
+        run: npm run test:visual
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
       - name: Build application for production
         if: github.ref == 'refs/heads/master'
-        run: yarn build
+        run: npm run build
         env:
           GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
       - name: Upload code coverage to Codecov
@@ -50,7 +50,7 @@ jobs:
           file: target/coverage/clover.xml
       - name: Production deploy to Netlify
         if: github.ref == 'refs/heads/master'
-        run: yarn netlify deploy --prod
+        run: npm run netlify deploy --prod
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
