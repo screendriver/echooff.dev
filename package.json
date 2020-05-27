@@ -44,6 +44,10 @@
   },
   "devDependencies": {
     "@percy/testcafe": "0.2.0",
+    "@stryker-mutator/core": "3.2.4",
+    "@stryker-mutator/mocha-framework": "3.2.4",
+    "@stryker-mutator/mocha-runner": "3.2.4",
+    "@stryker-mutator/typescript": "3.2.4",
     "@testing-library/react": "9.5.0",
     "@types/chai": "4.2.11",
     "@types/form-urlencoded": "2.0.1",
