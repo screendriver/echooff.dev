@@ -1,0 +1,7 @@
+{
+  "extends": ["plugin:mocha/recommended"],
+  "plugins": ["mocha"],
+  "rules": {
+    "mocha/no-exclusive-tests": "error"
+  }
+}

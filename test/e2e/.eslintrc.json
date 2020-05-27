@@ -1,0 +1,4 @@
+{
+  "extends": ["plugin:testcafe-community/recommended"],
+  "plugins": ["testcafe-community"]
+}
