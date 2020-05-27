@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "tempDirName": "target/.stryker-tmp",
+  "mutator": "typescript",
+  "packageManager": "npm",
+  "reporters": ["html", "clear-text", "progress"],
+  "testRunner": "mocha",
+  "testFramework": "mocha",
+  "tsconfigFile": "tsconfig.json",
+  "mutate": ["src/**/*.ts?(x)"],
+  "htmlReporter": { "baseDir": "target/mutation/html" }
+}
