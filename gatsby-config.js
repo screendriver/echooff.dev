@@ -35,6 +35,20 @@ module.exports = {
         },
       },
     },
+    {
+      resolve: 'gatsby-plugin-react-i18next',
+      options: {
+        path: `${__dirname}/src/locales`,
+        languages: ['de', 'en'],
+        defaultLanguage: 'de',
+        redirect: true,
+        i18nextOptions: {
+          interpolation: {
+            escapeValue: false,
+          },
+        },
+      },
+    },
     'gatsby-plugin-netlify',
   ],
 };
