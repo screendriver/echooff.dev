@@ -64,12 +64,13 @@ jobs:
           file: target/coverage/clover.xml
       - name: Deploy to Netlify
         id: deploy-to-netlify
-        uses: nwtgck/actions-netlify@v1.1
+        uses: nwtgck/actions-netlify@b9d0ce523c192042da6e5f582e5f5f4ee3190756
         with:
           publish-dir: './public'
           production-branch: master
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: 'Deploy from GitHub Actions'
+          netlify-config-path: './netlify.toml'
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
