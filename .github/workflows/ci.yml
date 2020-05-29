@@ -43,7 +43,12 @@ jobs:
         env:
           GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
       - name: Run e2e tests
-        run: npm run test:e2e
+        run: npm run test:e2e:ci
+        env:
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+          BROWSERSTACK_BUILD_ID: ${{ github.run_id }}
+          BROWSERSTACK_PROJECT_NAME: ${{ secrets.BROWSERSTACK_PROJECT_NAME }}
       - name: Run visual regression tests
         run: npm run test:visual
         env:
