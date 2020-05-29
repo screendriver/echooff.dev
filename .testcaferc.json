@@ -1,6 +1,5 @@
 {
   "browsers": ["chrome:headless", "firefox:headless"],
-  "src": "test/e2e/",
   "appCommand": "gatsby serve",
   "reporter": "minimal"
 }
