@@ -42,7 +42,7 @@
     "typeface-source-sans-pro": "1.1.5"
   },
   "resolutions": {
-    "@percy/agent": "0.26.7"
+    "@percy/agent": "0.26.8"
   },
   "devDependencies": {
     "@percy/testcafe": "0.2.0",
