@@ -80,3 +80,8 @@ jobs:
           urls: |
             ${{ steps.deploy-to-netlify.outputs.deploy-url }}
           temporaryPublicStorage: true
+      - name: Quickmetrics
+        uses: screendriver/quickmetrics-action@v1
+        with:
+          name: echooff.dev.deploy
+          api-key: ${{ secrets.QUICKMETRICS_API_KEY }}
