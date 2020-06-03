@@ -12,6 +12,7 @@ import { Skills } from '../components/skills';
 import { Passions } from '../components/Passions';
 import { Stats } from '../components/Stats';
 import { Experiences } from '../components/experiences';
+import { Quickmetrics } from '../components/Quickmetrics';
 import { SEO } from '../components/seo';
 import { Contact } from '../components/contact';
 import { Footer } from '../components/Footer';
@@ -32,6 +33,7 @@ export default function Page() {
           },
         }}
       />
+      <Quickmetrics />
       <SEO />
       <GitHubCorner />
       <Header config={config} />
