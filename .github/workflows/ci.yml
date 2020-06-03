@@ -83,5 +83,6 @@ jobs:
       - name: Quickmetrics
         uses: screendriver/quickmetrics-action@v1
         with:
-          name: echooff.dev.deploy
+          name: echooff.dev
           api-key: ${{ secrets.QUICKMETRICS_API_KEY }}
+          dimension: deployment
