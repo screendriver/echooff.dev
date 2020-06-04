@@ -1,7 +1,7 @@
 import 'modern-normalize';
 import 'typeface-open-sans';
 import 'typeface-lato';
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Global } from '@emotion/core';
 import { createConfig } from '../shared/config';
 import { GitHubCorner } from '../components/GitHubCorner';
@@ -19,7 +19,7 @@ import { Footer } from '../components/Footer';
 
 const config = createConfig();
 
-export default function Page() {
+const Page: FunctionComponent = () => {
   return (
     <>
       <Global
@@ -51,4 +51,6 @@ export default function Page() {
       />
     </>
   );
-}
+};
+
+export default Page;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import {
   Activity,
   Check,
@@ -39,7 +39,7 @@ const ListItem = styled.li({
   },
 });
 
-export function Passions() {
+export const Passions: FunctionComponent = () => {
   return (
     <Section heading="Passions" id="passions" colorScheme={ColorScheme.Light}>
       <List>
@@ -74,4 +74,4 @@ export function Passions() {
       </List>
     </Section>
   );
-}
+};

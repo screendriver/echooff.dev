@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import 'modern-normalize';
 import 'typeface-source-sans-pro';
-import React, { useEffect } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { css, Global } from '@emotion/core';
 import styled from '@emotion/styled';
 import { TweenMax, TimelineMax, Power1 } from 'gsap';
@@ -215,7 +217,7 @@ function run() {
   };
 }
 
-export default function NotFound() {
+const NotFound: FunctionComponent = () => {
   useEffect(run);
   return (
     <>
@@ -236,4 +238,6 @@ export default function NotFound() {
       </Content>
     </>
   );
-}
+};
+
+export default NotFound;

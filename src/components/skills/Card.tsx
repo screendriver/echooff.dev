@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
 import hexToRgba from 'hex-to-rgba';
 import { black, darkerWhite, cyan, white } from '../../colors';
@@ -69,7 +69,7 @@ const Section = styled.section({
   },
 });
 
-export function Card(props: CardProps) {
+export const Card: FunctionComponent<CardProps> = (props) => {
   return (
     <Section>
       <Link href={props.linkTo} title={props.linkText}>
@@ -80,4 +80,4 @@ export function Card(props: CardProps) {
       </Link>
     </Section>
   );
-}
+};

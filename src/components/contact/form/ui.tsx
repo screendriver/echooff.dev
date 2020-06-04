@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent } from 'react';
+import React, { FunctionComponent, ChangeEvent, FormEvent } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { white, grey } from '../../../colors';
@@ -86,7 +86,7 @@ export interface Props {
   onSubmit?(event: FormEvent<HTMLFormElement>): void;
 }
 
-export function FormUi(props: Props) {
+export const FormUi: FunctionComponent<Props> = (props) => {
   return (
     <>
       <Heading>Leave me a message</Heading>
@@ -131,4 +131,4 @@ export function FormUi(props: Props) {
       </Form>
     </>
   );
-}
+};

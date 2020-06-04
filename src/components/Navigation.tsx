@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import styled from '@emotion/styled';
 import { Menu } from 'react-feather';
 import { darkerWhite, black, grey, cyan } from '../colors';
@@ -91,7 +91,7 @@ function handleLinkClick(
   };
 }
 
-export function Navigation() {
+export const Navigation: FunctionComponent = () => {
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
   return (
     <NavigationStyled>
@@ -137,4 +137,4 @@ export function Navigation() {
       </List>
     </NavigationStyled>
   );
-}
+};

@@ -62,7 +62,7 @@ export function setFormSent(sent: boolean): BooleanAction {
 }
 
 function assertUnreachable(x: never): never {
-  throw new Error('Unexpected object: ' + x);
+  throw new Error(`Unexpected object: ${JSON.stringify(x)}`);
 }
 
 export function reducer(state: State, action: Action): State {
