@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import { SeoUi } from './ui';
 
@@ -32,10 +32,10 @@ const query = graphql`
   }
 `;
 
-export function SEO(props: SEOProps) {
+export const SEO: FunctionComponent<SEOProps> = (props) => {
   const {
     site: { siteMetadata },
   } = useStaticQuery<QueryResult>(query);
   const { title = siteMetadata.title } = props;
   return <SeoUi {...siteMetadata} title={title} />;
-}
+};

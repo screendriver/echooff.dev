@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
 import { white, black } from '../colors';
@@ -105,7 +105,7 @@ interface StatsProps {
   config: Config;
 }
 
-export function Stats(props: StatsProps) {
+export const Stats: FunctionComponent<StatsProps> = (props) => {
   const data = useStaticQuery<GraphQLData>(query);
   return (
     <StatsComponent
@@ -113,4 +113,4 @@ export function Stats(props: StatsProps) {
       data={data}
     />
   );
-}
+};

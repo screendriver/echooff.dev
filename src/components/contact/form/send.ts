@@ -7,7 +7,7 @@ interface FormValues {
   message: string;
 }
 
-export async function sendForm(formValues: FormValues) {
+export async function sendForm(formValues: FormValues): Promise<void> {
   await ky.post('/', {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: formurlencoded({ 'form-name': 'contact', ...formValues }),

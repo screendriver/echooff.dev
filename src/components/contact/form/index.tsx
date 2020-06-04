@@ -1,4 +1,10 @@
-import React, { useReducer, Dispatch, ChangeEvent, FormEvent } from 'react';
+import React, {
+  FunctionComponent,
+  useReducer,
+  Dispatch,
+  ChangeEvent,
+  FormEvent,
+} from 'react';
 import {
   reducer,
   initialState,
@@ -49,7 +55,7 @@ export interface Props {
   onSubmit(formValues: Pick<State, 'name' | 'email' | 'message'>): void;
 }
 
-export function Form(props: Props) {
+export const Form: FunctionComponent<Props> = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   return state.formSent ? (
     <FormSent />
@@ -63,4 +69,4 @@ export function Form(props: Props) {
       onSubmit={handleSubmit(state, dispatch, props.onSubmit)}
     />
   );
-}
+};

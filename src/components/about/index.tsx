@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import { FixedObject } from 'gatsby-image';
 import { AboutUi } from './ui';
@@ -23,7 +23,7 @@ const query = graphql`
   }
 `;
 
-export function About() {
+export const About: FunctionComponent = () => {
   const data = useStaticQuery<GraphQLData>(query);
   return <AboutUi fixedImage={data.aboutFile.childImageSharp.fixed} />;
-}
+};

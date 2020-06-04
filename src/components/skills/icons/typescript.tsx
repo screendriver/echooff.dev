@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-export function TypeScriptIcon() {
+export const TypeScriptIcon: FunctionComponent = () => {
   return (
     <svg width="100%" height="100%" viewBox="0 0 256 256">
       <path fill="#007ACC" d="M0 128v128h256V0H0z" />
@@ -10,4 +10,4 @@ export function TypeScriptIcon() {
       />
     </svg>
   );
-}
+};

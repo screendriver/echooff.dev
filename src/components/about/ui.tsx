@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
 import Img, { FixedObject } from 'gatsby-image';
 import { grey } from '../../colors';
@@ -33,7 +33,7 @@ export interface AboutUiProps {
   fixedImage: FixedObject;
 }
 
-export function AboutUi({ fixedImage }: AboutUiProps) {
+export const AboutUi: FunctionComponent<AboutUiProps> = ({ fixedImage }) => {
   return (
     <Section heading="About" id="about" colorScheme={ColorScheme.Light}>
       <AboutImage alt="My face" fixed={fixedImage} />
@@ -51,4 +51,4 @@ export function AboutUi({ fixedImage }: AboutUiProps) {
       </Text>
     </Section>
   );
-}
+};

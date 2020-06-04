@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
 import { black, darkGrey, cyan } from '../colors';
 
@@ -21,11 +21,11 @@ export interface FooterProps {
   date: Date;
 }
 
-export function Footer({ date }: FooterProps) {
+export const Footer: FunctionComponent<FooterProps> = ({ date }) => {
   return (
     <FooterStyled>
       Copyright &copy; {date.getFullYear()} Christian Rackerseder. Design
       inspired by <a href="http://www.templatewire.com/">TemplateWire</a>
     </FooterStyled>
   );
-}
+};
