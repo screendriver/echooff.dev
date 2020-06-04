@@ -2,7 +2,7 @@ import 'jsdom-global/register';
 
 declare global {
   interface Window {
-    Date: any;
+    Date: unknown;
   }
 }
 window.Date = Date;

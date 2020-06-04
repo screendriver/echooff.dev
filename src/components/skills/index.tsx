@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
 import { Section, ColorScheme } from '../Section';
 import { Card } from './Card';
@@ -26,7 +26,7 @@ const SkillsList = styled.div({
   },
 });
 
-export function Skills() {
+export const Skills: FunctionComponent = () => {
   return (
     <Section heading="Skills" id="skills" colorScheme={ColorScheme.Cyan}>
       <SkillsList>
@@ -74,4 +74,4 @@ export function Skills() {
       </SkillsList>
     </Section>
   );
-}
+};

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-export function ElmIcon() {
+export const ElmIcon: FunctionComponent = () => {
   return (
     <svg width="100%" height="100%" viewBox="0 0 323.141 322.95">
       <path fill="#F0AD00" d="M161.649 152.782l69.865-69.866H91.783z" />
@@ -14,4 +14,4 @@ export function ElmIcon() {
       <path fill="#60B5CC" d="M161.649 170.517L8.869 323.298H314.43z" />
     </svg>
   );
-}
+};

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
 import { white } from '../../colors';
 import { Experience } from '.';
@@ -40,7 +40,7 @@ const Text = styled.span({
   },
 });
 
-export function Circle(props: ExperienceCircleProps) {
+export const Circle: FunctionComponent<ExperienceCircleProps> = (props) => {
   const { experience } = props;
   return (
     <CircleStyled className={props.className}>
@@ -48,4 +48,4 @@ export function Circle(props: ExperienceCircleProps) {
       <Text aria-label="Experience from">{experience.from}</Text>
     </CircleStyled>
   );
-}
+};

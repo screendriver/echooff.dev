@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { keyframes } from '@emotion/core';
 import styled from '@emotion/styled';
 import { white, black } from '../colors';
@@ -43,7 +43,7 @@ const OctoArm = styled.path({
 });
 
 // By Timo Holman: http://tholman.com/github-corners/
-export function GitHubCorner() {
+export const GitHubCorner: FunctionComponent = () => {
   return (
     <GitHubLink
       href="https://github.com/screendriver/echooff.dev"
@@ -62,4 +62,4 @@ export function GitHubCorner() {
       </Svg>
     </GitHubLink>
   );
-}
+};

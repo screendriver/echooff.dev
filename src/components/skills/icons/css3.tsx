@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-export function Css3Icon() {
+export const Css3Icon: FunctionComponent = () => {
   return (
     <svg width="100%" height="100%" viewBox="85.5 210.272 437.29 491.728">
       <path
@@ -14,4 +14,4 @@ export function Css3Icon() {
       />
     </svg>
   );
-}
+};
