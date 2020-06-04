@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, FunctionComponent } from 'react';
 import ky from 'ky';
 
-export function Quickmetrics() {
+export const Quickmetrics: FunctionComponent = () => {
   useEffect(() => {
-    ky('/.netlify/functions/quickmetrics');
+    void ky('/.netlify/functions/quickmetrics');
   });
   return null;
-}
+};

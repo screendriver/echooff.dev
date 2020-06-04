@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FunctionComponent } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import Img, { FluidObject } from 'gatsby-image';
 import sample from 'lodash.sample';
@@ -85,15 +85,22 @@ const Name = styled.span({
   fontWeight: 600,
 });
 
+function assertIsEdge(edge?: Edge): asserts edge is Edge {
+  if (edge === undefined) {
+    throw new Error('Expected edge to be defined');
+  }
+}
+
 function getHeaderImage(
   randomHeaderImage: boolean,
   edges: GraphQLData['headerAllFile']['edges'],
 ): FluidObject {
   const edge = randomHeaderImage ? sample(edges) : edges[0];
-  return edge!.node.childImageSharp.fluid;
+  assertIsEdge(edge);
+  return edge.node.childImageSharp.fluid;
 }
 
-const HeaderComponent: FC<HeaderComponentProps> = ({
+const HeaderComponent: FunctionComponent<HeaderComponentProps> = ({
   randomHeaderImage,
   data,
 }) => {
@@ -140,7 +147,7 @@ interface HeaderProps {
   config: Config;
 }
 
-export function Header(props: HeaderProps) {
+export const Header: FunctionComponent<HeaderProps> = (props) => {
   const data = useStaticQuery<GraphQLData>(query);
   return (
     <HeaderComponent
@@ -148,4 +155,4 @@ export function Header(props: HeaderProps) {
       data={data}
     />
   );
-}
+};

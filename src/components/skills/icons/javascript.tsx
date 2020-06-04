@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
-export function JavaScriptIcon() {
+export const JavaScriptIcon: FunctionComponent = () => {
   return (
     <svg width="100%" height="100%" viewBox="0 0 256.4 291.5">
       <path
@@ -24,4 +24,4 @@ export function JavaScriptIcon() {
       />
     </svg>
   );
-}
+};

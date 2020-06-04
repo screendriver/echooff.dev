@@ -1,7 +1,12 @@
 import { assert } from 'chai';
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
-import { Helmet, HelmetHTMLElementDatum, HelmetDatum } from 'react-helmet';
+import {
+  Helmet,
+  HelmetHTMLElementDatum,
+  HelmetDatum,
+  HelmetTags,
+} from 'react-helmet';
 import { SeoUi, SeoUiProps } from '../../../../src/components/seo/ui';
 
 const props: SeoUiProps = {
@@ -31,14 +36,16 @@ suite('<SeoUi />', function () {
 
   test('renders a favicon', function () {
     render(<SeoUi {...props} />);
-    const { linkTags } = Helmet.peek() as any;
-    assert.deepEqual(linkTags, [{ rel: 'shortcut icon', href: 'icon.png' }]);
+    const { linkTags } = (Helmet.peek() as unknown) as HelmetTags;
+    assert.deepEqual<Partial<HTMLLinkElement>[]>(linkTags, [
+      { rel: 'shortcut icon', href: 'icon.png' },
+    ]);
   });
 
   test('renders meta tags', function () {
     render(<SeoUi {...props} />);
-    const { metaTags } = Helmet.peek() as any;
-    assert.deepEqual(metaTags, [
+    const { metaTags } = (Helmet.peek() as unknown) as HelmetTags;
+    assert.deepEqual<Partial<HTMLMetaElement>[]>(metaTags, [
       { name: 'theme-color', content: '#7bc3d1' },
       { name: 'description', content: 'my description' },
       { name: 'keywords', content: 'key,words' },

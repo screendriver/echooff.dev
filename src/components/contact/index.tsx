@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import {
   MapPin,
   MessageSquare,
@@ -55,7 +55,7 @@ const SmallLink = styled.a({
   },
 });
 
-export function Contact() {
+export const Contact: FunctionComponent = () => {
   return (
     <Section heading="Contact" id="contact" colorScheme={ColorScheme.Cyan}>
       <Address>
@@ -84,4 +84,4 @@ export function Contact() {
       </Address>
     </Section>
   );
-}
+};

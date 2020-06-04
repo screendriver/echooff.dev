@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Helmet } from 'react-helmet';
 import { cyan } from '../../colors';
 
@@ -10,13 +10,13 @@ export interface SeoUiProps {
   favicon: string;
 }
 
-export function SeoUi({
+export const SeoUi: FunctionComponent<SeoUiProps> = ({
   title,
   description,
   author,
   keywords,
   favicon,
-}: SeoUiProps) {
+}) => {
   return (
     <Helmet title={title}>
       <html lang="en" />
@@ -27,4 +27,4 @@ export function SeoUi({
       <meta name="author" content={author} />
     </Helmet>
   );
-}
+};

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
 
 const YetiSVGStyled = styled.svg({
@@ -19,7 +19,7 @@ const LightSVGStyled = styled.svg({
   overflow: 'visible',
 });
 
-export function YetiSVG() {
+export const YetiSVG: FunctionComponent = () => {
   return (
     <>
       <YetiSVGStyled
@@ -861,4 +861,4 @@ export function YetiSVG() {
       </LightSVGStyled>
     </>
   );
-}
+};

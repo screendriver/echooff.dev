@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React, { FunctionComponent, CSSProperties } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
 import { Section, ColorScheme } from '../Section';
@@ -135,7 +135,7 @@ const query = graphql`
   }
 `;
 
-export function Experiences() {
+export const Experiences: FunctionComponent = () => {
   const data = useStaticQuery<GraphQLData>(query);
   return <ExperiencesComponent data={data} />;
-}
+};
