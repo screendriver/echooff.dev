@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import ky from 'ky-universal';
+import ky from 'ky';
 
 export function Quickmetrics() {
   useEffect(() => {
