@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Card, CardProps } from '../../../../src/components/skills/Card';
 
 function renderCard() {
@@ -13,8 +13,6 @@ function renderCard() {
 }
 
 suite('<Card />', function () {
-  teardown(cleanup);
-
   test('<Card /> renders a link that links to given "linkTo" prop', function () {
     const { getByTitle } = renderCard();
     getByTitle('My blog');
