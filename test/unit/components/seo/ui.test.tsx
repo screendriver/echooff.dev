@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import {
   Helmet,
   HelmetHTMLElementDatum,
@@ -18,8 +18,6 @@ const props: SeoUiProps = {
 };
 
 suite('<SeoUi />', function () {
-  teardown(cleanup);
-
   test('renders a title', function () {
     render(<SeoUi {...props} />);
     const { title } = Helmet.peek();
