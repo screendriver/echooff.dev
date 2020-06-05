@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { AboutUi, AboutUiProps } from '../../../../src/components/about/ui';
 
 const props: AboutUiProps = {
@@ -13,8 +13,6 @@ const props: AboutUiProps = {
 };
 
 suite('<AboutUi />', function () {
-  teardown(cleanup);
-
   test('renders an about image', function () {
     const { getByAltText } = render(<AboutUi {...props} />);
     const image = getByAltText('My face');

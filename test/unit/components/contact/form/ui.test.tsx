@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import sinon from 'sinon';
 import React from 'react';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { FormUi, Props } from '../../../../../src/components/contact/form/ui';
 
 function renderFormUi(overrides: Partial<Props>) {
@@ -18,8 +18,6 @@ function renderFormUi(overrides: Partial<Props>) {
 }
 
 suite('<Contact />', function () {
-  teardown(cleanup);
-
   test('render given name in an input', function () {
     const { getByPlaceholderText } = renderFormUi({ name: 'My name' });
     const input = getByPlaceholderText('Name') as HTMLInputElement;

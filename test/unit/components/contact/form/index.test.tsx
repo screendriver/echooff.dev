@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import sinon from 'sinon';
 import React from 'react';
-import { render, fireEvent, cleanup } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { Form, Props } from '../../../../../src/components/contact/form/';
 
 function renderForm(overrides: Partial<Props> = {}) {
@@ -13,8 +13,6 @@ function renderForm(overrides: Partial<Props> = {}) {
 }
 
 suite('<Form />', function () {
-  teardown(cleanup);
-
   test('renders a "Leave me a message" text', function () {
     const { queryByText } = renderForm();
     const actual = queryByText('Leave me a message');
