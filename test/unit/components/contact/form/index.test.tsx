@@ -15,26 +15,28 @@ function renderForm(overrides: Partial<Props> = {}) {
 suite('<Form />', function () {
   test('renders a "Leave me a message" text', function () {
     const { queryByText } = renderForm();
-    const actual = queryByText('Leave me a message');
+    const actual = queryByText('contact.leave_a_message');
     const expected = null;
     assert.notEqual(actual, expected);
   });
 
   test('renders a required "Name" input field', function () {
     const { getByPlaceholderText } = renderForm();
-    const actual = getByPlaceholderText('Name') as HTMLInputElement;
+    const actual = getByPlaceholderText('contact.name') as HTMLInputElement;
     assert.isTrue(actual.required);
   });
 
   test('renders a required "Email" input field', function () {
     const { getByPlaceholderText } = renderForm();
-    const actual = getByPlaceholderText('Email') as HTMLInputElement;
+    const actual = getByPlaceholderText('contact.email') as HTMLInputElement;
     assert.isTrue(actual.required);
   });
 
   test('renders a required "Message" textarea', function () {
     const { getByPlaceholderText } = renderForm();
-    const actual = getByPlaceholderText('Message') as HTMLTextAreaElement;
+    const actual = getByPlaceholderText(
+      'contact.message',
+    ) as HTMLTextAreaElement;
     assert.isTrue(actual.required);
   });
 
@@ -43,10 +45,14 @@ suite('<Form />', function () {
     const { getByPlaceholderText, getByDisplayValue } = renderForm({
       onSubmit,
     });
-    const name = getByPlaceholderText('Name') as HTMLInputElement;
-    const email = getByPlaceholderText('Email') as HTMLInputElement;
-    const message = getByPlaceholderText('Message') as HTMLTextAreaElement;
-    const submitButton = getByDisplayValue('Send Message') as HTMLInputElement;
+    const name = getByPlaceholderText('contact.name') as HTMLInputElement;
+    const email = getByPlaceholderText('contact.email') as HTMLInputElement;
+    const message = getByPlaceholderText(
+      'contact.message',
+    ) as HTMLTextAreaElement;
+    const submitButton = getByDisplayValue(
+      'contact.submit',
+    ) as HTMLInputElement;
     fireEvent.change(name, { target: { name: 'name', value: 'My name' } });
     fireEvent.change(email, {
       target: { name: 'email', value: 'test@example.com' },

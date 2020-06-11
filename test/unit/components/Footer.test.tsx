@@ -1,25 +1,50 @@
 import { assert } from 'chai';
 import React from 'react';
+import i18next from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import { I18nextProvider } from 'react-i18next';
 import { render } from '@testing-library/react';
-import { Footer, FooterProps } from '../../../src/components/Footer';
+import { Footer } from '../../../src/components/Footer';
 
-function renderFooter() {
-  const props: FooterProps = {
-    date: new Date(2019, 0),
-  };
-  return render(<Footer {...props} />);
+function renderFooter(date: Date) {
+  return render(
+    <I18nextProvider i18n={i18next}>
+      <Footer date={date} />
+    </I18nextProvider>,
+  );
 }
 
 suite('<Footer />', function () {
-  test('<Footer /> renders given copyright date', function () {
-    const { getByText } = renderFooter();
-    const element = getByText('Copyright', { exact: false });
-    assert.include(element.textContent, '2019');
+  suiteSetup(function () {
+    return i18next.use(initReactI18next).init({
+      lng: 'en',
+      resources: {
+        en: {
+          translation: {
+            footer: {
+              copyright:
+                'Copyright © {{year}} Me. Design inspired by <1>TemplateWire</1>',
+            },
+          },
+        },
+      },
+    });
   });
 
-  test('<Footer /> renders an "inspired by" link', function () {
-    const { getByText } = renderFooter();
-    const element = getByText('TemplateWire');
-    assert.equal(element.getAttribute('href'), 'http://www.templatewire.com/');
+  test('<Footer /> renders given copyright date', function () {
+    const date = new Date(1982, 0);
+    const { getByLabelText } = renderFooter(date);
+    const element = getByLabelText('Footer');
+    assert.include(element.textContent, '1982');
+  });
+
+  test('<Footer /> renders a copyright and an "inspired by" link', function () {
+    const date = new Date(2020, 0);
+    const { getByLabelText } = renderFooter(date);
+    const element = getByLabelText('Footer');
+    assert.equal(
+      element.innerHTML,
+      'Copyright © 2020 Me. Design inspired by <a href="http://www.templatewire.com/">TemplateWire</a>',
+    );
   });
 });

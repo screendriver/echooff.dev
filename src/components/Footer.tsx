@@ -25,9 +25,9 @@ export interface FooterProps {
 export const Footer: FunctionComponent<FooterProps> = ({ date }) => {
   const year = date.getFullYear();
   return (
-    <FooterStyled>
-      <Trans i18nKey="footer.copyright">
-        Copyright &copy; {{ year }} Christian Rackerseder. Design inspired by
+    <FooterStyled aria-label="Footer">
+      <Trans i18nKey="footer.copyright" values={{ year }}>
+        Copyright &copy; year Christian Rackerseder. Design inspired by
         <a href="http://www.templatewire.com/">TemplateWire</a>
       </Trans>
     </FooterStyled>
