@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
+import { useTranslation, Trans } from 'react-i18next';
 import Img, { FixedObject } from 'gatsby-image';
 import { grey } from '../../colors';
 import { Section, ColorScheme } from '../Section';
@@ -34,21 +35,28 @@ export interface AboutUiProps {
 }
 
 export const AboutUi: FunctionComponent<AboutUiProps> = ({ fixedImage }) => {
+  const [t] = useTranslation();
   return (
-    <Section heading="About" id="about" colorScheme={ColorScheme.Light}>
+    <Section
+      heading={t('about.heading')}
+      id="about"
+      colorScheme={ColorScheme.Light}
+    >
       <AboutImage alt="My face" fixed={fixedImage} />
-      <Text>
-        JavaScript is everywhere. In the old days, being a JavaScript developer
-        meant that you were a front end web developer. Forever bound to the
-        browser.
-      </Text>
-      <GoneText>Those days are gone.</GoneText>
-      <Text>
-        The rise of Node.js ushered in a new era. An era where being a
-        JavaScript developer doesn’t necessarily mean a front-end web developer.
-        As a JavaScript developer today, you can target more platforms than any
-        other high level language.
-      </Text>
+      <Trans i18nKey="about.text">
+        <Text>
+          JavaScript is everywhere. In the old days, being a JavaScript
+          developer meant that you were a front end web developer. Forever bound
+          to the browser.
+        </Text>
+        <GoneText>Those days are gone.</GoneText>
+        <Text>
+          The rise of Node.js ushered in a new era. An era where being a
+          JavaScript developer doesn’t necessarily mean a front-end web
+          developer. As a JavaScript developer today, you can target more
+          platforms than any other high level language.
+        </Text>
+      </Trans>
     </Section>
   );
 };

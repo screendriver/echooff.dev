@@ -1,6 +1,7 @@
 import React, { FunctionComponent, ChangeEvent, FormEvent } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
+import { useTranslation } from 'react-i18next';
 import { white, grey } from '../../../colors';
 
 const Heading = styled.h3({
@@ -87,9 +88,10 @@ export interface Props {
 }
 
 export const FormUi: FunctionComponent<Props> = (props) => {
+  const [t] = useTranslation();
   return (
     <>
-      <Heading>Leave me a message</Heading>
+      <Heading>{t('contact.leave_a_message')}</Heading>
       <Form
         name="contact"
         method="POST"
@@ -101,7 +103,7 @@ export const FormUi: FunctionComponent<Props> = (props) => {
           <Input
             name="name"
             type="text"
-            placeholder="Name"
+            placeholder={t('contact.name')}
             value={props.name}
             required={true}
             onChange={props.onInputChange}
@@ -109,7 +111,7 @@ export const FormUi: FunctionComponent<Props> = (props) => {
           <Input
             name="email"
             type="email"
-            placeholder="Email"
+            placeholder={t('contact.email')}
             value={props.email}
             required={true}
             onChange={props.onInputChange}
@@ -118,14 +120,14 @@ export const FormUi: FunctionComponent<Props> = (props) => {
         <TextArea
           name="message"
           rows={4}
-          placeholder="Message"
+          placeholder={t('contact.message')}
           value={props.message}
           required={true}
           onChange={props.onInputChange}
         />
         <Submit
           type="submit"
-          value="Send Message"
+          value={t<string>('contact.submit')}
           disabled={props.submitDisabled}
         />
       </Form>
