@@ -119,6 +119,6 @@
     "submit": "Send Message"
   },
   "footer": {
-    "copyright": "Copyright © {{year}} Christian Rackerseder. Design inspired by <3>TemplateWire</3>"
+    "copyright": "Copyright © {{year}} $t(meta.name). Design inspired by <3>TemplateWire</3>"
   }
 }
