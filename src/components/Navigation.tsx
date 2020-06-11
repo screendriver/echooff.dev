@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
 import styled from '@emotion/styled';
+import { useTranslation } from 'react-i18next';
 import { Menu } from 'react-feather';
 import { darkerWhite, black, grey, cyan } from '../colors';
 
@@ -92,10 +93,11 @@ function handleLinkClick(
 }
 
 export const Navigation: FunctionComponent = () => {
+  const [t] = useTranslation();
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
   return (
     <NavigationStyled>
-      <MeLink href="#header">Christian Rackerseder</MeLink>
+      <MeLink href="#header">{t('navigation.name')}</MeLink>
       <MenuLink>
         <Menu
           color={darkerWhite}
@@ -105,12 +107,12 @@ export const Navigation: FunctionComponent = () => {
       <List mobileMenuVisible={mobileMenuVisible}>
         <ListItem>
           <Link href="#about" onClick={handleLinkClick(setMobileMenuVisible)}>
-            About
+            {t('navigation.about')}
           </Link>
         </ListItem>
         <ListItem>
           <Link href="#skills" onClick={handleLinkClick(setMobileMenuVisible)}>
-            Skills
+            {t('navigation.skills')}
           </Link>
         </ListItem>
         <ListItem>
@@ -118,7 +120,7 @@ export const Navigation: FunctionComponent = () => {
             href="#passions"
             onClick={handleLinkClick(setMobileMenuVisible)}
           >
-            Passions
+            {t('navigation.passions')}
           </Link>
         </ListItem>
         <ListItem>
@@ -126,12 +128,12 @@ export const Navigation: FunctionComponent = () => {
             href="#experience"
             onClick={handleLinkClick(setMobileMenuVisible)}
           >
-            Resume
+            {t('navigation.resume')}
           </Link>
         </ListItem>
         <ListItem>
           <Link href="#contact" onClick={handleLinkClick(setMobileMenuVisible)}>
-            Contact
+            {t('navigation.contact')}
           </Link>
         </ListItem>
       </List>

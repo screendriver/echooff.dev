@@ -1,20 +1,10 @@
 import React, { FunctionComponent, CSSProperties } from 'react';
-import { graphql, useStaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
+import { useTranslation } from 'react-i18next';
 import { Section, ColorScheme } from '../Section';
 import { Circle } from './Circle';
 import { Description } from './Description';
 import { Experience } from '.';
-
-interface GraphQLData {
-  allExperienceJson: {
-    edges: [{ node: Experience }];
-  };
-}
-
-interface ExperiencesComponentProps {
-  data: GraphQLData;
-}
 
 const Timeline = styled.ul({
   listStyleType: 'none',
@@ -85,19 +75,14 @@ const Moment = styled.li<{ justifyContent: CSSProperties['justifyContent'] }>(
   },
 );
 
-function ExperiencesComponent({ data }: ExperiencesComponentProps) {
-  const experiences = data.allExperienceJson.edges.map<Experience>(
-    ({ node }) => ({
-      from: node.from,
-      to: node.to,
-      industry: node.industry,
-      jobTitle: node.jobTitle,
-      jobDescription: node.jobDescription,
-    }),
-  );
+export const Experiences: FunctionComponent = () => {
+  const [t] = useTranslation();
+  const experiences = t<Experience[]>('experience.years', {
+    returnObjects: true,
+  });
   return (
     <Section
-      heading="Experience"
+      heading={t('experience.heading')}
       id="experience"
       colorScheme={ColorScheme.Light}
     >
@@ -117,25 +102,4 @@ function ExperiencesComponent({ data }: ExperiencesComponentProps) {
       </Timeline>
     </Section>
   );
-}
-
-const query = graphql`
-  query {
-    allExperienceJson {
-      edges {
-        node {
-          from
-          to
-          industry
-          jobTitle
-          jobDescription
-        }
-      }
-    }
-  }
-`;
-
-export const Experiences: FunctionComponent = () => {
-  const data = useStaticQuery<GraphQLData>(query);
-  return <ExperiencesComponent data={data} />;
 };

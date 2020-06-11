@@ -2,9 +2,6 @@ require('dotenv').config();
 
 module.exports = {
   siteMetadata: {
-    title: 'Christian Rackerseder - Full-Stack JavaScript Engineer',
-    description: 'Full-Stack JavaScript Engineer',
-    author: 'Christian Rackerseder',
     keywords: 'TypeScript,JavaScript,HTML,CSS,Node.js,React,Vue',
     favicon: 'favicon.png',
     siteUrl: 'https://www.echooff.dev',
@@ -39,8 +36,8 @@ module.exports = {
       resolve: 'gatsby-plugin-react-i18next',
       options: {
         path: `${__dirname}/src/locales`,
-        languages: ['de', 'en'],
-        defaultLanguage: 'de',
+        languages: ['en'],
+        defaultLanguage: 'en',
         redirect: true,
         i18nextOptions: {
           interpolation: {
