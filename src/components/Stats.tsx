@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
+import { useTranslation } from 'react-i18next';
 import { white, black } from '../colors';
 import { Section, ColorScheme } from './Section';
 import { Config } from '../shared/config';
@@ -64,22 +65,27 @@ function Stat(props: StatProps) {
 }
 
 function StatsComponent({ data, staticNumbers }: StatsComponentProps) {
+  const [t] = useTranslation();
   const { repositories, starredRepositories } = data.github.user;
   return (
-    <Section heading="Some Stats" id="stats" colorScheme={ColorScheme.Cyan}>
+    <Section
+      heading={t('stats.heading')}
+      id="stats"
+      colorScheme={ColorScheme.Cyan}
+    >
       <StatList>
-        <Stat counter={999999} text="Lines of Code" />
+        <Stat counter={999999} text={t('stats.lines_of_code')} />
         <Stat
           counter={staticNumbers ? 58 : repositories.totalCount}
-          text="GitHub Repos"
+          text={t('stats.github.repos')}
         />
         <Stat
           counter={staticNumbers ? 596 : starredRepositories.totalCount}
-          text="GitHub Stars"
+          text={t('stats.github.stars')}
         />
         <Stat
           counter={staticNumbers ? 18 : new Date().getFullYear() - 2001}
-          text="Years of Experience"
+          text={t('stats.years_of_experience')}
         />
       </StatList>
     </Section>

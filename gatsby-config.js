@@ -2,9 +2,6 @@ require('dotenv').config();
 
 module.exports = {
   siteMetadata: {
-    title: 'Christian Rackerseder - Full-Stack JavaScript Engineer',
-    description: 'Full-Stack JavaScript Engineer',
-    author: 'Christian Rackerseder',
     keywords: 'TypeScript,JavaScript,HTML,CSS,Node.js,React,Vue',
     favicon: 'favicon.png',
     siteUrl: 'https://www.echooff.dev',
@@ -32,6 +29,20 @@ module.exports = {
         url: 'https://api.github.com/graphql',
         headers: {
           Authorization: `bearer ${process.env.GITHUB_API_TOKEN}`,
+        },
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-react-i18next',
+      options: {
+        path: `${__dirname}/src/locales`,
+        languages: ['en'],
+        defaultLanguage: 'en',
+        redirect: true,
+        i18nextOptions: {
+          interpolation: {
+            escapeValue: false,
+          },
         },
       },
     },

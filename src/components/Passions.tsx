@@ -9,6 +9,7 @@ import {
   Layers,
 } from 'react-feather';
 import styled from '@emotion/styled';
+import { useTranslation } from 'react-i18next';
 import { Section, ColorScheme } from './Section';
 
 const List = styled.ul({
@@ -40,36 +41,41 @@ const ListItem = styled.li({
 });
 
 export const Passions: FunctionComponent = () => {
+  const [t] = useTranslation();
   return (
-    <Section heading="Passions" id="passions" colorScheme={ColorScheme.Light}>
+    <Section
+      heading={t('passions.heading')}
+      id="passions"
+      colorScheme={ColorScheme.Light}
+    >
       <List>
         <ListItem>
           <Check size={30} />
-          <p>TDD</p>
+          <p>{t('passions.tdd')}</p>
         </ListItem>
         <ListItem>
           <Compass size={30} />
-          <p>Clean Code</p>
+          <p>{t('passions.clean_code')}</p>
         </ListItem>
         <ListItem>
           <Zap size={30} />
-          <p>Performance</p>
+          <p>{t('passions.performance')}</p>
         </ListItem>
         <ListItem>
           <Server size={30} />
-          <p>Serverless</p>
+          <p>{t('passions.serverless')}</p>
         </ListItem>
         <ListItem>
           <Layers size={30} />
-          <p>JAMstack</p>
+          <p>{t('passions.jamstack')}</p>
         </ListItem>
         <ListItem>
           <Cloud size={30} />
-          <p>Cloud</p>
+          <p>{t('passions.cloud')}</p>
         </ListItem>
         <ListItem>
           <Activity size={30} />
-          <p>Agile</p>
+          <p>{t('passions.agile')}</p>
         </ListItem>
       </List>
     </Section>
