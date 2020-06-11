@@ -1,20 +1,45 @@
 import { assert } from 'chai';
 import React from 'react';
+import i18next from 'i18next';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { render } from '@testing-library/react';
 import { AboutUi, AboutUiProps } from '../../../../src/components/about/ui';
 
-const props: AboutUiProps = {
-  fixedImage: {
-    width: 800,
-    height: 600,
-    src: 'myImage.png',
-    srcSet: 'myImage.png 1x',
-  },
-};
+function renderAboutUi() {
+  const props: AboutUiProps = {
+    fixedImage: {
+      width: 800,
+      height: 600,
+      src: 'myImage.png',
+      srcSet: 'myImage.png 1x',
+    },
+  };
+  return render(
+    <I18nextProvider i18n={i18next}>
+      <AboutUi {...props} />
+    </I18nextProvider>,
+  );
+}
 
 suite('<AboutUi />', function () {
+  suiteSetup(function () {
+    return i18next.use(initReactI18next).init({
+      lng: 'en',
+      resources: {
+        en: {
+          translation: {
+            about: {
+              text:
+                '<0>JavaScript is everywhere.</0><1>Those days are gone.</1><2>The rise of Node.js</2>',
+            },
+          },
+        },
+      },
+    });
+  });
+
   test('renders an about image', function () {
-    const { getByAltText } = render(<AboutUi {...props} />);
+    const { getByAltText } = renderAboutUi();
     const image = getByAltText('My face');
     assert.equal(image.getAttribute('src'), 'myImage.png');
     assert.equal(image.getAttribute('srcset'), 'myImage.png 1x');
@@ -23,21 +48,20 @@ suite('<AboutUi />', function () {
   });
 
   test('renders a "JavaScript is everywhere" paragraph', function () {
-    const { getByText } = render(<AboutUi {...props} />);
-    getByText(
-      'JavaScript is everywhere. In the old days, being a JavaScript developer meant that you were a front end web developer. Forever bound to the browser.',
-    );
+    const { queryByText } = renderAboutUi();
+    const textElement = queryByText('JavaScript is everywhere.');
+    assert.isNotNull(textElement);
   });
 
   test('renders a "Those days are gone" heading', function () {
-    const { getByText } = render(<AboutUi {...props} />);
-    getByText('Those days are gone.');
+    const { queryByText } = renderAboutUi();
+    const textElement = queryByText('Those days are gone.');
+    assert.isNotNull(textElement);
   });
 
   test('renders a "The rise of Node.js" paragraph', function () {
-    const { getByText } = render(<AboutUi {...props} />);
-    getByText(
-      'The rise of Node.js ushered in a new era. An era where being a JavaScript developer doesn’t necessarily mean a front-end web developer. As a JavaScript developer today, you can target more platforms than any other high level language.',
-    );
+    const { queryByText } = renderAboutUi();
+    const textElement = queryByText('The rise of Node.js');
+    assert.isNotNull(textElement);
   });
 });
