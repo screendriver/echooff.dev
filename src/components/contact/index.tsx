@@ -7,6 +7,7 @@ import {
   Linkedin,
 } from 'react-feather';
 import styled from '@emotion/styled';
+import { useTranslation } from 'react-i18next';
 import { Section, ColorScheme } from '../Section';
 import { black, white } from '../../colors';
 import { Form } from './form';
@@ -56,13 +57,18 @@ const SmallLink = styled.a({
 });
 
 export const Contact: FunctionComponent = () => {
+  const [t] = useTranslation();
   return (
-    <Section heading="Contact" id="contact" colorScheme={ColorScheme.Cyan}>
+    <Section
+      heading={t('contact.heading')}
+      id="contact"
+      colorScheme={ColorScheme.Cyan}
+    >
       <Address>
         <LinkList>
           <BigLink href="https://www.openstreetmap.org/search?query=munich%20germany#map=11/48.1551/11.5418">
             <MapPin />
-            <p>Munich, Germany</p>
+            <p>{t('contact.city')}</p>
           </BigLink>
           <BigLink href="https://threema.id/9TWBW4XN">
             <MessageSquare />

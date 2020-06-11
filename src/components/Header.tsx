@@ -3,6 +3,7 @@ import { graphql, useStaticQuery } from 'gatsby';
 import Img, { FluidObject } from 'gatsby-image';
 import sample from 'lodash.sample';
 import styled from '@emotion/styled';
+import { Trans, useTranslation } from 'react-i18next';
 import { white, black } from '../colors';
 import { Config } from '../shared/config';
 
@@ -13,11 +14,6 @@ interface Edge {
 interface GraphQLData {
   headerAllFile: {
     edges: Edge[];
-  };
-  site: {
-    siteMetadata: {
-      description: string;
-    };
   };
 }
 
@@ -104,6 +100,7 @@ const HeaderComponent: FunctionComponent<HeaderComponentProps> = ({
   randomHeaderImage,
   data,
 }) => {
+  const [t] = useTranslation();
   const edges = data.headerAllFile.edges;
   const fluid = getHeaderImage(randomHeaderImage, edges);
   return (
@@ -111,9 +108,11 @@ const HeaderComponent: FunctionComponent<HeaderComponentProps> = ({
       <ImgStyled fluid={fluid} />
       <Intro>
         <Hello>
-          Hello, I&apos;m <Name>Christian</Name>
+          <Trans i18nKey="header.hello">
+            Hello, I&apos;m <Name>Christian</Name>
+          </Trans>
         </Hello>
-        <JobTitle>{data.site.siteMetadata.description}</JobTitle>
+        <JobTitle>{t('header.job-title')}</JobTitle>
       </Intro>
     </HeaderStyled>
   );
@@ -133,11 +132,6 @@ const query = graphql`
             }
           }
         }
-      }
-    }
-    site {
-      siteMetadata {
-        description
       }
     }
   }

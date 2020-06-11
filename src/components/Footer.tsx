@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
+import { Trans } from 'react-i18next';
 import { black, darkGrey, cyan } from '../colors';
 
 const FooterStyled = styled.footer({
@@ -22,10 +23,13 @@ export interface FooterProps {
 }
 
 export const Footer: FunctionComponent<FooterProps> = ({ date }) => {
+  const year = date.getFullYear();
   return (
     <FooterStyled>
-      Copyright &copy; {date.getFullYear()} Christian Rackerseder. Design
-      inspired by <a href="http://www.templatewire.com/">TemplateWire</a>
+      <Trans i18nKey="footer.copyright">
+        Copyright &copy; {{ year }} Christian Rackerseder. Design inspired by
+        <a href="http://www.templatewire.com/">TemplateWire</a>
+      </Trans>
     </FooterStyled>
   );
 };
