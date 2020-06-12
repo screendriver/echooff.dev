@@ -14,7 +14,7 @@
     "build": "gatsby build",
     "build:visual": "GATSBY_VISUAL_REGRESSION_TEST=true gatsby build",
     "serve": "gatsby serve",
-    "storybook": "start-storybook",
+    "storybook": "NODE_ENV=production start-storybook -s ./src,public",
     "test:e2e": "testcafe test/e2e/",
     "test:e2e:ci": "testcafe browserstack:chrome,browserstack:safari,browserstack:firefox,browserstack:edge test/e2e/",
     "test:visual": "percy exec -- testcafe chrome:headless test/visual/",
