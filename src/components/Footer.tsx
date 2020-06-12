@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { black, darkGrey, cyan } from '../colors';
 
 const FooterStyled = styled.footer({
@@ -23,10 +23,11 @@ export interface FooterProps {
 }
 
 export const Footer: FunctionComponent<FooterProps> = ({ date }) => {
+  const [t] = useTranslation();
   const year = date.getFullYear();
   return (
     <FooterStyled aria-label="Footer">
-      <Trans i18nKey="footer.copyright" values={{ year }}>
+      <Trans t={t} i18nKey="footer.copyright" values={{ year }}>
         Copyright &copy; year Christian Rackerseder. Design inspired by
         <a href="http://www.templatewire.com/">TemplateWire</a>
       </Trans>
