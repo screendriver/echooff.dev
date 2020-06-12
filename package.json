@@ -91,6 +91,8 @@
     "gatsby-source-graphql": "2.5.4",
     "gatsby-transformer-json": "2.4.5",
     "gatsby-transformer-sharp": "2.5.5",
+    "i18next-fs-backend": "1.0.6",
+    "i18next-http-backend": "1.0.15",
     "jscpd": "3.2.1",
     "jscpd-badge-reporter": "1.1.3",
     "jsdom": "16.2.2",
