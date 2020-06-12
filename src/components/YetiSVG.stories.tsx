@@ -1,6 +1,6 @@
 import React from 'react';
 import { YetiSVG } from './YetiSVG';
 
-export default { title: 'Yeti', component: YetiSVG };
+export default { title: 'Atoms', component: YetiSVG };
 
-export const SVG = () => <YetiSVG />;
+export const yetisvg = () => <YetiSVG />;
