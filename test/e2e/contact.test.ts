@@ -16,8 +16,11 @@ const mock = RequestMock()
     method: 'POST',
   })
   .respond({}, 200);
+const quickmetricsMock = RequestMock()
+  .onRequestTo('http://localhost:9000/.netlify/functions/quickmetrics')
+  .respond('');
 
-fixture('Contact form').page(url).requestHooks(mock, logger);
+fixture('Contact form').page(url).requestHooks(mock, quickmetricsMock, logger);
 
 test('show "Thank you" message after submitting contact form', async (t) => {
   const nameInput = Selector('input[placeholder="Name"]');

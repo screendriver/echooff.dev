@@ -1,6 +1,10 @@
-import { Selector } from 'testcafe';
+import { Selector, RequestMock } from 'testcafe';
 
-fixture('SEO').page('http://localhost:9000');
+const quickmetricsMock = RequestMock()
+  .onRequestTo('http://localhost:9000/.netlify/functions/quickmetrics')
+  .respond('');
+
+fixture('SEO').page('http://localhost:9000').requestHooks(quickmetricsMock);
 
 test('title', async (t) => {
   await t
