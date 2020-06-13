@@ -1,4 +1,8 @@
+import 'modern-normalize';
+import 'typeface-open-sans';
+import 'typeface-lato';
 import React, { Suspense } from 'react';
+import { Global } from '@emotion/core';
 import i18next from 'i18next';
 import HttpApi from 'i18next-http-backend';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
@@ -23,7 +27,20 @@ addParameters({
 });
 
 addDecorator((story) => (
-  <I18nextProvider i18next={i18next}>
-    <Suspense fallback={<div>loading...</div>}>{story()}</Suspense>
-  </I18nextProvider>
+  <>
+    <Global
+      styles={{
+        body: {
+          fontFamily: 'Open Sans, sans-serif',
+          WebkitFontSmoothing: 'antialiased',
+        },
+        a: {
+          textDecoration: 'none',
+        },
+      }}
+    />
+    <I18nextProvider i18next={i18next}>
+      <Suspense fallback={<div>loading...</div>}>{story()}</Suspense>
+    </I18nextProvider>
+  </>
 ));
