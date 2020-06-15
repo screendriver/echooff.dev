@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
         with:
           lfs: true
       - name: Use Node.js 14.x
@@ -67,7 +67,7 @@ jobs:
         uses: nwtgck/actions-netlify@v1
         with:
           publish-dir: './public'
-          production-branch: master
+          production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: 'Deploy from GitHub Actions'
           netlify-config-path: './netlify.toml'
