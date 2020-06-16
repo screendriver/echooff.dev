@@ -23,12 +23,14 @@ suite('<Circle />', function () {
   });
 
   test('<Circle /> renders experience "to"', function () {
-    const { getByLabelText } = renderCircle();
-    getByLabelText('Experience to');
+    const { queryByLabelText } = renderCircle();
+    const circleElement = queryByLabelText('Experience to');
+    assert.isNotNull(circleElement);
   });
 
   test('<Circle /> renders experience "from"', function () {
-    const { getByLabelText } = renderCircle();
-    getByLabelText('Experience from');
+    const { queryByLabelText } = renderCircle();
+    const circleElement = queryByLabelText('Experience from');
+    assert.isNotNull(circleElement);
   });
 });

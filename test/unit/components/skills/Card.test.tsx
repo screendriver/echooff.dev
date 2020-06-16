@@ -1,4 +1,5 @@
 import React from 'react';
+import { assert } from 'chai';
 import { render } from '@testing-library/react';
 import { Card, CardProps } from '../../../../src/components/skills/Card';
 
@@ -14,22 +15,26 @@ function renderCard() {
 
 suite('<Card />', function () {
   test('<Card /> renders a link that links to given "linkTo" prop', function () {
-    const { getByTitle } = renderCard();
-    getByTitle('My blog');
+    const { queryByTitle } = renderCard();
+    const cardElement = queryByTitle('My blog');
+    assert.isNotNull(cardElement);
   });
 
   test('<Card /> renders given icon', function () {
-    const { getByTestId } = renderCard();
-    getByTestId('test-svg');
+    const { queryByTestId } = renderCard();
+    const cardElement = queryByTestId('test-svg');
+    assert.isNotNull(cardElement);
   });
 
   test('<Card /> renders given linkText', function () {
-    const { getByText } = renderCard();
-    getByText('My blog');
+    const { queryByText } = renderCard();
+    const cardElement = queryByText('My blog');
+    assert.isNotNull(cardElement);
   });
 
   test('<Card /> renders given description', function () {
-    const { getByText } = renderCard();
-    getByText('This is a test');
+    const { queryByText } = renderCard();
+    const cardElement = queryByText('This is a test');
+    assert.isNotNull(cardElement);
   });
 });
