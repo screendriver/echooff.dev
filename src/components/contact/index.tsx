@@ -66,24 +66,30 @@ export const Contact: FunctionComponent = () => {
     >
       <Address>
         <LinkList>
-          <BigLink href="https://www.openstreetmap.org/search?query=munich%20germany#map=11/48.1551/11.5418">
+          <BigLink
+            href="https://www.openstreetmap.org/search?query=munich%20germany#map=11/48.1551/11.5418"
+            title="Map"
+          >
             <MapPin />
             <p>{t('contact.city')}</p>
           </BigLink>
-          <BigLink href="https://threema.id/9TWBW4XN">
+          <BigLink href="https://threema.id/9TWBW4XN" title="Threema">
             <MessageSquare />
             <p>Threema</p>
           </BigLink>
         </LinkList>
         <Form onSubmit={sendForm} />
         <SmallLinkList>
-          <SmallLink href="https://twitter.com/CallistoShip">
+          <SmallLink href="https://twitter.com/CallistoShip" title="Twitter">
             <Twitter />
           </SmallLink>
-          <SmallLink href="https://github.com/screendriver">
+          <SmallLink href="https://github.com/screendriver" title="GitHub">
             <GitHub color={white} />
           </SmallLink>
-          <SmallLink href="https://www.linkedin.com/in/unicornyuppie">
+          <SmallLink
+            href="https://www.linkedin.com/in/unicornyuppie"
+            title="LinkedIn"
+          >
             <Linkedin color={white} />
           </SmallLink>
         </SmallLinkList>

@@ -9,6 +9,7 @@
     "job-title": "$t(meta.job-title)"
   },
   "navigation": {
+    "title": "Menu",
     "name": "$t(meta.name)",
     "about": "About",
     "skills": "Skills",
