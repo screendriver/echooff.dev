@@ -103,6 +103,7 @@ export const FormUi: FunctionComponent<Props> = (props) => {
           <Input
             name="name"
             type="text"
+            aria-label={t('contact.name')}
             placeholder={t('contact.name')}
             value={props.name}
             required={true}
@@ -111,6 +112,7 @@ export const FormUi: FunctionComponent<Props> = (props) => {
           <Input
             name="email"
             type="email"
+            aria-label={t('contact.email')}
             placeholder={t('contact.email')}
             value={props.email}
             required={true}
@@ -119,6 +121,7 @@ export const FormUi: FunctionComponent<Props> = (props) => {
         </Row>
         <TextArea
           name="message"
+          aria-label={t('contact.message')}
           rows={4}
           placeholder={t('contact.message')}
           value={props.message}
