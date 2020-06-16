@@ -98,7 +98,7 @@ export const Navigation: FunctionComponent = () => {
   return (
     <NavigationStyled>
       <MeLink href="#header">{t('navigation.name')}</MeLink>
-      <MenuLink>
+      <MenuLink id={t('navigation.title')}>
         <Menu
           color={darkerWhite}
           onClick={handleMenuClick(setMobileMenuVisible)}
