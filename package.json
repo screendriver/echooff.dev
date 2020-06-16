@@ -20,7 +20,8 @@
     "test:visual": "percy exec -- testcafe chrome:headless test/visual/",
     "test:unit": "mocha",
     "test:unit:coverage": "nyc mocha",
-    "test:unit:mutation": "stryker run"
+    "test:unit:mutation": "stryker run",
+    "test:a11y": "pa11y"
   },
   "dependencies": {
     "@emotion/core": "10.0.28",
