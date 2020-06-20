@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+// Idea taken from https://codepen.io/dsenneff/pen/mjZgmN
 import 'modern-normalize';
 import 'typeface-source-sans-pro';
 import React, { FunctionComponent, useEffect } from 'react';
