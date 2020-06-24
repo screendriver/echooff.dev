@@ -12,7 +12,8 @@
     },
     {
       "packagePatterns": ["^gatsby"],
-      "groupName": "gatsby packages"
+      "groupName": "gatsby packages",
+      "extends": ["schedule:weekly"]
     },
     {
       "packagePatterns": ["eslint"],
