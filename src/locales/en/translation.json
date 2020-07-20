@@ -53,8 +53,15 @@
     "heading": "Experience",
     "years": [
       {
-        "from": "Apr 2019",
+        "from": "Aug 2020",
         "to": "Present",
+        "industry": "Streaming Services",
+        "jobTitle": "Senior Software Engineer - Media Platform",
+        "jobDescription": "Full-Stack TypeScript / JavaScript Engineer"
+      },
+      {
+        "from": "Apr 2019",
+        "to": "Aug 2020",
         "industry": "Entertainment",
         "jobTitle": "Senior Software Architect",
         "jobDescription": "Full-Stack TypeScript / JavaScript Engineer"
