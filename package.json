@@ -35,7 +35,7 @@
     "i18next": "19.6.2",
     "ky": "0.22.0",
     "lodash.sample": "4.2.1",
-    "modern-normalize": "0.6.0",
+    "modern-normalize": "0.7.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-feather": "2.0.8",
