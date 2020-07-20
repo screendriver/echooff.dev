@@ -26,7 +26,7 @@
   "dependencies": {
     "@emotion/core": "10.0.28",
     "@emotion/styled": "10.0.27",
-    "form-urlencoded": "4.1.4",
+    "form-urlencoded": "4.2.1",
     "gatsby": "2.24.4",
     "gatsby-image": "2.4.13",
     "got": "11.5.1",
