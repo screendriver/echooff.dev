@@ -58,7 +58,7 @@
     "@stryker-mutator/mocha-framework": "3.3.1",
     "@stryker-mutator/mocha-runner": "3.3.1",
     "@stryker-mutator/typescript": "3.3.1",
-    "@testing-library/react": "10.4.7",
+    "@testing-library/react": "10.4.8",
     "@types/aws-lambda": "8.10.59",
     "@types/chai": "4.2.11",
     "@types/form-urlencoded": "2.0.1",
