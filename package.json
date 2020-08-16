@@ -103,7 +103,7 @@
     "nyc": "15.1.0",
     "pa11y": "5.3.0",
     "prettier": "2.0.5",
-    "sinon": "9.0.2",
+    "sinon": "9.0.3",
     "testcafe": "1.9.1",
     "testcafe-browser-provider-browserstack": "1.13.0",
     "ts-node": "8.10.2",
