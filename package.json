@@ -24,7 +24,7 @@
     "test:a11y": "pa11y"
   },
   "dependencies": {
-    "@emotion/core": "10.0.34",
+    "@emotion/core": "10.0.35",
     "@emotion/styled": "10.0.27",
     "form-urlencoded": "4.2.1",
     "gatsby": "2.24.4",
