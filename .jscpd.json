@@ -9,5 +9,6 @@
     "badge": {
       "path": "./jscpd-badge.svg"
     }
-  }
+  },
+  "ignore": ["**/YetiSVG.tsx"]
 }
