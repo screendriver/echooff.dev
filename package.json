@@ -21,7 +21,8 @@
     "test:unit": "mocha",
     "test:unit:coverage": "nyc mocha",
     "test:unit:mutation": "stryker run",
-    "test:a11y": "pa11y"
+    "test:a11y": "pa11y",
+    "release": "standard-version"
   },
   "dependencies": {
     "@emotion/core": "10.0.35",
