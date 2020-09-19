@@ -1,6 +1,7 @@
 {
   "extends": ["config:base", "schedule:daily", ":semanticCommits"],
   "labels": ["renovate"],
+  "prConcurrentLimit": 5,
   "nvm": {
     "enabled": false
   },
