@@ -49,7 +49,7 @@
     "typeface-source-sans-pro": "1.1.5"
   },
   "devDependencies": {
-    "@babel/core": "7.11.4",
+    "@babel/core": "7.12.3",
     "@percy/testcafe": "0.2.0",
     "@storybook/addon-knobs": "5.3.19",
     "@storybook/addon-viewport": "5.3.19",
