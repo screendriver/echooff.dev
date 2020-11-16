@@ -2,6 +2,10 @@
   "extends": ["config:base", "schedule:daily", ":semanticCommits"],
   "labels": ["renovate"],
   "prConcurrentLimit": 5,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true
+  },
   "nvm": {
     "enabled": false
   },
