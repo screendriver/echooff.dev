@@ -56,7 +56,7 @@ jobs:
           file: target/coverage/clover.xml
       - name: Deploy to Netlify
         id: deploy-to-netlify
-        uses: nwtgck/actions-netlify@v1
+        uses: nwtgck/actions-netlify@v1.1
         with:
           publish-dir: './public'
           production-branch: main
