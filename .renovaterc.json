@@ -1,5 +1,5 @@
 {
-  "extends": ["config:base", "schedule:daily", ":semanticCommits"],
+  "extends": ["config:base", ":semanticCommits"],
   "labels": ["renovate"],
   "prConcurrentLimit": 5,
   "lockFileMaintenance": {
