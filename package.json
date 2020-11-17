@@ -15,7 +15,7 @@
     "build:visual": "GATSBY_VISUAL_REGRESSION_TEST=true gatsby build",
     "serve": "gatsby serve",
     "test:e2e": "testcafe test/e2e/",
-    "test:e2e:ci": "testcafe browserstack:chrome,browserstack:safari,browserstack:firefox test/e2e/",
+    "test:e2e:ci": "testcafe browserstack:chrome:Windows 10,browserstack:firefox:Windows 10 test/e2e/",
     "test:visual": "percy exec -- testcafe chrome:headless test/visual/",
     "test:unit": "mocha",
     "test:unit:coverage": "nyc mocha",
