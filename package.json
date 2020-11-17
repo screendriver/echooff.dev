@@ -19,7 +19,6 @@
     "test:visual": "percy exec -- testcafe chrome:headless test/visual/",
     "test:unit": "mocha",
     "test:unit:coverage": "nyc mocha",
-    "test:unit:mutation": "stryker run",
     "test:a11y": "pa11y",
     "release": "standard-version"
   },
@@ -48,9 +47,6 @@
   "devDependencies": {
     "@babel/core": "7.12.3",
     "@percy/testcafe": "0.2.1",
-    "@stryker-mutator/core": "4.1.2",
-    "@stryker-mutator/mocha-runner": "4.1.2",
-    "@stryker-mutator/typescript-checker": "4.1.2",
     "@testing-library/react": "11.1.2",
     "@types/aws-lambda": "8.10.64",
     "@types/chai": "4.2.14",
