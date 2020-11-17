@@ -33,6 +33,7 @@ jobs:
         env:
           GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
       - name: Run e2e tests
+        continue-on-error: true
         run: npm run test:e2e:ci
         env:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
