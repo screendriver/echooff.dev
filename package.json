@@ -40,8 +40,8 @@
     "react-feather": "2.0.8",
     "react-helmet": "6.1.0",
     "react-i18next": "11.7.2",
-    "typeface-lato": "0.0.75",
-    "typeface-open-sans": "0.0.75",
+    "typeface-lato": "1.1.13",
+    "typeface-open-sans": "1.1.13",
     "typeface-source-sans-pro": "1.1.5"
   },
   "devDependencies": {
