@@ -6,8 +6,7 @@
 module.exports = {
   checkers: ['typescript'],
   mutate: ['src/**/*.ts?(x)'],
-  testRunner: 'command',
-  commandRunner: { command: 'npm run test:unit' },
+  testRunner: 'mocha',
   tempDirName: 'target/.stryker-tmp',
   reporters: ['html', 'clear-text', 'dots'],
   htmlReporter: { baseDir: 'target/mutation-report/html' },
