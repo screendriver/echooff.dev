@@ -48,7 +48,7 @@
     "@babel/core": "7.12.10",
     "@percy/testcafe": "0.2.1",
     "@testing-library/react": "11.2.3",
-    "@types/aws-lambda": "8.10.64",
+    "@types/aws-lambda": "8.10.70",
     "@types/chai": "4.2.14",
     "@types/form-urlencoded": "2.0.1",
     "@types/gsap": "1.20.2",
