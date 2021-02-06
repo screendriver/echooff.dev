@@ -4,4 +4,5 @@ module.exports = {
   extension: ['ts', 'tsx'],
   ui: 'tdd',
   reporter: 'dot',
+  exit: true,
 };
