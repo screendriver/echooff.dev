@@ -127,7 +127,11 @@ const query = graphql`
       edges {
         node {
           childImageSharp {
-            gatsbyImageData(layout: FULL_WIDTH, quality: 80)
+            gatsbyImageData(
+              layout: FULL_WIDTH
+              quality: 80
+              placeholder: BLURRED
+            )
           }
         }
       }
