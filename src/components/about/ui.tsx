@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation, Trans } from 'react-i18next';
-import Img, { FixedObject } from 'gatsby-image';
+import { GatsbyImage, IGatsbyImageData } from 'gatsby-plugin-image';
 import { grey } from '../../colors';
 import { Section, ColorScheme } from '../Section';
 
-const AboutImage = styled(Img)({
+const AboutImage = styled(GatsbyImage)({
   borderRadius: 180,
   marginBottom: 20,
 });
@@ -31,10 +31,10 @@ const GoneText = styled.h5({
 });
 
 export interface AboutUiProps {
-  fixedImage: FixedObject;
+  imageData: IGatsbyImageData;
 }
 
-export const AboutUi: FunctionComponent<AboutUiProps> = ({ fixedImage }) => {
+export const AboutUi: FunctionComponent<AboutUiProps> = ({ imageData }) => {
   const [t] = useTranslation();
   return (
     <Section
@@ -42,7 +42,7 @@ export const AboutUi: FunctionComponent<AboutUiProps> = ({ fixedImage }) => {
       id="about"
       colorScheme={ColorScheme.Light}
     >
-      <AboutImage alt="My face" fixed={fixedImage} />
+      <AboutImage alt="My face" image={imageData} />
       <Trans i18nKey="about.text">
         <Text>
           JavaScript is everywhere. In the old days, being a JavaScript

@@ -7,6 +7,7 @@ module.exports = {
     siteUrl: 'https://www.echooff.dev',
   },
   plugins: [
+    'gatsby-plugin-image',
     'gatsby-plugin-sitemap',
     'gatsby-plugin-robots-txt',
     'gatsby-plugin-emotion',
