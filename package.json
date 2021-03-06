@@ -23,8 +23,8 @@
     "release": "standard-version"
   },
   "dependencies": {
-    "@emotion/core": "10.1.1",
-    "@emotion/styled": "10.0.27",
+    "@emotion/core": "11.0.0",
+    "@emotion/styled": "11.1.5",
     "form-urlencoded": "4.2.1",
     "gatsby": "3.0.3",
     "gatsby-image": "3.0.0",
