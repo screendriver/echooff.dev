@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { Section, ColorScheme } from '../Section';
 import { Circle } from './Circle';
 import { Description } from './Description';
-import { Experience } from '.';
 
 const Timeline = styled.ul({
   listStyleType: 'none',
@@ -77,7 +76,7 @@ const Moment = styled.li<{ justifyContent: CSSProperties['justifyContent'] }>(
 
 export const Experiences: FunctionComponent = () => {
   const [t] = useTranslation();
-  const experiences = t<Experience[]>('experience.years', {
+  const experiences = t('experience.years', {
     returnObjects: true,
   });
   return (
