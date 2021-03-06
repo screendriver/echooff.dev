@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { graphql, useStaticQuery } from 'gatsby';
-import Img, { FluidObject } from 'gatsby-image';
+import { GatsbyImage, IGatsbyImageData } from 'gatsby-plugin-image';
 import sample from 'lodash.sample';
 import styled from '@emotion/styled';
 import { Trans, useTranslation } from 'react-i18next';
@@ -8,7 +8,7 @@ import { white, black } from '../colors';
 import { Config } from '../shared/config';
 
 interface Edge {
-  node: { childImageSharp: { fluid: FluidObject } };
+  node: { childImageSharp: { gatsbyImageData: IGatsbyImageData } };
 }
 
 interface GraphQLData {
@@ -27,7 +27,7 @@ const HeaderStyled = styled.header({
   position: 'relative',
 });
 
-const ImgStyled = styled(Img)({
+const GatsbyImageStyled = styled(GatsbyImage)({
   height: 380,
   '@media (min-width: 768px)': {
     height: 450,
@@ -90,10 +90,10 @@ function assertIsEdge(edge?: Edge): asserts edge is Edge {
 function getHeaderImage(
   randomHeaderImage: boolean,
   edges: GraphQLData['headerAllFile']['edges'],
-): FluidObject {
+): IGatsbyImageData {
   const edge = randomHeaderImage ? sample(edges) : edges[0];
   assertIsEdge(edge);
-  return edge.node.childImageSharp.fluid;
+  return edge.node.childImageSharp.gatsbyImageData;
 }
 
 const HeaderComponent: FunctionComponent<HeaderComponentProps> = ({
@@ -102,10 +102,10 @@ const HeaderComponent: FunctionComponent<HeaderComponentProps> = ({
 }) => {
   const [t] = useTranslation();
   const edges = data.headerAllFile.edges;
-  const fluid = getHeaderImage(randomHeaderImage, edges);
+  const imageData = getHeaderImage(randomHeaderImage, edges);
   return (
     <HeaderStyled id="header">
-      <ImgStyled fluid={fluid} />
+      <GatsbyImageStyled alt="Header image" image={imageData} />
       <Intro>
         <Hello>
           <Trans i18nKey="header.hello">
@@ -127,9 +127,7 @@ const query = graphql`
       edges {
         node {
           childImageSharp {
-            fluid(quality: 80) {
-              ...GatsbyImageSharpFluid_withWebp
-            }
+            gatsbyImageData(layout: FULL_WIDTH, quality: 80)
           }
         }
       }
