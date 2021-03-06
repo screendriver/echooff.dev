@@ -22,6 +22,13 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/src/locales`,
+        name: `locale`,
+      },
+    },
+    {
       resolve: 'gatsby-source-graphql',
       options: {
         typeName: 'GitHub',
@@ -35,7 +42,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-react-i18next',
       options: {
-        path: `${__dirname}/src/locales`,
+        localeJsonSourceName: 'locale',
         languages: ['en'],
         defaultLanguage: 'en',
         redirect: true,
