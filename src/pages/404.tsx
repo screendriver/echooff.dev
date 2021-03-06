@@ -4,7 +4,7 @@
 import 'modern-normalize';
 import 'typeface-source-sans-pro';
 import React, { FunctionComponent, useEffect } from 'react';
-import { css, Global } from '@emotion/core';
+import { css, Global } from '@emotion/react';
 import styled from '@emotion/styled';
 import { TweenMax, TimelineMax, Power1 } from 'gsap';
 import { SEO } from '../components/seo';

@@ -1,8 +1,9 @@
 import 'modern-normalize';
 import 'typeface-open-sans';
 import 'typeface-lato';
+import { graphql } from 'gatsby';
 import React, { FunctionComponent } from 'react';
-import { Global } from '@emotion/core';
+import { Global } from '@emotion/react';
 import { createConfig } from '../shared/config';
 import { GitHubCorner } from '../components/GitHubCorner';
 import { Header } from '../components/Header';
@@ -18,6 +19,20 @@ import { Contact } from '../components/contact';
 import { Footer } from '../components/Footer';
 
 const config = createConfig();
+
+export const query = graphql`
+  query($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;
 
 const Page: FunctionComponent = () => {
   return (

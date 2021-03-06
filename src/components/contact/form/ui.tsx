@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ChangeEvent, FormEvent } from 'react';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import { white, grey } from '../../../colors';
@@ -130,7 +130,7 @@ export const FormUi: FunctionComponent<Props> = (props) => {
         />
         <Submit
           type="submit"
-          value={t<string>('contact.submit')}
+          value={t('contact.submit')}
           disabled={props.submitDisabled}
         />
       </Form>
