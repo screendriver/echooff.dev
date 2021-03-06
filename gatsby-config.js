@@ -17,15 +17,15 @@ module.exports = {
     {
       resolve: 'gatsby-source-filesystem',
       options: {
-        name: 'src',
-        path: `${__dirname}/src/`,
+        name: 'locale',
+        path: `${__dirname}/src/locales/`,
       },
     },
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: 'gatsby-source-filesystem',
       options: {
-        path: `${__dirname}/src/locales`,
-        name: `locale`,
+        name: 'src',
+        path: `${__dirname}/src/`,
       },
     },
     {
