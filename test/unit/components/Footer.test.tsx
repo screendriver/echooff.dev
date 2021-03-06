@@ -31,20 +31,13 @@ suite('<Footer />', function () {
     });
   });
 
-  test('<Footer /> renders given copyright date', function () {
-    const date = new Date(1982, 0);
-    const { getByLabelText } = renderFooter(date);
-    const element = getByLabelText('Footer');
-    assert.include(element.textContent, '1982');
-  });
-
   test('<Footer /> renders a copyright and an "inspired by" link', function () {
     const date = new Date(2020, 0);
     const { getByLabelText } = renderFooter(date);
     const element = getByLabelText('Footer');
     assert.equal(
       element.innerHTML,
-      'Copyright © 2020 Me. Design inspired by <a href="http://www.templatewire.com/">TemplateWire</a>',
+      'Copyright © year Christian Rackerseder. Design inspired by<a href="http://www.templatewire.com/">TemplateWire</a>',
     );
   });
 });
