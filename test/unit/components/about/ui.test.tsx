@@ -7,11 +7,11 @@ import { AboutUi, AboutUiProps } from '../../../../src/components/about/ui';
 
 function renderAboutUi() {
   const props: AboutUiProps = {
-    fixedImage: {
+    imageData: {
       width: 800,
       height: 600,
-      src: 'myImage.png',
-      srcSet: 'myImage.png 1x',
+      images: { sources: [{ type: '', srcSet: 'myImage.png 1x' }] },
+      layout: 'constrained',
     },
   };
   return render(
@@ -40,11 +40,8 @@ suite('<AboutUi />', function () {
 
   test('renders an about image', function () {
     const { getByAltText } = renderAboutUi();
-    const image = getByAltText('My face');
-    assert.equal(image.getAttribute('src'), 'myImage.png');
-    assert.equal(image.getAttribute('srcset'), 'myImage.png 1x');
-    assert.equal(image.getAttribute('width'), '800');
-    assert.equal(image.getAttribute('height'), '600');
+    const source = getByAltText('My face').previousSibling as HTMLSourceElement;
+    assert.equal(source.getAttribute('srcset'), 'myImage.png 1x');
   });
 
   test('renders a "JavaScript is everywhere" paragraph', function () {
