@@ -2,7 +2,7 @@ import 'modern-normalize';
 import 'typeface-open-sans';
 import 'typeface-lato';
 import React, { FunctionComponent } from 'react';
-import { Global } from '@emotion/core';
+import { Global } from '@emotion/react';
 import { createConfig } from '../shared/config';
 import { GitHubCorner } from '../components/GitHubCorner';
 import { Header } from '../components/Header';
