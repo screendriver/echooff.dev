@@ -53,8 +53,15 @@
     "heading": "Experience",
     "years": [
       {
-        "from": "Aug 2020",
+        "from": "Mar 2021",
         "to": "Present",
+        "industry": "Streaming Services",
+        "jobTitle": "Lead Software Engineer",
+        "jobDescription": "Video streaming. Full-Stack TypeScript / JavaScript."
+      },
+      {
+        "from": "Aug 2020",
+        "to": "Mar 2021",
         "industry": "Streaming Services",
         "jobTitle": "Senior Software Engineer - Media Platform",
         "jobDescription": "Full-Stack TypeScript / JavaScript Engineer"
