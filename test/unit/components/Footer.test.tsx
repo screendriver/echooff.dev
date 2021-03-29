@@ -37,7 +37,7 @@ suite('<Footer />', function () {
     const element = getByLabelText('Footer');
     assert.equal(
       element.innerHTML,
-      'Copyright © year Christian Rackerseder. Design inspired by<a href="http://www.templatewire.com/">TemplateWire</a>',
+      'Copyright © 2020 Me. Design inspired by <a href="http://www.templatewire.com/">TemplateWire</a>',
     );
   });
 });
