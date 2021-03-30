@@ -25,7 +25,7 @@
   "dependencies": {
     "@emotion/react": "11.1.5",
     "@emotion/styled": "11.1.5",
-    "form-urlencoded": "4.2.1",
+    "form-urlencoded": "4.4.2",
     "gatsby": "3.0.3",
     "got": "11.8.2",
     "gsap": "2.1.3",
