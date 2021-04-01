@@ -41,7 +41,7 @@ suite('<AboutUi />', function () {
   test('renders an about image', function () {
     const { getByAltText } = renderAboutUi();
     const source = getByAltText('My face').previousSibling as HTMLSourceElement;
-    assert.equal(source.getAttribute('srcset'), 'myImage.png 1x');
+    assert.equal(source.getAttribute('data-srcset'), 'myImage.png 1x');
   });
 
   test('renders a "JavaScript is everywhere" paragraph', function () {
