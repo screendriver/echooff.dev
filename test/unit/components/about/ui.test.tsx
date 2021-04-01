@@ -10,7 +10,12 @@ function renderAboutUi() {
     imageData: {
       width: 800,
       height: 600,
-      images: { sources: [{ type: '', srcSet: 'myImage.png 1x' }] },
+      images: {
+        fallback: {
+          src: '',
+        },
+        sources: [{ type: '', srcSet: 'myImage.png 1x' }],
+      },
       layout: 'constrained',
     },
   };
