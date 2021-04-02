@@ -8,7 +8,7 @@ import { createConfig } from '../shared/config';
 import { GitHubCorner } from '../components/GitHubCorner';
 import { Header } from '../components/Header';
 import { Navigation } from '../components/Navigation';
-import { About } from '../components/about';
+import { About } from '../components/About';
 import { Skills } from '../components/skills';
 import { Passions } from '../components/Passions';
 import { Stats } from '../components/Stats';
