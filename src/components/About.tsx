@@ -1,14 +1,11 @@
-import React, { FunctionComponent } from 'react';
+/** @jsx jsx */
+import { FunctionComponent } from 'react';
+import { css, jsx } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useTranslation, Trans } from 'react-i18next';
-import { GatsbyImage, IGatsbyImageData } from 'gatsby-plugin-image';
-import { grey } from '../../colors';
-import { Section, ColorScheme } from '../Section';
-
-const AboutImage = styled(GatsbyImage)({
-  borderRadius: 180,
-  marginBottom: 20,
-});
+import { StaticImage } from 'gatsby-plugin-image';
+import { grey } from '../colors';
+import { Section, ColorScheme } from './Section';
 
 const Text = styled.p({
   color: grey,
@@ -30,11 +27,7 @@ const GoneText = styled.h5({
   fontWeight: 700,
 });
 
-export interface AboutUiProps {
-  imageData: IGatsbyImageData;
-}
-
-export const AboutUi: FunctionComponent<AboutUiProps> = ({ imageData }) => {
+export const About: FunctionComponent = () => {
   const [t] = useTranslation();
   return (
     <Section
@@ -42,7 +35,17 @@ export const AboutUi: FunctionComponent<AboutUiProps> = ({ imageData }) => {
       id="about"
       colorScheme={ColorScheme.Light}
     >
-      <AboutImage alt="My face" image={imageData} />
+      <StaticImage
+        alt="My face"
+        src="../img/about.jpg"
+        width={200}
+        height={200}
+        quality={75}
+        css={css({
+          borderRadius: 180,
+          marginBottom: 20,
+        })}
+      />
       <Trans i18nKey="about.text">
         <Text>
           JavaScript is everywhere. In the old days, being a JavaScript
