@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
 import { Experience } from '.';
 import { black, grey } from '../../colors';
@@ -33,7 +33,7 @@ const JobDescription = styled.p({
   lineHeight: '20px',
 });
 
-export const Description: FC<DescriptionProps> = ({
+export const Description: FunctionComponent<DescriptionProps> = ({
   className,
   experience,
 }) => {

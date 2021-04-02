@@ -1,4 +1,4 @@
-import React, { FunctionComponent, CSSProperties } from 'react';
+import { FunctionComponent, CSSProperties } from 'react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import { Section, ColorScheme } from '../Section';

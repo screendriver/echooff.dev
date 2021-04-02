@@ -1,6 +1,5 @@
 import { assert } from 'chai';
 import sinon from 'sinon';
-import React from 'react';
 import { render } from '@testing-library/react';
 import { FormUi, Props } from '../../../../../src/components/contact/form/ui';
 

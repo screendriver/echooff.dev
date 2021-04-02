@@ -1,6 +1,5 @@
-/** @jsx jsx */
 import { FunctionComponent } from 'react';
-import { css, jsx } from '@emotion/react';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useTranslation, Trans } from 'react-i18next';
 import { StaticImage } from 'gatsby-plugin-image';

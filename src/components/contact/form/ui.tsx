@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ChangeEvent, FormEvent } from 'react';
+import { Fragment, FunctionComponent, ChangeEvent, FormEvent } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
@@ -90,7 +90,7 @@ export interface Props {
 export const FormUi: FunctionComponent<Props> = (props) => {
   const [t] = useTranslation();
   return (
-    <>
+    <Fragment>
       <Heading>{t('contact.leave_a_message')}</Heading>
       <Form
         name="contact"
@@ -134,6 +134,6 @@ export const FormUi: FunctionComponent<Props> = (props) => {
           disabled={props.submitDisabled}
         />
       </Form>
-    </>
+    </Fragment>
   );
 };
