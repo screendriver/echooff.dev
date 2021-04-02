@@ -1,5 +1,4 @@
 import { assert } from 'chai';
-import React from 'react';
 import { render } from '@testing-library/react';
 import {
   Helmet,

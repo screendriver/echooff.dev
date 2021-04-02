@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
 import hexToRgba from 'hex-to-rgba';
 import { black, darkerWhite, cyan, white } from '../../colors';

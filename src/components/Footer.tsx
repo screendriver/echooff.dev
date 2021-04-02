@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
 import { Trans, useTranslation } from 'react-i18next';
 import { black, darkGrey, cyan } from '../colors';

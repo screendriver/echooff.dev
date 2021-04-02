@@ -1,4 +1,3 @@
-import React from 'react';
 import { assert } from 'chai';
 import { render } from '@testing-library/react';
 import { FormSent } from '../../../../../src/components/contact/form/formSent';

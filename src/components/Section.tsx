@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
 import { white, black, cyan, light } from '../colors';
 
@@ -37,7 +37,7 @@ const Line = styled.hr<ColorSchemeProps>((props) => ({
   border: 0,
 }));
 
-export const Section: FC<SectionProps> = (props) => {
+export const Section: FunctionComponent<SectionProps> = (props) => {
   return (
     <SectionStyled id={props.id} colorScheme={props.colorScheme}>
       <Heading colorScheme={props.colorScheme}>{props.heading}</Heading>

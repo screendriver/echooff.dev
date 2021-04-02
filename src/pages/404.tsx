@@ -3,7 +3,7 @@
 // Idea taken from https://codepen.io/dsenneff/pen/mjZgmN
 import 'modern-normalize';
 import 'typeface-source-sans-pro';
-import React, { FunctionComponent, useEffect } from 'react';
+import { Fragment, FunctionComponent, useEffect } from 'react';
 import { css, Global } from '@emotion/react';
 import styled from '@emotion/styled';
 import { TweenMax, TimelineMax, Power1 } from 'gsap';
@@ -221,7 +221,7 @@ function run() {
 const NotFound: FunctionComponent = () => {
   useEffect(run);
   return (
-    <>
+    <Fragment>
       <Global
         styles={{
           html: globalStyles,
@@ -237,7 +237,7 @@ const NotFound: FunctionComponent = () => {
           found. Perhaps it was just a bad <Link>link</Link> dream?
         </Text>
       </Content>
-    </>
+    </Fragment>
   );
 };
 

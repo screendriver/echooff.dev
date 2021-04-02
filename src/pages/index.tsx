@@ -2,7 +2,7 @@ import 'modern-normalize';
 import 'typeface-open-sans';
 import 'typeface-lato';
 import { graphql } from 'gatsby';
-import React, { FunctionComponent } from 'react';
+import { Fragment, FunctionComponent } from 'react';
 import { Global } from '@emotion/react';
 import { createConfig } from '../shared/config';
 import { GitHubCorner } from '../components/GitHubCorner';
@@ -36,7 +36,7 @@ export const query = graphql`
 
 const Page: FunctionComponent = () => {
   return (
-    <>
+    <Fragment>
       <Global
         styles={{
           body: {
@@ -64,7 +64,7 @@ const Page: FunctionComponent = () => {
       <Footer
         date={config.visualRegressionTest ? new Date(2019, 0) : new Date()}
       />
-    </>
+    </Fragment>
   );
 };
 

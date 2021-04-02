@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { white, black } from '../colors';

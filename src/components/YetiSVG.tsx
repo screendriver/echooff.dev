@@ -1,5 +1,5 @@
 // Idea taken from https://codepen.io/dsenneff/pen/mjZgmN
-import React, { FunctionComponent } from 'react';
+import { Fragment, FunctionComponent } from 'react';
 import styled from '@emotion/styled';
 
 const YetiSVGStyled = styled.svg({
@@ -22,7 +22,7 @@ const LightSVGStyled = styled.svg({
 
 export const YetiSVG: FunctionComponent = () => {
   return (
-    <>
+    <Fragment>
       <YetiSVGStyled
         id="yetiSVG"
         xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -860,6 +860,6 @@ export const YetiSVG: FunctionComponent = () => {
           />
         </g>
       </LightSVGStyled>
-    </>
+    </Fragment>
   );
 };
