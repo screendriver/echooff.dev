@@ -20,20 +20,20 @@ suite('<SeoUi />', function () {
   test('renders a title', function () {
     render(<SeoUi {...props} />);
     const { title } = Helmet.peek();
-    assert.equal(title, ('test title' as unknown) as HelmetDatum);
+    assert.equal(title, 'test title' as unknown as HelmetDatum);
   });
 
   test('renders lang "en" HTML attribute', function () {
     render(<SeoUi {...props} />);
     const { htmlAttributes } = Helmet.peek();
-    assert.deepEqual(htmlAttributes, ({
+    assert.deepEqual(htmlAttributes, {
       lang: 'en',
-    } as unknown) as HelmetHTMLElementDatum);
+    } as unknown as HelmetHTMLElementDatum);
   });
 
   test('renders a favicon', function () {
     render(<SeoUi {...props} />);
-    const { linkTags } = (Helmet.peek() as unknown) as HelmetTags;
+    const { linkTags } = Helmet.peek() as unknown as HelmetTags;
     assert.deepEqual<Partial<HTMLLinkElement>[]>(linkTags, [
       { rel: 'shortcut icon', href: 'icon.png' },
     ]);
@@ -41,7 +41,7 @@ suite('<SeoUi />', function () {
 
   test('renders meta tags', function () {
     render(<SeoUi {...props} />);
-    const { metaTags } = (Helmet.peek() as unknown) as HelmetTags;
+    const { metaTags } = Helmet.peek() as unknown as HelmetTags;
     assert.deepEqual<Partial<HTMLMetaElement>[]>(metaTags, [
       { name: 'theme-color', content: '#7bc3d1' },
       { name: 'description', content: 'my description' },
