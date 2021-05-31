@@ -68,6 +68,7 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v7
+        continue-on-error: true
         with:
           urls: |
             ${{ steps.deploy-to-netlify.outputs.deploy-url }}
