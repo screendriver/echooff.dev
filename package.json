@@ -53,7 +53,7 @@
     "@types/form-urlencoded": "2.0.1",
     "@types/gsap": "1.20.2",
     "@types/lodash.sample": "4.2.6",
-    "@types/micro": "7.3.4",
+    "@types/micro": "7.3.5",
     "@types/mocha": "8.2.2",
     "@types/react": "17.0.8",
     "@types/react-dom": "17.0.5",
