@@ -85,7 +85,7 @@ suite('reducer', function () {
 
   test('throw error on unknown action type', function () {
     assert.throw(() =>
-      reducer(initialState, ({ type: 'unknown' } as unknown) as Action),
+      reducer(initialState, { type: 'unknown' } as unknown as Action),
     );
   });
 });
