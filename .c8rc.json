@@ -1,0 +1,10 @@
+{
+  "all": true,
+  "instrument": true,
+  "extension": [".ts", ".tsx"],
+  "include": ["src/**/*"],
+  "reporter": ["lcov", "text-summary", "clover"],
+  "check-coverage": true,
+  "reportDir": "./target/coverage",
+  "tempDirectory": "./target/c8_output"
+}
