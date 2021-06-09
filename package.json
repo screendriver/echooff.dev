@@ -46,7 +46,7 @@
   "devDependencies": {
     "@babel/core": "7.14.3",
     "@percy/cli": "1.0.0-beta.52",
-    "@percy/testcafe": "1.0.0",
+    "@percy/testcafe": "1.0.1",
     "@testing-library/react": "11.2.7",
     "@types/aws-lambda": "8.10.76",
     "@types/chai": "4.2.18",
