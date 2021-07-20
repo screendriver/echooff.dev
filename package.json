@@ -44,7 +44,7 @@
     "typeface-source-sans-pro": "1.1.13"
   },
   "devDependencies": {
-    "@babel/core": "7.14.6",
+    "@babel/core": "7.14.8",
     "@percy/cli": "1.0.0-beta.52",
     "@percy/testcafe": "1.0.1",
     "@testing-library/react": "11.2.7",
