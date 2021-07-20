@@ -1,11 +1,6 @@
 import { assert } from 'chai';
 import { render } from '@testing-library/react';
-import {
-  Helmet,
-  HelmetHTMLElementDatum,
-  HelmetDatum,
-  HelmetTags,
-} from 'react-helmet';
+import { Helmet, HelmetTags } from 'react-helmet';
 import { SeoUi, SeoUiProps } from '../../../../src/components/seo/ui';
 
 const props: SeoUiProps = {
@@ -20,7 +15,7 @@ suite('<SeoUi />', function () {
   test('renders a title', function () {
     render(<SeoUi {...props} />);
     const { title } = Helmet.peek();
-    assert.equal(title, 'test title' as unknown as HelmetDatum);
+    assert.equal(title, 'test title');
   });
 
   test('renders lang "en" HTML attribute', function () {
@@ -28,7 +23,7 @@ suite('<SeoUi />', function () {
     const { htmlAttributes } = Helmet.peek();
     assert.deepEqual(htmlAttributes, {
       lang: 'en',
-    } as unknown as HelmetHTMLElementDatum);
+    });
   });
 
   test('renders a favicon', function () {
