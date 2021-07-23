@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import assert from 'assert';
 import sinon from 'sinon';
 import { render, fireEvent } from '@testing-library/react';
 import { Form, Props } from '../../../../../src/components/contact/form/';
@@ -16,19 +16,19 @@ suite('<Form />', function () {
     const { queryByText } = renderForm();
     const actual = queryByText('contact.leave_a_message');
     const expected = null;
-    assert.notEqual(actual, expected);
+    assert.notStrictEqual(actual, expected);
   });
 
   test('renders a required "Name" input field', function () {
     const { getByPlaceholderText } = renderForm();
     const actual = getByPlaceholderText('contact.name') as HTMLInputElement;
-    assert.isTrue(actual.required);
+    assert.strictEqual(actual.required, true);
   });
 
   test('renders a required "Email" input field', function () {
     const { getByPlaceholderText } = renderForm();
     const actual = getByPlaceholderText('contact.email') as HTMLInputElement;
-    assert.isTrue(actual.required);
+    assert.strictEqual(actual.required, true);
   });
 
   test('renders a required "Message" textarea', function () {
@@ -36,7 +36,7 @@ suite('<Form />', function () {
     const actual = getByPlaceholderText(
       'contact.message',
     ) as HTMLTextAreaElement;
-    assert.isTrue(actual.required);
+    assert.strictEqual(actual.required, true);
   });
 
   test('calls given onSubmit callback when form is submitted', function () {

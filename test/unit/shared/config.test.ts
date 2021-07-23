@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import assert from 'assert'
 import { createConfig } from '../../../src/shared/config';
 
 suite('config', function () {
@@ -9,11 +9,11 @@ suite('config', function () {
   test('visualRegressionTest is true when GATSBY_VISUAL_REGRESSION_TEST is "true"', function () {
     process.env.GATSBY_VISUAL_REGRESSION_TEST = 'true';
     const { visualRegressionTest } = createConfig();
-    assert.isTrue(visualRegressionTest);
+    assert.strictEqual(visualRegressionTest, true);
   });
 
   test('visualRegressionTest is false when GATSBY_VISUAL_REGRESSION_TEST is not set', function () {
     const { visualRegressionTest } = createConfig();
-    assert.isFalse(visualRegressionTest);
+    assert.strictEqual(visualRegressionTest, false);
   });
 });

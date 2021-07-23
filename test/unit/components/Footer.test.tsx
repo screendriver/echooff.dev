@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import assert from 'assert'
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { I18nextProvider } from 'react-i18next';
@@ -34,7 +34,7 @@ suite('<Footer />', function () {
     const date = new Date(2020, 0);
     const { getByLabelText } = renderFooter(date);
     const element = getByLabelText('Footer');
-    assert.equal(
+    assert.strictEqual(
       element.innerHTML,
       'Copyright © 2020 Me. Design inspired by <a href="http://www.templatewire.com/">TemplateWire</a>',
     );
