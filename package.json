@@ -23,7 +23,7 @@
     "release": "standard-version"
   },
   "dependencies": {
-    "@emotion/react": "11.4.0",
+    "@emotion/react": "11.4.1",
     "@emotion/styled": "11.3.0",
     "form-urlencoded": "4.5.1",
     "gatsby": "3.7.0",
