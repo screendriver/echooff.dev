@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from 'assert';
 import { createConfig } from '../../../src/shared/config';
 
 suite('config', function () {

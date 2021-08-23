@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from 'assert';
 import { render } from '@testing-library/react';
 import { FormSent } from '../../../../../src/components/contact/form/formSent';
 

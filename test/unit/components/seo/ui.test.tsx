@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from 'assert';
 import { render } from '@testing-library/react';
 import { Helmet, HelmetTags } from 'react-helmet';
 import { SeoUi, SeoUiProps } from '../../../../src/components/seo/ui';

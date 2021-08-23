@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from 'assert';
 import sinon from 'sinon';
 import { render } from '@testing-library/react';
 import { FormUi, Props } from '../../../../../src/components/contact/form/ui';
