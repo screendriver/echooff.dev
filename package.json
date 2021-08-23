@@ -48,7 +48,7 @@
     "@percy/cli": "1.0.0-beta.65",
     "@percy/testcafe": "1.0.1",
     "@testing-library/react": "11.2.7",
-    "@types/aws-lambda": "8.10.79",
+    "@types/aws-lambda": "8.10.83",
     "@types/form-urlencoded": "2.0.1",
     "@types/gsap": "1.20.2",
     "@types/lodash.sample": "4.2.6",
