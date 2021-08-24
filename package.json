@@ -84,7 +84,7 @@
     "gatsby-source-graphql": "3.7.0",
     "gatsby-transformer-json": "3.7.0",
     "gatsby-transformer-sharp": "3.7.0",
-    "i18next-http-backend": "1.2.6",
+    "i18next-http-backend": "1.3.0",
     "jscpd": "3.3.23",
     "jscpd-badge-reporter": "1.1.3",
     "jsdom": "16.6.0",
