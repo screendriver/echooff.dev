@@ -3,6 +3,9 @@
   functions = "target/src/lambda"
   environment = { AWS_LAMBDA_JS_RUNTIME = "nodejs12.x" }
 
+[[plugins]]
+  package = "@netlify/plugin-gatsby"
+
 [[redirects]]
   from = "https://echooff.de/*"
   to = "https://www.echooff.dev/:splat"
