@@ -3,6 +3,7 @@ require('dotenv').config();
 module.exports = {
   siteMetadata: {
     author: 'Christian Rackerseder',
+    jobTitle: 'Full-Stack JavaScript Engineer',
     favicon: 'favicon.png',
     siteUrl: 'https://www.echooff.dev',
   },
