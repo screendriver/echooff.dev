@@ -2,7 +2,6 @@ require('dotenv').config();
 
 module.exports = {
   siteMetadata: {
-    keywords: 'TypeScript,JavaScript,HTML,CSS,Node.js,React,Vue',
     favicon: 'favicon.png',
     siteUrl: 'https://www.echooff.dev',
   },
