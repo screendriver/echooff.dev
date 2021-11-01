@@ -3,7 +3,7 @@ import ky from 'ky';
 
 export const Quickmetrics: FunctionComponent = () => {
   useEffect(() => {
-    void ky('/.netlify/functions/quickmetrics');
+    void ky('/api/quickmetrics');
   });
   return null;
 };
