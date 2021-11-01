@@ -1,7 +1,10 @@
-import { APIGatewayProxyHandler } from 'aws-lambda';
+import { GatsbyFunctionRequest, GatsbyFunctionResponse } from 'gatsby';
 import got from 'got';
 
-export const handler: APIGatewayProxyHandler = async () => {
+export default async function (
+  _request: GatsbyFunctionRequest,
+  response: GatsbyFunctionResponse,
+): Promise<void> {
   await got.post('https://qckm.io/json', {
     headers: {
       'x-qm-key': process.env.QUICKMETRICS_API_KEY,
@@ -12,8 +15,5 @@ export const handler: APIGatewayProxyHandler = async () => {
       dimension: 'GET /',
     },
   });
-  return {
-    statusCode: 200,
-    body: '',
-  };
-};
+  response.status(200).send('');
+}
