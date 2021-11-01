@@ -2,6 +2,7 @@ require('dotenv').config();
 
 module.exports = {
   siteMetadata: {
+    author: 'Christian Rackerseder',
     favicon: 'favicon.png',
     siteUrl: 'https://www.echooff.dev',
   },
