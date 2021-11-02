@@ -1,6 +1,7 @@
 import { Fragment, FunctionComponent } from 'react';
 import { graphql, PageProps } from 'gatsby';
-import { GlobalStyles } from 'twin.macro';
+import { Global } from '@emotion/react';
+import { GlobalStyles as BaseStyles } from 'twin.macro';
 import { Header } from '../v2/Header';
 
 interface DataType {
@@ -33,7 +34,14 @@ const V2Page: FunctionComponent<V2PageProps> = ({ data }) => {
   const { author, jobTitle, keywords, favicon } = data.site.siteMetadata;
   return (
     <Fragment>
-      <GlobalStyles />
+      <BaseStyles />
+      <Global
+        styles={{
+          body: {
+            backgroundColor: '#1F2937;',
+          },
+        }}
+      />
       <Header
         title={`${author} - ${jobTitle}`}
         description={jobTitle}
