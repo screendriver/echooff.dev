@@ -38,7 +38,7 @@ const V2Page: FunctionComponent<V2PageProps> = ({ data }) => {
       <Global
         styles={{
           body: {
-            backgroundColor: '#1F2937;',
+            backgroundColor: '#1F2937',
           },
         }}
       />
