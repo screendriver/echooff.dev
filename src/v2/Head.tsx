@@ -9,7 +9,7 @@ export interface HeaderProps {
   favicon: string;
 }
 
-export const Header: FunctionComponent<HeaderProps> = ({
+export const Head: FunctionComponent<HeaderProps> = ({
   title,
   description,
   author,

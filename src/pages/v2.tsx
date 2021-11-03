@@ -2,7 +2,7 @@ import { Fragment, FunctionComponent } from 'react';
 import { graphql, PageProps } from 'gatsby';
 import { Global } from '@emotion/react';
 import { GlobalStyles as BaseStyles } from 'twin.macro';
-import { Header } from '../v2/Header';
+import { Head } from '../v2/Head';
 
 interface DataType {
   readonly site: {
@@ -42,7 +42,7 @@ const V2Page: FunctionComponent<V2PageProps> = ({ data }) => {
           },
         }}
       />
-      <Header
+      <Head
         title={`${author} - ${jobTitle}`}
         description={jobTitle}
         author={author}
