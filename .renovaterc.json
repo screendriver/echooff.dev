@@ -11,23 +11,13 @@
   },
   "packageRules": [
     {
-      "depTypeList": ["dependencies", "devDependencies"],
-      "updateTypes": ["minor", "patch"],
-      "automerge": true,
-      "automergeType": "branch"
-    },
-    {
       "packagePatterns": ["^gatsby"],
       "groupName": "gatsby packages",
-      "extends": ["schedule:weekly"],
-      "automerge": true,
-      "automergeType": "branch"
+      "extends": ["schedule:weekly"]
     },
     {
       "packagePatterns": ["eslint"],
-      "groupName": "eslint packages",
-      "automerge": true,
-      "automergeType": "branch"
+      "groupName": "eslint packages"
     }
   ]
 }
