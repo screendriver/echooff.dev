@@ -20,7 +20,8 @@
     "test:unit": "mocha",
     "test:unit:coverage": "c8 mocha",
     "test:a11y": "pa11y",
-    "release": "standard-version"
+    "release": "standard-version",
+    "start:static-server": "ts-node-dev --transpile-only src/static-server.ts"
   },
   "dependencies": {
     "@emotion/react": "11.5.0",
