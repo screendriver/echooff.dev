@@ -75,6 +75,7 @@
     "eslint-plugin-testcafe-community": "1.1.0",
     "eslint-plugin-testing-library": "3.10.2",
     "fastify": "3.22.1",
+    "fastify-cors": "6.0.2",
     "gatsby-plugin-emotion": "7.0.0",
     "gatsby-plugin-image": "2.0.0",
     "gatsby-plugin-netlify": "3.14.0",
