@@ -3,6 +3,7 @@ import { graphql, PageProps } from 'gatsby';
 import { Global } from '@emotion/react';
 import { GlobalStyles as BaseStyles } from 'twin.macro';
 import { Head } from '../v2/Head';
+import { Header } from '../v2/Header';
 
 interface DataType {
   readonly site: {
@@ -49,6 +50,7 @@ const V2Page: FunctionComponent<V2PageProps> = ({ data }) => {
         keywords={keywords}
         favicon={favicon}
       />
+      <Header />
     </Fragment>
   );
 };
