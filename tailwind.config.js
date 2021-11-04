@@ -1,6 +1,9 @@
 module.exports = {
   theme: {
     extend: {
+      fontFamily: {
+        'jetbrains-mono': '"JetBrains Mono"',
+      },
       colors: {
         'light-pink': '#FFADAD',
         'deep-champagne': '#FFD6A5',
