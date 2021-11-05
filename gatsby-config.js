@@ -14,7 +14,15 @@ module.exports = {
     'gatsby-plugin-robots-txt',
     'gatsby-plugin-emotion',
     'gatsby-plugin-react-helmet',
-    'gatsby-plugin-sharp',
+    {
+      resolve: 'gatsby-plugin-sharp',
+      options: {
+        defaults: {
+          formats: ['auto', 'webp', 'avif'],
+          placeholder: 'blurred',
+        },
+      },
+    },
     'gatsby-transformer-sharp',
     'gatsby-transformer-json',
     {
