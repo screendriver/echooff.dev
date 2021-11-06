@@ -48,6 +48,7 @@
     "@types/standard-version": "7.0.1",
     "@typescript-eslint/eslint-plugin": "4.31.2",
     "@typescript-eslint/parser": "4.31.2",
+    "autoprefixer": "10.4.0",
     "c8": "7.10.0",
     "concurrently": "6.3.0",
     "eslint": "7.32.0",
