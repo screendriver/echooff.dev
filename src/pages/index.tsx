@@ -1,71 +1,48 @@
-import 'modern-normalize';
-import 'typeface-open-sans';
-import 'typeface-lato';
-import { graphql } from 'gatsby';
-import { Fragment, FunctionComponent } from 'react';
-import { Global } from '@emotion/react';
-import { createConfig } from '../shared/config';
-import { GitHubCorner } from '../components/GitHubCorner';
-import { Header } from '../components/Header';
-import { Navigation } from '../components/Navigation';
-import { About } from '../components/About';
-import { Skills } from '../components/skills';
-import { Passions } from '../components/Passions';
-import { Stats } from '../components/Stats';
-import { Experiences } from '../components/experiences';
-import { Quickmetrics } from '../components/Quickmetrics';
-import { SEO } from '../components/seo';
-import { Contact } from '../components/contact';
-import { Footer } from '../components/Footer';
+import React, { Fragment, FunctionComponent } from 'react';
+import { graphql, PageProps } from 'gatsby';
+import { Head } from '../Head';
+import { Header } from '../Header';
 
-const config = createConfig();
+interface DataType {
+  readonly site: {
+    readonly siteMetadata: {
+      readonly author: string;
+      readonly jobTitle: string;
+      readonly keywords: string;
+      readonly favicon: string;
+    };
+  };
+}
+
+type V2PageProps = PageProps<DataType>;
 
 export const query = graphql`
-  query ($language: String!) {
-    locales: allLocale(filter: { language: { eq: $language } }) {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
+  query V2 {
+    site {
+      siteMetadata {
+        author
+        jobTitle
+        keywords
+        favicon
       }
     }
   }
 `;
 
-const Page: FunctionComponent = () => {
+const V2Page: FunctionComponent<V2PageProps> = ({ data }) => {
+  const { author, jobTitle, keywords, favicon } = data.site.siteMetadata;
   return (
     <Fragment>
-      <Global
-        styles={{
-          body: {
-            fontFamily: 'Open Sans, sans-serif',
-            WebkitFontSmoothing: 'antialiased',
-          },
-          a: {
-            textDecoration: 'none',
-          },
-        }}
+      <Head
+        title={`${author} - ${jobTitle}`}
+        description={jobTitle}
+        author={author}
+        keywords={keywords}
+        favicon={favicon}
       />
-      <Quickmetrics />
-      <SEO />
-      <GitHubCorner />
-      <Header config={config} />
-      <Navigation />
-      <main>
-        <About />
-        <Skills />
-        <Passions />
-        <Stats config={config} />
-        <Experiences />
-        <Contact />
-      </main>
-      <Footer
-        date={config.visualRegressionTest ? new Date(2019, 0) : new Date()}
-      />
+      <Header />
     </Fragment>
   );
 };
 
-export default Page;
+export default V2Page;
