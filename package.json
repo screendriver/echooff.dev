@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "4.5.0",
+    "@fontsource/source-sans-pro": "4.5.0",
     "form-urlencoded": "4.5.1",
     "gatsby": "4.1.0",
     "got": "11.8.2",
