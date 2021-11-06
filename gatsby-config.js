@@ -12,6 +12,7 @@ module.exports = {
     'gatsby-plugin-image',
     'gatsby-plugin-sitemap',
     'gatsby-plugin-robots-txt',
+    'gatsby-plugin-postcss',
     'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-plugin-sharp',
