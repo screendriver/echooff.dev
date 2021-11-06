@@ -1,53 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 // Idea taken from https://codepen.io/dsenneff/pen/mjZgmN
-import 'modern-normalize';
-import 'typeface-source-sans-pro';
-import { Fragment, FunctionComponent, useEffect } from 'react';
-import { css, Global } from '@emotion/react';
-import styled from '@emotion/styled';
+import '@fontsource/source-sans-pro/400.css';
+import '@fontsource/source-sans-pro/900.css';
+import '../styles/404.css';
+import React, { Fragment, FunctionComponent, useEffect } from 'react';
 import { TweenMax, TimelineMax, Power1 } from 'gsap';
-import { SEO } from '../components/seo';
-import { YetiSVG } from '../components/YetiSVG';
-
-const globalStyles = css({
-  margin: 0,
-  padding: 0,
-  fontSize: 16,
-  WebkitFontSmoothing: 'antialiased',
-  backgroundColor: '#09334f',
-  position: 'relative',
-});
-
-const Content = styled.div({
-  display: 'none',
-  padding: '5rem 3rem 0 25rem',
-  position: 'relative',
-  zIndex: 10,
-  fontFamily: 'Source Sans Pro, sans-serif',
-  color: '#FFF',
-  '@media (min-width: 1024px)': {
-    display: 'block',
-  },
-});
-
-const Hello = styled.h3({
-  margin: '0 0 .8rem',
-  fontSize: '2.625rem',
-  fontWeight: 900,
-  lineHeight: '120%',
-});
-
-const Text = styled.p({
-  fontSize: '1.25rem',
-  fontWeight: 'normal',
-  lineHeight: '150%',
-  color: '#d1e2ed',
-});
-
-const Link = styled.span({
-  textDecoration: 'line-through',
-});
+import { YetiSVG } from '../YetiSVG';
 
 function run() {
   const furLightColor = '#FFF';
@@ -220,23 +179,17 @@ function run() {
 
 const NotFound: FunctionComponent = () => {
   useEffect(run);
+
   return (
     <Fragment>
-      <Global
-        styles={{
-          html: globalStyles,
-          body: globalStyles,
-        }}
-      />
-      <SEO title="Error - Page not found" />
       <YetiSVG />
-      <Content>
-        <Hello>Hello?? Is somebody there?!?</Hello>
-        <Text>
+      <div className="content">
+        <h3>Hello?? Is somebody there?!?</h3>
+        <p>
           We know it’s scary, but the page you’re trying to reach can’t be
-          found. Perhaps it was just a bad <Link>link</Link> dream?
-        </Text>
-      </Content>
+          found. Perhaps it was just a bad <span>link</span> dream?
+        </p>
+      </div>
     </Fragment>
   );
 };
