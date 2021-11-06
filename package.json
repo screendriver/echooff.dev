@@ -24,8 +24,6 @@
     "start:static-server": "ts-node-dev --transpile-only src/static-server.ts"
   },
   "dependencies": {
-    "@emotion/react": "11.5.0",
-    "@emotion/styled": "11.3.0",
     "@fontsource/jetbrains-mono": "4.5.0",
     "form-urlencoded": "4.5.1",
     "gatsby": "4.1.0",
