@@ -2,7 +2,7 @@ import test from 'ava';
 import createFastify from 'fastify';
 import { createGraphQlRoute } from '../../../src/static-server/graphql-route';
 
-test('raphql-route returns an user with a total count of repositories and starred repositories', async (t) => {
+test('returns an user with a total count of repositories and starred repositories', async (t) => {
   const fastify = createFastify();
   fastify.route(createGraphQlRoute());
 
