@@ -6,9 +6,9 @@ const quickmetricsMock = RequestMock().onRequestTo('http://localhost:9000/.netli
 fixture('Visual').page('http://localhost:9000').requestHooks(quickmetricsMock);
 
 test('main page', async (t) => {
-  await t.wait(1000);
-  // @ts-expect-error wrong types in @percy/testcafe
-  await percySnapshot(t, 'Main page', {
-    widths: [320, 375, 425, 768, 1024, 1440, 1920],
-  });
+    await t.wait(1000);
+    // @ts-expect-error wrong types in @percy/testcafe
+    await percySnapshot(t, 'Main page', {
+        widths: [320, 375, 425, 768, 1024, 1440, 1920],
+    });
 });

@@ -5,6 +5,6 @@ const quickmetricsMock = RequestMock().onRequestTo('http://localhost:9000/.netli
 fixture('About image').page('http://localhost:9000').requestHooks(quickmetricsMock);
 
 test('exists', async (t) => {
-  const image = Selector('img[alt="My face"]');
-  await t.expect(image.exists).ok();
+    const image = Selector('img[alt="My face"]');
+    await t.expect(image.exists).ok();
 });

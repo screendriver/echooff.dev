@@ -6,17 +6,17 @@ import { Header } from '../../src/Header';
 test.afterEach(cleanup);
 
 test('renders "Hello, I\'m Christian"', (t) => {
-  const { queryByText } = render(<Header />);
+    const { queryByText } = render(<Header />);
 
-  const actual = queryByText("Hello, I'm Christian");
-  const notExpected = null;
-  t.not(actual, notExpected);
+    const actual = queryByText("Hello, I'm Christian");
+    const notExpected = null;
+    t.not(actual, notExpected);
 });
 
 test('renders "Full-Stack JavaScript Engineer"', (t) => {
-  const { queryByText } = render(<Header />);
+    const { queryByText } = render(<Header />);
 
-  const actual = queryByText('Full-Stack JavaScript Engineer');
-  const notExpected = null;
-  t.not(actual, notExpected);
+    const actual = queryByText('Full-Stack JavaScript Engineer');
+    const notExpected = null;
+    t.not(actual, notExpected);
 });

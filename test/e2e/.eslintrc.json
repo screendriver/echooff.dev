@@ -1,4 +1,4 @@
 {
-  "extends": ["plugin:testcafe-community/recommended"],
-  "plugins": ["testcafe-community"]
+    "extends": ["plugin:testcafe-community/recommended"],
+    "plugins": ["testcafe-community"]
 }
