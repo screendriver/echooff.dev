@@ -1,9 +1,7 @@
 import { RequestMock } from 'testcafe';
 import * as percySnapshot from '@percy/testcafe';
 
-const quickmetricsMock = RequestMock()
-  .onRequestTo('http://localhost:9000/.netlify/functions/quickmetrics')
-  .respond('');
+const quickmetricsMock = RequestMock().onRequestTo('http://localhost:9000/.netlify/functions/quickmetrics').respond('');
 
 fixture('Visual').page('http://localhost:9000').requestHooks(quickmetricsMock);
 

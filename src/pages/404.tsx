@@ -21,8 +21,7 @@ function run() {
   const lettersStrokeDark = '#031219';
   const mouthShape1 =
     'M149 115.7c-4.6 3.7-6.6 9.8-5 15.6.1.5.3 1.1.5 1.6.6 1.5 2.4 2.3 3.9 1.7l11.2-4.4 11.2-4.4c1.5-.6 2.3-2.4 1.7-3.9-.2-.5-.4-1-.7-1.5-2.8-5.2-8.4-8.3-14.1-7.9-3.7.2-5.9 1.1-8.7 3.2z';
-  const mouthShape2 =
-    'M161.2 118.9c0 2.2-1.8 4-4 4s-4-1.8-4-4c0-1 .4-2 1.1-2.7.7-.8 1.8-1.3 2.9-1.3 2.2 0 4 1.7 4 4z';
+  const mouthShape2 = 'M161.2 118.9c0 2.2-1.8 4-4 4s-4-1.8-4-4c0-1 .4-2 1.1-2.7.7-.8 1.8-1.3 2.9-1.3 2.2 0 4 1.7 4 4z';
   const mouthShape3 =
     'M149.2 116.7c-4.6 3.7-6.7 8.8-5.2 14.6.1.3.1.5.2.8.6 1.5 2.4 2.3 3.9 1.7l11.2-4.4 11.2-4.4c1.5-.6 2.3-2.4 1.7-3.9-.1-.3-.2-.5-.4-.7-2.8-5.2-8.2-7.2-14-6.9-3.6.2-5.9 1.1-8.6 3.2z';
 
@@ -62,12 +61,7 @@ function run() {
 
   const chatterTL = new TimelineMax({ paused: true, repeat: -1, yoyo: true });
   chatterTL
-    .to(
-      ['#mouthBG', '#mouthPath', '#mouthOutline'],
-      0.1,
-      { morphSVG: mouthShape3 },
-      '0',
-    )
+    .to(['#mouthBG', '#mouthPath', '#mouthOutline'], 0.1, { morphSVG: mouthShape3 }, '0')
     .to('#chin', 0.1, { y: 1.5 }, '0');
   const yetiTL = new TimelineMax({
     paused: true,
@@ -102,12 +96,7 @@ function run() {
       );
     }, '3.2')
 
-    .to(
-      ['#mouthBG', '#mouthPath', '#mouthOutline'],
-      0.25,
-      { morphSVG: mouthShape2 },
-      '5',
-    )
+    .to(['#mouthBG', '#mouthPath', '#mouthOutline'], 0.25, { morphSVG: mouthShape2 }, '5')
     .to('#tooth1', 0.1, { y: -5 }, '5')
     .to(
       '#armR',
@@ -121,12 +110,7 @@ function run() {
       },
       '4',
     )
-    .to(
-      ['#eyeL', '#eyeR'],
-      0.25,
-      { scaleX: 1.4, scaleY: 1.4, transformOrigin: 'center center' },
-      '5',
-    )
+    .to(['#eyeL', '#eyeR'], 0.25, { scaleX: 1.4, scaleY: 1.4, transformOrigin: 'center center' }, '5')
 
     .addCallback(goDark, '8')
     .addCallback(goLight, '8.1')
@@ -134,12 +118,7 @@ function run() {
     .addCallback(goLight, '8.4')
     .addCallback(goDark, '8.6')
 
-    .to(
-      ['#mouthBG', '#mouthPath', '#mouthOutline'],
-      0.25,
-      { morphSVG: mouthShape1 },
-      '9',
-    )
+    .to(['#mouthBG', '#mouthPath', '#mouthOutline'], 0.25, { morphSVG: mouthShape1 }, '9')
     .to('#tooth1', 0.1, { y: 0 }, '9')
     .to(
       '#armR',
@@ -153,12 +132,7 @@ function run() {
       },
       '9',
     )
-    .to(
-      ['#eyeL', '#eyeR'],
-      0.25,
-      { scaleX: 1, scaleY: 1, transformOrigin: 'center center' },
-      '9',
-    )
+    .to(['#eyeL', '#eyeR'], 0.25, { scaleX: 1, scaleY: 1, transformOrigin: 'center center' }, '9')
     .addCallback(() => {
       chatterTL.play();
     }, '9.25')
@@ -186,8 +160,8 @@ const NotFound: FunctionComponent = () => {
       <div className="content">
         <h3>Hello?? Is somebody there?!?</h3>
         <p>
-          We know it’s scary, but the page you’re trying to reach can’t be
-          found. Perhaps it was just a bad <span>link</span> dream?
+          We know it’s scary, but the page you’re trying to reach can’t be found. Perhaps it was just a bad{' '}
+          <span>link</span> dream?
         </p>
       </div>
     </Fragment>

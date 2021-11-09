@@ -16,9 +16,7 @@ const mock = RequestMock()
     method: 'POST',
   })
   .respond({}, 200);
-const quickmetricsMock = RequestMock()
-  .onRequestTo('http://localhost:9000/.netlify/functions/quickmetrics')
-  .respond('');
+const quickmetricsMock = RequestMock().onRequestTo('http://localhost:9000/.netlify/functions/quickmetrics').respond('');
 
 fixture('Contact form').page(url).requestHooks(mock, quickmetricsMock, logger);
 
@@ -26,10 +24,7 @@ test('show "Thank you" message after submitting contact form', async (t) => {
   const nameInput = Selector('input[placeholder="Name"]');
   const emailInput = Selector('input[placeholder="Email"]');
   const messageInput = Selector('textarea[placeholder="Message"]');
-  const submit = Selector('input[type="submit"]').withAttribute(
-    'value',
-    'Send Message',
-  );
+  const submit = Selector('input[type="submit"]').withAttribute('value', 'Send Message');
   await t
     .typeText(nameInput, 'Me')
     .typeText(emailInput, 'test@example.com')
@@ -44,7 +39,5 @@ test('show "Thank you" message after submitting contact form', async (t) => {
     .expect(headers['content-type'])
     .eql('application/x-www-form-urlencoded')
     .expect(logRecord.request.body)
-    .eql(
-      'form-name=contact&name=Me&email=test%40example.com&message=lorem+ipsum',
-    );
+    .eql('form-name=contact&name=Me&email=test%40example.com&message=lorem+ipsum');
 });

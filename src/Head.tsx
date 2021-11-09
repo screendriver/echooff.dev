@@ -9,13 +9,7 @@ export interface HeaderProps {
   favicon: string;
 }
 
-export const Head: FunctionComponent<HeaderProps> = ({
-  title,
-  description,
-  author,
-  keywords,
-  favicon,
-}) => {
+export const Head: FunctionComponent<HeaderProps> = ({ title, description, author, keywords, favicon }) => {
   return (
     <Helmet title={title}>
       <html lang="en" />

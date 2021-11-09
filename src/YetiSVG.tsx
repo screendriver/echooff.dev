@@ -4,11 +4,7 @@ import React, { Fragment, FunctionComponent } from 'react';
 export const YetiSVG: FunctionComponent = () => {
   return (
     <Fragment>
-      <svg
-        id="yetiSVG"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 600 470"
-      >
+      <svg id="yetiSVG" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 600 470">
         <linearGradient
           id="flashlightGrad"
           x1="126.5842"
@@ -153,11 +149,7 @@ export const YetiSVG: FunctionComponent = () => {
               ry="11.5"
               transform="rotate(-66.265 85.7992 120.4318)"
             />
-            <path
-              className="hlFur"
-              fill="#FFF"
-              d="M106 130.3l-12 3.6 1.2-11.4-6.3-.1 6-12h-5.4l9.6-8.4z"
-            />
+            <path className="hlFur" fill="#FFF" d="M106 130.3l-12 3.6 1.2-11.4-6.3-.1 6-12h-5.4l9.6-8.4z" />
             <path
               className="hlFur"
               fill="#FFF"
@@ -281,10 +273,7 @@ export const YetiSVG: FunctionComponent = () => {
               fill="#DDF1FA"
               d="M158.4 116.9l-.7.3c-3.7 1.5-5.5 5.7-4.1 9.4l1.2 2.9c1.7 4.4 6.7 6.5 11.1 4.8l1.4-.5"
             />
-            <path
-              fill="#A9DDF3"
-              d="M154.8 129.1l.7 1.8c1 2.5 5.4 3.1 5.4 3.1l-2-5.1c-.3-.7-1.1-1.1-1.8-.8l-2.3 1z"
-            />
+            <path fill="#A9DDF3" d="M154.8 129.1l.7 1.8c1 2.5 5.4 3.1 5.4 3.1l-2-5.1c-.3-.7-1.1-1.1-1.8-.8l-2.3 1z" />
             <path
               fill="none"
               stroke="#265D85"
@@ -308,10 +297,7 @@ export const YetiSVG: FunctionComponent = () => {
               strokeWidth="2.5"
               d="M177 109.4l-.7.3c-3.7 1.5-5.5 5.7-4.1 9.4l1.2 2.9c1.7 4.4 6.7 6.5 11.1 4.8l1.4-.5"
             />
-            <path
-              fill="#88C9F2"
-              d="M162.3 128.6l18.6 46.7 37.2-14.8-17.9-44.8"
-            />
+            <path fill="#88C9F2" d="M162.3 128.6l18.6 46.7 37.2-14.8-17.9-44.8" />
             <path
               className="hlSkin"
               fill="#DDF1FA"
@@ -326,20 +312,9 @@ export const YetiSVG: FunctionComponent = () => {
               strokeWidth="2.5"
               d="M162.3 128.6l18.6 46.7 37.2-14.8-15.3-38.3"
             />
-            <path
-              className="hlSkin"
-              fill="#DDF1FA"
-              d="M190.8 119l-1.5-3.7c-2-5.1-7.9-7.6-13-5.6l5.2 12.9"
-            />
-            <path
-              className="hlSkin"
-              fill="#DDF1FA"
-              d="M203.5 123.8l-1.5-3.7c-2-5.1-7.9-7.6-13-5.6l5.2 12.9"
-            />
-            <path
-              fill="#A9DDF3"
-              d="M200.4 119.4l-.7-1.8c-1-2.5-5.4-3.1-5.4-3.1l1.9 4.8c.3.8 1.3 1.3 2.1.9l2.1-.8z"
-            />
+            <path className="hlSkin" fill="#DDF1FA" d="M190.8 119l-1.5-3.7c-2-5.1-7.9-7.6-13-5.6l5.2 12.9" />
+            <path className="hlSkin" fill="#DDF1FA" d="M203.5 123.8l-1.5-3.7c-2-5.1-7.9-7.6-13-5.6l5.2 12.9" />
+            <path fill="#A9DDF3" d="M200.4 119.4l-.7-1.8c-1-2.5-5.4-3.1-5.4-3.1l1.9 4.8c.3.8 1.3 1.3 2.1.9l2.1-.8z" />
             <path
               fill="none"
               stroke="#265D85"
@@ -379,11 +354,7 @@ export const YetiSVG: FunctionComponent = () => {
               strokeWidth="2.5"
               d="M160.9 125l2 5.1"
             />
-            <path
-              className="hlSkin"
-              fill="#DDF1FA"
-              d="M172.2 126.4l-1.5-3.7c-2-5.1-7.9-7.6-13-5.6l5.2 12.9"
-            />
+            <path className="hlSkin" fill="#DDF1FA" d="M172.2 126.4l-1.5-3.7c-2-5.1-7.9-7.6-13-5.6l5.2 12.9" />
             <path
               fill="none"
               stroke="#265D85"
@@ -393,11 +364,7 @@ export const YetiSVG: FunctionComponent = () => {
               strokeWidth="2.5"
               d="M160.5 124l2.4 6.1"
             />
-            <path
-              className="hlSkin"
-              fill="#DDF1FA"
-              d="M181.5 122.7L180 119c-2-5.1-7.9-7.6-13-5.6l5.2 12.9"
-            />
+            <path className="hlSkin" fill="#DDF1FA" d="M181.5 122.7L180 119c-2-5.1-7.9-7.6-13-5.6l5.2 12.9" />
             <path
               fill="none"
               stroke="#265D85"
@@ -439,22 +406,10 @@ export const YetiSVG: FunctionComponent = () => {
               strokeWidth="20"
               d="M59.3 143.8l34.3 33.9"
             />
-            <path
-              fill="#4D4D4D"
-              d="M58.4 133.9l15.9 15.9-.9.9-16.5-16.5c.5-.2 1-.3 1.5-.3z"
-            />
-            <path
-              fill="#1A1A1A"
-              d="M71.2 169.6l-20.1-20c-2.4-3.7-2.5-8.1.1-11.7l23.1 22.2"
-            />
-            <path
-              fill="#4D4D4D"
-              d="M80.5 156.4l16 15.9-.9.9-16.5-16.5c.5-.1 1-.2 1.4-.3z"
-            />
-            <path
-              fill="#1A1A1A"
-              d="M74.2 160.1L86 171.4l-2 11-10.2-10.1c-2.4-4.4-2.5-8.5.4-12.2z"
-            />
+            <path fill="#4D4D4D" d="M58.4 133.9l15.9 15.9-.9.9-16.5-16.5c.5-.2 1-.3 1.5-.3z" />
+            <path fill="#1A1A1A" d="M71.2 169.6l-20.1-20c-2.4-3.7-2.5-8.1.1-11.7l23.1 22.2" />
+            <path fill="#4D4D4D" d="M80.5 156.4l16 15.9-.9.9-16.5-16.5c.5-.1 1-.2 1.4-.3z" />
+            <path fill="#1A1A1A" d="M74.2 160.1L86 171.4l-2 11-10.2-10.1c-2.4-4.4-2.5-8.5.4-12.2z" />
             <path
               fill="#88C9F2"
               d="M65.9 164.8c-1.9-5.5.8-11.8 6.1-14.1 4.9-2.2 10.4-.6 13.5 3.4 1.3 1.6 3.5 2.1 5.4 1.4 3-1.2 3.9-4.9 1.9-7.4-5.8-7.2-16.1-9.9-25-5.7-9.4 4.4-14.1 15.3-10.9 25.2"
@@ -511,10 +466,7 @@ export const YetiSVG: FunctionComponent = () => {
               fill="#FFF"
               d="M98.8 202.8l-1.4-8.7-5.2.7-7.2-11.5-6.8 9-3.9-9.3-7.5 4.8 3.5-11.4-7.1 1.9 2.7-13.5-7.8 4.9c-11.7 26.5-3.6 52.5 1.7 66.6 15.5-6.4 30.3-21.9 39-33.5z"
             />
-            <path
-              fill="#A9DDF3"
-              d="M101 161.2l-2.4-2.2c.2-1.6-.2-2.7-.8-3.9l2.6 2.5c.8.8 1 2.2.6 3.6z"
-            />
+            <path fill="#A9DDF3" d="M101 161.2l-2.4-2.2c.2-1.6-.2-2.7-.8-3.9l2.6 2.5c.8.8 1 2.2.6 3.6z" />
             <path
               fill="none"
               stroke="#265D85"
@@ -638,10 +590,7 @@ export const YetiSVG: FunctionComponent = () => {
             strokeWidth="2.5"
             d="M146.2 165.1l2.8 11.6c.6 2.7 3.3 4.3 6 3.7 2.7-.6 4.3-3.3 3.7-6l-1.6-6.8c-.6-2.7-3.3-4.3-6-3.7l-4.9 1.2"
           />
-          <path
-            fill="#A9DDF3"
-            d="M151.4 173.8l.5 2.2c.3 1.1 1.3 1.7 2.4 1.5 1.1-.3 1.7-1.3 1.5-2.4l-.5-2.2-3.9.9z"
-          />
+          <path fill="#A9DDF3" d="M151.4 173.8l.5 2.2c.3 1.1 1.3 1.7 2.4 1.5 1.1-.3 1.7-1.3 1.5-2.4l-.5-2.2-3.9.9z" />
           <path
             fill="#88C9F2"
             stroke="#265D85"
@@ -651,10 +600,7 @@ export const YetiSVG: FunctionComponent = () => {
             strokeWidth="2.5"
             d="M136.5 167.4l2.8 11.6c.6 2.7 3.3 4.3 6 3.7 2.7-.6 4.3-3.3 3.7-6l-2.8-11.6-9.7 2.3z"
           />
-          <path
-            fill="#A9DDF3"
-            d="M141.7 176.2l.5 2.2c.3 1.1 1.3 1.7 2.4 1.5 1.1-.3 1.7-1.3 1.5-2.4l-.5-2.2-3.9.9z"
-          />
+          <path fill="#A9DDF3" d="M141.7 176.2l.5 2.2c.3 1.1 1.3 1.7 2.4 1.5 1.1-.3 1.7-1.3 1.5-2.4l-.5-2.2-3.9.9z" />
           <path
             fill="#88C9F2"
             stroke="#265D85"
@@ -664,10 +610,7 @@ export const YetiSVG: FunctionComponent = () => {
             strokeWidth="2.5"
             d="M127.9 174.6l1.6 6.8c.6 2.7 3.3 4.3 6 3.7 2.7-.6 4.3-3.3 3.7-6l-2.8-11.6-4.9 1.2c-2.6.5-4.2 3.2-3.6 5.9z"
           />
-          <path
-            fill="#A9DDF3"
-            d="M131.9 178.5l.5 2.2c.3 1.1 1.3 1.7 2.4 1.5 1.1-.3 1.7-1.3 1.5-2.4l-.5-2.2-3.9.9z"
-          />
+          <path fill="#A9DDF3" d="M131.9 178.5l.5 2.2c.3 1.1 1.3 1.7 2.4 1.5 1.1-.3 1.7-1.3 1.5-2.4l-.5-2.2-3.9.9z" />
         </g>
         <g id="fingersFrontR" style={{ visibility: 'hidden' }}>
           <path
@@ -679,10 +622,7 @@ export const YetiSVG: FunctionComponent = () => {
             strokeWidth="2.5"
             d="M207.1 142.5l7.9 8.9c1.8 2.1 5 2.3 7.1.4 2.1-1.8 2.3-5 .4-7.1l-4.6-5.2c-1.8-2.1-5-2.2-7-.4l-3.8 3.4"
           />
-          <path
-            fill="#A9DDF3"
-            d="M215.8 147.7l1.5 1.7c.7.8 2 .9 2.8.2.8-.7.9-2 .2-2.8l-1.5-1.7-3 2.6z"
-          />
+          <path fill="#A9DDF3" d="M215.8 147.7l1.5 1.7c.7.8 2 .9 2.8.2.8-.7.9-2 .2-2.8l-1.5-1.7-3 2.6z" />
           <path
             fill="#88c9f2"
             stroke="#265D85"
@@ -692,10 +632,7 @@ export const YetiSVG: FunctionComponent = () => {
             strokeWidth="2.5"
             d="M199.6 149.1l7.9 8.9c1.8 2.1 5 2.3 7.1.4 2.1-1.8 2.3-5 .4-7.1l-7.9-8.9-7.5 6.7z"
           />
-          <path
-            fill="#A9DDF3"
-            d="M208.3 154.4l1.5 1.7c.7.8 2 .9 2.8.2.8-.7.9-2 .2-2.8l-1.5-1.7-3 2.6z"
-          />
+          <path fill="#A9DDF3" d="M208.3 154.4l1.5 1.7c.7.8 2 .9 2.8.2.8-.7.9-2 .2-2.8l-1.5-1.7-3 2.6z" />
           <path
             fill="#88c9f2"
             stroke="#265D85"
@@ -705,20 +642,11 @@ export const YetiSVG: FunctionComponent = () => {
             strokeWidth="2.5"
             d="M195.4 159.5l4.6 5.2c1.8 2.1 5 2.3 7.1.4 2.1-1.8 2.3-5 .4-7.1l-7.9-8.9-3.7 3.3c-2.1 1.9-2.3 5-.5 7.1z"
           />
-          <path
-            fill="#A9DDF3"
-            d="M200.8 161l1.5 1.7c.7.8 2 .9 2.8.2.8-.7.9-2 .2-2.8l-1.5-1.7-3 2.6z"
-          />
+          <path fill="#A9DDF3" d="M200.8 161l1.5 1.7c.7.8 2 .9 2.8.2.8-.7.9-2 .2-2.8l-1.5-1.7-3 2.6z" />
         </g>
         <g id="flashlightFront">
-          <path
-            fill="#1A1A1A"
-            d="M83.9 181.4l4.6 26.4 34.6-33.6-24.5-6.2c-8.9-2.6-16.6 3.9-14.7 13.4z"
-          />
-          <path
-            fill="#333"
-            d="M91.9 167.8l20.5 7.4-.5 1.2-21.4-8.2c.5-.2 1-.3 1.4-.4z"
-          />
+          <path fill="#1A1A1A" d="M83.9 181.4l4.6 26.4 34.6-33.6-24.5-6.2c-8.9-2.6-16.6 3.9-14.7 13.4z" />
+          <path fill="#333" d="M91.9 167.8l20.5 7.4-.5 1.2-21.4-8.2c.5-.2 1-.3 1.4-.4z" />
           <path d="M86 171.4c-2 2.5-3 6-2.2 10l4.6 26.4 11.4-11.1L86 171.4z" />
           <path
             fill="url(#flashlightGrad)"
@@ -730,25 +658,11 @@ export const YetiSVG: FunctionComponent = () => {
           />
         </g>
       </svg>
-      <svg
-        id="lightSVG"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 600 470"
-      >
+      <svg id="lightSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 470">
         <filter id="white-glow">
           <feFlood result="flood" floodColor="#ffffff" floodOpacity=".6" />
-          <feComposite
-            in="flood"
-            result="mask"
-            in2="SourceGraphic"
-            operator="in"
-          />
-          <feMorphology
-            in="mask"
-            result="dilated"
-            operator="dilate"
-            radius="3"
-          />
+          <feComposite in="flood" result="mask" in2="SourceGraphic" operator="in" />
+          <feMorphology in="mask" result="dilated" operator="dilate" radius="3" />
           <feGaussianBlur in="dilated" result="blurred" stdDeviation="8" />
           <feMerge>
             <feMergeNode in="blurred" />

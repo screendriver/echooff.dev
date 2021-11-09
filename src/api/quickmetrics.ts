@@ -1,10 +1,7 @@
 import { GatsbyFunctionRequest, GatsbyFunctionResponse } from 'gatsby';
 import got from 'got';
 
-export default async function (
-  _request: GatsbyFunctionRequest,
-  response: GatsbyFunctionResponse,
-): Promise<void> {
+export default async function (_request: GatsbyFunctionRequest, response: GatsbyFunctionResponse): Promise<void> {
   if (process.env.NODE_ENV === 'production') {
     await got.post('https://qckm.io/json', {
       headers: {
