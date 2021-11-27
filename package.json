@@ -67,6 +67,7 @@
         "eslint-plugin-testing-library": "3.10.2",
         "fastify": "3.22.1",
         "fastify-cors": "6.0.2",
+        "fishery": "2.1.0",
         "gatsby-plugin-image": "2.1.0",
         "gatsby-plugin-netlify": "3.14.0",
         "gatsby-plugin-postcss": "5.1.0",
