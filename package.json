@@ -59,7 +59,7 @@
         "common-tags": "1.8.2",
         "concurrently": "6.3.0",
         "esbuild": "0.14.0",
-        "esbuild-register": "3.1.2",
+        "esbuild-register": "3.2.0",
         "eslint": "7.32.0",
         "eslint-config-prettier": "8.3.0",
         "eslint-plugin-ava": "13.1.0",
