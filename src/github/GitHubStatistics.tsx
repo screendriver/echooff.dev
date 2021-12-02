@@ -1,16 +1,14 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { useMachine } from '@xstate/react';
-import type KyInterface from 'ky';
-import { createGitHubStateMachine } from './state-machine';
+import { GitHubStateMachine } from './state-machine';
 
 interface GitHubStatisticsProps {
-    readonly ky: typeof KyInterface;
+    readonly gitHubStateMachine: GitHubStateMachine;
 }
 
 export const GitHubStatistics: FunctionComponent<GitHubStatisticsProps> = (props) => {
-    const [state, send] = useMachine(() => {
-        return createGitHubStateMachine({ ky: props.ky });
-    });
+    const { gitHubStateMachine } = props;
+    const [state, send] = useMachine(gitHubStateMachine);
     useEffect(() => {
         send('FETCH');
     }, []);

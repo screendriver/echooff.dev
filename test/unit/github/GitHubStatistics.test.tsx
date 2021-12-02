@@ -6,6 +6,11 @@ import { Factory } from 'fishery';
 import type KyInterface from 'ky';
 import { GitHubStatistics } from '../../../src/github/statistics-schema';
 import { GitHubStatistics as GitHubStatisticsComponent } from '../../../src/github/GitHubStatistics';
+import {
+    createGitHubStateMachine,
+    GitHubMachineDependencies,
+    GitHubStateMachine,
+} from '../../../src/github/state-machine';
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
     return {
@@ -20,24 +25,34 @@ const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
     };
 });
 
+function createGitHubTestStateMachine(fetchGitHubStatistics?: () => Promise<unknown>): GitHubStateMachine {
+    const ky = fake.rejects('') as unknown as typeof KyInterface;
+    const dependencies: GitHubMachineDependencies = { ky };
+    return createGitHubStateMachine(dependencies).withConfig({
+        services: {
+            fetchGitHubStatistics() {
+                if (fetchGitHubStatistics !== undefined) {
+                    return fetchGitHubStatistics();
+                }
+                const gitHubStatistics = gitHubStatisticsFactory.build();
+                return Promise.resolve(gitHubStatistics);
+            },
+        },
+    });
+}
+
 test.afterEach(cleanup);
 
 test('shows "Loading" while fetching GitHub statistics', (t) => {
-    const gitHubStatistics = gitHubStatisticsFactory.build();
-    const ky = fake.returns({
-        json: fake.resolves(gitHubStatistics),
-    }) as unknown as typeof KyInterface;
-    const { queryByText } = render(<GitHubStatisticsComponent ky={ky} />);
+    const gitHubStateMachine = createGitHubTestStateMachine();
+    const { queryByText } = render(<GitHubStatisticsComponent gitHubStateMachine={gitHubStateMachine} />);
 
     t.not(queryByText('Loading'), null);
 });
 
 test('shows "Loaded" after GitHub statistics were fetched', async (t) => {
-    const gitHubStatistics = gitHubStatisticsFactory.build();
-    const ky = fake.returns({
-        json: fake.resolves(gitHubStatistics),
-    }) as unknown as typeof KyInterface;
-    const { findByText } = render(<GitHubStatisticsComponent ky={ky} />);
+    const gitHubStateMachine = createGitHubTestStateMachine();
+    const { findByText } = render(<GitHubStatisticsComponent gitHubStateMachine={gitHubStateMachine} />);
 
     await waitFor(() => findByText('Loaded'));
 
@@ -45,10 +60,9 @@ test('shows "Loaded" after GitHub statistics were fetched', async (t) => {
 });
 
 test('shows "Failed" when fetching GitHub statistics failed', async (t) => {
-    const ky = fake.returns({
-        json: fake.rejects(undefined),
-    }) as unknown as typeof KyInterface;
-    const { findByText } = render(<GitHubStatisticsComponent ky={ky} />);
+    const fetchGitHubStatistics = () => Promise.reject('');
+    const gitHubStateMachine = createGitHubTestStateMachine(fetchGitHubStatistics);
+    const { findByText } = render(<GitHubStatisticsComponent gitHubStateMachine={gitHubStateMachine} />);
 
     await waitFor(() => findByText('Failed'));
 
