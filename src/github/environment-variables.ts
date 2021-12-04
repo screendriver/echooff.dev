@@ -8,3 +8,5 @@ export const gitHubBaseUrlSchema = z
     });
 
 export const gitHubLoginSchema = z.string().nonempty();
+
+export const gitHubApiTokenSchema = z.string().nonempty();

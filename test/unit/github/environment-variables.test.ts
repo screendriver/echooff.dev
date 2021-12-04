@@ -1,7 +1,11 @@
 import test from 'ava';
 import { stripIndent } from 'common-tags';
 import { ZodError } from 'zod';
-import { gitHubBaseUrlSchema, gitHubLoginSchema } from '../../../src/github/environment-variables';
+import {
+    gitHubApiTokenSchema,
+    gitHubBaseUrlSchema,
+    gitHubLoginSchema,
+} from '../../../src/github/environment-variables';
 
 test('gitHubBaseUrlSchema does not allow booleans', (t) => {
     t.throws(() => gitHubBaseUrlSchema.parse(true), {
@@ -122,6 +126,61 @@ test('gitHubLoginSchema does not allow empty strings', (t) => {
 
 test('gitHubLoginSchema allows non empty strings', (t) => {
     const gitHubLogin = gitHubLoginSchema.parse('foo');
+
+    t.is(gitHubLogin, 'foo');
+});
+
+test('gitHubApiTokenSchema does not allow booleans', (t) => {
+    t.throws(() => gitHubApiTokenSchema.parse(true), {
+        instanceOf: ZodError,
+        message: stripIndent`
+      [
+        {
+          "code": "invalid_type",
+          "expected": "string",
+          "received": "boolean",
+          "path": [],
+          "message": "Expected string, received boolean"
+        }
+      ]`,
+    });
+});
+
+test('gitHubApiTokenSchema does not allow numbers', (t) => {
+    t.throws(() => gitHubApiTokenSchema.parse(42), {
+        instanceOf: ZodError,
+        message: stripIndent`
+        [
+          {
+            "code": "invalid_type",
+            "expected": "string",
+            "received": "number",
+            "path": [],
+            "message": "Expected string, received number"
+          }
+        ]`,
+    });
+});
+
+test('gitHubApiTokenSchema does not allow empty strings', (t) => {
+    t.throws(() => gitHubApiTokenSchema.parse(''), {
+        instanceOf: ZodError,
+        message: stripIndent`
+        [
+          {
+            "code": "too_small",
+            "minimum": 1,
+            "type": "string",
+            "inclusive": true,
+            "message": "Should be at least 1 characters",
+            "path": []
+          }
+        ]`,
+    });
+});
+
+test('gitHubApiTokenSchema allows non empty strings', (t) => {
+    const gitHubLogin = gitHubApiTokenSchema.parse('foo');
 
     t.is(gitHubLogin, 'foo');
 });
