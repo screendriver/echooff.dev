@@ -153,7 +153,7 @@ function run() {
 }
 
 const NotFound: FunctionComponent = () => {
-    useEffect(run);
+    useEffect(run, []);
 
     return (
         <Fragment>
