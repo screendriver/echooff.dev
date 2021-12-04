@@ -43,14 +43,14 @@ function createGitHubTestStateMachine(fetchGitHubStatistics?: () => Promise<unkn
 
 test.afterEach(cleanup);
 
-test('shows "Loading" while fetching GitHub statistics', (t) => {
+test.serial('shows "Loading" while fetching GitHub statistics', (t) => {
     const gitHubStateMachine = createGitHubTestStateMachine();
     const { queryByText } = render(<GitHubStatisticsComponent gitHubStateMachine={gitHubStateMachine} />);
 
     t.not(queryByText('Loading'), null);
 });
 
-test('shows "Loaded" after GitHub statistics were fetched', async (t) => {
+test.serial('shows "Loaded" after GitHub statistics were fetched', async (t) => {
     const gitHubStateMachine = createGitHubTestStateMachine();
     const { findByText } = render(<GitHubStatisticsComponent gitHubStateMachine={gitHubStateMachine} />);
 
@@ -59,7 +59,7 @@ test('shows "Loaded" after GitHub statistics were fetched', async (t) => {
     t.pass();
 });
 
-test('shows "Failed" when fetching GitHub statistics failed', async (t) => {
+test.serial('shows "Failed" when fetching GitHub statistics failed', async (t) => {
     const fetchGitHubStatistics = () => Promise.reject('');
     const gitHubStateMachine = createGitHubTestStateMachine(fetchGitHubStatistics);
     const { findByText } = render(<GitHubStatisticsComponent gitHubStateMachine={gitHubStateMachine} />);

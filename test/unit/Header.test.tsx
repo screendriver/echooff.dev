@@ -5,7 +5,7 @@ import { Header } from '../../src/Header';
 
 test.afterEach(cleanup);
 
-test('renders "Hello, I\'m Christian"', (t) => {
+test.serial('renders "Hello, I\'m Christian"', (t) => {
     const { queryByText } = render(<Header />);
 
     const actual = queryByText("Hello, I'm Christian");
@@ -13,7 +13,7 @@ test('renders "Hello, I\'m Christian"', (t) => {
     t.not(actual, notExpected);
 });
 
-test('renders "Full-Stack JavaScript Engineer"', (t) => {
+test.serial('renders "Full-Stack JavaScript Engineer"', (t) => {
     const { queryByText } = render(<Header />);
 
     const actual = queryByText('Full-Stack JavaScript Engineer');
