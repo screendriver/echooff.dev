@@ -7,6 +7,13 @@ export interface FetchGitHubStatisticsOptions {
     readonly gitHubApiToken: string;
 }
 
+function stripTrailingSlash(url: string): string {
+    if (url.endsWith('/')) {
+        return url.slice(0, -1);
+    }
+    return url;
+}
+
 export function fetchGitHubStatistics(options: FetchGitHubStatisticsOptions): GraphQlResponse<unknown> {
     const { graphql, gitHubBaseUrl, gitHubLogin, gitHubApiToken } = options;
     return graphql({
@@ -20,7 +27,7 @@ export function fetchGitHubStatistics(options: FetchGitHubStatisticsOptions): Gr
                 }
             }
         }`,
-        baseUrl: gitHubBaseUrl.toString(),
+        baseUrl: stripTrailingSlash(gitHubBaseUrl.toString()),
         login: gitHubLogin,
         headers: { authorization: `token ${gitHubApiToken}` },
     });

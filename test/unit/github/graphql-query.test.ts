@@ -8,7 +8,7 @@ const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatistics
     const graphql = fake.resolves(undefined) as unknown as octokitGraphql;
     return {
         graphql,
-        gitHubBaseUrl: new URL('https://example.com'),
+        gitHubBaseUrl: new URL('https://example.com/'),
         gitHubLogin: 'username',
         gitHubApiToken: 'my-token',
     };
@@ -43,10 +43,10 @@ test(
 );
 
 test(
-    'fetchGitHubStatistics() uses the correct GitHub base URL',
+    'fetchGitHubStatistics() uses the correct GitHub base URL and strips the trailing slash',
     fetchGitHubStatisticsMacro,
     'baseUrl',
-    'https://example.com/',
+    'https://example.com',
 );
 
 test('fetchGitHubStatistics() uses the correct GitHub login', fetchGitHubStatisticsMacro, 'login', 'username');
