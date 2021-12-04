@@ -6,3 +6,5 @@ export const gitHubBaseUrlSchema = z
     .transform((url) => {
         return new URL(url);
     });
+
+export const gitHubLoginSchema = z.string().nonempty();
