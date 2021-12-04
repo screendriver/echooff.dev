@@ -23,13 +23,13 @@ export function createGraphQlRoute(): RouteOptions {
                                 user: {
                                     type: 'object',
                                     properties: {
-                                        starredRepositories: {
+                                        repositories: {
                                             type: 'object',
                                             properties: {
                                                 totalCount: { type: 'number' },
                                             },
                                         },
-                                        repositories: {
+                                        starredRepositories: {
                                             type: 'object',
                                             properties: {
                                                 totalCount: { type: 'number' },
@@ -55,8 +55,8 @@ export function createGraphQlRoute(): RouteOptions {
                 .send({
                     data: {
                         user: {
-                            starredRepositories: { totalCount: 736 },
                             repositories: { totalCount: 66 },
+                            starredRepositories: { totalCount: 736 },
                         },
                     },
                 });
