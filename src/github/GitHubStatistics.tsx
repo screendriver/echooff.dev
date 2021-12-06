@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { useMachine } from '@xstate/react';
+import { FiBarChart2 } from 'react-icons/fi';
 import { GitHubStateMachine } from './state-machine';
 import { GitHubStatistics as GitHubStatisticsSchema } from './statistics-schema';
 import { Figure } from './Figure';
@@ -11,7 +12,10 @@ interface GitHubStatisticsProps {
 function renderGitHubStatistics(gitHubStatistics: GitHubStatisticsSchema): JSX.Element {
     return (
         <section className="bg-dracula-dark p-2 lg:p-10">
-            <h3 className="text-dracula-cyan text-center text-lg lg:text-4xl font-extrabold my-2">Some Stats</h3>
+            <h3 className="flex items-start lg:items-end justify-center gap-x-2 text-dracula-cyan text-lg lg:text-4xl font-extrabold my-2">
+                Some Stats
+                <FiBarChart2 className="text-dracula-light w-6 h-6 lg:w-12 lg:h-12" />
+            </h3>
             <hr className="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg" />
             <div className="grid gap-2 sm:gap-4 grid-cols-2 lg:grid-cols-4 sm:p-4">
                 <Figure description="GitHub Repos" count={gitHubStatistics.user.repositories.totalCount} />
