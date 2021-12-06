@@ -4,7 +4,7 @@
 import '@fontsource/source-sans-pro/400.css';
 import '@fontsource/source-sans-pro/900.css';
 import '../styles/404.css';
-import React, { Fragment, FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { TweenMax, TimelineMax, Power1 } from 'gsap';
 import { YetiSVG } from '../YetiSVG';
 
@@ -153,10 +153,10 @@ function run() {
 }
 
 const NotFound: FunctionComponent = () => {
-    useEffect(run);
+    useEffect(run, []);
 
     return (
-        <Fragment>
+        <main style={{ backgroundColor: '#09334f', height: '100vh' }}>
             <YetiSVG />
             <div className="content">
                 <h3>Hello?? Is somebody there?!?</h3>
@@ -165,7 +165,7 @@ const NotFound: FunctionComponent = () => {
                     <span>link</span> dream?
                 </p>
             </div>
-        </Fragment>
+        </main>
     );
 };
 

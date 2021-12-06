@@ -14,7 +14,7 @@ export const Head: FunctionComponent<HeaderProps> = ({ title, description, autho
         <Helmet title={title}>
             <html lang="en" />
             <link rel="shortcut icon" href={favicon} />
-            <meta name="theme-color" content="#fdffb6" />
+            <meta name="theme-color" content="#bd93f9" />
             <meta name="description" content={description} />
             <meta name="keywords" content={keywords} />
             <meta name="author" content={author} />
