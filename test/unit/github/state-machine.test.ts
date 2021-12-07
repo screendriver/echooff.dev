@@ -138,5 +138,5 @@ test('transit from "loading" to "failed" when fetching of GitHub statistics retu
     await setImmediate();
 
     t.true(gitHubStateService.state.matches('failed'));
-    t.deepEqual(gitHubStateService.state.context.gitHubStatistics, nothing());
+    t.deepEqual(gitHubStateService.state.context.gitHubStatistics, nothing<GitHubStatistics>());
 });
