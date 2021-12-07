@@ -2,7 +2,7 @@ import test from 'ava';
 import { fake, SinonSpy } from 'sinon';
 import { Factory } from 'fishery';
 import { graphql as octokitGraphql, RequestParameters } from '@octokit/graphql/dist-types/types';
-import { fetchGitHubStatistics, FetchGitHubStatisticsOptions } from '../../../src/github/graphql-query';
+import { fetchGitHubStatistics, FetchGitHubStatisticsOptions } from '../../../src/statistics/graphql-query';
 
 const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatisticsOptions>(() => {
     const graphql = fake.resolves(undefined) as unknown as octokitGraphql;

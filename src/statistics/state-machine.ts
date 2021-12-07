@@ -3,48 +3,53 @@ import Maybe, { Just, just, Nothing, nothing } from 'true-myth/maybe';
 import type KyInterface from 'ky';
 import { GitHubStatistics, gitHubStatisticsSchema } from './statistics-schema';
 
-export type GitHubMachineEvent = { type: 'FETCH' };
+export type StatisticsMachineEvent = { type: 'FETCH' };
 
-export interface GitHubMachineContext {
+export interface StatisticsMachineContext {
     readonly gitHubStatistics: Maybe<GitHubStatistics>;
 }
 
-export type GitHubTypestate =
+export type StatisticsTypestate =
     | {
           value: 'idle';
-          context: GitHubMachineContext & {
+          context: StatisticsMachineContext & {
               gitHubStatistics: Nothing<GitHubStatistics>;
           };
       }
     | {
           value: 'loading';
-          context: GitHubMachineContext & {
+          context: StatisticsMachineContext & {
               gitHubStatistics: Nothing<GitHubStatistics>;
           };
       }
     | {
           value: 'loaded';
-          context: GitHubMachineContext & {
+          context: StatisticsMachineContext & {
               gitHubStatistics: Just<GitHubStatistics>;
           };
       }
     | {
           value: 'failed';
-          context: GitHubMachineContext & {
+          context: StatisticsMachineContext & {
               gitHubStatistics: Nothing<GitHubStatistics>;
           };
       };
 
-export interface GitHubMachineDependencies {
+export interface StatisticsMachineDependencies {
     readonly ky: typeof KyInterface;
 }
 
-export type GitHubStateMachine = StateMachine<GitHubMachineContext, any, GitHubMachineEvent, GitHubTypestate>;
+export type StatisticsStateMachine = StateMachine<
+    StatisticsMachineContext,
+    any,
+    StatisticsMachineEvent,
+    StatisticsTypestate
+>;
 
-export function createGitHubStateMachine(dependencies: GitHubMachineDependencies): GitHubStateMachine {
-    return createMachine<GitHubMachineContext, GitHubMachineEvent, GitHubTypestate>(
+export function createStatisticsStateMachine(dependencies: StatisticsMachineDependencies): StatisticsStateMachine {
+    return createMachine<StatisticsMachineContext, StatisticsMachineEvent, StatisticsTypestate>(
         {
-            id: 'gitHub',
+            id: 'statistics',
             initial: 'idle',
             context: {
                 gitHubStatistics: nothing(),

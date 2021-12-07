@@ -3,8 +3,8 @@ import { graphql, PageProps } from 'gatsby';
 import ky from 'ky';
 import { Head } from '../Head';
 import { Header } from '../Header';
-import { GitHubStatistics } from '../github/GitHubStatistics';
-import { createGitHubStateMachine } from '../github/state-machine';
+import { Statistics } from '../statistics/Statistics';
+import { createStatisticsStateMachine } from '../statistics/state-machine';
 
 interface DataType {
     readonly site: {
@@ -34,7 +34,7 @@ export const query = graphql`
 
 const V2Page: FunctionComponent<V2PageProps> = ({ data }) => {
     const { author, jobTitle, keywords, favicon } = data.site.siteMetadata;
-    const gitHubStateMachine = createGitHubStateMachine({ ky });
+    const gitHubStateMachine = createStatisticsStateMachine({ ky });
     return (
         <Fragment>
             <Head
@@ -45,7 +45,7 @@ const V2Page: FunctionComponent<V2PageProps> = ({ data }) => {
                 favicon={favicon}
             />
             <Header />
-            <GitHubStatistics gitHubStateMachine={gitHubStateMachine} />
+            <Statistics gitHubStateMachine={gitHubStateMachine} />
         </Fragment>
     );
 };
