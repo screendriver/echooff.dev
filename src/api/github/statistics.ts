@@ -1,8 +1,8 @@
 import { GatsbyFunctionRequest, GatsbyFunctionResponse } from 'gatsby';
 import { graphql } from '@octokit/graphql';
-import { gitHubBaseUrlSchema, gitHubLoginSchema, gitHubApiTokenSchema } from '../../github/environment-variables';
-import { fetchGitHubStatistics } from '../../github/graphql-query';
-import { gitHubStatisticsSchema } from '../../github/statistics-schema';
+import { gitHubBaseUrlSchema, gitHubLoginSchema, gitHubApiTokenSchema } from '../../statistics/environment-variables';
+import { fetchGitHubStatistics } from '../../statistics/graphql-query';
+import { gitHubStatisticsSchema } from '../../statistics/statistics-schema';
 
 export default async function (_request: GatsbyFunctionRequest, response: GatsbyFunctionResponse): Promise<void> {
     const gitHubStatisticsResponse = await fetchGitHubStatistics({
