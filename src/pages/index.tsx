@@ -34,7 +34,8 @@ export const query = graphql`
 
 const V2Page: FunctionComponent<V2PageProps> = ({ data }) => {
     const { author, jobTitle, keywords, favicon } = data.site.siteMetadata;
-    const gitHubStateMachine = createStatisticsStateMachine({ ky });
+    const currentTimestamp = new Date();
+    const gitHubStateMachine = createStatisticsStateMachine({ ky, currentTimestamp });
     return (
         <Fragment>
             <Head
@@ -45,7 +46,7 @@ const V2Page: FunctionComponent<V2PageProps> = ({ data }) => {
                 favicon={favicon}
             />
             <Header />
-            <Statistics gitHubStateMachine={gitHubStateMachine} />
+            <Statistics statisticsStateMachine={gitHubStateMachine} />
         </Fragment>
     );
 };
