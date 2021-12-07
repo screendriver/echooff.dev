@@ -1,7 +1,7 @@
 import test from 'ava';
-import { fake } from 'sinon';
+import { fake, SinonSpy } from 'sinon';
 import { Factory } from 'fishery';
-import { graphql as octokitGraphql } from '@octokit/graphql/dist-types/types';
+import { graphql as octokitGraphql, RequestParameters } from '@octokit/graphql/dist-types/types';
 import { fetchGitHubStatistics, FetchGitHubStatisticsOptions } from '../../../src/github/graphql-query';
 
 const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatisticsOptions>(() => {
@@ -14,17 +14,19 @@ const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatistics
     };
 });
 
-const fetchGitHubStatisticsMacro = test.macro<[input: string, expected: unknown]>(async (t, input, expected) => {
-    const graphql = fake.resolves(undefined);
-    const fetchGitHubStatisticsOptions = fetchGitHubStatisticsOptionsFactory.build({
-        graphql: graphql as unknown as octokitGraphql,
-    });
+const fetchGitHubStatisticsMacro = test.macro<[input: keyof RequestParameters, expected: unknown]>(
+    async (t, input, expected) => {
+        const graphql = fake.resolves(undefined) as SinonSpy<RequestParameters[]>;
+        const fetchGitHubStatisticsOptions = fetchGitHubStatisticsOptionsFactory.build({
+            graphql: graphql as unknown as octokitGraphql,
+        });
 
-    await fetchGitHubStatistics(fetchGitHubStatisticsOptions);
+        await fetchGitHubStatistics(fetchGitHubStatisticsOptions);
 
-    t.true(graphql.calledOnce);
-    t.deepEqual(graphql.args[0]?.[0][input], expected);
-});
+        t.true(graphql.calledOnce);
+        t.deepEqual(graphql.args[0]?.[0]?.[input], expected);
+    },
+);
 
 test(
     'fetchGitHubStatistics() uses the correct GraphQL query',

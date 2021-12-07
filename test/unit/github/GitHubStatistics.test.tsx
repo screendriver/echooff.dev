@@ -50,11 +50,11 @@ test.serial('shows "Loading" while fetching GitHub statistics', (t) => {
     t.not(queryByText('Loading'), null);
 });
 
-test.serial('shows "Loaded" after GitHub statistics were fetched', async (t) => {
+test.serial('shows GitHub statistics after GitHub statistics were fetched', async (t) => {
     const gitHubStateMachine = createGitHubTestStateMachine();
     const { findByText } = render(<GitHubStatisticsComponent gitHubStateMachine={gitHubStateMachine} />);
 
-    await waitFor(() => findByText('Loaded'));
+    await waitFor(() => findByText('Some Stats'));
 
     t.pass();
 });
