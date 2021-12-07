@@ -35,6 +35,7 @@ function createStatisticsMachineDependencies(
         ky: fake.returns({
             json: fake.resolves(gitHubStatistics),
         }),
+        currentTimestamp: new Date(2021, 3, 10),
         ...overrides,
     } as unknown as StatisticsMachineDependencies;
 }
@@ -51,6 +52,15 @@ test('initial state', (t) => {
     const statisticsStateService = createStatisticsStateService();
 
     t.is(statisticsStateService.initialState.value, 'idle');
+});
+
+test('initial context', (t) => {
+    const statisticsStateService = createStatisticsStateService();
+
+    t.deepEqual(statisticsStateService.initialState.context, {
+        gitHubStatistics: nothing<GitHubStatistics>(),
+        yearsOfExperience: just(20),
+    });
 });
 
 test('transits from "idle" to "loading" on "FETCH" event', (t) => {
@@ -90,6 +100,7 @@ test('sets "context.gitHubStatistics" after loading GitHub statistics', async (t
                 },
             },
         }),
+        yearsOfExperience: just(20),
     });
 });
 

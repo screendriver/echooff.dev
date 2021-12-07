@@ -7,6 +7,7 @@ export type StatisticsMachineEvent = { type: 'FETCH' };
 
 export interface StatisticsMachineContext {
     readonly gitHubStatistics: Maybe<GitHubStatistics>;
+    readonly yearsOfExperience: Maybe<number>;
 }
 
 export type StatisticsTypestate =
@@ -14,29 +15,34 @@ export type StatisticsTypestate =
           value: 'idle';
           context: StatisticsMachineContext & {
               gitHubStatistics: Nothing<GitHubStatistics>;
+              yearsOfExperience: Just<number>;
           };
       }
     | {
           value: 'loading';
           context: StatisticsMachineContext & {
               gitHubStatistics: Nothing<GitHubStatistics>;
+              yearsOfExperience: Just<number>;
           };
       }
     | {
           value: 'loaded';
           context: StatisticsMachineContext & {
               gitHubStatistics: Just<GitHubStatistics>;
+              yearsOfExperience: Just<number>;
           };
       }
     | {
           value: 'failed';
           context: StatisticsMachineContext & {
               gitHubStatistics: Nothing<GitHubStatistics>;
+              yearsOfExperience: Just<number>;
           };
       };
 
 export interface StatisticsMachineDependencies {
     readonly ky: typeof KyInterface;
+    readonly currentTimestamp: Date;
 }
 
 export type StatisticsStateMachine = StateMachine<
@@ -53,9 +59,11 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
             initial: 'idle',
             context: {
                 gitHubStatistics: nothing(),
+                yearsOfExperience: nothing(),
             },
             states: {
                 idle: {
+                    entry: 'setYearsOfExperience',
                     on: { FETCH: 'loading' },
                 },
                 loading: {
@@ -81,8 +89,15 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
         },
         {
             actions: {
+                setYearsOfExperience: assign({
+                    yearsOfExperience(_context) {
+                        const currentYear = dependencies.currentTimestamp.getFullYear();
+                        const careerStartYear = 2001;
+                        return just(currentYear - careerStartYear);
+                    },
+                }),
                 setFetchedGitHubStatistics: assign({
-                    gitHubStatistics: (_, _event) => {
+                    gitHubStatistics(_context, _event) {
                         const event = _event as DoneInvokeEvent<GitHubStatistics>;
                         return just(event.data);
                     },
