@@ -5,6 +5,7 @@ const quickmetricsMock = RequestMock().onRequestTo('http://localhost:9000/.netli
 
 fixture('Visual').page('http://localhost:9000').requestHooks(quickmetricsMock);
 
+// eslint-disable-next-line testcafe-community/missing-expect
 test('main page', async (t) => {
     await t.wait(1000);
     // @ts-expect-error wrong types in @percy/testcafe

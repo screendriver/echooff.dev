@@ -1,7 +1,7 @@
 import React from 'react';
 import test from 'ava';
 import { fake } from 'sinon';
-import { cleanup, render, waitFor } from '@testing-library/react';
+import { cleanup, render, waitFor, screen } from '@testing-library/react';
 import { Factory } from 'fishery';
 import type KyInterface from 'ky';
 import { GitHubStatistics } from '../../../src/github/statistics-schema';
@@ -45,16 +45,16 @@ test.afterEach(cleanup);
 
 test.serial('shows "Loading" while fetching GitHub statistics', (t) => {
     const gitHubStateMachine = createGitHubTestStateMachine();
-    const { queryByText } = render(<GitHubStatisticsComponent gitHubStateMachine={gitHubStateMachine} />);
+    render(<GitHubStatisticsComponent gitHubStateMachine={gitHubStateMachine} />);
 
-    t.not(queryByText('Loading'), null);
+    t.not(screen.queryByText('Loading'), null);
 });
 
 test.serial('shows GitHub statistics after GitHub statistics were fetched', async (t) => {
     const gitHubStateMachine = createGitHubTestStateMachine();
-    const { findByText } = render(<GitHubStatisticsComponent gitHubStateMachine={gitHubStateMachine} />);
+    render(<GitHubStatisticsComponent gitHubStateMachine={gitHubStateMachine} />);
 
-    await waitFor(() => findByText('Some Stats'));
+    await waitFor(() => screen.findByText('Some Stats'));
 
     t.pass();
 });
@@ -62,9 +62,9 @@ test.serial('shows GitHub statistics after GitHub statistics were fetched', asyn
 test.serial('shows "Failed" when fetching GitHub statistics failed', async (t) => {
     const fetchGitHubStatistics = () => Promise.reject('');
     const gitHubStateMachine = createGitHubTestStateMachine(fetchGitHubStatistics);
-    const { findByText } = render(<GitHubStatisticsComponent gitHubStateMachine={gitHubStateMachine} />);
+    render(<GitHubStatisticsComponent gitHubStateMachine={gitHubStateMachine} />);
 
-    await waitFor(() => findByText('Failed'));
+    await waitFor(() => screen.findByText('Failed'));
 
     t.pass();
 });
