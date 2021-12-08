@@ -67,7 +67,6 @@
         "eslint-plugin-prettier": "4.0.0",
         "eslint-plugin-react": "7.27.1",
         "eslint-plugin-testcafe-community": "2.0.0",
-        "eslint-plugin-testing-library": "5.0.1",
         "fastify": "3.22.1",
         "fastify-cors": "6.0.2",
         "fishery": "2.1.0",

@@ -1,7 +1,4 @@
 {
-    "extends": ["plugin:ava/recommended", "plugin:testing-library/react", "plugin:testing-library/react"],
-    "plugins": ["ava", "testing-library"],
-    "rules": {
-        "testing-library/prefer-explicit-assert": "error"
-    }
+    "extends": ["plugin:ava/recommended"],
+    "plugins": ["ava"]
 }
