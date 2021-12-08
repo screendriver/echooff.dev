@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { useMachine } from '@xstate/react';
-import { FiBarChart2, FiThumbsUp } from 'react-icons/fi';
+import { FiBarChart, FiBarChart2 } from 'react-icons/fi';
 import { StatisticsStateMachine } from './state-machine';
 import { GitHubStatistics as GitHubStatisticsSchema } from './statistics-schema';
 import { Figure } from './Figure';
@@ -32,7 +32,7 @@ function renderStatistics(gitHubStatistics: GitHubStatisticsSchema, yearsOfExper
                     <Cite>{gitHubStatistics.user.starredRepositories.totalCount}</Cite>
                 </Figure>
                 <Figure description="Lines of Code">
-                    <FiThumbsUp className="text-dracula-green w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 mt-2" />
+                    <FiBarChart className="text-dracula-green w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 mt-2" />
                 </Figure>
             </div>
         </section>
