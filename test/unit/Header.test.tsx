@@ -1,22 +1,24 @@
 import React from 'react';
 import test from 'ava';
-import { screen, render, cleanup } from '@testing-library/react';
+import { create } from 'react-test-renderer';
 import { Header } from '../../src/Header';
 
-test.afterEach(cleanup);
+test('renders "Hello, I\'m Christian"', (t) => {
+    const { root } = create(<Header />);
+    const headerElement = root.findByType('header');
+    const sectionElement = headerElement.findByType('section');
+    const divElement = sectionElement.findByType('div');
+    const heading1Element = divElement.findByType('h1');
 
-test.serial('renders "Hello, I\'m Christian"', (t) => {
-    render(<Header />);
-
-    const actual = screen.queryByText("Hello, I'm Christian");
-    const notExpected = null;
-    t.not(actual, notExpected);
+    t.deepEqual(heading1Element.children, ["Hello, I'm Christian"]);
 });
 
-test.serial('renders "Full-Stack JavaScript Engineer"', (t) => {
-    render(<Header />);
+test('renders "Full-Stack JavaScript Engineer"', (t) => {
+    const { root } = create(<Header />);
+    const headerElement = root.findByType('header');
+    const sectionElement = headerElement.findByType('section');
+    const divElement = sectionElement.findByType('div');
+    const heading2Element = divElement.findByType('h2');
 
-    const actual = screen.queryByText('Full-Stack JavaScript Engineer');
-    const notExpected = null;
-    t.not(actual, notExpected);
+    t.deepEqual(heading2Element.children, ['Full-Stack JavaScript Engineer']);
 });
