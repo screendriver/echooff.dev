@@ -5,6 +5,7 @@ import { Head } from '../Head';
 import { Header } from '../Header';
 import { Statistics } from '../statistics/Statistics';
 import { createStatisticsStateMachine } from '../statistics/state-machine';
+import { About } from '../about/About';
 
 interface DataType {
     readonly site: {
@@ -46,7 +47,10 @@ const V2Page: FunctionComponent<V2PageProps> = ({ data }) => {
                 favicon={favicon}
             />
             <Header />
-            <Statistics statisticsStateMachine={gitHubStateMachine} />
+            <main className="text-dracula-light">
+                <About />
+                <Statistics statisticsStateMachine={gitHubStateMachine} />
+            </main>
         </Fragment>
     );
 };
