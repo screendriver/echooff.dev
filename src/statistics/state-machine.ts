@@ -1,4 +1,4 @@
-import { createMachine, assign, StateMachine, DoneInvokeEvent } from 'xstate';
+import { createMachine, assign, StateMachine, DoneInvokeEvent, State } from 'xstate';
 import Maybe, { Just, just, Nothing, nothing } from 'true-myth/maybe';
 import type KyInterface from 'ky';
 import { GitHubStatistics, gitHubStatisticsSchema } from './statistics-schema';
@@ -49,6 +49,13 @@ export type StatisticsStateMachine = StateMachine<
     StatisticsMachineContext,
     any,
     StatisticsMachineEvent,
+    StatisticsTypestate
+>;
+
+export type StatisticsStateMachineState = State<
+    StatisticsMachineContext,
+    StatisticsMachineEvent,
+    any,
     StatisticsTypestate
 >;
 
