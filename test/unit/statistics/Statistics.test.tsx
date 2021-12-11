@@ -12,6 +12,10 @@ import {
 } from '../../../src/statistics/state-machine';
 import { Statistics } from '../../../src/statistics/Statistics';
 import { GitHubStatistics } from '../../../src/statistics/statistics-schema';
+import { FiBarChart, FiBarChart2 } from 'react-icons/fi';
+import { YearsOfExperience } from '../../../src/statistics/YearsOfExperience';
+import { GitHubRepositories } from '../../../src/statistics/GitHubRepositories';
+import { GitHubStars } from '../../../src/statistics/GitHubStars';
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
     return {
@@ -47,13 +51,6 @@ function renderStatistics(statisticsStateMachineOverride?: StatisticsStateMachin
     return create(<Statistics statisticsStateMachine={statisticsStateMachine} />);
 }
 
-test('shows "Loading" while fetching GitHub statistics', (t) => {
-    const { root } = renderStatistics();
-    const headingElement = root.findByType('h1');
-
-    t.deepEqual(headingElement.children, ['Loading']);
-});
-
 test('renders a heading with "Some stats" after GitHub statistics were fetched', async (t) => {
     const { root } = renderStatistics();
     await setImmediate();
@@ -61,6 +58,15 @@ test('renders a heading with "Some stats" after GitHub statistics were fetched',
     const headingElement = sectionElement.findByType('h3');
 
     t.is(headingElement.children.at(0), 'Some Stats');
+});
+
+test('renders a chart icon in a heading after GitHub statistics were fetched', async (t) => {
+    const { root } = renderStatistics();
+    await setImmediate();
+    const sectionElement = root.findByType('section');
+    const iconElements = sectionElement.findAllByType(FiBarChart2);
+
+    t.is(iconElements.length, 1);
 });
 
 test('renders a horizontal line after GitHub statistics were fetched', async (t) => {
@@ -77,54 +83,45 @@ test('renders years of experience after GitHub statistics were fetched', async (
     await setImmediate();
     const sectionElement = root.findByType('section');
     const divElements = sectionElement.findAllByType('div');
-    const paragraphElement = divElements.at(1)?.findByType('p');
-    const citeElement = divElements.at(1)?.findByType('cite');
+    const yearsOfExperienceElements = divElements.at(0)?.findAllByType(YearsOfExperience);
 
-    t.deepEqual(paragraphElement?.children, ['Years of Experience']);
-    t.deepEqual(citeElement?.children, ['20']);
+    t.is(yearsOfExperienceElements?.length, 1);
 });
 
-test('renders the total count of repositories after GitHub statistics were fetched', async (t) => {
+test('renders GitHub repositories GitHub statistics were fetched', async (t) => {
     const { root } = renderStatistics();
     await setImmediate();
     const sectionElement = root.findByType('section');
     const divElements = sectionElement.findAllByType('div');
-    const paragraphElement = divElements.at(2)?.findByType('p');
-    const citeElement = divElements.at(2)?.findByType('cite');
+    const gitHubRepositoriesElements = divElements.at(0)?.findAllByType(GitHubRepositories);
 
-    t.deepEqual(paragraphElement?.children, ['GitHub Repos']);
-    t.deepEqual(citeElement?.children, ['7']);
+    t.is(gitHubRepositoriesElements?.length, 1);
 });
 
-test('renders the total count of starred repositories after GitHub statistics were fetched', async (t) => {
+test('renders GitHub stars after GitHub statistics were fetched', async (t) => {
     const { root } = renderStatistics();
     await setImmediate();
     const sectionElement = root.findByType('section');
     const divElements = sectionElement.findAllByType('div');
-    const paragraphElement = divElements.at(3)?.findByType('p');
-    const citeElement = divElements.at(3)?.findByType('cite');
+    const gitHubStarsElements = divElements.at(0)?.findAllByType(GitHubStars);
 
-    t.deepEqual(paragraphElement?.children, ['GitHub Stars']);
-    t.deepEqual(citeElement?.children, ['42']);
+    t.is(gitHubStarsElements?.length, 1);
 });
 
-test('renders lines of code after GitHub statistics were fetched', async (t) => {
+test('renders lines of code icon after GitHub statistics were fetched', async (t) => {
     const { root } = renderStatistics();
     await setImmediate();
     const sectionElement = root.findByType('section');
     const divElements = sectionElement.findAllByType('div');
-    const paragraphElement = divElements.at(4)?.findByType('p');
+    const iconElements = divElements.at(4)?.findAllByType(FiBarChart);
 
-    t.deepEqual(paragraphElement?.children, ['Lines of Code']);
+    t.is(iconElements?.length, 1);
 });
 
-test('shows "Failed" when fetching GitHub statistics failed', async (t) => {
-    const fetchGitHubStatistics = () => Promise.reject('');
+test('sends "FETCH" to the state machine after it was rendered', (t) => {
+    const fetchGitHubStatistics = fake.rejects('');
     const statisticsStateMachine = createStatisticsTestStateMachine(fetchGitHubStatistics);
-    const { root } = renderStatistics(statisticsStateMachine);
-    await setImmediate();
+    renderStatistics(statisticsStateMachine);
 
-    const headingElement = root.findByType('h1');
-
-    t.deepEqual(headingElement.children, ['Failed']);
+    t.is(fetchGitHubStatistics.callCount, 1);
 });
