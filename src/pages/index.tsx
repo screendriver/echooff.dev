@@ -3,9 +3,11 @@ import { graphql, PageProps } from 'gatsby';
 import ky from 'ky';
 import { Head } from '../Head';
 import { Header } from '../Header';
-import { Statistics } from '../statistics/Statistics';
-import { createStatisticsStateMachine } from '../statistics/state-machine';
 import { About } from '../about/About';
+import { Skills } from '../skills/Skills';
+import { createStatisticsStateMachine } from '../statistics/state-machine';
+import { Statistics } from '../statistics/Statistics';
+import { Passions } from '../passions/Passions';
 
 interface DataType {
     readonly site: {
@@ -49,6 +51,8 @@ const V2Page: FunctionComponent<V2PageProps> = ({ data }) => {
             <Header />
             <main className="text-dracula-light">
                 <About />
+                <Skills />
+                <Passions />
                 <Statistics statisticsStateMachine={gitHubStateMachine} />
             </main>
         </Fragment>
