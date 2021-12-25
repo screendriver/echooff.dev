@@ -3,22 +3,34 @@ import test from 'ava';
 import { create } from 'react-test-renderer';
 import { Header } from '../../src/Header';
 
-test('renders "Hello, I\'m Christian"', (t) => {
+test('renders "$ whoami"', (t) => {
     const { root } = create(<Header />);
-    const headerElement = root.findByType('header');
-    const sectionElement = headerElement.findByType('section');
-    const divElement = sectionElement.findByType('div');
-    const heading1Element = divElement.findByType('h1');
+    const codeElement = root.findByType('code');
+    const paragraphElements = codeElement.findAllByType('p');
 
-    t.deepEqual(heading1Element.children, ["Hello, I'm Christian"]);
+    t.deepEqual(paragraphElements.at(0)?.children, ['$ whoami']);
+});
+
+test('renders "Christian"', (t) => {
+    const { root } = create(<Header />);
+    const codeElement = root.findByType('code');
+    const paragraphElements = codeElement.findAllByType('p');
+
+    t.deepEqual(paragraphElements.at(1)?.children, ['Christian']);
+});
+
+test('renders "$ groups"', (t) => {
+    const { root } = create(<Header />);
+    const codeElement = root.findByType('code');
+    const paragraphElements = codeElement.findAllByType('p');
+
+    t.deepEqual(paragraphElements.at(2)?.children, ['$ groups']);
 });
 
 test('renders "Full-Stack JavaScript Engineer"', (t) => {
     const { root } = create(<Header />);
-    const headerElement = root.findByType('header');
-    const sectionElement = headerElement.findByType('section');
-    const divElement = sectionElement.findByType('div');
-    const heading2Element = divElement.findByType('h2');
+    const codeElement = root.findByType('code');
+    const paragraphElements = codeElement.findAllByType('p');
 
-    t.deepEqual(heading2Element.children, ['Full-Stack JavaScript Engineer']);
+    t.deepEqual(paragraphElements.at(3)?.children, ['Full-Stack JavaScript Engineer']);
 });
