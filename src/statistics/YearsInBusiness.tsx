@@ -3,15 +3,15 @@ import { Cite } from './Cite';
 import { Figure } from './Figure';
 import { StatisticsStateMachineState } from './state-machine';
 
-export interface YearsOfExperienceProps {
+export interface YearsInBusinessProps {
     readonly state: StatisticsStateMachineState;
 }
 
-export const YearsOfExperience: FunctionComponent<YearsOfExperienceProps> = (props) => {
+export const YearsInBusiness: FunctionComponent<YearsInBusinessProps> = (props) => {
     const { state } = props;
     return (
-        <Figure description="Years of Experience">
-            <Cite>{state.context.yearsOfExperience.value}</Cite>
+        <Figure description="Experience">
+            <Cite>{state.context.yearsOfExperience.value} yrs</Cite>
         </Figure>
     );
 };
