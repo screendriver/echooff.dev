@@ -4,13 +4,13 @@ import { StaticImage } from 'gatsby-plugin-image';
 
 export const About: FunctionComponent = () => {
     return (
-        <section className="p-2 lg:p-10">
-            <h3 className="flex items-start lg:items-end justify-center gap-x-2 text-dracula-cyan text-lg lg:text-4xl font-extrabold my-2">
+        <section className="p-4 lg:p-10">
+            <h3 className="flex items-start lg:items-end justify-center gap-x-2 text-dracula-cyan text-2xl lg:text-4xl font-extrabold my-2">
                 About
                 <FiInfo className="text-dracula-light w-6 h-6 lg:w-12 lg:h-12" />
             </h3>
             <hr className="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg" />
-            <article className="flex flex-col items-center sm:p-4 lg:p-7 xl:px-11">
+            <article className="text-justify flex flex-col items-center sm:p-4 lg:p-7 xl:px-11">
                 <p className="m-auto lg:w-3/4">
                     JavaScript is everywhere. In the old days, being a JavaScript developer meant that you were a front
                     end web developer. Forever bound to the browser.
@@ -23,7 +23,7 @@ export const About: FunctionComponent = () => {
                 </p>
                 <figure>
                     <StaticImage
-                        className="rounded-full border-4 border-dracula-blue mt-12"
+                        className="rounded-full border-4 border-dracula-blue mt-12 mb-10 md:mb-3 lg:mb-0"
                         alt="My face"
                         src="../img/about.jpg"
                         loading="eager"
