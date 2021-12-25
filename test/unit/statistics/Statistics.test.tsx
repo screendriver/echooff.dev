@@ -13,7 +13,7 @@ import {
 import { Statistics } from '../../../src/statistics/Statistics';
 import { GitHubStatistics } from '../../../src/statistics/statistics-schema';
 import { FiBarChart, FiBarChart2 } from 'react-icons/fi';
-import { YearsOfExperience } from '../../../src/statistics/YearsOfExperience';
+import { YearsInBusiness } from '../../../src/statistics/YearsInBusiness';
 import { GitHubRepositories } from '../../../src/statistics/GitHubRepositories';
 import { GitHubStars } from '../../../src/statistics/GitHubStars';
 
@@ -83,7 +83,7 @@ test('renders years of experience after GitHub statistics were fetched', async (
     await setImmediate();
     const sectionElement = root.findByType('section');
     const divElements = sectionElement.findAllByType('div');
-    const yearsOfExperienceElements = divElements.at(0)?.findAllByType(YearsOfExperience);
+    const yearsOfExperienceElements = divElements.at(0)?.findAllByType(YearsInBusiness);
 
     t.is(yearsOfExperienceElements?.length, 1);
 });

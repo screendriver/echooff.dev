@@ -3,7 +3,7 @@ import React from 'react';
 import { create, ReactTestRenderer } from 'react-test-renderer';
 import { Factory } from 'fishery';
 import { just } from 'true-myth/maybe';
-import { YearsOfExperience } from '../../../src/statistics/YearsOfExperience';
+import { YearsInBusiness } from '../../../src/statistics/YearsInBusiness';
 import { StatisticsStateMachineState } from '../../../src/statistics/state-machine';
 
 const statisticsStateMachineStateFactory = Factory.define<StatisticsStateMachineState>(() => {
@@ -14,23 +14,23 @@ const statisticsStateMachineStateFactory = Factory.define<StatisticsStateMachine
     } as StatisticsStateMachineState;
 });
 
-function renderYearsOfExperience(): ReactTestRenderer {
+function renderYearsInBusiness(): ReactTestRenderer {
     const state = statisticsStateMachineStateFactory.build();
-    return create(<YearsOfExperience state={state} />);
+    return create(<YearsInBusiness state={state} />);
 }
 
-test('renders "Years of Experience" description in a paragraph', (t) => {
-    const { root } = renderYearsOfExperience();
+test('renders "Experience" description in a paragraph', (t) => {
+    const { root } = renderYearsInBusiness();
     const divElement = root.findByType('div');
     const paragraphElement = divElement.findByType('p');
 
-    t.deepEqual(paragraphElement.children, ['Years of Experience']);
+    t.deepEqual(paragraphElement.children, ['Experience']);
 });
 
 test('renders the years of experience into a <cite /> element', (t) => {
-    const { root } = renderYearsOfExperience();
+    const { root } = renderYearsInBusiness();
     const divElement = root.findByType('div');
     const citeElement = divElement.findByType('cite');
 
-    t.deepEqual(citeElement.children, ['42']);
+    t.deepEqual(citeElement.children, ['42', ' yrs']);
 });
