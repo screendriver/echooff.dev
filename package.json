@@ -55,7 +55,7 @@
         "@typescript-eslint/eslint-plugin": "5.7.0",
         "@typescript-eslint/parser": "5.7.0",
         "autoprefixer": "10.4.0",
-        "ava": "4.0.0-rc.1",
+        "ava": "4.0.1",
         "c8": "7.10.0",
         "common-tags": "1.8.2",
         "concurrently": "6.5.0",
