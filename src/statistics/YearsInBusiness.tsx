@@ -8,10 +8,11 @@ export interface YearsInBusinessProps {
 }
 
 export const YearsInBusiness: FunctionComponent<YearsInBusinessProps> = (props) => {
-    const { state } = props;
-    return (
-        <Figure description="Experience">
-            <Cite>{state.context.yearsOfExperience.value} yrs</Cite>
-        </Figure>
-    );
+    return props.state.context.yearsOfExperience.mapOr(null, (yearsOfExperience) => {
+        return (
+            <Figure description="Experience">
+                <Cite>{yearsOfExperience} yrs</Cite>
+            </Figure>
+        );
+    });
 };
