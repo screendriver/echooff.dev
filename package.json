@@ -90,7 +90,7 @@
         "sinon": "13.0.1",
         "standard-version": "9.3.2",
         "tailwind-dracula": "1.0.7",
-        "testcafe": "1.18.2",
+        "testcafe": "1.18.3",
         "testcafe-browser-provider-browserstack": "1.13.1",
         "ts-node": "10.4.0",
         "ts-node-dev": "1.1.8",
