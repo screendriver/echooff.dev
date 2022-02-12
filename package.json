@@ -24,8 +24,8 @@
         "start:static-server": "ts-node-dev --transpile-only src/static-server.ts"
     },
     "dependencies": {
-        "@fontsource/jetbrains-mono": "4.5.0",
-        "@fontsource/source-sans-pro": "4.5.0",
+        "@fontsource/jetbrains-mono": "4.5.3",
+        "@fontsource/source-sans-pro": "4.5.3",
         "@octokit/graphql": "4.8.0",
         "@xstate/react": "1.6.3",
         "gatsby": "4.5.4",
