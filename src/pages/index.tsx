@@ -8,6 +8,7 @@ import { Skills } from '../skills/Skills';
 import { createStatisticsStateMachine } from '../statistics/state-machine';
 import { Statistics } from '../statistics/Statistics';
 import { Passions } from '../passions/Passions';
+import { Resume, ResumeData } from '../resume/Resume';
 
 interface DataType {
     readonly site: {
@@ -18,9 +19,12 @@ interface DataType {
             readonly favicon: string;
         };
     };
+    readonly allResumeDataJson: {
+        readonly nodes: readonly ResumeData[];
+    };
 }
 
-type V2PageProps = PageProps<DataType>;
+type IndexPageProps = PageProps<DataType>;
 
 export const query = graphql`
     query V2 {
@@ -32,13 +36,23 @@ export const query = graphql`
                 favicon
             }
         }
+        allResumeDataJson(sort: { fields: since, order: DESC }) {
+            nodes {
+                since
+                showOnlyYear
+                industry
+                jobTitle
+                jobDescription
+            }
+        }
     }
 `;
 
-const V2Page: FunctionComponent<V2PageProps> = ({ data }) => {
+const IndexPage: FunctionComponent<IndexPageProps> = ({ data }) => {
     const { author, jobTitle, keywords, favicon } = data.site.siteMetadata;
     const currentTimestamp = new Date();
     const gitHubStateMachine = createStatisticsStateMachine({ ky, currentTimestamp });
+
     return (
         <Fragment>
             <Head
@@ -54,9 +68,10 @@ const V2Page: FunctionComponent<V2PageProps> = ({ data }) => {
                 <Skills />
                 <Passions />
                 <Statistics statisticsStateMachine={gitHubStateMachine} />
+                <Resume resume={data.allResumeDataJson.nodes} />
             </main>
         </Fragment>
     );
 };
 
-export default V2Page;
+export default IndexPage;
