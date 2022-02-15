@@ -11,9 +11,9 @@ import { TypeScriptIcon } from './icons/TypeScriptIcon';
 export const Skills: FunctionComponent = () => {
     return (
         <section className="bg-dracula-dark p-4 lg:p-10">
-            <h3 className="flex items-start lg:items-end justify-center gap-x-2 text-dracula-cyan text-2xl lg:text-4xl font-extrabold my-2">
+            <h3 className="flex items-center lg:items-end justify-center gap-x-2 text-dracula-cyan lg:leading-none text-2xl lg:text-4xl font-extrabold my-2">
                 Skills
-                <FiAward className="text-dracula-light w-6 h-6 lg:w-12 lg:h-12" />
+                <FiAward className="text-dracula-light w-6 h-6 lg:w-9 lg:h-9" />
             </h3>
             <hr className="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg" />
             <div className="text-dracula-light grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center max-w-screen-lg m-auto sm:p-4">

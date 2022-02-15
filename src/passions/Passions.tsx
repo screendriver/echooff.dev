@@ -4,9 +4,9 @@ import { FiHeart, FiCheck, FiCompass, FiZap, FiServer, FiLayers, FiCloud, FiActi
 export const Passions: FunctionComponent = () => {
     return (
         <section className="p-4 lg:p-10">
-            <h3 className="flex items-start lg:items-end justify-center gap-x-2 text-dracula-cyan text-2xl lg:text-4xl font-extrabold my-2">
+            <h3 className="flex items-center lg:items-end justify-center gap-x-2 text-dracula-cyan lg:leading-none text-2xl lg:text-4xl font-extrabold my-2">
                 Passions
-                <FiHeart className="text-dracula-light w-6 h-6 lg:w-12 lg:h-12" />
+                <FiHeart className="text-dracula-light w-6 h-6 lg:w-9 lg:h-9" />
             </h3>
             <hr className="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg" />
             <article className="m-auto max-w-screen-lg grid gap-2 grid-cols-2 md:grid-cols-3 sm:p-4">
