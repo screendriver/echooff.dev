@@ -14,7 +14,7 @@ export const Card: FunctionComponent<CardProps> = (props) => {
             <a
                 href={props.link.toString()}
                 title={props.title}
-                className="block text-center bg-dracula-darker rounded-2xl m-2 p-4"
+                className="block text-center bg-dracula-darker rounded-2xl m-1 p-3"
             >
                 {props.icon}
                 <h3 className="inline text-transparent bg-clip-text bg-gradient-to-r from-dracula to-dracula-cyan">
