@@ -1,6 +1,6 @@
 import { createMachine, assign, StateMachine, State } from 'xstate';
 import type KyInterface from 'ky';
-import { ContactStateMachineContext, contactStateMachineContextSchema } from './state-machine-context-schema';
+import { ContactStateMachineContext, contactStateMachineContextSchema } from './state-machine-schema';
 
 export type ContactMachineEvent =
     | { type: 'NAME_FOCUSED' }

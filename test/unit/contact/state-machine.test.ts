@@ -4,7 +4,7 @@ import { interpret, Interpreter, MachineOptions } from 'xstate';
 import type KyInterface from 'ky';
 import { setImmediate } from 'timers/promises';
 import { createContactStateMachine, ContactMachineEvent, ContactTypestate } from '../../../src/contact/state-machine';
-import { ContactStateMachineContext } from '../../../src/contact/state-machine-context-schema';
+import { ContactStateMachineContext } from '../../../src/contact/state-machine-schema';
 
 interface Overrides {
     readonly ky?: typeof KyInterface;

@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+export const contactFormUrlSchema = z.string().nonempty();
+
 export const contactStateMachineContextSchema = z.object({
     name: z.string().nonempty(),
     email: z.string().email(),
