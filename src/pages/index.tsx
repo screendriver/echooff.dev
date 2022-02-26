@@ -9,6 +9,8 @@ import { createStatisticsStateMachine } from '../statistics/state-machine';
 import { Statistics } from '../statistics/Statistics';
 import { Passions } from '../passions/Passions';
 import { Resume, ResumeData } from '../resume/Resume';
+import { Contact } from '../contact/Contact';
+import { createContactStateMachine } from '../contact/state-machine';
 
 interface DataType {
     readonly site: {
@@ -52,6 +54,8 @@ const IndexPage: FunctionComponent<IndexPageProps> = ({ data }) => {
     const { author, jobTitle, keywords, favicon } = data.site.siteMetadata;
     const currentTimestamp = new Date();
     const gitHubStateMachine = createStatisticsStateMachine({ ky, currentTimestamp });
+    const contactFormActionUrl = process.env.GATSBY_CONTACT_FORM_URL ?? '';
+    const contactStateMachine = createContactStateMachine(ky, contactFormActionUrl);
 
     return (
         <Fragment>
@@ -69,6 +73,7 @@ const IndexPage: FunctionComponent<IndexPageProps> = ({ data }) => {
                 <Passions />
                 <Statistics statisticsStateMachine={gitHubStateMachine} />
                 <Resume resume={data.allResumeDataJson.nodes} />
+                <Contact contactStateMachine={contactStateMachine} />
             </main>
         </Fragment>
     );

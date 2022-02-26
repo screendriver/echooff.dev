@@ -41,7 +41,7 @@ export const Resume: FunctionComponent<ResumeProps> = (props) => {
                 <FiFileText className="text-dracula-light w-6 h-6 lg:w-9 lg:h-9" />
             </h3>
             <hr className="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg" />
-            <ol className="w-4/5 ml-1/12 sm:p-4">{props.resume.map(renderJob)}</ol>
+            <ol className="w-4/5 ml-1/12 sm:px-4 sm:pt-4">{props.resume.map(renderJob)}</ol>
         </section>
     );
 };
