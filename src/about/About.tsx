@@ -27,8 +27,8 @@ export const About: FunctionComponent = () => {
                         alt="My face"
                         src="../img/about.jpg"
                         loading="eager"
-                        width={200}
-                        height={200}
+                        width={150}
+                        height={150}
                         quality={75}
                     />
                 </figure>
