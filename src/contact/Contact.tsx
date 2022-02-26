@@ -122,11 +122,11 @@ export const Contact: FunctionComponent<ContactProps> = (props) => {
                     href="https://www.openstreetmap.org/relation/62428"
                     className="flex flex-col items-center justify-self-end mx-9"
                 >
-                    <FiMapPin />
+                    <FiMapPin size={23} />
                     <p>Munich</p>
                 </a>
                 <a href="https://threema.id/9TWBW4XN" className="flex flex-col items-center justify-self-start mx-9">
-                    <FiMessageSquare />
+                    <FiMessageSquare size={23} />
                     <p>Threema</p>
                 </a>
                 {renderChildren(state, send)}
