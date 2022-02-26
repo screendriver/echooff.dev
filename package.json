@@ -71,6 +71,7 @@
         "eslint-plugin-testcafe-community": "2.0.0",
         "fastify": "3.27.1",
         "fastify-cors": "6.0.2",
+        "fastify-formbody": "5.2.0",
         "fishery": "2.1.0",
         "gatsby-plugin-image": "2.7.0",
         "gatsby-plugin-netlify": "4.1.0",
