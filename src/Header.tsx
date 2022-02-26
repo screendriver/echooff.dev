@@ -6,7 +6,7 @@ export const Header: FunctionComponent = () => {
         <header className="relative">
             <StaticImage
                 alt="Christian Rackerseder"
-                src="./img/header-15.jpg"
+                src="./img/header-01.jpg"
                 loading="eager"
                 as="figure"
                 layout="fullWidth"
