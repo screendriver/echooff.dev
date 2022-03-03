@@ -29,11 +29,6 @@ jobs:
               run: npm run compile
             - name: Run unit tests
               run: npm run test:unit:coverage
-            - name: Upload code coverage to Codecov
-              uses: codecov/codecov-action@v2
-              with:
-                  token: ${{secrets.CODECOV_TOKEN}}
-                  file: target/coverage/clover.xml
             - name: Get Date
               id: get-date
               run: |
@@ -77,12 +72,17 @@ jobs:
               env:
                   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
                   NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-#             - name: Audit URLs using Lighthouse
-#               uses: treosh/lighthouse-ci-action@v7
-#               continue-on-error: true
-#               with:
-#                   urls: |
-#                       ${{ steps.deploy-to-netlify.outputs.deploy-url }}
-#                   temporaryPublicStorage: true
-#             - name: Run accessibility tests
-#               run: npm run test:a11y -- ${{ steps.deploy-to-netlify.outputs.deploy-url }}
+            #             - name: Audit URLs using Lighthouse
+            #               uses: treosh/lighthouse-ci-action@v7
+            #               continue-on-error: true
+            #               with:
+            #                   urls: |
+            #                       ${{ steps.deploy-to-netlify.outputs.deploy-url }}
+            #                   temporaryPublicStorage: true
+            #             - name: Run accessibility tests
+            #               run: npm run test:a11y -- ${{ steps.deploy-to-netlify.outputs.deploy-url }}
+            - name: Upload code coverage to Codecov
+              uses: codecov/codecov-action@v2
+              with:
+                  token: ${{secrets.CODECOV_TOKEN}}
+                  file: target/coverage/clover.xml
