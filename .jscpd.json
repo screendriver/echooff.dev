@@ -1,14 +1,13 @@
 {
-  "output": "./target",
-  "minLines": 3,
-  "threshold": 0.1,
-  "reporters": ["html", "console", "badge"],
-  "absolute": true,
-  "gitignore": true,
-  "reportersOptions": {
-    "badge": {
-      "path": "./jscpd-badge.svg"
-    }
-  },
-  "ignore": ["**/YetiSVG.tsx"]
+    "output": "./target",
+    "minLines": 3,
+    "reporters": ["html", "console", "badge"],
+    "absolute": true,
+    "gitignore": true,
+    "reportersOptions": {
+        "badge": {
+            "path": "./jscpd-badge.svg"
+        }
+    },
+    "ignore": ["**/YetiSVG.tsx"]
 }
