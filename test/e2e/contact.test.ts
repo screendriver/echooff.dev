@@ -1,9 +1,10 @@
 import { Selector, RequestLogger, RequestMock } from 'testcafe';
 
-const url = 'http://localhost:9000';
+const url = 'http://localhost:8000';
+const contactFormUrl = `${url}/contact-form`;
 
 const logger = RequestLogger(
-    { url, method: 'POST', isAjax: true },
+    { contactFormUrl, method: 'POST', isAjax: true },
     {
         logRequestHeaders: true,
         logRequestBody: true,
@@ -12,13 +13,12 @@ const logger = RequestLogger(
 );
 const mock = RequestMock()
     .onRequestTo({
-        url,
+        contactFormUrl,
         method: 'POST',
     })
     .respond({}, 200);
-const quickmetricsMock = RequestMock().onRequestTo('http://localhost:9000/.netlify/functions/quickmetrics').respond('');
 
-fixture('Contact form').page(url).requestHooks(mock, quickmetricsMock, logger);
+fixture('Contact form').page(url).requestHooks(mock, logger);
 
 test('show "Thank you" message after submitting contact form', async (t) => {
     const nameInput = Selector('input[placeholder="Name"]');

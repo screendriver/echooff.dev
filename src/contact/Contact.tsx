@@ -14,7 +14,11 @@ function renderSendingFailed(): JSX.Element {
 }
 
 function renderFormSentMessage(): JSX.Element {
-    return <h2 className="col-span-2 text-2xl text-dracula-green">Thank you</h2>;
+    return (
+        <h2 aria-label="Thank you" className="col-span-2 text-2xl text-dracula-green">
+            Thank you
+        </h2>
+    );
 }
 
 function renderForm(
