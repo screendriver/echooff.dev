@@ -1,5 +1,6 @@
 {
-  "browsers": ["chrome:headless", "firefox:headless"],
-  "appCommand": "gatsby serve",
-  "reporter": "minimal"
+    "browsers": ["chrome:headless", "firefox:headless"],
+    "appCommand": "npm run develop",
+    "appInitDelay": 30000,
+    "reporter": "minimal"
 }
