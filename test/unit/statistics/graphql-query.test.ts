@@ -1,5 +1,5 @@
 import test from 'ava';
-import { fake, SinonSpy } from 'sinon';
+import { fake } from 'sinon';
 import { Factory } from 'fishery';
 import { graphql as octokitGraphql, RequestParameters } from '@octokit/graphql/dist-types/types';
 import { fetchGitHubStatistics, FetchGitHubStatisticsOptions } from '../../../src/statistics/graphql-query';
