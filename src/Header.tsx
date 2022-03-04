@@ -13,6 +13,7 @@ export const Header: FunctionComponent = () => {
                 transformOptions={{
                     grayscale: true,
                 }}
+                quality={70}
                 className="bg-gradient-to-b from-dracula-cyan h-4/5"
                 imgClassName="mix-blend-luminosity"
             />
