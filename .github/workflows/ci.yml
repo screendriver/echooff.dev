@@ -61,13 +61,13 @@ jobs:
             #               env:
             #                   GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
             - name: Deploy branch to Netlify
-              run: npx netlify deploy --build --message "Deploy from GitHub Actions" --alias ${{ github.ref_name }}
+              run: npx netlify deploy --build --skip-functions-cache --message "Deploy from GitHub Actions" --alias ${{ github.ref_name }}
               if: github.ref != 'refs/heads/main'
               env:
                   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
                   NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
             - name: Deploy to Netlify production
-              run: npx netlify deploy --build --message "Deploy from GitHub Actions" --prod
+              run: npx netlify deploy --build --skip-functions-cache --message "Deploy from GitHub Actions" --prod
               if: github.ref == 'refs/heads/main'
               env:
                   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
