@@ -116,6 +116,7 @@ export function createContactStateMachine(ky: typeof KyInterface, formActionUrl:
             services: {
                 async postContactForm(context) {
                     const searchParams = new URLSearchParams(context);
+                    searchParams.set('form-name', 'contact');
                     await ky.post(formActionUrl, {
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: searchParams,
