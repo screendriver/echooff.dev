@@ -1,6 +1,6 @@
 import { Selector, RequestLogger } from 'testcafe';
 
-const url = 'http://localhost:8000';
+const url = 'http://localhost:9000';
 const contactFormUrl = 'http://localhost:3000/contact-form';
 
 const logger = RequestLogger(

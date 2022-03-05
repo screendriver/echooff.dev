@@ -1,17 +1,11 @@
 name: CI
 
-on:
-    push:
-        branches:
-            - '**'
-    pull_request:
-        branches:
-            - '**'
+on: [push]
 
 jobs:
-    build:
+    tests:
+        name: Tests
         runs-on: ubuntu-latest
-
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
@@ -20,7 +14,7 @@ jobs:
               with:
                   node-version: '16.x'
             - name: Install dependencies
-              run: npm ci
+              run: npm install
             - name: Check source code
               run: |
                   npm run lint
@@ -29,29 +23,10 @@ jobs:
               run: npm run compile
             - name: Run unit tests
               run: npm run test:unit:coverage
-            - name: Get Date
-              id: get-date
-              run: |
-                  echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
-            - name: Cache Gatsby directories
-              id: gatsby-cache-build
-              uses: actions/cache@v2
-              with:
-                  path: |
-                      .netlify
-                  key: ${{ runner.os }}-gatsby-cache-${{ steps.get-date.outputs.date }}
             #             - name: Build application for visual regression and e2e tests
             #               run: npm run build:visual
             #               env:
             #                   GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
-            - name: Run e2e tests
-              continue-on-error: true
-              run: npm run test:e2e:ci
-              env:
-                  BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-                  BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-                  BROWSERSTACK_BUILD_ID: ${{ github.run_id }}
-                  BROWSERSTACK_PROJECT_NAME: ${{ secrets.BROWSERSTACK_PROJECT_NAME }}
             #             - name: Run visual regression tests
             #               run: npm run test:visual
             #               env:
@@ -60,18 +35,6 @@ jobs:
             #               run: npm run build
             #               env:
             #                   GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
-            - name: Deploy branch to Netlify
-              run: npx netlify deploy --build --skip-functions-cache --message "Deploy from GitHub Actions" --alias ${{ github.ref_name }}
-              if: github.ref != 'refs/heads/main'
-              env:
-                  NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-                  NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-            - name: Deploy to Netlify production
-              run: npx netlify deploy --build --skip-functions-cache --message "Deploy from GitHub Actions" --prod
-              if: github.ref == 'refs/heads/main'
-              env:
-                  NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-                  NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
             #             - name: Audit URLs using Lighthouse
             #               uses: treosh/lighthouse-ci-action@v7
             #               continue-on-error: true
@@ -86,3 +49,111 @@ jobs:
               with:
                   token: ${{secrets.CODECOV_TOKEN}}
                   file: target/coverage/clover.xml
+
+    end-to-end-tests:
+        name: End-to-End tests
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: nschloe/action-cached-lfs-checkout@v1
+            - name: Use Node.js 16.x
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '16.x'
+            - name: Install dependencies
+              run: npm install
+            - name: Build for production
+              run: npm run build
+              env:
+                  GATSBY_GITHUB_API_BASE_URL: http://localhost:3000
+                  GATSBY_GITHUB_LOGIN: foo
+                  GATSBY_GITHUB_API_TOKEN: test-token
+                  GATSBY_CONTACT_FORM_URL: http://localhost:3000/contact-form
+            - name: Run end-to-end tests
+              run: npm run test:e2e:ci
+              env:
+                  BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+                  BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+                  BROWSERSTACK_BUILD_ID: ${{ github.run_id }}
+                  BROWSERSTACK_PROJECT_NAME: ${{ secrets.BROWSERSTACK_PROJECT_NAME }}
+
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: nschloe/action-cached-lfs-checkout@v1
+            - name: Use Node.js 16.x
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '16.x'
+            - name: Install dependencies
+              run: npm install
+            - name: Get Date
+              id: get-date
+              run: |
+                  echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
+            - name: Cache Gatsby directories
+              id: gatsby-cache-build
+              uses: actions/cache@v2
+              with:
+                  path: |
+                      .netlify
+                  key: ${{ runner.os }}-gatsby-cache-${{ steps.get-date.outputs.date }}
+            - name: Build for Netlify
+              run: npx netlify build --offline
+            - name: Upload build output artifact
+              uses: actions/upload-artifact@v3
+              with:
+                  name: netlify-gatsby-build
+                  path: |
+                      .netlify
+                      public
+                  retention-days: 1
+                  if-no-files-found: error
+
+    deploy-branch-to-netlify:
+        name: Deploy branch to Netlify
+        if: github.ref != 'refs/heads/main'
+        runs-on: ubuntu-latest
+        needs: [tests, end-to-end-tests, build]
+        steps:
+            - name: Checkout code
+              uses: nschloe/action-cached-lfs-checkout@v1
+            - name: Use Node.js 16.x
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '16.x'
+            - name: Install dependencies
+              run: npm install
+            - name: Download build output artifact
+              uses: actions/download-artifact@v3
+              with:
+                  name: netlify-gatsby-build
+            - run: npx netlify deploy --skip-functions-cache --message "Deploy from GitHub Actions" --alias ${{ github.ref_name }}
+              env:
+                  NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+                  NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+    deploy-to-netlify:
+        name: Deploy to Netlify
+        if: github.ref == 'refs/heads/main'
+        runs-on: ubuntu-latest
+        needs: [tests, end-to-end-tests, build]
+        steps:
+            - name: Checkout code
+              uses: nschloe/action-cached-lfs-checkout@v1
+            - name: Use Node.js 16.x
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '16.x'
+            - name: Install dependencies
+              run: npm install
+            - name: Download build output artifact
+              uses: actions/download-artifact@v3
+              with:
+                  name: netlify-gatsby-build
+            - run: npx netlify deploy --skip-functions-cache --message "Deploy from GitHub Actions" --prod
+              env:
+                  NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+                  NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
