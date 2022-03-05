@@ -42,6 +42,7 @@
         "zod": "3.11.6"
     },
     "devDependencies": {
+        "@netlify/plugin-gatsby": "2.1.2",
         "@percy/cli": "1.0.0-beta.70",
         "@percy/testcafe": "1.0.1",
         "@types/common-tags": "1.8.1",
