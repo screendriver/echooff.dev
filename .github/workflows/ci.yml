@@ -138,6 +138,9 @@ jobs:
               env:
                   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
                   NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+                  GATSBY_GITHUB_API_BASE_URL: ${{ secrets.GATSBY_GITHUB_API_BASE_URL }}
+                  GATSBY_GITHUB_API_TOKEN: ${{ secrets.GATSBY_GITHUB_API_TOKEN }}
+                  GATSBY_GITHUB_LOGIN: ${{ secrets.GATSBY_GITHUB_LOGIN }}
 
     deploy-to-netlify:
         name: Deploy to Netlify
@@ -161,3 +164,6 @@ jobs:
               env:
                   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
                   NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+                  GATSBY_GITHUB_API_BASE_URL: ${{ secrets.GATSBY_GITHUB_API_BASE_URL }}
+                  GATSBY_GITHUB_API_TOKEN: ${{ secrets.GATSBY_GITHUB_API_TOKEN }}
+                  GATSBY_GITHUB_LOGIN: ${{ secrets.GATSBY_GITHUB_LOGIN }}
