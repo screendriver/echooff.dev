@@ -131,10 +131,10 @@ jobs:
                   name: netlify-gatsby-build
             - name: Deploy to Netlify
               if: github.ref == 'refs/heads/main'
-              run: npx netlify deploy --build --message "Deploy from GitHub Actions" --prod
+              run: npx netlify deploy --build --json --message "Deploy from GitHub Actions" --prod
             - name: Deploy branch to Netlify
               if: github.ref != 'refs/heads/main'
-              run: npx netlify deploy --build --message "Deploy from GitHub Actions" --alias ${{ github.ref_name }}
+              run: npx netlify deploy --build --json --message "Deploy from GitHub Actions" --alias ${{ github.ref_name }}
 
     lighthouse-audit:
         name: Lighthouse audit
