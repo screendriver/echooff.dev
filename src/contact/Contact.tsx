@@ -38,6 +38,9 @@ function renderForm(
                 className="col-span-2 flex flex-col gap-3 w-11/12 sm:w-10/12 md:w-2/3"
             >
                 <input type="hidden" name="form-name" value="contact" />
+                <label htmlFor="name" className="hidden">
+                    Name
+                </label>
                 <input
                     type="text"
                     name="name"
@@ -55,6 +58,9 @@ function renderForm(
                     }}
                     className="text-dracula-darker rounded indent-1 shadow-sm border focus:border-dracula-purple focus:outline-none"
                 />
+                <label htmlFor="email" className="hidden">
+                    Email
+                </label>
                 <input
                     type="email"
                     name="email"
@@ -72,6 +78,9 @@ function renderForm(
                     }}
                     className="text-dracula-darker rounded indent-1 shadow-sm border focus:border-dracula-purple focus:outline-none"
                 />
+                <label htmlFor="message" className="hidden">
+                    Message
+                </label>
                 <textarea
                     name="message"
                     placeholder="Message"
