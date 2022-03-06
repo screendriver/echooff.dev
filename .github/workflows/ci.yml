@@ -103,10 +103,6 @@ jobs:
                   key: ${{ runner.os }}-gatsby-cache-${{ steps.get-date.outputs.date }}
             - name: Build for Netlify
               run: npx netlify build --offline
-              env:
-                  GATSBY_GITHUB_API_BASE_URL: ${{ secrets.GATSBY_GITHUB_API_BASE_URL }}
-                  GATSBY_GITHUB_API_TOKEN: ${{ secrets.GATSBY_GITHUB_API_TOKEN }}
-                  GATSBY_GITHUB_LOGIN: ${{ secrets.GATSBY_GITHUB_LOGIN }}
             - name: Upload build output artifact
               uses: actions/upload-artifact@v3
               with:
@@ -117,9 +113,8 @@ jobs:
                   retention-days: 1
                   if-no-files-found: error
 
-    deploy-branch-to-netlify:
-        name: Deploy branch to Netlify
-        if: github.ref != 'refs/heads/main'
+    deploy-to-netlify:
+        name: Deploy to Netlify
         runs-on: ubuntu-latest
         needs: [tests, end-to-end-tests, build]
         steps:
@@ -135,33 +130,18 @@ jobs:
               uses: actions/download-artifact@v3
               with:
                   name: netlify-gatsby-build
-            - run: npx netlify deploy --skip-functions-cache --message "Deploy from GitHub Actions" --alias ${{ github.ref_name }}
+            - name: Deploy to Netlify
+              if: github.ref == 'refs/heads/main'
+              run: npx netlify deploy --skip-functions-cache --message "Deploy from GitHub Actions" --prod
               env:
                   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
                   NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
                   GATSBY_GITHUB_API_BASE_URL: ${{ secrets.GATSBY_GITHUB_API_BASE_URL }}
                   GATSBY_GITHUB_API_TOKEN: ${{ secrets.GATSBY_GITHUB_API_TOKEN }}
                   GATSBY_GITHUB_LOGIN: ${{ secrets.GATSBY_GITHUB_LOGIN }}
-
-    deploy-to-netlify:
-        name: Deploy to Netlify
-        if: github.ref == 'refs/heads/main'
-        runs-on: ubuntu-latest
-        needs: [tests, end-to-end-tests, build]
-        steps:
-            - name: Checkout code
-              uses: nschloe/action-cached-lfs-checkout@v1
-            - name: Use Node.js 16.x
-              uses: actions/setup-node@v3
-              with:
-                  node-version: '16.x'
-            - name: Install dependencies
-              run: npm install
-            - name: Download build output artifact
-              uses: actions/download-artifact@v3
-              with:
-                  name: netlify-gatsby-build
-            - run: npx netlify deploy --skip-functions-cache --message "Deploy from GitHub Actions" --prod
+            - name: Deploy branch to Netlify
+              if: github.ref != 'refs/heads/main'
+              run: npx netlify deploy --skip-functions-cache --message "Deploy from GitHub Actions" --alias ${{ github.ref_name }}
               env:
                   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
                   NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
