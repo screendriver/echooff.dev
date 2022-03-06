@@ -301,7 +301,12 @@ test('makes a HTTP POST request when entering "sending" state node', (t) => {
         'SUBMIT',
     ]);
 
-    const searchParams = new URLSearchParams({ name: 'foo', email: 'bar@example.com', message: 'baz' });
+    const searchParams = new URLSearchParams({
+        name: 'foo',
+        email: 'bar@example.com',
+        message: 'baz',
+        'form-name': 'contact',
+    });
     const callArguments = ky.post.args[0];
     t.is(callArguments?.[0], '/contact-form');
     t.deepEqual(callArguments?.[1], {

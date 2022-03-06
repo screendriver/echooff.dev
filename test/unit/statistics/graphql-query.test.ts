@@ -1,5 +1,5 @@
 import test from 'ava';
-import { fake, SinonSpy } from 'sinon';
+import { fake } from 'sinon';
 import { Factory } from 'fishery';
 import { graphql as octokitGraphql, RequestParameters } from '@octokit/graphql/dist-types/types';
 import { fetchGitHubStatistics, FetchGitHubStatisticsOptions } from '../../../src/statistics/graphql-query';
@@ -16,7 +16,7 @@ const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatistics
 
 const fetchGitHubStatisticsMacro = test.macro<[input: keyof RequestParameters, expected: unknown]>(
     async (t, input, expected) => {
-        const graphql = fake.resolves(undefined) as SinonSpy<RequestParameters[]>;
+        const graphql = fake.resolves<RequestParameters[]>(undefined);
         const fetchGitHubStatisticsOptions = fetchGitHubStatisticsOptionsFactory.build({
             graphql: graphql as unknown as octokitGraphql,
         });
