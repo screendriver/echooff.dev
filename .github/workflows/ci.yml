@@ -94,10 +94,29 @@ jobs:
                   retention-days: 1
                   if-no-files-found: error
 
+    accessibility-tests:
+        name: Accessibility tests
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+            - name: Checkout code
+              uses: nschloe/action-cached-lfs-checkout@v1
+            - name: Use Node.js 16.x
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '16.x'
+            - name: Install dependencies
+              run: npm install
+            - name: Download build output artifact
+              uses: actions/download-artifact@v3
+              with:
+                  name: netlify-gatsby-build
+            - run: npm run test:a11y
+
     deploy-to-netlify:
         name: Deploy to Netlify
         runs-on: ubuntu-latest
-        needs: [tests, end-to-end-tests, build]
+        needs: [tests, end-to-end-tests, build, accessibility-tests]
         outputs:
             deploy-url: ${{ steps.netlify-production.outputs.deploy-url || steps.netlify-branch.outputs.deploy-url }}
         env:
@@ -122,15 +141,11 @@ jobs:
             - name: Deploy to Netlify
               id: netlify-production
               if: github.ref == 'refs/heads/main'
-              run: |
-                  url=$( npx netlify deploy --build --json --message "Deploy from GitHub Actions" --prod | jq '.deploy_url'  )
-                  echo "::set-output name=deploy-url::$url"
+              run: npx netlify deploy --build --message "Deploy from GitHub Actions" --prod
             - name: Deploy branch to Netlify
               id: netlify-branch
               if: github.ref != 'refs/heads/main'
-              run: |
-                  url=$( npx netlify deploy --build --json --message "Deploy from GitHub Actions" --alias ${{ github.ref_name }} | jq '.deploy_url' )
-                  echo "::set-output name=deploy-url::$url"
+              run: npx netlify deploy --build --message "Deploy from GitHub Actions" --alias ${{ github.ref_name }}
 
     lighthouse-audit:
         name: Lighthouse audit
@@ -160,18 +175,3 @@ jobs:
               with:
                   token: ${{secrets.CODECOV_TOKEN}}
                   file: target/coverage/clover.xml
-
-    accessibility-tests:
-        name: Accessibility tests
-        runs-on: ubuntu-latest
-        needs: deploy-to-netlify
-        steps:
-            - name: Checkout code
-              uses: nschloe/action-cached-lfs-checkout@v1
-            - name: Use Node.js 16.x
-              uses: actions/setup-node@v3
-              with:
-                  node-version: '16.x'
-            - name: Install dependencies
-              run: npm install
-            - run: npm run test:a11y -- ${{ needs.deploy-to-netlify.outputs.deploy-url }}
