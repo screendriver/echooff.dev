@@ -145,7 +145,7 @@ jobs:
                   temporaryPublicStorage: true
 
     coverage:
-        name: Codecov code coverage
+        name: Upload code coverage
         runs-on: ubuntu-latest
         needs: deploy-to-netlify
         steps:
