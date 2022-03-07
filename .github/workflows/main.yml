@@ -124,12 +124,14 @@ jobs:
               run: |
                   url=$( npx netlify deploy --build --json --message "Deploy from GitHub Actions" --prod | jq '.deploy_url' )
                   echo "::set-output name=deploy-url::$url"
+                  echo "Website URL: $url"
             - name: Deploy branch to Netlify
               id: netlify-branch
               if: github.ref != 'refs/heads/main'
               run: |
                   url=$( npx netlify deploy --build --json --message "Deploy from GitHub Actions" --alias ${{ github.ref_name }} | jq '.deploy_url' )
                   echo "::set-output name=deploy-url::$url"
+                  echo "Website URL: $url"
 
     lighthouse-audit:
         name: Lighthouse audit
