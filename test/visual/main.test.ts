@@ -1,9 +1,6 @@
-import { RequestMock } from 'testcafe';
 import * as percySnapshot from '@percy/testcafe';
 
-const quickmetricsMock = RequestMock().onRequestTo('http://localhost:9000/.netlify/functions/quickmetrics').respond('');
-
-fixture('Visual').page('http://localhost:9000').requestHooks(quickmetricsMock);
+fixture('Visual').page('http://localhost:9000');
 
 // eslint-disable-next-line testcafe-community/missing-expect
 test('main page', async (t) => {
