@@ -9,12 +9,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
-            - name: Use Node.js 16.x
-              uses: actions/setup-node@v3
-              with:
-                  node-version: '16.x'
-            - name: Install dependencies
-              run: npm install
+            - name: Setup Node.js
+              uses: ./.github/actions/setup-nodejs
             - name: Check source code
               run: |
                   npm run lint
@@ -38,12 +34,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
-            - name: Use Node.js 16.x
-              uses: actions/setup-node@v3
-              with:
-                  node-version: '16.x'
-            - name: Install dependencies
-              run: npm install
+            - name: Setup Node.js
+              uses: ./.github/actions/setup-nodejs
             - name: Build for production
               run: npm run build
               env:
@@ -65,12 +57,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
-            - name: Use Node.js 16.x
-              uses: actions/setup-node@v3
-              with:
-                  node-version: '16.x'
-            - name: Install dependencies
-              run: npm install
+            - name: Setup Node.js
+              uses: ./.github/actions/setup-nodejs
             - name: Get Date
               id: get-date
               run: |
@@ -101,12 +89,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
-            - name: Use Node.js 16.x
-              uses: actions/setup-node@v3
-              with:
-                  node-version: '16.x'
-            - name: Install dependencies
-              run: npm install
+            - name: Setup Node.js
+              uses: ./.github/actions/setup-nodejs
             - name: Download build output artifact
               uses: actions/download-artifact@v3
               with:
@@ -128,12 +112,8 @@ jobs:
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
-            - name: Use Node.js 16.x
-              uses: actions/setup-node@v3
-              with:
-                  node-version: '16.x'
-            - name: Install dependencies
-              run: npm install
+            - name: Setup Node.js
+              uses: ./.github/actions/setup-nodejs
             - name: Download build output artifact
               uses: actions/download-artifact@v3
               with:
