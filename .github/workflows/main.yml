@@ -118,6 +118,7 @@ jobs:
     deploy-to-netlify:
         name: Deploy to Netlify
         runs-on: ubuntu-latest
+        if: ${{ !startsWith(github.ref_name, 'renovate') }}
         needs: [tests, end-to-end-tests, build, accessibility-tests, visual-regression-tests]
         env:
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -146,6 +147,7 @@ jobs:
     coverage:
         name: Upload code coverage
         runs-on: ubuntu-latest
+        if: ${{ !startsWith(github.ref_name, 'renovate') }}
         needs: deploy-to-netlify
         steps:
             - name: Download code coverage artifact
