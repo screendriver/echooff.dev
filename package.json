@@ -87,7 +87,7 @@
         "gatsby-transformer-sharp": "4.9.0",
         "jscpd": "3.4.5",
         "jscpd-badge-reporter": "1.1.3",
-        "netlify-cli": "9.12.3",
+        "netlify-cli": "9.12.5",
         "pa11y": "6.1.1",
         "postcss": "8.4.6",
         "prettier": "2.5.1",
