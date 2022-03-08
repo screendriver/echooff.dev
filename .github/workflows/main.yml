@@ -44,7 +44,12 @@ jobs:
                   GATSBY_GITHUB_API_TOKEN: test-token
                   GATSBY_CONTACT_FORM_URL: http://localhost:3000/contact-form
             - name: Run end-to-end tests
-              run: npm run test:e2e:ci
+              uses: nick-fields/retry@v2
+              with:
+                  timeout_minutes: 30
+                  max_attempts: 3
+                  retry_on: error
+                  command: npm run test:e2e:ci
               env:
                   BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
                   BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
