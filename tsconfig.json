@@ -1,25 +1,24 @@
 {
-  "compilerOptions": {
-    "target": "es2019",
-    "module": "commonjs",
-    "outDir": "target",
-    "moduleResolution": "node",
-    "jsx": "react-jsx",
-    "jsxImportSource": "@emotion/react",
-    "importHelpers": true,
-    "sourceMap": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-    "incremental": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "typeRoots": ["./typings", "./node_modules/@types"]
-  },
-  "include": ["src/**/*", "test/**/*"],
-  "exclude": ["node_modules", "test/e2e", "test/visual"]
+    "compilerOptions": {
+        "target": "es2019",
+        "module": "commonjs",
+        "outDir": "target",
+        "moduleResolution": "node",
+        "jsx": "react",
+        "importHelpers": true,
+        "sourceMap": true,
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedIndexedAccess": true,
+        "incremental": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "typeRoots": ["./typings", "./node_modules/@types"]
+    },
+    "include": ["src/**/*", "test/**/*"],
+    "exclude": ["node_modules", "test/e2e", "test/visual"]
 }

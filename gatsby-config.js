@@ -1,59 +1,37 @@
 require('dotenv').config();
 
 module.exports = {
-  siteMetadata: {
-    keywords: 'TypeScript,JavaScript,HTML,CSS,Node.js,React,Vue',
-    favicon: 'favicon.png',
-    siteUrl: 'https://www.echooff.dev',
-  },
-  plugins: [
-    'gatsby-plugin-image',
-    'gatsby-plugin-sitemap',
-    'gatsby-plugin-robots-txt',
-    'gatsby-plugin-emotion',
-    'gatsby-plugin-react-helmet',
-    'gatsby-plugin-sharp',
-    'gatsby-transformer-sharp',
-    'gatsby-transformer-json',
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        name: 'locale',
-        path: `${__dirname}/src/locales/`,
-      },
+    siteMetadata: {
+        author: 'Christian Rackerseder',
+        jobTitle: 'Full-Stack JavaScript Engineer',
+        keywords: 'TypeScript,JavaScript,HTML,CSS,Node.js,React',
+        favicon: 'favicon.png',
+        siteUrl: 'https://www.echooff.dev',
     },
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        name: 'src',
-        path: `${__dirname}/src/`,
-      },
-    },
-    {
-      resolve: 'gatsby-source-graphql',
-      options: {
-        typeName: 'GitHub',
-        fieldName: 'github',
-        url: 'https://api.github.com/graphql',
-        headers: {
-          Authorization: `bearer ${process.env.GITHUB_API_TOKEN}`,
+    plugins: [
+        'gatsby-plugin-image',
+        'gatsby-plugin-sitemap',
+        'gatsby-plugin-robots-txt',
+        'gatsby-plugin-postcss',
+        'gatsby-plugin-react-helmet',
+        {
+            resolve: 'gatsby-plugin-sharp',
+            options: {
+                defaults: {
+                    formats: ['auto', 'webp', 'avif'],
+                    placeholder: 'blurred',
+                },
+            },
         },
-      },
-    },
-    {
-      resolve: 'gatsby-plugin-react-i18next',
-      options: {
-        localeJsonSourceName: 'locale',
-        languages: ['en'],
-        defaultLanguage: 'en',
-        redirect: true,
-        i18nextOptions: {
-          interpolation: {
-            escapeValue: false,
-          },
+        'gatsby-transformer-sharp',
+        'gatsby-transformer-json',
+        {
+            resolve: 'gatsby-source-filesystem',
+            options: {
+                name: 'src',
+                path: `${__dirname}/src/`,
+            },
         },
-      },
-    },
-    'gatsby-plugin-netlify',
-  ],
+        'gatsby-plugin-netlify',
+    ],
 };

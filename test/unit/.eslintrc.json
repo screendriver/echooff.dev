@@ -1,14 +1,4 @@
 {
-  "extends": [
-    "plugin:mocha/recommended",
-    "plugin:testing-library/recommended",
-    "plugin:testing-library/react"
-  ],
-  "plugins": ["mocha", "testing-library"],
-  "rules": {
-    "mocha/no-exclusive-tests": "error",
-    "testing-library/no-debug": "error",
-    "testing-library/no-manual-cleanup": "error",
-    "testing-library/prefer-explicit-assert": "error"
-  }
+    "extends": ["plugin:ava/recommended"],
+    "plugins": ["ava"]
 }
