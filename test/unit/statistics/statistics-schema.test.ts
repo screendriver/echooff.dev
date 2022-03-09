@@ -85,7 +85,7 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.repositor
               "minimum": 0,
               "type": "number",
               "inclusive": true,
-              "message": "Value should be greater than or equal to 0",
+              "message": "Number must be greater than or equal to 0",
               "path": [
                 "user",
                 "repositories",
@@ -138,7 +138,7 @@ test('gitHubStatisticsSchema allows 0 for "user.repositories.totalCount', (t) =>
     t.deepEqual(actual, expected);
 });
 
-test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRepositories.totalCount', (t) => {
+test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRepositories.totalCount"', (t) => {
     const gitHubStatistics = gitHubStatisticsFactory.build({
         user: {
             starredRepositories: {
@@ -156,7 +156,7 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRe
               "minimum": 0,
               "type": "number",
               "inclusive": true,
-              "message": "Value should be greater than or equal to 0",
+              "message": "Number must be greater than or equal to 0",
               "path": [
                 "user",
                 "starredRepositories",
