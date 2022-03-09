@@ -94,7 +94,7 @@
         "react-test-renderer": "17.0.2",
         "sinon": "13.0.1",
         "standard-version": "9.3.2",
-        "tailwind-dracula": "1.0.7",
+        "tailwind-dracula": "1.1.0",
         "testcafe": "1.18.4",
         "testcafe-browser-provider-browserstack": "1.13.1",
         "ts-node": "10.7.0",
