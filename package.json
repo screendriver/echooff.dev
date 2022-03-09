@@ -20,7 +20,6 @@
         "test:visual": "percy exec -- testcafe chrome:headless test/visual/",
         "test:unit": "ava",
         "test:unit:coverage": "c8 ava",
-        "test:a11y": "concurrently --kill-others \"npm:serve\" \"npm:start:static-server\" \"wait-on http://localhost:9000 && pa11y http://localhost:9000\"",
         "release": "standard-version",
         "start:static-server": "ts-node-dev --transpile-only src/static-server.ts"
     },

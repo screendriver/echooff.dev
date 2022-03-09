@@ -87,22 +87,6 @@ jobs:
                   retention-days: 1
                   if-no-files-found: error
 
-    accessibility-tests:
-        name: Accessibility tests
-        runs-on: ubuntu-latest
-        needs: build
-        continue-on-error: true
-        steps:
-            - name: Checkout code
-              uses: nschloe/action-cached-lfs-checkout@v1
-            - name: Setup Node.js
-              uses: ./.github/actions/setup-nodejs
-            - name: Download build output artifact
-              uses: actions/download-artifact@v3
-              with:
-                  name: netlify-gatsby-build
-            - run: npm run test:a11y
-
     visual-regression-tests:
         name: Visual regression tests
         runs-on: ubuntu-latest
@@ -124,7 +108,7 @@ jobs:
         name: Deploy to Netlify
         runs-on: ubuntu-latest
         if: github.ref == 'refs/heads/main'
-        needs: [tests, end-to-end-tests, build, accessibility-tests, visual-regression-tests]
+        needs: [tests, end-to-end-tests, build, visual-regression-tests]
         env:
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
             NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
