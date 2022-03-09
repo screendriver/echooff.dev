@@ -20,7 +20,6 @@
         "test:visual": "percy exec -- testcafe chrome:headless test/visual/",
         "test:unit": "ava",
         "test:unit:coverage": "c8 ava",
-        "test:a11y": "concurrently --kill-others \"npm:serve\" \"npm:start:static-server\" \"wait-on http://localhost:9000 && pa11y http://localhost:9000\"",
         "release": "standard-version",
         "start:static-server": "ts-node-dev --transpile-only src/static-server.ts"
     },
@@ -88,7 +87,6 @@
         "jscpd": "3.4.5",
         "jscpd-badge-reporter": "1.1.3",
         "netlify-cli": "9.13.0",
-        "pa11y": "6.1.1",
         "postcss": "8.4.8",
         "prettier": "2.5.1",
         "react-test-renderer": "17.0.2",
