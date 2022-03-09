@@ -117,7 +117,7 @@ test('gitHubLoginSchema does not allow empty strings', (t) => {
             "minimum": 1,
             "type": "string",
             "inclusive": true,
-            "message": "Should be at least 1 characters",
+            "message": "String must contain at least 1 character(s)",
             "path": []
           }
         ]`,
@@ -172,7 +172,7 @@ test('gitHubApiTokenSchema does not allow empty strings', (t) => {
             "minimum": 1,
             "type": "string",
             "inclusive": true,
-            "message": "Should be at least 1 characters",
+            "message": "String must contain at least 1 character(s)",
             "path": []
           }
         ]`,
