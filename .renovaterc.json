@@ -1,23 +1,29 @@
 {
-  "extends": ["config:base", ":semanticCommits"],
-  "labels": ["renovate"],
-  "prConcurrentLimit": 5,
-  "lockFileMaintenance": {
-    "enabled": true,
-    "automerge": true
-  },
-  "nvm": {
-    "enabled": false
-  },
-  "packageRules": [
-    {
-      "packagePatterns": ["^gatsby"],
-      "groupName": "gatsby packages",
-      "extends": ["schedule:weekly"]
+    "extends": ["config:base", ":semanticCommits"],
+    "labels": ["renovate"],
+    "prConcurrentLimit": 5,
+    "lockFileMaintenance": {
+        "enabled": true,
+        "automerge": true
     },
-    {
-      "packagePatterns": ["eslint"],
-      "groupName": "eslint packages"
-    }
-  ]
+    "nvm": {
+        "enabled": false
+    },
+    "packageRules": [
+        {
+            "packagePatterns": ["^gatsby"],
+            "groupName": "gatsby packages",
+            "extends": ["schedule:weekly"]
+        },
+        {
+            "packagePatterns": ["eslint"],
+            "groupName": "eslint packages"
+        },
+        {
+            "depTypeList": ["dependencies", "devDependencies"],
+            "updateTypes": ["minor", "patch"],
+            "automerge": true,
+            "automergeType": "branch"
+        }
+    ]
 }
