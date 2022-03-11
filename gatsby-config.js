@@ -4,7 +4,7 @@ module.exports = {
     siteMetadata: {
         author: 'Christian Rackerseder',
         jobTitle: 'Full-Stack JavaScript Engineer',
-        keywords: 'TypeScript,JavaScript,HTML,CSS,Node.js,React',
+        keywords: 'Racki,TypeScript,JavaScript,HTML,CSS,Node.js,React',
         favicon: 'favicon.png',
         siteUrl: 'https://www.echooff.dev',
     },
