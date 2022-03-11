@@ -60,8 +60,6 @@ jobs:
     build:
         name: Build
         runs-on: ubuntu-latest
-        env:
-            SENTRY_DSN: https://729589b3d42c439a88526cacc651f50b@o207383.ingest.sentry.io/6254281
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
@@ -118,6 +116,7 @@ jobs:
             GATSBY_GITHUB_API_BASE_URL: ${{ secrets.GATSBY_GITHUB_API_BASE_URL }}
             GATSBY_GITHUB_API_TOKEN: ${{ secrets.GATSBY_GITHUB_API_TOKEN }}
             GATSBY_GITHUB_LOGIN: ${{ secrets.GATSBY_GITHUB_LOGIN }}
+            SENTRY_DSN: https://729589b3d42c439a88526cacc651f50b@o207383.ingest.sentry.io/6254281
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
