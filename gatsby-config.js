@@ -33,5 +33,11 @@ module.exports = {
             },
         },
         'gatsby-plugin-netlify',
+        {
+            resolve: '@sentry/gatsby',
+            options: {
+                sampleRate: 1.0,
+            },
+        },
     ],
 };
