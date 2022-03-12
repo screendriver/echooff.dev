@@ -128,7 +128,7 @@ jobs:
                   name: netlify-gatsby-build
             - name: Deploy to Netlify
               id: netlify-production
-              run: npx netlify deploy --build --message "Deploy from GitHub Actions" --prod
+              run: npx netlify deploy --build --skip-functions-cache --message "Deploy from GitHub Actions" --prod
 
     coverage:
         name: Upload code coverage
