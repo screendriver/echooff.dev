@@ -1,5 +1,6 @@
 import React, { Fragment, FunctionComponent } from 'react';
 import { graphql, PageProps } from 'gatsby';
+import { ImageDataLike } from 'gatsby-plugin-image';
 import ky from 'ky';
 import * as Sentry from '@sentry/gatsby';
 import { Head } from '../Head';
@@ -26,6 +27,7 @@ interface DataType {
     readonly allResumeDataJson: {
         readonly nodes: readonly ResumeData[];
     };
+    readonly headerImage: ImageDataLike;
 }
 
 type IndexPageProps = PageProps<DataType>;
@@ -49,6 +51,11 @@ export const query = graphql`
                 jobDescription
             }
         }
+        headerImage: file(relativePath: { eq: "img/header-01.jpg" }) {
+            childImageSharp {
+                gatsbyImageData(layout: FULL_WIDTH, quality: 70, transformOptions: { grayscale: true })
+            }
+        }
     }
 `;
 
@@ -69,7 +76,7 @@ const IndexPage: FunctionComponent<IndexPageProps> = ({ data }) => {
                 keywords={keywords}
                 favicon={favicon}
             />
-            <Header />
+            <Header headerImage={data.headerImage} />
             <main className="text-dracula-light">
                 <About />
                 <Skills />
