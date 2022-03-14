@@ -68,7 +68,7 @@
         "eslint-config-prettier": "8.5.0",
         "eslint-plugin-ava": "13.2.0",
         "eslint-plugin-prettier": "4.0.0",
-        "eslint-plugin-react": "7.29.3",
+        "eslint-plugin-react": "7.29.4",
         "eslint-plugin-testcafe-community": "2.0.0",
         "fastify": "3.27.4",
         "fastify-cors": "6.0.3",
