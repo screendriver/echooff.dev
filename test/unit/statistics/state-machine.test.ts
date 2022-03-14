@@ -13,6 +13,7 @@ import {
     StatisticsTypestate,
 } from '../../../src/statistics/state-machine';
 import { GitHubStatistics } from '../../../src/statistics/statistics-schema';
+import { ErrorReporter } from '../../../src/error-reporter/reporter';
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
     return {
@@ -27,6 +28,12 @@ const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
     };
 });
 
+const errorReporterFactory = Factory.define<ErrorReporter>(() => {
+    return {
+        send: fake(),
+    };
+});
+
 function createStatisticsMachineDependencies(
     overrides: Partial<StatisticsMachineDependencies>,
 ): StatisticsMachineDependencies {
@@ -35,6 +42,7 @@ function createStatisticsMachineDependencies(
         ky: fake.returns({
             json: fake.resolves(gitHubStatistics),
         }),
+        errorReporter: errorReporterFactory.build(),
         currentTimestamp: new Date(2021, 3, 10),
         ...overrides,
     } as unknown as StatisticsMachineDependencies;
@@ -152,4 +160,22 @@ test('transit from "loading" to "failed" when fetching of GitHub statistics retu
 
     t.true(statisticsStateService.state.matches('failed'));
     t.deepEqual(statisticsStateService.state.context.gitHubStatistics, nothing<GitHubStatistics>());
+});
+
+test('reports the occurred error when fetching of GitHub statistics failed', async (t) => {
+    const error = new Error('Failed test');
+    const ky = fake.returns({
+        json: fake.rejects(error),
+    });
+    const send = fake();
+    const errorReporter = errorReporterFactory.build({ send });
+    const statisticsStateService = createStatisticsStateService({
+        ky: ky as unknown as typeof KyInterface,
+        errorReporter,
+    });
+
+    statisticsStateService.send('FETCH');
+    await setImmediate();
+
+    t.true(send.calledOnceWith(error));
 });

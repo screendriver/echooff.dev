@@ -1,7 +1,8 @@
-import { createMachine, assign, StateMachine, DoneInvokeEvent, State } from 'xstate';
+import { createMachine, assign, StateMachine, DoneInvokeEvent, State, ErrorPlatformEvent } from 'xstate';
 import Maybe, { Just, just, Nothing, nothing } from 'true-myth/maybe';
 import type KyInterface from 'ky';
 import { GitHubStatistics, gitHubStatisticsSchema } from './statistics-schema';
+import { ErrorReporter } from '../error-reporter/reporter';
 
 export type StatisticsMachineEvent = { type: 'FETCH' };
 
@@ -42,6 +43,7 @@ export type StatisticsTypestate =
 
 export interface StatisticsMachineDependencies {
     readonly ky: typeof KyInterface;
+    readonly errorReporter: ErrorReporter;
     readonly currentTimestamp: Date;
 }
 
@@ -81,7 +83,10 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
                             target: 'loaded',
                             actions: 'setFetchedGitHubStatistics',
                         },
-                        onError: 'failed',
+                        onError: {
+                            target: 'failed',
+                            actions: 'reportFetchGitHubStatisticsError',
+                        },
                     },
                 },
                 loaded: {
@@ -109,6 +114,10 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
                         return just(event.data);
                     },
                 }),
+                reportFetchGitHubStatisticsError(_context, _event) {
+                    const event = _event as ErrorPlatformEvent;
+                    dependencies.errorReporter.send(event.data);
+                },
             },
             services: {
                 async fetchGitHubStatistics() {

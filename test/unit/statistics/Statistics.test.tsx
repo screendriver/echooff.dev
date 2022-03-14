@@ -16,6 +16,7 @@ import { FiBarChart, FiBarChart2 } from 'react-icons/fi';
 import { YearsInBusiness } from '../../../src/statistics/YearsInBusiness';
 import { GitHubRepositories } from '../../../src/statistics/GitHubRepositories';
 import { GitHubStars } from '../../../src/statistics/GitHubStars';
+import { ErrorReporter } from '../../../src/error-reporter/reporter';
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
     return {
@@ -30,9 +31,19 @@ const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
     };
 });
 
+const errorReporterFactory = Factory.define<ErrorReporter>(() => {
+    return {
+        send: fake(),
+    };
+});
+
 function createStatisticsTestStateMachine(fetchGitHubStatistics?: () => Promise<unknown>): StatisticsStateMachine {
     const ky = fake.rejects('') as unknown as typeof KyInterface;
-    const dependencies: StatisticsMachineDependencies = { ky, currentTimestamp: new Date(2021, 11, 8) };
+    const dependencies: StatisticsMachineDependencies = {
+        ky,
+        currentTimestamp: new Date(2021, 11, 8),
+        errorReporter: errorReporterFactory.build(),
+    };
     return createStatisticsStateMachine(dependencies).withConfig({
         services: {
             fetchGitHubStatistics() {
