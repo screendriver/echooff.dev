@@ -1,6 +1,7 @@
-import { createMachine, assign, StateMachine, State } from 'xstate';
+import { createMachine, assign, StateMachine, State, ErrorPlatformEvent } from 'xstate';
 import type KyInterface from 'ky';
 import { ContactStateMachineContext, contactStateMachineContextSchema } from './state-machine-schema';
+import { ErrorReporter } from '../error-reporter/reporter';
 
 export type ContactMachineEvent =
     | { type: 'NAME_FOCUSED' }
@@ -27,7 +28,13 @@ export type ContactStateMachine = StateMachine<ContactStateMachineContext, any, 
 
 export type ContactStateMachineState = State<ContactStateMachineContext, ContactMachineEvent, any, ContactTypestate>;
 
-export function createContactStateMachine(ky: typeof KyInterface, formActionUrl: string): ContactStateMachine {
+export interface ContactMachineDependencies {
+    readonly ky: typeof KyInterface;
+    readonly errorReporter: ErrorReporter;
+    readonly formActionUrl: string;
+}
+
+export function createContactStateMachine(dependencies: ContactMachineDependencies): ContactStateMachine {
     return createMachine<ContactStateMachineContext, ContactMachineEvent, ContactTypestate>(
         {
             id: ' contact',
@@ -80,7 +87,10 @@ export function createContactStateMachine(ky: typeof KyInterface, formActionUrl:
                     invoke: {
                         src: 'postContactForm',
                         onDone: 'sent',
-                        onError: 'sendingFailed',
+                        onError: {
+                            target: 'sendingFailed',
+                            actions: 'reportSendingFailed',
+                        },
                     },
                 },
                 sendingFailed: {},
@@ -107,6 +117,10 @@ export function createContactStateMachine(ky: typeof KyInterface, formActionUrl:
                     }
                     return {};
                 }),
+                reportSendingFailed(_context, _event) {
+                    const event = _event as ErrorPlatformEvent;
+                    dependencies.errorReporter.send(event.data);
+                },
             },
             guards: {
                 isContactFormValid(context) {
@@ -117,7 +131,7 @@ export function createContactStateMachine(ky: typeof KyInterface, formActionUrl:
                 async postContactForm(context) {
                     const searchParams = new URLSearchParams(context);
                     searchParams.set('form-name', 'contact');
-                    await ky.post(formActionUrl, {
+                    await dependencies.ky.post(dependencies.formActionUrl, {
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: searchParams,
                     });

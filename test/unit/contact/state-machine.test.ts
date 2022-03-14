@@ -3,11 +3,20 @@ import { fake } from 'sinon';
 import { interpret, Interpreter, MachineOptions } from 'xstate';
 import type KyInterface from 'ky';
 import { setImmediate } from 'timers/promises';
+import { Factory } from 'fishery';
 import { createContactStateMachine, ContactMachineEvent, ContactTypestate } from '../../../src/contact/state-machine';
 import { ContactStateMachineContext } from '../../../src/contact/state-machine-schema';
+import { ErrorReporter } from '../../../src/error-reporter/reporter';
+
+const errorReporterFactory = Factory.define<ErrorReporter>(() => {
+    return {
+        send: fake(),
+    };
+});
 
 interface Overrides {
     readonly ky?: typeof KyInterface;
+    readonly errorReporter?: ErrorReporter;
     readonly config?: Partial<MachineOptions<ContactStateMachineContext, ContactMachineEvent>>;
 }
 
@@ -17,10 +26,14 @@ function createContactStateService(
     const ky = {
         post: fake.resolves(undefined),
     } as unknown as typeof KyInterface;
+    const errorReporter = errorReporterFactory.build();
     const formActionUrl = '/contact-form';
-    const contactStateMachine = createContactStateMachine(overrides.ky ?? ky, formActionUrl).withConfig(
-        overrides.config ?? {},
-    );
+    const contactStateMachine = createContactStateMachine({
+        ky,
+        formActionUrl,
+        errorReporter,
+        ...overrides,
+    }).withConfig(overrides.config ?? {});
     return interpret(contactStateMachine).start();
 }
 
@@ -313,6 +326,55 @@ test('makes a HTTP POST request when entering "sending" state node', (t) => {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: searchParams,
     });
+});
+
+test('transits to "sendingFailed" when sending contact form failed', async (t) => {
+    const ky = {
+        post: fake.rejects(new Error()),
+    } as unknown as typeof KyInterface;
+    const contactStateService = createContactStateService({ ky });
+
+    contactStateService.send([
+        'NAME_FOCUSED',
+        { type: 'TYPING', value: 'foo' },
+        'NAME_UNFOCUSED',
+        'EMAIL_FOCUSED',
+        { type: 'TYPING', value: 'bar@example.com' },
+        'EMAIL_UNFOCUSED',
+        'MESSAGE_FOCUSED',
+        { type: 'TYPING', value: 'baz' },
+        'MESSAGE_UNFOCUSED',
+        'SUBMIT',
+    ]);
+    await setImmediate();
+
+    t.true(contactStateService.state.matches('sendingFailed'));
+});
+
+test('reports the occurred error when sending contact form failed', async (t) => {
+    const error = new Error('Sending failed');
+    const ky = {
+        post: fake.rejects(error),
+    } as unknown as typeof KyInterface;
+    const send = fake();
+    const errorReporter = errorReporterFactory.build({ send });
+    const contactStateService = createContactStateService({ ky, errorReporter });
+
+    contactStateService.send([
+        'NAME_FOCUSED',
+        { type: 'TYPING', value: 'foo' },
+        'NAME_UNFOCUSED',
+        'EMAIL_FOCUSED',
+        { type: 'TYPING', value: 'bar@example.com' },
+        'EMAIL_UNFOCUSED',
+        'MESSAGE_FOCUSED',
+        { type: 'TYPING', value: 'baz' },
+        'MESSAGE_UNFOCUSED',
+        'SUBMIT',
+    ]);
+    await setImmediate();
+
+    t.true(send.calledOnceWith(error));
 });
 
 test('transits to "sent" after sending contact form', async (t) => {
