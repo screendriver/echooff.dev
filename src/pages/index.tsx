@@ -1,6 +1,7 @@
 import React, { Fragment, FunctionComponent } from 'react';
 import { graphql, PageProps } from 'gatsby';
 import ky from 'ky';
+import * as Sentry from '@sentry/gatsby';
 import { Head } from '../Head';
 import { Header } from '../Header';
 import { About } from '../about/About';
@@ -11,6 +12,7 @@ import { Passions } from '../passions/Passions';
 import { Resume, ResumeData } from '../resume/Resume';
 import { Contact } from '../contact/Contact';
 import { createContactStateMachine } from '../contact/state-machine';
+import { createErrorReporter } from '../error-reporter/reporter';
 
 interface DataType {
     readonly site: {
@@ -53,9 +55,10 @@ export const query = graphql`
 const IndexPage: FunctionComponent<IndexPageProps> = ({ data }) => {
     const { author, jobTitle, keywords, favicon } = data.site.siteMetadata;
     const currentTimestamp = new Date();
-    const gitHubStateMachine = createStatisticsStateMachine({ ky, currentTimestamp });
+    const errorReporter = createErrorReporter({ sentry: Sentry });
+    const gitHubStateMachine = createStatisticsStateMachine({ ky, currentTimestamp, errorReporter });
     const contactFormActionUrl = process.env.GATSBY_CONTACT_FORM_URL ?? '';
-    const contactStateMachine = createContactStateMachine(ky, contactFormActionUrl);
+    const contactStateMachine = createContactStateMachine({ ky, formActionUrl: contactFormActionUrl, errorReporter });
 
     return (
         <Fragment>
