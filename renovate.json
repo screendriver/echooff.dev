@@ -11,13 +11,16 @@
     },
     "packageRules": [
         {
-            "packagePatterns": ["^gatsby"],
-            "groupName": "gatsby packages",
-            "extends": ["schedule:weekly"]
+            "extends": ["monorepo:gatsby", "schedule:weekly"],
+            "groupName": "gatsby monorepo"
         },
         {
             "packagePatterns": ["eslint"],
             "groupName": "eslint packages"
+        },
+        {
+            "extends": "monorepo:typescript-eslint",
+            "groupName": "typescript-eslint monorepo"
         },
         {
             "depTypeList": ["dependencies", "devDependencies"],
