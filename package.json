@@ -10,7 +10,7 @@
         "lint": "eslint --ext ts,tsx src test",
         "copy:paste:detector": "jscpd src test typings",
         "compile": "tsc",
-        "develop": "GATSBY_GRAPHQL_IDE=playground GATSBY_GITHUB_API_BASE_URL=http://localhost:3000 GATSBY_GITHUB_LOGIN=foo GATSBY_GITHUB_API_TOKEN=test-token GATSBY_CONTACT_FORM_URL=http://localhost:3000/contact-form concurrently --kill-others \"gatsby develop\" \"npm:start:static-server\"",
+        "develop": "GATSBY_GRAPHQL_IDE=playground npm run compile && gatsby develop",
         "build": "gatsby build",
         "build:visual": "GATSBY_VISUAL_REGRESSION_TEST=true gatsby build",
         "serve": "gatsby serve",
