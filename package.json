@@ -14,10 +14,6 @@
         "build": "gatsby build",
         "build:visual": "GATSBY_VISUAL_REGRESSION_TEST=true gatsby build",
         "serve": "gatsby serve",
-        "test:e2e": "testcafe test/e2e/",
-        "test:e2e:ci:serve": "concurrently --kill-others \"npm:serve\" \"npm:start:static-server\"",
-        "test:e2e:ci": "testcafe 'browserstack:chrome:Windows 11','browserstack:firefox:Windows 11','browserstack:safari:OS X Monterey' test/e2e/",
-        "test:visual": "percy exec -- testcafe chrome:headless test/visual/",
         "test:unit": "ava",
         "test:unit:coverage": "c8 ava"
     },
@@ -36,14 +32,13 @@
         "react-helmet": "6.1.0",
         "react-icons": "4.3.1",
         "tailwindcss": "3.0.23",
-        "true-myth": "5.2.0",
+        "true-myth": "4.1.1",
         "xstate": "4.28.1",
         "zod": "3.13.4"
     },
     "devDependencies": {
         "@netlify/plugin-gatsby": "2.1.2",
         "@percy/cli": "1.0.0-beta.70",
-        "@percy/testcafe": "1.0.1",
         "@types/common-tags": "1.8.1",
         "@types/gsap": "1.20.2",
         "@types/node": "17.0.17",
@@ -66,7 +61,6 @@
         "eslint-plugin-ava": "13.2.0",
         "eslint-plugin-prettier": "4.0.0",
         "eslint-plugin-react": "7.29.4",
-        "eslint-plugin-testcafe-community": "2.0.0",
         "fastify": "3.27.4",
         "fastify-cors": "6.0.3",
         "fastify-formbody": "5.2.0",
@@ -91,8 +85,6 @@
         "react-test-renderer": "17.0.2",
         "sinon": "13.0.1",
         "tailwind-dracula": "1.1.0",
-        "testcafe": "1.18.4",
-        "testcafe-browser-provider-browserstack": "1.13.1",
         "ts-node": "10.7.0",
         "typescript": "4.6.2",
         "wait-on": "6.0.1"

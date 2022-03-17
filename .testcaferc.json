@@ -1,5 +1,0 @@
-{
-    "browsers": ["chrome:headless", "firefox:headless"],
-    "appCommand": "npm run test:e2e:ci:serve",
-    "reporter": "minimal"
-}

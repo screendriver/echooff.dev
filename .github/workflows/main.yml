@@ -27,108 +27,26 @@ jobs:
                   retention-days: 1
                   if-no-files-found: error
 
-    end-to-end-tests:
-        name: End-to-End tests
-        runs-on: ubuntu-latest
-        timeout-minutes: 30
-        concurrency: browserstack
-        steps:
-            - name: Checkout code
-              uses: nschloe/action-cached-lfs-checkout@v1
-            - name: Setup Node.js
-              uses: ./.github/actions/setup-nodejs
-            - name: Build for production
-              run: npm run build
-              env:
-                  GATSBY_GITHUB_API_BASE_URL: http://localhost:3000
-                  GATSBY_GITHUB_LOGIN: foo
-                  GATSBY_GITHUB_API_TOKEN: test-token
-                  GATSBY_CONTACT_FORM_URL: http://localhost:3000/contact-form
-            - name: Run end-to-end tests
-              uses: nick-fields/retry@v2
-              with:
-                  timeout_minutes: 30
-                  max_attempts: 3
-                  retry_on: error
-                  command: npm run test:e2e:ci
-              env:
-                  BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-                  BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-                  BROWSERSTACK_BUILD_ID: ${{ github.run_id }}
-                  BROWSERSTACK_PROJECT_NAME: ${{ secrets.BROWSERSTACK_PROJECT_NAME }}
-
-    build:
-        name: Build
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: nschloe/action-cached-lfs-checkout@v1
-            - name: Setup Node.js
-              uses: ./.github/actions/setup-nodejs
-            - name: Get Date
-              id: get-date
-              run: |
-                  echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
-            - name: Cache Gatsby directories
-              id: gatsby-cache-build
-              uses: actions/cache@v2
-              with:
-                  path: |
-                      .netlify
-                  key: ${{ runner.os }}-gatsby-cache-${{ steps.get-date.outputs.date }}
-            - name: Build for Netlify
-              run: npx netlify build --offline
-            - name: Upload build output artifact
-              uses: actions/upload-artifact@v3
-              with:
-                  name: netlify-gatsby-build
-                  path: |
-                      .netlify
-                      public
-                  retention-days: 1
-                  if-no-files-found: error
-
-    visual-regression-tests:
-        name: Visual regression tests
-        runs-on: ubuntu-latest
-        needs: build
-        env:
-            PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-        steps:
-            - name: Checkout code
-              uses: nschloe/action-cached-lfs-checkout@v1
-            - name: Setup Node.js
-              uses: ./.github/actions/setup-nodejs
-            - name: Download build output artifact
-              uses: actions/download-artifact@v3
-              with:
-                  name: netlify-gatsby-build
-            - run: npm run test:visual
-
     deploy-to-netlify:
         name: Deploy to Netlify
         runs-on: ubuntu-latest
         if: github.ref == 'refs/heads/main'
-        needs: [tests, end-to-end-tests, build, visual-regression-tests]
+        needs: [tests]
         env:
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
             NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-            GATSBY_GITHUB_API_BASE_URL: ${{ secrets.GATSBY_GITHUB_API_BASE_URL }}
-            GATSBY_GITHUB_API_TOKEN: ${{ secrets.GATSBY_GITHUB_API_TOKEN }}
-            GATSBY_GITHUB_LOGIN: ${{ secrets.GATSBY_GITHUB_LOGIN }}
+            GITHUB_API_BASE_URL: ${{ secrets.GITHUB_API_BASE_URL }}
+            GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
+            GITHUB_LOGIN: ${{ secrets.GITHUB_LOGIN }}
             SENTRY_DSN: https://729589b3d42c439a88526cacc651f50b@o207383.ingest.sentry.io/6254281
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
             - name: Setup Node.js
               uses: ./.github/actions/setup-nodejs
-            - name: Download build output artifact
-              uses: actions/download-artifact@v3
-              with:
-                  name: netlify-gatsby-build
             - name: Deploy to Netlify
               id: netlify-production
-              run: npx netlify deploy --build --skip-functions-cache --message "Deploy from GitHub Actions" --prod
+              run: npx netlify deploy --build --message "Deploy from GitHub Actions" --prod
 
     coverage:
         name: Upload code coverage
