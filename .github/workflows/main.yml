@@ -2,6 +2,10 @@ name: Main
 
 on: [push]
 
+env:
+    GATSBY_CONCURRENT_DOWNLOAD: 15
+    GATSBY_CPU_COUNT: 1
+
 jobs:
     tests:
         name: Tests
@@ -19,6 +23,8 @@ jobs:
               run: npm run compile
             - name: Run unit tests
               run: npm run test:unit:coverage
+            - name: Run test build
+              run: npx netlify build --offline
             - name: Upload compiled sources artifact
               uses: actions/upload-artifact@v3
               with:
