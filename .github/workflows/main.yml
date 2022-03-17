@@ -4,7 +4,6 @@ on: [push]
 
 env:
     GATSBY_CONCURRENT_DOWNLOAD: 15
-    GATSBY_CPU_COUNT: 1
 
 jobs:
     tests:
