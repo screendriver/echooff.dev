@@ -2,9 +2,6 @@ name: Main
 
 on: [push]
 
-env:
-    GATSBY_CONCURRENT_DOWNLOAD: 15
-
 jobs:
     tests:
         name: Tests
