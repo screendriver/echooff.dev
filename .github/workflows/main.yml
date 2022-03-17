@@ -23,8 +23,7 @@ jobs:
               uses: actions/upload-artifact@v3
               with:
                   name: compiled-sources
-                  path: |
-                      target/src/
+                  path: target/src/
                   retention-days: 1
                   if-no-files-found: error
             - name: Upload code coverage artifact
@@ -56,6 +55,7 @@ jobs:
               uses: actions/download-artifact@v3
               with:
                   name: compiled-sources
+                  path: target/src/
             - name: Deploy to Netlify
               run: npx netlify deploy --build --message "Deploy from GitHub Actions" --prod
 
@@ -69,6 +69,7 @@ jobs:
               uses: actions/download-artifact@v3
               with:
                   name: code-coverage
+                  path: target/coverage
             - name: Upload code coverage
               uses: codecov/codecov-action@v2
               with:
