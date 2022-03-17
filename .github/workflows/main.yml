@@ -35,9 +35,9 @@ jobs:
         env:
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
             NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-            GITHUB_API_BASE_URL: ${{ secrets.GITHUB_API_BASE_URL }}
-            GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
-            GITHUB_LOGIN: ${{ secrets.GITHUB_LOGIN }}
+            GIT_HUB_API_BASE_URL: ${{ secrets.GIT_HUB_API_BASE_URL }}
+            GIT_HUB_API_TOKEN: ${{ secrets.GIT_HUB_API_TOKEN }}
+            GIT_HUB_LOGIN: ${{ secrets.GIT_HUB_LOGIN }}
             SENTRY_DSN: https://729589b3d42c439a88526cacc651f50b@o207383.ingest.sentry.io/6254281
         steps:
             - name: Checkout code

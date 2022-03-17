@@ -5,9 +5,9 @@ exports.onCreateDevServer = async ({ reporter }) => {
 
     serverResult.match({
         Ok(address) {
-            process.env.GITHUB_API_BASE_URL = address;
-            process.env.GITHUB_LOGIN = 'foo';
-            process.env.GITHUB_API_TOKEN = 'test-token';
+            process.env.GIT_HUB_API_BASE_URL = address;
+            process.env.GIT_HUB_LOGIN = 'foo';
+            process.env.GIT_HUB_API_TOKEN = 'test-token';
             process.env.GATSBY_CONTACT_FORM_URL = `${address}/contact-form`;
 
             reporter.info(`Static server listening on ${address}`);
