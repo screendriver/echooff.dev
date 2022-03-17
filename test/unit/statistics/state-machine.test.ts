@@ -3,7 +3,7 @@ import { fake } from 'sinon';
 import { Factory } from 'fishery';
 import { interpret, Interpreter } from 'xstate';
 import type KyInterface from 'ky';
-import { just, nothing } from 'true-myth/maybe';
+import { Maybe } from 'true-myth';
 import { setImmediate } from 'timers/promises';
 import {
     createStatisticsStateMachine,
@@ -66,8 +66,8 @@ test('initial context', (t) => {
     const statisticsStateService = createStatisticsStateService();
 
     t.deepEqual(statisticsStateService.initialState.context, {
-        gitHubStatistics: nothing<GitHubStatistics>(),
-        yearsOfExperience: just(20),
+        gitHubStatistics: Maybe.nothing<GitHubStatistics>(),
+        yearsOfExperience: Maybe.just(20),
     });
 });
 
@@ -98,7 +98,7 @@ test('sets "context.gitHubStatistics" after loading GitHub statistics', async (t
     await setImmediate();
 
     t.deepEqual(statisticsStateService.state.context, {
-        gitHubStatistics: just({
+        gitHubStatistics: Maybe.just({
             user: {
                 repositories: {
                     totalCount: 7,
@@ -108,7 +108,7 @@ test('sets "context.gitHubStatistics" after loading GitHub statistics', async (t
                 },
             },
         }),
-        yearsOfExperience: just(20),
+        yearsOfExperience: Maybe.just(20),
     });
 });
 
@@ -159,7 +159,7 @@ test('transit from "loading" to "failed" when fetching of GitHub statistics retu
     await setImmediate();
 
     t.true(statisticsStateService.state.matches('failed'));
-    t.deepEqual(statisticsStateService.state.context.gitHubStatistics, nothing<GitHubStatistics>());
+    t.deepEqual(statisticsStateService.state.context.gitHubStatistics, Maybe.nothing<GitHubStatistics>());
 });
 
 test('reports the occurred error when fetching of GitHub statistics failed', async (t) => {
