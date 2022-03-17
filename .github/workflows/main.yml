@@ -45,7 +45,6 @@ jobs:
             - name: Setup Node.js
               uses: ./.github/actions/setup-nodejs
             - name: Deploy to Netlify
-              id: netlify-production
               run: npx netlify deploy --build --message "Deploy from GitHub Actions" --prod
 
     coverage:
