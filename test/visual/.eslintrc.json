@@ -1,7 +1,0 @@
-{
-    "extends": ["plugin:testcafe-community/recommended"],
-    "plugins": ["testcafe-community"],
-    "rules": {
-        "@typescript-eslint/no-unsafe-call": "off"
-    }
-}

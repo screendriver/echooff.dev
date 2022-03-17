@@ -3,7 +3,7 @@ import React from 'react';
 import { create, ReactTestRenderer } from 'react-test-renderer';
 import { Factory } from 'fishery';
 import { stub } from 'sinon';
-import { just } from 'true-myth/maybe';
+import { Maybe } from 'true-myth';
 import { FiAlertTriangle } from 'react-icons/fi';
 import { GitHubStars } from '../../../src/statistics/GitHubStars';
 import { StatisticsStateMachineState } from '../../../src/statistics/state-machine';
@@ -12,7 +12,7 @@ import { LoadingSpinner } from '../../../src/statistics/LoadingSpinner';
 const statisticsStateMachineStateFactory = Factory.define<StatisticsStateMachineState>(() => {
     return {
         context: {
-            gitHubStatistics: just({
+            gitHubStatistics: Maybe.just({
                 user: {
                     starredRepositories: {
                         totalCount: 42,

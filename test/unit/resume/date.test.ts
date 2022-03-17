@@ -1,4 +1,5 @@
 import test from 'ava';
+import assert from 'assert';
 import { formatSinceDate } from '../../../src/resume/date';
 
 interface Input {
@@ -9,7 +10,7 @@ interface Input {
 const testErrMacro = test.macro<[Input, string]>((t, input, expected) => {
     const formattedDateResult = formatSinceDate(input.since, input.onlyYear);
 
-    t.true(formattedDateResult.isErr, 'Result is not an Err');
+    assert(formattedDateResult.isErr(), 'Result is not an Err');
     t.is(formattedDateResult.error, expected);
 });
 
@@ -44,7 +45,7 @@ test(
 const testOkMacro = test.macro<[Input, string]>((t, input, expected) => {
     const formattedDateResult = formatSinceDate(input.since, input.onlyYear);
 
-    t.true(formattedDateResult.isOk, 'Result is not an Ok');
+    assert(formattedDateResult.isOk(), 'Result is not an Ok');
     t.is(formattedDateResult.value, expected);
 });
 
