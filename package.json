@@ -98,7 +98,6 @@
         "testcafe": "1.18.4",
         "testcafe-browser-provider-browserstack": "1.13.1",
         "ts-node": "10.7.0",
-        "ts-node-dev": "1.1.8",
         "typescript": "4.6.2",
         "wait-on": "6.0.1"
     },
