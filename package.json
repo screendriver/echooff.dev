@@ -19,8 +19,7 @@
         "test:e2e:ci": "testcafe 'browserstack:chrome:Windows 11','browserstack:firefox:Windows 11','browserstack:safari:OS X Monterey' test/e2e/",
         "test:visual": "percy exec -- testcafe chrome:headless test/visual/",
         "test:unit": "ava",
-        "test:unit:coverage": "c8 ava",
-        "release": "standard-version"
+        "test:unit:coverage": "c8 ava"
     },
     "dependencies": {
         "@fontsource/jetbrains-mono": "4.5.3",
