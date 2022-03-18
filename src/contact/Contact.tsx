@@ -1,9 +1,8 @@
 import { useMachine } from '@xstate/react';
 import React, { Fragment, FunctionComponent } from 'react';
 import { FiGithub, FiLinkedin, FiMail, FiMapPin, FiMessageSquare, FiTwitter } from 'react-icons/fi';
-import { Interpreter } from 'xstate';
-import { ContactMachineEvent, ContactStateMachine, ContactStateMachineState, ContactTypestate } from './state-machine';
-import { ContactStateMachineContext } from './state-machine-schema';
+import { InterpreterFrom } from 'xstate';
+import { ContactStateMachine, ContactStateMachineState } from './state-machine';
 
 interface ContactProps {
     readonly contactStateMachine: ContactStateMachine;
@@ -21,10 +20,7 @@ function renderFormSentMessage(): JSX.Element {
     );
 }
 
-function renderForm(
-    state: ContactStateMachineState,
-    send: Interpreter<ContactStateMachineContext, any, ContactMachineEvent, ContactTypestate>['send'],
-): JSX.Element {
+function renderForm(state: ContactStateMachineState, send: InterpreterFrom<ContactStateMachine>['send']): JSX.Element {
     return (
         <Fragment>
             <h3 className="col-span-2">Leave me a message</h3>
@@ -110,7 +106,7 @@ function renderForm(
 
 function renderChildren(
     state: ContactStateMachineState,
-    send: Interpreter<ContactStateMachineContext, any, ContactMachineEvent, ContactTypestate>['send'],
+    send: InterpreterFrom<ContactStateMachine>['send'],
 ): JSX.Element {
     if (state.matches('sendingFailed')) {
         return renderSendingFailed();
@@ -142,7 +138,7 @@ export const Contact: FunctionComponent<ContactProps> = (props) => {
                     <FiMessageSquare size={23} />
                     <p>Threema</p>
                 </a>
-                {renderChildren(state, send)}
+                {renderChildren(state as ContactStateMachineState, send)}
                 <div className="col-span-2 flex flex-row justify-between w-72 my-6">
                     <a href="https://twitter.com/CallistoShip" title="Twitter">
                         <FiTwitter size={32} />

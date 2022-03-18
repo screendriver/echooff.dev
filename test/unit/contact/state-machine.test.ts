@@ -1,6 +1,15 @@
 import test from 'ava';
 import { fake } from 'sinon';
-import { interpret, Interpreter, MachineOptions } from 'xstate';
+import {
+    BaseActionObject,
+    interpret,
+    Interpreter,
+    MachineOptions,
+    ResolveTypegenMeta,
+    ServiceMap,
+    StateSchema,
+    TypegenDisabled,
+} from 'xstate';
 import type KyInterface from 'ky';
 import { setImmediate } from 'timers/promises';
 import { Factory } from 'fishery';
@@ -22,7 +31,13 @@ interface Overrides {
 
 function createContactStateService(
     overrides: Overrides = {},
-): Interpreter<ContactStateMachineContext, any, ContactMachineEvent, ContactTypestate> {
+): Interpreter<
+    ContactStateMachineContext,
+    StateSchema<ContactStateMachineContext>,
+    ContactMachineEvent,
+    ContactTypestate,
+    ResolveTypegenMeta<TypegenDisabled, ContactMachineEvent, BaseActionObject, ServiceMap>
+> {
     const ky = {
         post: fake.resolves(undefined),
     } as unknown as typeof KyInterface;
@@ -34,6 +49,7 @@ function createContactStateService(
         errorReporter,
         ...overrides,
     }).withConfig(overrides.config ?? {});
+
     return interpret(contactStateMachine).start();
 }
 

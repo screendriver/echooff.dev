@@ -1,7 +1,15 @@
 import test from 'ava';
 import { fake } from 'sinon';
 import { Factory } from 'fishery';
-import { interpret, Interpreter } from 'xstate';
+import {
+    BaseActionObject,
+    interpret,
+    Interpreter,
+    ResolveTypegenMeta,
+    ServiceMap,
+    StateSchema,
+    TypegenDisabled,
+} from 'xstate';
 import type KyInterface from 'ky';
 import { Maybe } from 'true-myth';
 import { setImmediate } from 'timers/promises';
@@ -50,7 +58,13 @@ function createStatisticsMachineDependencies(
 
 function createStatisticsStateService(
     overrides: Partial<StatisticsMachineDependencies> = {},
-): Interpreter<StatisticsMachineContext, any, StatisticsMachineEvent, StatisticsTypestate> {
+): Interpreter<
+    StatisticsMachineContext,
+    StateSchema<StatisticsMachineContext>,
+    StatisticsMachineEvent,
+    StatisticsTypestate,
+    ResolveTypegenMeta<TypegenDisabled, StatisticsMachineEvent, BaseActionObject, ServiceMap>
+> {
     const dependencies = createStatisticsMachineDependencies(overrides);
     const statisticsStateMachine = createStatisticsStateMachine(dependencies);
     return interpret(statisticsStateMachine).start();
