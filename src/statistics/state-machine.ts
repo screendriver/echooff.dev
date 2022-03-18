@@ -1,4 +1,16 @@
-import { createMachine, assign, StateMachine, DoneInvokeEvent, State, ErrorPlatformEvent } from 'xstate';
+import {
+    createMachine,
+    assign,
+    StateMachine,
+    DoneInvokeEvent,
+    State,
+    ErrorPlatformEvent,
+    StateSchema,
+    BaseActionObject,
+    ServiceMap,
+    ResolveTypegenMeta,
+    TypegenDisabled,
+} from 'xstate';
 import { Maybe } from 'true-myth';
 import { Just, Nothing } from 'true-myth/maybe';
 import type KyInterface from 'ky';
@@ -50,20 +62,30 @@ export interface StatisticsMachineDependencies {
 
 export type StatisticsStateMachine = StateMachine<
     StatisticsMachineContext,
-    any,
+    StateSchema<StatisticsMachineContext>,
     StatisticsMachineEvent,
-    StatisticsTypestate
+    StatisticsTypestate,
+    BaseActionObject,
+    ServiceMap,
+    ResolveTypegenMeta<TypegenDisabled, StatisticsMachineEvent, BaseActionObject, ServiceMap>
 >;
 
 export type StatisticsStateMachineState = State<
     StatisticsMachineContext,
     StatisticsMachineEvent,
-    any,
-    StatisticsTypestate
+    StateSchema<StatisticsMachineContext>,
+    StatisticsTypestate,
+    ResolveTypegenMeta<TypegenDisabled, StatisticsMachineEvent, BaseActionObject, ServiceMap>
 >;
 
 export function createStatisticsStateMachine(dependencies: StatisticsMachineDependencies): StatisticsStateMachine {
-    return createMachine<StatisticsMachineContext, StatisticsMachineEvent, StatisticsTypestate>(
+    return createMachine<
+        StatisticsMachineContext,
+        StatisticsMachineEvent,
+        StatisticsTypestate,
+        ServiceMap,
+        TypegenDisabled
+    >(
         {
             id: 'statistics',
             initial: 'idle',
@@ -127,5 +149,5 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
                 },
             },
         },
-    );
+    ) as StatisticsStateMachine;
 }

@@ -1,4 +1,15 @@
-import { createMachine, assign, StateMachine, State, ErrorPlatformEvent } from 'xstate';
+import {
+    createMachine,
+    assign,
+    StateMachine,
+    State,
+    ErrorPlatformEvent,
+    StateSchema,
+    BaseActionObject,
+    ServiceMap,
+    ResolveTypegenMeta,
+    TypegenDisabled,
+} from 'xstate';
 import type KyInterface from 'ky';
 import { ContactStateMachineContext, contactStateMachineContextSchema } from './state-machine-schema';
 import { ErrorReporter } from '../error-reporter/reporter';
@@ -24,9 +35,23 @@ export type ContactTypestate =
     | { value: 'sendingFailed'; context: ContactStateMachineContext }
     | { value: 'sent'; context: ContactStateMachineContext };
 
-export type ContactStateMachine = StateMachine<ContactStateMachineContext, any, ContactMachineEvent, ContactTypestate>;
+export type ContactStateMachine = StateMachine<
+    ContactStateMachineContext,
+    StateSchema<ContactStateMachineContext>,
+    ContactMachineEvent,
+    ContactTypestate,
+    BaseActionObject,
+    ServiceMap,
+    ResolveTypegenMeta<TypegenDisabled, ContactMachineEvent, BaseActionObject, ServiceMap>
+>;
 
-export type ContactStateMachineState = State<ContactStateMachineContext, ContactMachineEvent, any, ContactTypestate>;
+export type ContactStateMachineState = State<
+    ContactStateMachineContext,
+    ContactMachineEvent,
+    StateSchema<ContactStateMachineContext>,
+    ContactTypestate,
+    ResolveTypegenMeta<TypegenDisabled, ContactMachineEvent, BaseActionObject, ServiceMap>
+>;
 
 export interface ContactMachineDependencies {
     readonly ky: typeof KyInterface;
@@ -35,7 +60,13 @@ export interface ContactMachineDependencies {
 }
 
 export function createContactStateMachine(dependencies: ContactMachineDependencies): ContactStateMachine {
-    return createMachine<ContactStateMachineContext, ContactMachineEvent, ContactTypestate>(
+    return createMachine<
+        ContactStateMachineContext,
+        ContactMachineEvent,
+        ContactTypestate,
+        ServiceMap,
+        TypegenDisabled
+    >(
         {
             id: ' contact',
             initial: 'idle',
@@ -138,5 +169,5 @@ export function createContactStateMachine(dependencies: ContactMachineDependenci
                 },
             },
         },
-    );
+    ) as ContactStateMachine;
 }
