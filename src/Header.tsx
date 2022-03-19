@@ -15,7 +15,6 @@ export const Header: FunctionComponent<HeaderProps> = (props) => {
                 <GatsbyImage
                     alt="Christian Rackerseder"
                     image={headerImageValue}
-                    loading="eager"
                     as="figure"
                     className="bg-gradient-to-b from-dracula-cyan h-4/5"
                     imgClassName="mix-blend-luminosity"
