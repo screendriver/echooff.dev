@@ -61,7 +61,7 @@ export const query = graphql`
 
 const IndexPage: FunctionComponent<IndexPageProps> = ({ data }) => {
     const { author, jobTitle, keywords, favicon } = data.site.siteMetadata;
-    const currentTimestamp = new Date();
+    const currentTimestamp = process.env.NODE_ENV === 'production' ? new Date() : new Date(2022, 2, 23);
     const errorReporter = createErrorReporter({ sentry: Sentry });
     const gitHubStateMachine = createStatisticsStateMachine({ ky, currentTimestamp, errorReporter });
     const contactFormActionUrl = process.env.GATSBY_CONTACT_FORM_URL ?? '';

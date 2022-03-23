@@ -11,7 +11,7 @@ export const YearsInBusiness: FunctionComponent<YearsInBusinessProps> = (props) 
     return props.state.context.yearsOfExperience.mapOr(null, (yearsOfExperience) => {
         return (
             <Figure description="Experience">
-                <Cite>{yearsOfExperience} yrs</Cite>
+                <Cite aria-label="Years of experience">{yearsOfExperience} yrs</Cite>
             </Figure>
         );
     });

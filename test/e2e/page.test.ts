@@ -7,3 +7,11 @@ test('page title', async ({ page }) => {
 
     expect(title).toBe('Christian Rackerseder - Full-Stack JavaScript Engineer');
 });
+
+test('Years of experience', async ({ page }) => {
+    await page.goto('/');
+    const element = page.locator('[aria-label="Years of experience"]');
+    const text = await element.textContent();
+
+    expect(text).toBe('21 yrs');
+});

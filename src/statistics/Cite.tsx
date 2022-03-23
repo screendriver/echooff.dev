@@ -1,5 +1,13 @@
 import React, { FunctionComponent } from 'react';
 
-export const Cite: FunctionComponent = (props) => {
-    return <cite className="text-lg text-dracula-green font-bold not-italic mt-2">{props.children}</cite>;
+interface CiteProps {
+    'aria-label'?: string;
+}
+
+export const Cite: FunctionComponent<CiteProps> = (props) => {
+    return (
+        <cite aria-label={props['aria-label']} className="text-lg text-dracula-green font-bold not-italic mt-2">
+            {props.children}
+        </cite>
+    );
 };
