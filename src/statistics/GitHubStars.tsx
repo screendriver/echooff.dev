@@ -20,7 +20,7 @@ export const GitHubStars: FunctionComponent<GitHubStarsProps> = (props) => {
 
     return (
         <Figure description="GitHub Stars">
-            <Cite>{gitHubStars}</Cite>
+            <Cite aria-label="GitHub Stars">{gitHubStars}</Cite>
         </Figure>
     );
 };

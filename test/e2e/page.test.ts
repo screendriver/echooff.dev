@@ -23,3 +23,11 @@ test('GitHub Repos', async ({ page }) => {
 
     expect(text).toBe('66');
 });
+
+test('GitHub Stars', async ({ page }) => {
+    await page.goto('/');
+    const element = await page.waitForSelector('[aria-label="GitHub Stars"]');
+    const text = await element.textContent();
+
+    expect(text).toBe('736');
+});
