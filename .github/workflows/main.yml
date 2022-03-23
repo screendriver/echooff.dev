@@ -45,7 +45,7 @@ jobs:
             - name: Setup Node.js
               uses: ./.github/actions/setup-nodejs
             - name: Install Playwright
-              run: npx playwright install chrome firefox
+              run: npx playwright install chromium firefox
             - name: Run Playwright tests
               run: npm run test:e2e
 
