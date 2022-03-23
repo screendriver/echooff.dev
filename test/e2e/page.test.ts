@@ -15,3 +15,11 @@ test('Years of experience', async ({ page }) => {
 
     expect(text).toBe('21 yrs');
 });
+
+test('GitHub Repos', async ({ page }) => {
+    await page.goto('/');
+    const element = await page.waitForSelector('[aria-label="GitHub Repos"]');
+    const text = await element.textContent();
+
+    expect(text).toBe('66');
+});

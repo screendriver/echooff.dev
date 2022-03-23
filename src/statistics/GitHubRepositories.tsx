@@ -11,15 +11,17 @@ interface GitHubRepositoriesProps {
 
 export const GitHubRepositories: FunctionComponent<GitHubRepositoriesProps> = (props) => {
     const { state } = props;
+
     let gitHubRepositories: JSX.Element | number = <LoadingSpinner />;
     if (state.matches('loaded')) {
         gitHubRepositories = state.context.gitHubStatistics.value.user.repositories.totalCount;
     } else if (state.matches('failed')) {
         gitHubRepositories = <FiAlertTriangle />;
     }
+
     return (
         <Figure description="GitHub Repos">
-            <Cite>{gitHubRepositories}</Cite>
+            <Cite aria-label="GitHub Repos">{gitHubRepositories}</Cite>
         </Figure>
     );
 };
