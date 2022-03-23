@@ -7,9 +7,8 @@ import { createContactFormRoute } from './contact-form-route';
 import { createGraphQlRoute } from './graphql-route';
 
 export async function startStaticServer(): Promise<Result<string, string>> {
-    const fastify = createFastify({
-        logger: true,
-    });
+    const fastify = createFastify();
+
     try {
         await fastify.register(fastifyCors);
         await fastify.register(fastifyFormBody);
