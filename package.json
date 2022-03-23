@@ -21,7 +21,7 @@
         "@fontsource/jetbrains-mono": "4.5.3",
         "@fontsource/source-sans-pro": "4.5.4",
         "@octokit/graphql": "4.8.0",
-        "@sentry/gatsby": "6.19.1",
+        "@sentry/gatsby": "6.19.2",
         "@xstate/react": "2.0.1",
         "date-fns": "2.28.0",
         "gatsby": "4.7.2",
