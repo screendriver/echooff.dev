@@ -54,7 +54,6 @@ jobs:
     visual-regression-tests:
         name: Visual regression tests
         runs-on: ubuntu-latest
-        needs: tests
         env:
             PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
         steps:
@@ -62,11 +61,6 @@ jobs:
               uses: nschloe/action-cached-lfs-checkout@v1
             - name: Setup Node.js
               uses: ./.github/actions/setup-nodejs
-            - name: Download compiled sources artifact
-              uses: actions/download-artifact@v3
-              with:
-                  name: compiled-sources
-                  path: target/
             - name: Install Playwright
               run: npx playwright install chromium
             - name: Run visual regression tests
