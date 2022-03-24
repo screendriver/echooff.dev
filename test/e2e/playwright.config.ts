@@ -8,6 +8,7 @@ function isRunningInContinuousIntegration(): boolean {
 const config: PlaywrightTestConfig = {
     forbidOnly: isRunningInContinuousIntegration(),
     reporter: 'dot',
+    retries: 2,
     projects: [
         {
             name: 'Chromium',
