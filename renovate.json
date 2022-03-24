@@ -1,5 +1,5 @@
 {
-    "extends": ["config:base", ":semanticCommitsDisabled"],
+    "extends": ["config:base"],
     "labels": ["renovate"],
     "prConcurrentLimit": 5,
     "lockFileMaintenance": {
