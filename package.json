@@ -15,7 +15,8 @@
         "serve": "gatsby serve",
         "test:unit": "ava",
         "test:unit:coverage": "c8 ava",
-        "test:e2e": "concurrently --success first --kill-others \"npm run develop\" \"wait-on http://localhost:8000 && playwright test --config=test/e2e/playwright.config.ts\""
+        "test:e2e": "concurrently --success first --kill-others \"npm run develop\" \"wait-on http://localhost:8000 && playwright test --config=test/e2e/playwright.config.ts\"",
+        "test:visual-regression": "concurrently --success first --kill-others \"npm run develop\" \"wait-on http://localhost:8000 && percy exec -- node ./target/test/visual-regression/main.test.js/\""
     },
     "dependencies": {
         "@fontsource/jetbrains-mono": "4.5.3",
