@@ -4,10 +4,5 @@
     "reporters": ["html", "console", "badge"],
     "absolute": true,
     "gitignore": true,
-    "reportersOptions": {
-        "badge": {
-            "path": "./jscpd-badge.svg"
-        }
-    },
     "ignore": ["**/YetiSVG.tsx"]
 }
