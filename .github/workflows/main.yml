@@ -27,7 +27,6 @@ jobs:
                   name: compiled-sources
                   path: |
                       target/src/
-                      target/test/
                       !target/**/*.map
                   retention-days: 1
                   if-no-files-found: error
@@ -94,7 +93,7 @@ jobs:
               uses: actions/download-artifact@v3
               with:
                   name: compiled-sources
-                  path: target/
+                  path: target/src/
             - name: Deploy to Netlify
               run: npx netlify deploy --build --message "Deploy from GitHub Actions" --prod
 
