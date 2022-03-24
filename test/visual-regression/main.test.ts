@@ -6,6 +6,7 @@ async function run(): Promise<void> {
     const page = await browser.newPage();
     await page.goto('http://localhost:8000');
     await page.waitForSelector('header > figure > picture > img');
+    await page.waitForTimeout(5000);
 
     await percySnapshot(page, 'echooff.dev main');
 
