@@ -90,8 +90,5 @@
         "ts-node": "10.7.0",
         "typescript": "4.6.2",
         "wait-on": "6.0.1"
-    },
-    "overrides": {
-        "graphql-compose": "7.25.1"
     }
 }
