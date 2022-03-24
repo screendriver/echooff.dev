@@ -25,7 +25,9 @@ jobs:
               uses: actions/upload-artifact@v3
               with:
                   name: compiled-sources
-                  path: target/src/
+                  path: |
+                      target/src/
+                      target/test/
                   retention-days: 1
                   if-no-files-found: error
             - name: Upload code coverage artifact
@@ -49,11 +51,32 @@ jobs:
             - name: Run Playwright tests
               run: npm run test:e2e
 
+    visual-regression-tests:
+        name: Visual regression tests
+        runs-on: ubuntu-latest
+        needs: tests
+        env:
+            PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+        steps:
+            - name: Checkout code
+              uses: nschloe/action-cached-lfs-checkout@v1
+            - name: Setup Node.js
+              uses: ./.github/actions/setup-nodejs
+            - name: Download compiled sources artifact
+              uses: actions/download-artifact@v3
+              with:
+                  name: compiled-sources
+                  path: target/
+            - name: Install Playwright
+              run: npx playwright install chromium
+            - name: Run visual regression tests
+              run: npm run test:visual-regression
+
     deploy-to-netlify:
         name: Deploy to Netlify
         runs-on: ubuntu-latest
         if: github.ref == 'refs/heads/main'
-        needs: [tests, end-to-end-tests]
+        needs: [tests, end-to-end-tests, visual-regression-tests]
         env:
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
             NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
@@ -70,7 +93,7 @@ jobs:
               uses: actions/download-artifact@v3
               with:
                   name: compiled-sources
-                  path: target/src/
+                  path: target/
             - name: Deploy to Netlify
               run: npx netlify deploy --build --message "Deploy from GitHub Actions" --prod
 
