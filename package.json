@@ -15,7 +15,8 @@
         "serve": "gatsby serve",
         "test:unit": "ava",
         "test:unit:coverage": "c8 ava",
-        "test:e2e": "concurrently --success first --kill-others \"npm run develop\" \"wait-on http://localhost:8000 && playwright test --config=test/e2e/playwright.config.ts\""
+        "test:e2e": "concurrently --success first --kill-others \"npm run develop\" \"wait-on http://localhost:8000 && playwright test --config=test/e2e/playwright.config.ts\"",
+        "test:visual-regression": "concurrently --success first --kill-others \"npm run develop\" \"wait-on http://localhost:8000 && percy exec --config ./test/visual-regression/percy.config.json -- ts-node --transpileOnly ./test/visual-regression/main.test.ts/\""
     },
     "dependencies": {
         "@fontsource/jetbrains-mono": "4.5.3",
@@ -39,6 +40,7 @@
     "devDependencies": {
         "@netlify/plugin-gatsby": "2.1.4",
         "@percy/cli": "1.0.0-beta.70",
+        "@percy/playwright": "1.0.1",
         "@playwright/test": "1.20.1",
         "@types/common-tags": "1.8.1",
         "@types/gsap": "1.20.2",
