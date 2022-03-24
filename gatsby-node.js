@@ -1,6 +1,10 @@
 const { startStaticServer } = require('./target/src/static-server/static-server');
 
-exports.onCreateDevServer = async ({ reporter }) => {
+exports.onPostBootstrap = async ({ reporter }) => {
+    if (process.env.NODE_ENV === 'production') {
+        return;
+    }
+
     const serverResult = await startStaticServer();
 
     serverResult.match({
