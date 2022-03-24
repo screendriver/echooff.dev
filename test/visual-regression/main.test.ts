@@ -8,7 +8,7 @@ async function run(): Promise<void> {
     await page.waitForSelector('header > figure > picture > img');
     await page.waitForTimeout(5000);
 
-    await percySnapshot(page, 'echooff.dev main');
+    await percySnapshot(page, 'echooff.dev');
 
     await browser.close();
 }
