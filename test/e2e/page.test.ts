@@ -21,7 +21,7 @@ test('GitHub Repos', async ({ page }) => {
     const element = await page.waitForSelector('[aria-label="GitHub Repos"]');
     const text = await element.textContent();
 
-    expect(text).toBe('66');
+    expect(text).toBe('42');
 });
 
 test('GitHub Stars', async ({ page }) => {
@@ -29,5 +29,5 @@ test('GitHub Stars', async ({ page }) => {
     const element = await page.waitForSelector('[aria-label="GitHub Stars"]');
     const text = await element.textContent();
 
-    expect(text).toBe('736');
+    expect(text).toBe('101');
 });

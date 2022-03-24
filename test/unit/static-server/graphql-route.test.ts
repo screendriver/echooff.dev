@@ -18,8 +18,8 @@ test('returns an user with a total count of repositories and starred repositorie
     const expected = {
         data: {
             user: {
-                starredRepositories: { totalCount: 736 },
-                repositories: { totalCount: 66 },
+                starredRepositories: { totalCount: 101 },
+                repositories: { totalCount: 42 },
             },
         },
     };

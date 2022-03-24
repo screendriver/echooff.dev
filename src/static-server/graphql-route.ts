@@ -55,8 +55,8 @@ export function createGraphQlRoute(): RouteOptions {
                 .send({
                     data: {
                         user: {
-                            repositories: { totalCount: 66 },
-                            starredRepositories: { totalCount: 736 },
+                            repositories: { totalCount: 42 },
+                            starredRepositories: { totalCount: 101 },
                         },
                     },
                 });
