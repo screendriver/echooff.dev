@@ -28,6 +28,7 @@ jobs:
                   path: |
                       target/src/
                       target/test/
+                      !target/**/*.map
                   retention-days: 1
                   if-no-files-found: error
             - name: Upload code coverage artifact
