@@ -1,15 +1,13 @@
 import React, { FunctionComponent } from 'react';
-import { GatsbyImage, getImage, ImageDataLike } from 'gatsby-plugin-image';
-import { Maybe } from 'true-myth';
+import { GatsbyImage, getImage, IGatsbyImageData, ImageDataLike } from 'gatsby-plugin-image';
+import { of, mapOr } from 'true-myth/maybe';
 
 export interface HeaderProps {
     readonly headerImage: ImageDataLike;
 }
 
 export const Header: FunctionComponent<HeaderProps> = (props) => {
-    const headerImage = getImage(props.headerImage);
-
-    return Maybe.of(headerImage).mapOr(null, (headerImageValue) => {
+    const renderHeaderImage = mapOr<IGatsbyImageData, JSX.Element | null>(null, (headerImageValue) => {
         return (
             <header className="relative">
                 <GatsbyImage
@@ -41,4 +39,7 @@ export const Header: FunctionComponent<HeaderProps> = (props) => {
             </header>
         );
     });
+
+    const headerImage = of(getImage(props.headerImage));
+    return renderHeaderImage(headerImage);
 };

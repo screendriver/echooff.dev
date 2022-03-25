@@ -11,8 +11,7 @@ import {
     ResolveTypegenMeta,
     TypegenDisabled,
 } from 'xstate';
-import { Maybe } from 'true-myth';
-import { Just, Nothing } from 'true-myth/maybe';
+import { Maybe, Just, Nothing, nothing, just } from 'true-myth/maybe';
 import type KyInterface from 'ky';
 import { GitHubStatistics, gitHubStatisticsSchema } from './statistics-schema';
 import { ErrorReporter } from '../error-reporter/reporter';
@@ -90,8 +89,8 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
             id: 'statistics',
             initial: 'idle',
             context: {
-                gitHubStatistics: Maybe.nothing(),
-                yearsOfExperience: Maybe.nothing(),
+                gitHubStatistics: nothing(),
+                yearsOfExperience: nothing(),
             },
             states: {
                 idle: {
@@ -128,13 +127,13 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
                     yearsOfExperience(_context) {
                         const currentYear = dependencies.currentTimestamp.getFullYear();
                         const careerStartYear = 2001;
-                        return Maybe.just(currentYear - careerStartYear);
+                        return just(currentYear - careerStartYear);
                     },
                 }),
                 setFetchedGitHubStatistics: assign({
                     gitHubStatistics(_context, _event) {
                         const event = _event as DoneInvokeEvent<GitHubStatistics>;
-                        return Maybe.just(event.data);
+                        return just(event.data);
                     },
                 }),
                 reportFetchGitHubStatisticsError(_context, _event) {

@@ -2,14 +2,14 @@ import test from 'ava';
 import React from 'react';
 import { create, ReactTestRenderer } from 'react-test-renderer';
 import { Factory } from 'fishery';
-import { Maybe } from 'true-myth';
+import { just } from 'true-myth/maybe';
 import { YearsInBusiness } from '../../../src/statistics/YearsInBusiness';
 import { StatisticsStateMachineState } from '../../../src/statistics/state-machine';
 
 const statisticsStateMachineStateFactory = Factory.define<StatisticsStateMachineState>(() => {
     return {
         context: {
-            yearsOfExperience: Maybe.just(42),
+            yearsOfExperience: just(42),
         },
     } as StatisticsStateMachineState;
 });
