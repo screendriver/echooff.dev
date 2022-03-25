@@ -2,11 +2,10 @@ import getPort from 'get-port';
 import createFastify from 'fastify';
 import fastifyCors from 'fastify-cors';
 import fastifyFormBody from 'fastify-formbody';
-import { Result } from 'true-myth';
 import { createContactFormRoute } from './contact-form-route';
 import { createGraphQlRoute } from './graphql-route';
 
-export async function startStaticServer(): Promise<Result<string, string>> {
+export async function startStaticServer(): Promise<string> {
     const fastify = createFastify();
 
     try {
@@ -19,9 +18,9 @@ export async function startStaticServer(): Promise<Result<string, string>> {
         const availablePort = await getPort();
         const listeningAddress = await fastify.listen(availablePort);
 
-        return Result.ok(listeningAddress);
+        return listeningAddress;
     } catch (error: unknown) {
         fastify.log.error(error);
-        return Result.err('Failed to start static server');
+        throw error;
     }
 }
