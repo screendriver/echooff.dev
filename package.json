@@ -79,7 +79,7 @@
         "gatsby-source-graphql": "4.10.0",
         "gatsby-transformer-json": "4.10.0",
         "gatsby-transformer-sharp": "4.10.0",
-        "get-port": "5.1.1",
+        "get-port": "6.1.2",
         "jscpd": "3.4.5",
         "netlify-cli": "9.13.4",
         "postcss": "8.4.12",
