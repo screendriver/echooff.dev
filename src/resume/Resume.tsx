@@ -1,5 +1,6 @@
 import React, { FunctionComponent, ReactNode } from 'react';
 import { FiFileText } from 'react-icons/fi';
+import { mapOr } from 'true-myth/result';
 import { formatSinceDate } from './date';
 
 export interface ResumeData {
@@ -14,8 +15,8 @@ interface ResumeProps {
     readonly resume: readonly ResumeData[];
 }
 
-function renderJob(resume: ResumeData): ReactNode {
-    return formatSinceDate(resume.since, resume.showOnlyYear).mapOr(null, (since) => {
+function renderResume(resume: ResumeData): ReactNode {
+    const render = mapOr<string, ReactNode | null, string>(null, (since) => {
         return (
             <li
                 key={since}
@@ -31,6 +32,8 @@ function renderJob(resume: ResumeData): ReactNode {
             </li>
         );
     });
+
+    return render(formatSinceDate(resume.since, resume.showOnlyYear));
 }
 
 export const Resume: FunctionComponent<ResumeProps> = (props) => {
@@ -41,7 +44,7 @@ export const Resume: FunctionComponent<ResumeProps> = (props) => {
                 <FiFileText className="text-dracula-light w-6 h-6 lg:w-9 lg:h-9" />
             </h3>
             <hr className="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg" />
-            <ol className="w-4/5 ml-1/12 sm:px-4 sm:pt-4">{props.resume.map(renderJob)}</ol>
+            <ol className="w-4/5 ml-1/12 sm:px-4 sm:pt-4">{props.resume.map(renderResume)}</ol>
         </section>
     );
 };
