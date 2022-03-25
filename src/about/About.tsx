@@ -26,7 +26,6 @@ export const About: FunctionComponent = () => {
                         className="rounded-full border-4 border-dracula-blue mt-12 mb-10 md:mb-3 lg:mb-0"
                         alt="My face"
                         src="../img/about.jpg"
-                        loading="eager"
                         width={150}
                         height={150}
                         quality={75}
