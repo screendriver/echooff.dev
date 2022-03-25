@@ -5,19 +5,14 @@ exports.onPostBootstrap = async ({ reporter }) => {
         return;
     }
 
-    const serverResult = await startStaticServer();
-
-    serverResult.match({
-        Ok(address) {
-            process.env.GIT_HUB_API_BASE_URL = address;
-            process.env.GIT_HUB_LOGIN = 'foo';
-            process.env.GIT_HUB_API_TOKEN = 'test-token';
-            process.env.GATSBY_CONTACT_FORM_URL = `${address}/contact-form`;
-
-            reporter.info(`Static server listening on ${address}`);
-        },
-        Err() {
-            reporter.error('Static server is not listening');
-        },
-    });
+    try {
+        const listeningAddress = await startStaticServer();
+        process.env.GIT_HUB_API_BASE_URL = listeningAddress;
+        process.env.GIT_HUB_LOGIN = 'foo';
+        process.env.GIT_HUB_API_TOKEN = 'test-token';
+        process.env.GATSBY_CONTACT_FORM_URL = `${listeningAddress}/contact-form`;
+        reporter.info(`Static server listening on ${listeningAddress}`);
+    } catch {
+        reporter.error('Static server is not listening');
+    }
 };
