@@ -10,7 +10,7 @@
         "lint": "eslint --ext ts,tsx src test",
         "copy:paste:detector": "jscpd src test typings",
         "compile": "tsc",
-        "develop": "GATSBY_GRAPHQL_IDE=playground npm run compile && gatsby develop",
+        "develop": "GATSBY_GRAPHQL_IDE=playground gatsby develop",
         "build": "gatsby build",
         "serve": "gatsby serve",
         "test:unit": "ava",
