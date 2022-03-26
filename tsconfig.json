@@ -16,7 +16,8 @@
         "incremental": true,
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "skipLibCheck": true
     },
     "include": ["src/**/*", "test/**/*"]
 }
