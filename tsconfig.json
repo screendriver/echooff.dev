@@ -18,6 +18,5 @@
         "esModuleInterop": true,
         "resolveJsonModule": true
     },
-    "include": ["src/**/*", "test/**/*"],
-    "exclude": ["node_modules", "test/e2e", "test/visual"]
+    "include": ["src/**/*", "test/**/*"]
 }
