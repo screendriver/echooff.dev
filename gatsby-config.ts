@@ -1,4 +1,7 @@
-module.exports = {
+import type { GatsbyConfig } from 'gatsby';
+import path from 'path';
+
+const config: GatsbyConfig = {
     siteMetadata: {
         author: 'Christian Rackerseder',
         jobTitle: 'Full-Stack JavaScript Engineer',
@@ -26,7 +29,7 @@ module.exports = {
             resolve: 'gatsby-source-filesystem',
             options: {
                 name: 'src',
-                path: `${__dirname}/src/`,
+                path: path.resolve('src/'),
             },
         },
         'gatsby-plugin-netlify',
@@ -38,3 +41,5 @@ module.exports = {
         },
     ],
 };
+
+export default config;

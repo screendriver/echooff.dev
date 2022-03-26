@@ -1,6 +1,7 @@
-const { startStaticServer } = require('./target/src/static-server/static-server');
+import type { GatsbyNode } from 'gatsby';
+import { startStaticServer } from './src/static-server/static-server';
 
-exports.onPostBootstrap = async ({ reporter }) => {
+export const onPostBootstrap: GatsbyNode['onPostBootstrap'] = async ({ reporter }) => {
     if (process.env.NODE_ENV === 'production') {
         return;
     }
