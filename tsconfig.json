@@ -19,5 +19,6 @@
         "resolveJsonModule": true,
         "skipLibCheck": true
     },
-    "include": ["src/**/*", "test/**/*"]
+    "include": ["src/**/*", "test/**/*"],
+    "files": ["gatsby-browser.tsx", "gatsby-config.ts", "gatsby-node.ts"]
 }
