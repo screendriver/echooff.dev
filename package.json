@@ -81,7 +81,7 @@
         "gatsby-transformer-sharp": "4.10.0",
         "get-port": "5.1.1",
         "jscpd": "3.4.5",
-        "netlify-cli": "9.15.0",
+        "netlify-cli": "9.16.0",
         "postcss": "8.4.12",
         "prettier": "2.6.1",
         "react-test-renderer": "17.0.2",
