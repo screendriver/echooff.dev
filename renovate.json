@@ -1,7 +1,6 @@
 {
     "extends": ["config:base", ":semanticCommitsDisabled"],
     "labels": ["renovate"],
-    "prConcurrentLimit": 5,
     "lockFileMaintenance": {
         "enabled": true,
         "automerge": true
