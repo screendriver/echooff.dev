@@ -1,4 +1,4 @@
-import { chromium } from 'playwright';
+import { chromium } from '@playwright/test';
 import percySnapshot from '@percy/playwright';
 
 async function run(): Promise<void> {
