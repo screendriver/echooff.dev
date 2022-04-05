@@ -22,9 +22,3 @@
   from = "/api/*"
   to = "/.netlify/functions/__api"
   status = 200
-
-# https://github.com/netlify/netlify-plugin-gatsby/issues/219#issuecomment-1018321552
-[[redirects]]
-  from = "/*"
-  to = "/404.html"
-  status = 404
