@@ -17,8 +17,3 @@
   to = "https://www.echooff.dev/:splat"
   status = 301
   force = true
-
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/__api"
-  status = 200
