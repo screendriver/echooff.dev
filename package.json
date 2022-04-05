@@ -64,7 +64,7 @@
         "eslint-plugin-ava": "13.2.0",
         "eslint-plugin-prettier": "4.0.0",
         "eslint-plugin-react": "7.29.4",
-        "fastify": "3.27.4",
+        "fastify": "3.28.0",
         "fastify-cors": "6.0.3",
         "fastify-formbody": "5.2.0",
         "fishery": "2.2.2",
