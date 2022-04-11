@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 
+const statisticsApiUrl = 'http://localhost:8000/api/github/statistics';
+
 test('page title', async ({ page }) => {
     await page.goto('/');
     await page.waitForSelector('header > figure > picture > img');
@@ -18,6 +20,7 @@ test('Years of experience', async ({ page }) => {
 
 test('GitHub Repos', async ({ page }) => {
     await page.goto('/');
+    await page.waitForResponse(statisticsApiUrl);
     const element = await page.waitForSelector('[aria-label="GitHub Repos"]');
     const text = await element.textContent();
 
@@ -26,6 +29,7 @@ test('GitHub Repos', async ({ page }) => {
 
 test('GitHub Stars', async ({ page }) => {
     await page.goto('/');
+    await page.waitForResponse(statisticsApiUrl);
     const element = await page.waitForSelector('[aria-label="GitHub Stars"]');
     const text = await element.textContent();
 
