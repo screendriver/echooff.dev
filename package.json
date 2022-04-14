@@ -39,7 +39,7 @@
     },
     "devDependencies": {
         "@netlify/plugin-gatsby": "3.0.0",
-        "@percy/cli": "1.0.7",
+        "@percy/cli": "1.0.8",
         "@percy/playwright": "1.0.2",
         "@playwright/test": "1.21.0",
         "@types/common-tags": "1.8.1",
