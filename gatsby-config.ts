@@ -19,6 +19,7 @@ const config: GatsbyConfig = {
             resolve: 'gatsby-plugin-sharp',
             options: {
                 defaults: {
+                    formats: ['auto', 'webp', 'avif'],
                     placeholder: 'blurred',
                 },
             },
