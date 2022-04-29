@@ -33,7 +33,7 @@
         "react-helmet": "6.1.0",
         "react-icons": "4.3.1",
         "tailwindcss": "3.0.24",
-        "true-myth": "5.2.0",
+        "true-myth": "5.3.1",
         "xstate": "4.31.0",
         "zod": "3.14.4"
     },
