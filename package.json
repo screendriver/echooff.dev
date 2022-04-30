@@ -82,7 +82,7 @@
         "get-port": "5.1.1",
         "jscpd": "3.4.5",
         "netlify-cli": "10.1.0",
-        "postcss": "8.4.12",
+        "postcss": "8.4.13",
         "prettier": "2.6.2",
         "react-test-renderer": "18.1.0",
         "sinon": "13.0.2",
