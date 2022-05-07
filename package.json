@@ -38,6 +38,7 @@
         "zod": "3.15.1"
     },
     "devDependencies": {
+        "@fastify/cors": "7.0.0",
         "@netlify/plugin-gatsby": "3.0.0",
         "@percy/cli": "1.1.2",
         "@percy/playwright": "1.0.2",
@@ -65,7 +66,6 @@
         "eslint-plugin-prettier": "4.0.0",
         "eslint-plugin-react": "7.29.4",
         "fastify": "3.29.0",
-        "fastify-cors": "6.1.0",
         "fastify-formbody": "5.2.0",
         "fishery": "2.2.2",
         "gatsby-plugin-image": "2.13.0",
