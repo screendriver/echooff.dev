@@ -1,7 +1,7 @@
 import getPort from 'get-port';
 import createFastify from 'fastify';
-import fastifyCors from 'fastify-cors';
-import fastifyFormBody from 'fastify-formbody';
+import fastifyCors from '@fastify/cors';
+import fastifyFormBody from '@fastify/formbody';
 import { createContactFormRoute } from './contact-form-route';
 import { createGraphQlRoute } from './graphql-route';
 
