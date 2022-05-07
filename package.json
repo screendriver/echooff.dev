@@ -65,7 +65,7 @@
         "eslint-plugin-prettier": "4.0.0",
         "eslint-plugin-react": "7.29.4",
         "fastify": "3.29.0",
-        "fastify-cors": "6.0.3",
+        "fastify-cors": "6.1.0",
         "fastify-formbody": "5.2.0",
         "fishery": "2.2.2",
         "gatsby-plugin-image": "2.13.0",
