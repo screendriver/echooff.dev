@@ -65,7 +65,7 @@
         "eslint-config-prettier": "8.5.0",
         "eslint-plugin-ava": "13.2.0",
         "eslint-plugin-prettier": "4.0.0",
-        "eslint-plugin-react": "7.29.4",
+        "eslint-plugin-react": "7.30.0",
         "fastify": "3.29.0",
         "fishery": "2.2.2",
         "gatsby-plugin-image": "2.13.0",
