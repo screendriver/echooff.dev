@@ -43,7 +43,7 @@
         "@netlify/plugin-gatsby": "3.1.0",
         "@percy/cli": "1.2.1",
         "@percy/playwright": "1.0.3",
-        "@playwright/test": "1.21.1",
+        "@playwright/test": "1.22.2",
         "@types/common-tags": "1.8.1",
         "@types/gsap": "1.20.2",
         "@types/node": "17.0.17",
