@@ -42,7 +42,7 @@
         "@fastify/formbody": "6.0.1",
         "@netlify/plugin-gatsby": "3.1.0",
         "@percy/cli": "1.2.1",
-        "@percy/playwright": "1.0.3",
+        "@percy/playwright": "1.0.4",
         "@playwright/test": "1.22.2",
         "@types/common-tags": "1.8.1",
         "@types/gsap": "1.20.2",
