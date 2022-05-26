@@ -69,7 +69,7 @@
         "fastify": "3.29.0",
         "fishery": "2.2.2",
         "gatsby-plugin-image": "2.13.0",
-        "gatsby-plugin-netlify": "4.4.0",
+        "gatsby-plugin-netlify": "5.0.0",
         "gatsby-plugin-postcss": "5.13.0",
         "gatsby-plugin-react-helmet": "5.13.0",
         "gatsby-plugin-robots-txt": "1.7.1",
