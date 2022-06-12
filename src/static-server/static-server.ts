@@ -16,7 +16,7 @@ export async function startStaticServer(): Promise<string> {
         fastify.route(createContactFormRoute());
 
         const availablePort = await getPort();
-        const listeningAddress = await fastify.listen(availablePort);
+        const listeningAddress = await fastify.listen({ port: availablePort });
 
         return listeningAddress;
     } catch (error: unknown) {

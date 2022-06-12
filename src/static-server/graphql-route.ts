@@ -43,7 +43,7 @@ export function createGraphQlRoute(): RouteOptions {
                 },
             },
         },
-        handler: async (_request, reply) => {
+        async handler(_request, reply) {
             return reply
                 .headers({
                     'x-ratelimit-limit': 5000,

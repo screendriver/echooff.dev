@@ -38,8 +38,8 @@
         "zod": "3.17.3"
     },
     "devDependencies": {
-        "@fastify/cors": "7.0.0",
-        "@fastify/formbody": "6.0.1",
+        "@fastify/cors": "8.0.0",
+        "@fastify/formbody": "7.0.1",
         "@netlify/plugin-gatsby": "3.2.1",
         "@percy/cli": "1.3.0",
         "@percy/playwright": "1.0.4",
@@ -66,7 +66,7 @@
         "eslint-plugin-ava": "13.2.0",
         "eslint-plugin-prettier": "4.0.0",
         "eslint-plugin-react": "7.30.0",
-        "fastify": "3.29.0",
+        "fastify": "4.0.1",
         "fishery": "2.2.2",
         "gatsby-plugin-image": "2.15.1",
         "gatsby-plugin-netlify": "5.0.0",
