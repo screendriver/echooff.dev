@@ -22,7 +22,7 @@
         "@fontsource/jetbrains-mono": "4.5.9",
         "@fontsource/source-sans-pro": "4.5.10",
         "@octokit/graphql": "4.8.0",
-        "@sentry/gatsby": "7.3.1",
+        "@sentry/gatsby": "7.4.1",
         "@xstate/react": "3.0.0",
         "date-fns": "2.28.0",
         "gatsby": "4.17.1",
