@@ -21,7 +21,7 @@
     "dependencies": {
         "@fontsource/jetbrains-mono": "4.5.9",
         "@fontsource/source-sans-pro": "4.5.10",
-        "@octokit/graphql": "4.8.0",
+        "@octokit/graphql": "5.0.0",
         "@sentry/gatsby": "7.6.0",
         "@xstate/react": "3.0.0",
         "date-fns": "2.28.0",
