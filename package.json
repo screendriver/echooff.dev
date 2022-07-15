@@ -40,7 +40,7 @@
     "devDependencies": {
         "@fastify/cors": "8.0.0",
         "@fastify/formbody": "7.0.1",
-        "@netlify/plugin-gatsby": "3.3.0",
+        "@netlify/plugin-gatsby": "3.3.1",
         "@percy/cli": "1.6.1",
         "@percy/playwright": "1.0.4",
         "@playwright/test": "1.23.3",
