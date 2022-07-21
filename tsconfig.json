@@ -20,5 +20,5 @@
         "skipLibCheck": true
     },
     "include": ["src/**/*", "test/**/*"],
-    "files": ["gatsby-browser.tsx", "gatsby-config.ts", "gatsby-node.ts"]
+    "files": ["gatsby-browser.tsx", "gatsby-config.ts", "gatsby-node.ts", "./target/gatsby-types.d.ts"]
 }
