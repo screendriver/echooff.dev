@@ -2,6 +2,9 @@ import type { GatsbyConfig } from 'gatsby';
 import path from 'path';
 
 const config: GatsbyConfig = {
+    graphqlTypegen: {
+        typesOutputPath: './target/gatsby-types.d.ts',
+    },
     siteMetadata: {
         author: 'Christian Rackerseder',
         jobTitle: 'Full-Stack JavaScript Engineer',
