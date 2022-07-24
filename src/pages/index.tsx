@@ -1,6 +1,5 @@
 import React, { Fragment, FunctionComponent } from 'react';
 import { graphql, PageProps } from 'gatsby';
-import { ImageDataLike } from 'gatsby-plugin-image';
 import ky from 'ky';
 import * as Sentry from '@sentry/gatsby';
 import { Head } from '../Head';
@@ -10,30 +9,14 @@ import { Skills } from '../skills/Skills';
 import { createStatisticsStateMachine } from '../statistics/state-machine';
 import { Statistics } from '../statistics/Statistics';
 import { Passions } from '../passions/Passions';
-import { Resume, ResumeData } from '../resume/Resume';
+import { Resume } from '../resume/Resume';
 import { Contact } from '../contact/Contact';
 import { createContactStateMachine } from '../contact/state-machine';
 import { createErrorReporter } from '../error-reporter/reporter';
-
-interface DataType {
-    readonly site: {
-        readonly siteMetadata: {
-            readonly author: string;
-            readonly jobTitle: string;
-            readonly keywords: string;
-            readonly favicon: string;
-        };
-    };
-    readonly allResumeDataJson: {
-        readonly nodes: readonly ResumeData[];
-    };
-    readonly headerImage: ImageDataLike;
-}
-
-type IndexPageProps = PageProps<DataType>;
+import { parseMainPageData } from '../main-page-schema';
 
 export const query = graphql`
-    query V2 {
+    query MainPage {
         site {
             siteMetadata {
                 author
@@ -59,8 +42,15 @@ export const query = graphql`
     }
 `;
 
-const IndexPage: FunctionComponent<IndexPageProps> = ({ data }) => {
-    const { author, jobTitle, keywords, favicon } = data.site.siteMetadata;
+const IndexPage: FunctionComponent<PageProps> = ({ data }) => {
+    const mainPageDataResult = parseMainPageData(data);
+
+    if (mainPageDataResult.isErr) {
+        throw new Error(mainPageDataResult.error);
+    }
+
+    const mainPageData = mainPageDataResult.value;
+    const { author, jobTitle, keywords, favicon } = mainPageData.site.siteMetadata;
     const currentTimestamp = process.env.NODE_ENV === 'production' ? new Date() : new Date(2022, 2, 23);
     const errorReporter = createErrorReporter({ sentry: Sentry });
     const gitHubStateMachine = createStatisticsStateMachine({ ky, currentTimestamp, errorReporter });
@@ -76,13 +66,13 @@ const IndexPage: FunctionComponent<IndexPageProps> = ({ data }) => {
                 keywords={keywords}
                 favicon={favicon}
             />
-            <Header headerImage={data.headerImage} />
+            <Header headerImage={mainPageData.headerImage} />
             <main className="text-dracula-light">
                 <About />
                 <Skills />
                 <Passions />
                 <Statistics statisticsStateMachine={gitHubStateMachine} />
-                <Resume resume={data.allResumeDataJson.nodes} />
+                <Resume resume={mainPageData.allResumeDataJson.nodes} />
                 <Contact contactStateMachine={contactStateMachine} />
             </main>
         </Fragment>
