@@ -1,8 +1,7 @@
 import React, { Fragment, FunctionComponent } from 'react';
-import { graphql, PageProps } from 'gatsby';
+import { graphql, HeadFC, HeadProps, PageProps } from 'gatsby';
 import ky from 'ky';
 import * as Sentry from '@sentry/gatsby';
-import { Head } from '../Head';
 import { Header } from '../Header';
 import { About } from '../about/About';
 import { Skills } from '../skills/Skills';
@@ -42,6 +41,27 @@ export const query = graphql`
     }
 `;
 
+export const Head: HeadFC<HeadProps> = ({ data }) => {
+    const mainPageDataResult = parseMainPageData(data);
+
+    if (mainPageDataResult.isErr) {
+        throw new Error(mainPageDataResult.error);
+    }
+
+    const { author, jobTitle, keywords, favicon } = mainPageDataResult.value.site.siteMetadata;
+
+    return (
+        <Fragment>
+            <title>{`${author} - ${jobTitle}`}</title>
+            <link rel="shortcut icon" href={favicon} />
+            <meta name="theme-color" content="#bd93f9" />
+            <meta name="description" content={jobTitle} />
+            <meta name="keywords" content={keywords} />
+            <meta name="author" content={author} />
+        </Fragment>
+    );
+};
+
 const IndexPage: FunctionComponent<PageProps> = ({ data }) => {
     const mainPageDataResult = parseMainPageData(data);
 
@@ -50,7 +70,6 @@ const IndexPage: FunctionComponent<PageProps> = ({ data }) => {
     }
 
     const mainPageData = mainPageDataResult.value;
-    const { author, jobTitle, keywords, favicon } = mainPageData.site.siteMetadata;
     const currentTimestamp = process.env.NODE_ENV === 'production' ? new Date() : new Date(2022, 2, 23);
     const errorReporter = createErrorReporter({ sentry: Sentry });
     const gitHubStateMachine = createStatisticsStateMachine({ ky, currentTimestamp, errorReporter });
@@ -59,13 +78,6 @@ const IndexPage: FunctionComponent<PageProps> = ({ data }) => {
 
     return (
         <Fragment>
-            <Head
-                title={`${author} - ${jobTitle}`}
-                description={jobTitle}
-                author={author}
-                keywords={keywords}
-                favicon={favicon}
-            />
             <Header headerImage={mainPageData.headerImage} />
             <main className="text-dracula-light">
                 <About />

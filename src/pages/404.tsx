@@ -4,10 +4,10 @@
 import '@fontsource/source-sans-pro/400.css';
 import '@fontsource/source-sans-pro/900.css';
 import '../styles/404.css';
-import React, { Fragment, FunctionComponent, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+import React, { FunctionComponent, useEffect } from 'react';
 import { TweenMax, TimelineMax, Power1 } from 'gsap';
 import { YetiSVG } from '../YetiSVG';
+import { HeadFC } from 'gatsby';
 
 function run() {
     const furLightColor = '#FFF';
@@ -153,26 +153,24 @@ function run() {
     };
 }
 
+export const Head: HeadFC = () => {
+    return <meta name="theme-color" content="#bd93f9" />;
+};
+
 const NotFound: FunctionComponent = () => {
     useEffect(run, []);
 
     return (
-        <Fragment>
-            <Helmet title="404">
-                <html lang="en" />
-                <meta name="theme-color" content="#bd93f9" />
-            </Helmet>
-            <main style={{ backgroundColor: '#09334f', height: '100vh' }}>
-                <YetiSVG />
-                <div className="content">
-                    <h3>Hello?? Is somebody there?!?</h3>
-                    <p>
-                        We know it’s scary, but the page you’re trying to reach can’t be found. Perhaps it was just a
-                        bad <span>link</span> dream?
-                    </p>
-                </div>
-            </main>
-        </Fragment>
+        <main style={{ backgroundColor: '#09334f', height: '100vh' }}>
+            <YetiSVG />
+            <div className="content">
+                <h3>Hello?? Is somebody there?!?</h3>
+                <p>
+                    We know it’s scary, but the page you’re trying to reach can’t be found. Perhaps it was just a bad{' '}
+                    <span>link</span> dream?
+                </p>
+            </div>
+        </main>
     );
 };
 
