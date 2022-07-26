@@ -40,7 +40,7 @@
         "@fastify/cors": "8.0.0",
         "@fastify/formbody": "7.0.1",
         "@netlify/plugin-gatsby": "3.4.0",
-        "@percy/cli": "1.6.3",
+        "@percy/cli": "1.6.4",
         "@percy/playwright": "1.0.4",
         "@playwright/test": "1.24.1",
         "@types/common-tags": "1.8.1",
