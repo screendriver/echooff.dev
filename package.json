@@ -37,7 +37,7 @@
         "zod": "3.17.10"
     },
     "devDependencies": {
-        "@fastify/cors": "8.0.0",
+        "@fastify/cors": "8.1.0",
         "@fastify/formbody": "7.0.1",
         "@netlify/plugin-gatsby": "3.4.1",
         "@percy/cli": "1.6.4",
