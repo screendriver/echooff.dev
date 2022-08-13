@@ -15,6 +15,12 @@ import { createErrorReporter } from '../error-reporter/reporter';
 import { parseMainPageData } from '../main-page-schema';
 
 export const query = graphql`
+    fragment HeaderImage on File {
+        childImageSharp {
+            gatsbyImageData(layout: FULL_WIDTH, quality: 70, transformOptions: { grayscale: true })
+        }
+    }
+
     query MainPage {
         site {
             siteMetadata {
@@ -34,9 +40,10 @@ export const query = graphql`
             }
         }
         headerImage: file(relativePath: { eq: "img/header-01.jpg" }) {
-            childImageSharp {
-                gatsbyImageData(layout: FULL_WIDTH, quality: 70, transformOptions: { grayscale: true })
-            }
+            ...HeaderImage
+        }
+        headerImageSmall: file(relativePath: { eq: "img/header-01-small.jpg" }) {
+            ...HeaderImage
         }
     }
 `;
@@ -78,7 +85,7 @@ const IndexPage: FunctionComponent<PageProps> = ({ data }) => {
 
     return (
         <Fragment>
-            <Header headerImage={mainPageData.headerImage} />
+            <Header headerImage={mainPageData.headerImage} headerImageSmall={mainPageData.headerImageSmall} />
             <main className="text-dracula-light">
                 <About />
                 <Skills />
