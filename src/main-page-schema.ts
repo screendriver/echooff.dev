@@ -24,6 +24,9 @@ export const mainPageDataSchema = z
         headerImage: z.unknown().transform((headerImage) => {
             return headerImage as ImageDataLike;
         }),
+        headerImageSmall: z.unknown().transform((headerImage) => {
+            return headerImage as ImageDataLike;
+        }),
         site: z
             .object({
                 siteMetadata: z
