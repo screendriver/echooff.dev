@@ -2,7 +2,7 @@
     {
         "since": "2021-03-01",
         "showOnlyYear": false,
-        "industry": "Streaming Services",
+        "industry": "Streaming Service",
         "jobTitle": "Lead Software Engineer",
         "jobDescription": "Video streaming / video player. Full-Stack TypeScript / JavaScript.",
         "company": {
@@ -13,7 +13,7 @@
     {
         "since": "2020-08-01",
         "showOnlyYear": false,
-        "industry": "Streaming Services",
+        "industry": "Streaming Service",
         "jobTitle": "Senior Software Engineer - Media Platform",
         "jobDescription": "Video streaming / video player. Full-Stack TypeScript / JavaScript Engineer",
         "company": {
