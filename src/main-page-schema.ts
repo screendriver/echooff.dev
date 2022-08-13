@@ -2,6 +2,8 @@ import { ImageDataLike } from 'gatsby-plugin-image';
 import { Result } from 'true-myth';
 import { z, ZodError } from 'zod';
 
+const filledStringSchema = z.string().min(1);
+
 export const mainPageDataSchema = z
     .object({
         allResumeDataJson: z
@@ -10,11 +12,17 @@ export const mainPageDataSchema = z
                     .array(
                         z
                             .object({
-                                since: z.string().min(1),
+                                since: filledStringSchema,
                                 showOnlyYear: z.boolean(),
-                                industry: z.string().min(1),
-                                jobTitle: z.string().min(1),
-                                jobDescription: z.string().min(1),
+                                industry: filledStringSchema,
+                                jobTitle: filledStringSchema,
+                                jobDescription: filledStringSchema,
+                                company: z
+                                    .object({
+                                        name: filledStringSchema,
+                                        url: z.string().url(),
+                                    })
+                                    .strict(),
                             })
                             .strict(),
                     )
@@ -31,10 +39,10 @@ export const mainPageDataSchema = z
             .object({
                 siteMetadata: z
                     .object({
-                        author: z.string().min(1),
-                        jobTitle: z.string().min(1),
-                        keywords: z.string().min(1),
-                        favicon: z.string().min(1),
+                        author: filledStringSchema,
+                        jobTitle: filledStringSchema,
+                        keywords: filledStringSchema,
+                        favicon: filledStringSchema,
                     })
                     .strict(),
             })

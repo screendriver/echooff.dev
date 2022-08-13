@@ -3,8 +3,12 @@ import { Factory } from 'fishery';
 import { Result } from 'true-myth';
 import { parseMainPageData } from '../../src/main-page-schema';
 
-const nodeFactory = Factory.define(() => {
+const nodeFactory = Factory.define<Record<string, unknown>>(() => {
     return {
+        company: {
+            name: 'The company',
+            url: 'https://example.com',
+        },
         industry: 'some',
         jobDescription: 'description',
         jobTitle: 'title',
@@ -13,7 +17,7 @@ const nodeFactory = Factory.define(() => {
     };
 });
 
-const siteMetadataFactory = Factory.define(() => {
+const siteMetadataFactory = Factory.define<Record<string, unknown>>(() => {
     return {
         author: 'author',
         favicon: 'icon',
@@ -22,7 +26,7 @@ const siteMetadataFactory = Factory.define(() => {
     };
 });
 
-const mainPageDataFactory = Factory.define(() => {
+const mainPageDataFactory = Factory.define<Record<string, unknown>>(() => {
     return {
         allResumeDataJson: {
             nodes: nodeFactory.buildList(1),
@@ -242,6 +246,124 @@ test('parseMainPageData() returns an Err when allResumeDataJson.nodes.0.jobDescr
         parseMainPageData(mainPageData),
         Result.err('allResumeDataJson.nodes.0.jobDescription: String must contain at least 1 character(s)'),
     );
+});
+
+test('parseMainPageData() returns an Err when allResumeDataJson.nodes.0.company is not an object', (t) => {
+    const mainPageData = mainPageDataFactory.build({
+        allResumeDataJson: {
+            nodes: nodeFactory.buildList(1, {
+                company: '',
+            }),
+        },
+    });
+
+    t.deepEqual(
+        parseMainPageData(mainPageData),
+        Result.err('allResumeDataJson.nodes.0.company: Expected object, received string'),
+    );
+});
+
+test('parseMainPageData() returns an Err when allResumeDataJson.nodes.0.company contains additional unknown properties', (t) => {
+    const mainPageData = mainPageDataFactory.build({
+        allResumeDataJson: {
+            nodes: nodeFactory.buildList(1, {
+                company: {
+                    name: 'The company',
+                    url: 'https://example.com',
+                    foo: 'bar',
+                },
+            }),
+        },
+    });
+
+    t.deepEqual(
+        parseMainPageData(mainPageData),
+        Result.err("allResumeDataJson.nodes.0.company: Unrecognized key(s) in object: 'foo'"),
+    );
+});
+
+test('parseMainPageData() returns an Err when allResumeDataJson.nodes.0.company.name is not a string', (t) => {
+    const mainPageData = mainPageDataFactory.build({
+        allResumeDataJson: {
+            nodes: nodeFactory.buildList(1, {
+                company: {
+                    name: 42,
+                    url: 'https://example.com',
+                },
+            }),
+        },
+    });
+
+    t.deepEqual(
+        parseMainPageData(mainPageData),
+        Result.err('allResumeDataJson.nodes.0.company.name: Expected string, received number'),
+    );
+});
+
+test('parseMainPageData() returns an Err when allResumeDataJson.nodes.0.company.name is an empty string', (t) => {
+    const mainPageData = mainPageDataFactory.build({
+        allResumeDataJson: {
+            nodes: nodeFactory.buildList(1, {
+                company: {
+                    name: '',
+                    url: 'https://example.com',
+                },
+            }),
+        },
+    });
+
+    t.deepEqual(
+        parseMainPageData(mainPageData),
+        Result.err('allResumeDataJson.nodes.0.company.name: String must contain at least 1 character(s)'),
+    );
+});
+
+test('parseMainPageData() returns an Err when allResumeDataJson.nodes.0.company.url is not a string', (t) => {
+    const mainPageData = mainPageDataFactory.build({
+        allResumeDataJson: {
+            nodes: nodeFactory.buildList(1, {
+                company: {
+                    name: 'The company',
+                    url: 42,
+                },
+            }),
+        },
+    });
+
+    t.deepEqual(
+        parseMainPageData(mainPageData),
+        Result.err('allResumeDataJson.nodes.0.company.url: Expected string, received number'),
+    );
+});
+
+test('parseMainPageData() returns an Err when allResumeDataJson.nodes.0.company.url is an empty string', (t) => {
+    const mainPageData = mainPageDataFactory.build({
+        allResumeDataJson: {
+            nodes: nodeFactory.buildList(1, {
+                company: {
+                    name: 'The company',
+                    url: '',
+                },
+            }),
+        },
+    });
+
+    t.deepEqual(parseMainPageData(mainPageData), Result.err('allResumeDataJson.nodes.0.company.url: Invalid url'));
+});
+
+test('parseMainPageData() returns an Err when allResumeDataJson.nodes.0.company.url is an invalid URL', (t) => {
+    const mainPageData = mainPageDataFactory.build({
+        allResumeDataJson: {
+            nodes: nodeFactory.buildList(1, {
+                company: {
+                    name: 'The company',
+                    url: 'invalid-url',
+                },
+            }),
+        },
+    });
+
+    t.deepEqual(parseMainPageData(mainPageData), Result.err('allResumeDataJson.nodes.0.company.url: Invalid url'));
 });
 
 test('parseMainPageData() returns an Err when site is undefined', (t) => {
