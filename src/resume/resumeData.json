@@ -4,69 +4,109 @@
         "showOnlyYear": false,
         "industry": "Streaming Services",
         "jobTitle": "Lead Software Engineer",
-        "jobDescription": "Video streaming / video player. Full-Stack TypeScript / JavaScript."
+        "jobDescription": "Video streaming / video player. Full-Stack TypeScript / JavaScript.",
+        "company": {
+            "name": "Joyn GmbH",
+            "url": "https://www.joyn.de"
+        }
     },
     {
         "since": "2020-08-01",
         "showOnlyYear": false,
         "industry": "Streaming Services",
         "jobTitle": "Senior Software Engineer - Media Platform",
-        "jobDescription": "Video streaming / video player. Full-Stack TypeScript / JavaScript Engineer"
+        "jobDescription": "Video streaming / video player. Full-Stack TypeScript / JavaScript Engineer",
+        "company": {
+            "name": "Joyn GmbH",
+            "url": "https://www.joyn.de"
+        }
     },
     {
         "since": "2019-04-01",
         "showOnlyYear": false,
         "industry": "Entertainment",
         "jobTitle": "Senior Software Architect",
-        "jobDescription": "Full-Stack TypeScript / JavaScript Engineer"
+        "jobDescription": "Full-Stack TypeScript / JavaScript Engineer",
+        "company": {
+            "name": "ProSiebenSat.1 Digital GmbH",
+            "url": "https://www.prosiebensat1.com"
+        }
     },
     {
         "since": "2017-04-01",
         "showOnlyYear": false,
         "industry": "Travel industry",
         "jobTitle": "Senior Software Engineer",
-        "jobDescription": "Full-Stack TypeScript / JavaScript Engineer"
+        "jobDescription": "Full-Stack TypeScript / JavaScript Engineer",
+        "company": {
+            "name": "HolidayCheck AG",
+            "url": "https://www.holidaycheck.de"
+        }
     },
     {
         "since": "2015-02-01",
         "showOnlyYear": false,
         "industry": "Mobile Workforce Management",
         "jobTitle": "Senior Software Engineer",
-        "jobDescription": "Hybrid mobile apps with state of the art Web technologies like Cordova, ECMAScript 2015/2016/2017, Babel, React, Webpack, Mocha and Chai"
+        "jobDescription": "Hybrid mobile apps with state of the art Web technologies like Cordova, ECMAScript 2015/2016/2017, Babel, React, Webpack, Mocha and Chai",
+        "company": {
+            "name": "mobileX AG",
+            "url": "https://www.mobilexag.de"
+        }
     },
     {
         "since": "2013-01-01",
         "showOnlyYear": true,
         "industry": "Mobile Workforce Management",
         "jobTitle": "Senior Software Engineer",
-        "jobDescription": "Native Android App. Written in Java."
+        "jobDescription": "Native Android App. Written in Java.",
+        "company": {
+            "name": "mobileX AG",
+            "url": "https://www.mobilexag.de"
+        }
     },
     {
         "since": "2010-01-01",
         "showOnlyYear": true,
         "industry": "Mobile Workforce Management",
         "jobTitle": "Software Engineer",
-        "jobDescription": "Native Windows Mobile App. Written with .NET Compact Framework."
+        "jobDescription": "Native Windows Mobile App. Written with .NET Compact Framework.",
+        "company": {
+            "name": "mobileX AG",
+            "url": "https://www.mobilexag.de"
+        }
     },
     {
         "since": "2006-01-01",
         "showOnlyYear": true,
         "industry": "Mobile Workforce Management",
         "jobTitle": "Software Engineer",
-        "jobDescription": "Desktop Browser and mobile Browser (Pocket Internet Explorer) App. Written in JavaScript based on Prototype.js"
+        "jobDescription": "Desktop Browser and mobile Browser (Pocket Internet Explorer) App. Written in JavaScript based on Prototype.js",
+        "company": {
+            "name": "mobileX AG",
+            "url": "https://www.mobilexag.de"
+        }
     },
     {
         "since": "2004-01-01",
         "showOnlyYear": true,
         "industry": "Intranet Security Application",
         "jobTitle": "Web Developer",
-        "jobDescription": "Intranet Browser Application. Written in ASP.NET."
+        "jobDescription": "Intranet Browser Application. Written in ASP.NET.",
+        "company": {
+            "name": "HVBinfo GmbH",
+            "url": "https://www.hypovereinsbank.de"
+        }
     },
     {
         "since": "2001-01-01",
         "showOnlyYear": true,
         "industry": "IT System Administration",
         "jobTitle": "Administrator",
-        "jobDescription": "User-Help-Desk"
+        "jobDescription": "User-Help-Desk",
+        "company": {
+            "name": "HVBinfo GmbH",
+            "url": "https://www.hypovereinsbank.de"
+        }
     }
 ]
