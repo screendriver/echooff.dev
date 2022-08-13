@@ -1,15 +1,8 @@
 import React, { FunctionComponent, ReactNode } from 'react';
 import { FiFileText } from 'react-icons/fi';
 import { mapOr } from 'true-myth/result';
+import { ResumeData } from '../main-page-schema';
 import { formatSinceDate } from './date';
-
-export interface ResumeData {
-    readonly since: string;
-    readonly showOnlyYear: boolean;
-    readonly industry: string;
-    readonly jobTitle: string;
-    readonly jobDescription: string;
-}
 
 interface ResumeProps {
     readonly resume: readonly ResumeData[];
