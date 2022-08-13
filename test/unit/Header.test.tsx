@@ -46,6 +46,7 @@ const imageDataLikeFactory = Factory.define<ImageDataLike>(() => {
 const headerPropsFactory = Factory.define<HeaderProps>(() => {
     return {
         headerImage: imageDataLikeFactory.build(),
+        headerImageSmall: imageDataLikeFactory.build(),
     };
 });
 

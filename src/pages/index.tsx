@@ -85,7 +85,7 @@ const IndexPage: FunctionComponent<PageProps> = ({ data }) => {
 
     return (
         <Fragment>
-            <Header headerImage={mainPageData.headerImage} />
+            <Header headerImage={mainPageData.headerImage} headerImageSmall={mainPageData.headerImageSmall} />
             <main className="text-dracula-light">
                 <About />
                 <Skills />
