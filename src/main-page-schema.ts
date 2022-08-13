@@ -2,23 +2,29 @@ import { ImageDataLike } from 'gatsby-plugin-image';
 import { Result } from 'true-myth';
 import { z, ZodError } from 'zod';
 
+const filledStringSchema = z.string().min(1);
+
+const resumeSchema = z
+    .object({
+        since: filledStringSchema,
+        showOnlyYear: z.boolean(),
+        industry: filledStringSchema,
+        jobTitle: filledStringSchema,
+        jobDescription: filledStringSchema,
+        company: z
+            .object({
+                name: filledStringSchema,
+                url: z.string().url(),
+            })
+            .strict(),
+    })
+    .strict();
+
 export const mainPageDataSchema = z
     .object({
         allResumeDataJson: z
             .object({
-                nodes: z
-                    .array(
-                        z
-                            .object({
-                                since: z.string().min(1),
-                                showOnlyYear: z.boolean(),
-                                industry: z.string().min(1),
-                                jobTitle: z.string().min(1),
-                                jobDescription: z.string().min(1),
-                            })
-                            .strict(),
-                    )
-                    .min(1),
+                nodes: z.array(resumeSchema).min(1),
             })
             .strict(),
         headerImage: z.unknown().transform((headerImage) => {
@@ -31,10 +37,10 @@ export const mainPageDataSchema = z
             .object({
                 siteMetadata: z
                     .object({
-                        author: z.string().min(1),
-                        jobTitle: z.string().min(1),
-                        keywords: z.string().min(1),
-                        favicon: z.string().min(1),
+                        author: filledStringSchema,
+                        jobTitle: filledStringSchema,
+                        keywords: filledStringSchema,
+                        favicon: filledStringSchema,
                     })
                     .strict(),
             })
@@ -43,6 +49,8 @@ export const mainPageDataSchema = z
     .strict();
 
 export type MainPageData = z.infer<typeof mainPageDataSchema>;
+
+export type ResumeData = z.infer<typeof resumeSchema>;
 
 function formatParseError(error: ZodError): string {
     return error.issues

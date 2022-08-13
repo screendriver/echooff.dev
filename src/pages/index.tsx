@@ -37,6 +37,10 @@ export const query = graphql`
                 industry
                 jobTitle
                 jobDescription
+                company {
+                    name
+                    url
+                }
             }
         }
         headerImage: file(relativePath: { eq: "img/header-01.jpg" }) {
