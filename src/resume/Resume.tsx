@@ -1,6 +1,5 @@
 import React, { FunctionComponent, ReactNode } from 'react';
 import { FiFileText } from 'react-icons/fi';
-import { mapOr } from 'true-myth/result';
 import { ResumeData } from '../main-page-schema';
 import { formatSinceDate } from './date';
 
@@ -9,7 +8,8 @@ interface ResumeProps {
 }
 
 function renderResume(resume: ResumeData): ReactNode {
-    const render = mapOr<string, ReactNode | null, string>(null, (since) => {
+    const sinceDateFormatted = formatSinceDate(resume.since, resume.showOnlyYear);
+    return sinceDateFormatted.mapOr(null, (since) => {
         return (
             <li
                 key={since}
@@ -30,8 +30,6 @@ function renderResume(resume: ResumeData): ReactNode {
             </li>
         );
     });
-
-    return render(formatSinceDate(resume.since, resume.showOnlyYear));
 }
 
 export const Resume: FunctionComponent<ResumeProps> = (props) => {

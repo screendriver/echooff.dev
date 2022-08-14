@@ -1,5 +1,4 @@
 import test from 'ava';
-import { isErr, isOk } from 'true-myth/result';
 import { formatSinceDate } from '../../../src/resume/date';
 
 interface Input {
@@ -10,7 +9,7 @@ interface Input {
 const testErrMacro = test.macro<[Input, string]>((t, input, expected) => {
     const formattedDateResult = formatSinceDate(input.since, input.onlyYear);
 
-    if (isErr(formattedDateResult)) {
+    if (formattedDateResult.isErr) {
         t.is(formattedDateResult.error, expected);
     } else {
         t.fail('Result is not an Err');
@@ -48,7 +47,7 @@ test(
 const testOkMacro = test.macro<[Input, string]>((t, input, expected) => {
     const formattedDateResult = formatSinceDate(input.since, input.onlyYear);
 
-    if (isOk(formattedDateResult)) {
+    if (formattedDateResult.isOk) {
         t.is(formattedDateResult.value, expected);
     } else {
         t.fail('Result is not an Ok');
