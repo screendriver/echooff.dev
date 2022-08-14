@@ -1,4 +1,4 @@
-import { Result, ok, err } from 'true-myth/result';
+import { Result } from 'true-myth';
 import { format, parseISO } from 'date-fns/fp';
 
 export function formatSinceDate(since: string, onlyYear: boolean): Result<string, string> {
@@ -6,8 +6,8 @@ export function formatSinceDate(since: string, onlyYear: boolean): Result<string
         const formatString = onlyYear ? 'yyyy' : 'MMMM yyyy';
         const formatToString = format(formatString);
 
-        return ok(formatToString(parseISO(since)));
+        return Result.ok(formatToString(parseISO(since)));
     } catch {
-        return err(`Since "${since}" is not a valid date`);
+        return Result.err(`Since "${since}" is not a valid date`);
     }
 }

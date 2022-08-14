@@ -11,7 +11,8 @@ import {
     ResolveTypegenMeta,
     TypegenDisabled,
 } from 'xstate';
-import { Maybe, Just, Nothing, nothing, just } from 'true-myth/maybe';
+import { Maybe } from 'true-myth';
+import { Just, Nothing } from 'true-myth/maybe';
 import type KyInterface from 'ky';
 import { GitHubStatistics, gitHubStatisticsSchema } from './statistics-schema';
 import { ErrorReporter } from '../error-reporter/reporter';
@@ -89,8 +90,8 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
             id: 'statistics',
             initial: 'idle',
             context: {
-                gitHubStatistics: nothing(),
-                yearsOfExperience: nothing(),
+                gitHubStatistics: Maybe.nothing(),
+                yearsOfExperience: Maybe.nothing(),
             },
             states: {
                 idle: {
@@ -127,23 +128,27 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
                     yearsOfExperience(_context) {
                         const currentYear = dependencies.currentTimestamp.getFullYear();
                         const careerStartYear = 2001;
-                        return just(currentYear - careerStartYear);
+
+                        return Maybe.just(currentYear - careerStartYear);
                     },
                 }),
                 setFetchedGitHubStatistics: assign({
                     gitHubStatistics(_context, _event) {
                         const event = _event as DoneInvokeEvent<GitHubStatistics>;
-                        return just(event.data);
+
+                        return Maybe.just(event.data);
                     },
                 }),
                 reportFetchGitHubStatisticsError(_context, _event) {
                     const event = _event as ErrorPlatformEvent;
+
                     dependencies.errorReporter.send(event.data);
                 },
             },
             services: {
                 async fetchGitHubStatistics() {
                     const gitHubStatistics = await dependencies.ky('/api/github/statistics').json();
+
                     return gitHubStatisticsSchema.parse(gitHubStatistics);
                 },
             },
