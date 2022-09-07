@@ -56,7 +56,7 @@
         "ava": "4.3.3",
         "c8": "7.12.0",
         "common-tags": "1.8.2",
-        "concurrently": "7.3.0",
+        "concurrently": "7.4.0",
         "esbuild": "0.15.7",
         "esbuild-register": "3.3.3",
         "eslint": "8.23.0",
