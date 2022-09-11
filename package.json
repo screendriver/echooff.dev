@@ -34,7 +34,7 @@
         "tailwindcss": "3.1.8",
         "true-myth": "5.4.0",
         "xstate": "4.33.6",
-        "zod": "3.19.0"
+        "zod": "3.19.1"
     },
     "devDependencies": {
         "@fastify/cors": "8.1.0",
