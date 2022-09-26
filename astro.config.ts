@@ -4,6 +4,7 @@ import svelte from '@astrojs/svelte';
 import image from '@astrojs/image';
 
 export default defineConfig({
+    outDir: './target/dist',
     integrations: [
         tailwind(),
         svelte(),
