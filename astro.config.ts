@@ -12,4 +12,5 @@ export default defineConfig({
             serviceEntryPoint: '@astrojs/image/sharp',
         }),
     ],
+    site: 'https://www.echooff.dev',
 });
