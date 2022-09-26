@@ -38,6 +38,7 @@
         "zod": "3.19.1"
     },
     "devDependencies": {
+        "@astrojs/image": "0.7.1",
         "@astrojs/svelte": "1.0.0",
         "@astrojs/tailwind": "2.0.1",
         "@fastify/cors": "8.1.0",
