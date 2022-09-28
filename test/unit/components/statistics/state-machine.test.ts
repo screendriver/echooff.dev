@@ -85,7 +85,7 @@ test('transits from "idle" to "loading" on "FETCH" event', (t) => {
     t.true(statisticsStateService.state.matches('loading'));
 });
 
-test('makes a HTTP GET request to "/api/github/statistics" on "FETCH" event', (t) => {
+test('makes a HTTP GET request to "/.netlify/functions/github-statistics" on "FETCH" event', (t) => {
     const gitHubStatistics = gitHubStatisticsFactory.build();
     const ky = fake.returns({
         json: fake.resolves(gitHubStatistics),
