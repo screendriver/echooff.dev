@@ -14,6 +14,7 @@ jobs:
             - name: Check source code
               run: |
                   npm run lint
+                  npm run svelte-check
                   npm run copy:paste:detector
             - name: Compile source code
               run: npm run compile
