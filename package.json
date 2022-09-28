@@ -11,6 +11,7 @@
         "lint": "eslint --ext ts,tsx src test",
         "copy:paste:detector": "jscpd src test typings",
         "compile": "tsc",
+        "svelte-check": "svelte-check",
         "astro": "astro dev",
         "develop": "FORCE_COLOR='1' ts-node-esm ./src/start-develop.ts",
         "build": "astro build",
