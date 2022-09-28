@@ -148,7 +148,8 @@ export function createContactStateMachine(dependencies: ContactMachineDependenci
                 }),
                 reportSendingFailed(_context, _event) {
                     const event = _event as ErrorPlatformEvent;
-                    // dependencies.errorReporter.send(event.data);
+
+                    console.error(event.data);
                 },
             },
             guards: {

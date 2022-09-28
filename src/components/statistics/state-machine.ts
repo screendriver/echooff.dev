@@ -140,7 +140,7 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
                 reportFetchGitHubStatisticsError(_context, _event) {
                     const event = _event as ErrorPlatformEvent;
 
-                    // dependencies.errorReporter.send(event.data);
+                    console.error(event.data);
                 },
             },
             services: {
