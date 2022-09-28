@@ -1,4 +1,4 @@
-import { RouteOptions } from 'fastify';
+import type { RouteOptions } from 'fastify';
 
 export function createGraphQlRoute(): RouteOptions {
     return {

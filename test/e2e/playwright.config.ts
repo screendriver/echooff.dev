@@ -6,7 +6,11 @@ function isRunningInContinuousIntegration(): boolean {
 
 const config: PlaywrightTestConfig = {
     forbidOnly: isRunningInContinuousIntegration(),
-    reporter: 'dot',
+    webServer: {
+        command: 'npm run develop',
+        port: 8888,
+    },
+    reporter: 'list',
     retries: 2,
     projects: [
         {
@@ -23,9 +27,9 @@ const config: PlaywrightTestConfig = {
         },
     ],
     use: {
-        baseURL: 'http://localhost:8000',
+        baseURL: 'http://localhost:8888',
     },
-    outputDir: 'target/test-results/',
+    outputDir: '../../target/test-results/',
 };
 
 export default config;

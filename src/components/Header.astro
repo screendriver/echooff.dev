@@ -1,0 +1,61 @@
+---
+import { getPicture } from '@astrojs/image';
+import headerImageSmall from '../img/header-01-small.jpg';
+import headerImage from '../img/header-01.jpg';
+
+const headerPictureSmall = await getPicture({
+    formats: ['avif', 'webp'],
+    src: headerImageSmall,
+    widths: [750, 1061],
+});
+
+const headerPicture = await getPicture({
+    formats: ['avif', 'webp'],
+    src: headerImage,
+    widths: [750, 1080, 1366, 1920],
+});
+---
+
+<header class="relative">
+    <figure class="relative overflow-hidden bg-gradient-to-b from-dracula-cyan h-64 sm:h-4/5">
+        <picture class="mix-blend-luminosity object-top sm:object-center">
+            {
+                headerPictureSmall.sources.map((source) => {
+                    return (
+                        <source type={source.type} media="(max-width: 639px)" srcset={source.srcset} sizes="100vw" />
+                    );
+                })
+            }
+            {
+                headerPicture.sources.map((source) => {
+                    return <source type={source.type} srcset={source.srcset} sizes="100vw" />;
+                })
+            }
+            <img
+                src={(headerPicture.image as unknown as { src: string }).src}
+                loading="lazy"
+                decoding="async"
+                alt="Christian Rackerseder"
+            />
+        </picture>
+    </figure>
+    <div
+        class="relative -mt-11 sm:absolute sm:bottom-4 lg:bottom-8 sm:right-4 lg:right-8 bg-dracula-darker border border-dracula-dark border-solid rounded-md shadow-md shadow-dracula-darker bg-opacity-90 max-w-screen-sm pb-10 lg:pb-16 xl:pb-24 w-4/5 sm:w-auto m-auto"
+    >
+        <div class="bg-dracula-dark relative flex flex-row justify-center h-4 md:h-7 mb-2 p-2 rounded-t-md">
+            <div class="flex flex-row absolute top-1 md:top-2 left-2 space-x-1 md:space-x-2">
+                <div class="bg-dracula-red h-2 md:h-3 w-2 md:w-3 rounded-full"></div>
+                <div class="bg-yellow h-2 md:h-3 w-2 md:w-3 rounded-full"></div>
+                <div class="bg-dracula-green h-2 md:h-3 w-2 md:w-3 rounded-full"></div>
+            </div>
+        </div>
+        <code class="block px-2 md:px-4 text-base sm:mr-10 lg:mr-20 xl:mr-32">
+            <p class="text-dracula-light mb-1">$ whoami</p>
+            <p class="text-transparent bg-clip-text bg-gradient-to-r from-dracula-pink to-dracula">Christian</p>
+            <p class="text-dracula-light mb-1">$ groups</p>
+            <p class="text-transparent bg-clip-text bg-gradient-to-r from-dracula-pink to-dracula">
+                Full-Stack JavaScript Engineer
+            </p>
+        </code>
+    </div>
+</header>

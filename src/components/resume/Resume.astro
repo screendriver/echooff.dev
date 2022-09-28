@@ -1,0 +1,29 @@
+---
+import { icons } from 'feather-icons';
+import { parseResumeData } from './data-schema';
+import Resume from './Resume.svelte';
+import resumeDate from './resumeData.json';
+
+const parsedResumeResult = parseResumeData(resumeDate);
+
+if (parsedResumeResult.isErr) {
+    throw new Error(parsedResumeResult.error);
+}
+
+const resume = parsedResumeResult.value;
+---
+
+<section class="p-4 lg:p-10">
+    <h3
+        class="flex items-center lg:items-end justify-center gap-x-2 text-dracula-cyan lg:leading-none text-2xl lg:text-4xl font-extrabold my-2"
+    >
+        Resume
+        <Fragment set:html={icons['file-text']?.toSvg({ class: 'text-dracula-light w-6 h-6 lg:w-9 lg:h-9' })} />
+    </h3>
+    <hr
+        class="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg"
+    />
+    <ol class="w-4/5 ml-1/12 sm:px-4 sm:pt-4">
+        <Resume resume={resume} />
+    </ol>
+</section>
