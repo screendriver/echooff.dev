@@ -24,6 +24,7 @@
         "sourceMap": true,
         "noFallthroughCasesInSwitch": true,
         "incremental": true,
+        "tsBuildInfoFile": "./target/.tsbuildinfo",
         "skipLibCheck": true,
         "types": ["@astrojs/image/client"],
         "useUnknownInCatchVariables": true
