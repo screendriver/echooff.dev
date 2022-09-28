@@ -22,15 +22,6 @@ jobs:
               run: npm run test:unit:coverage
             - name: Run test build
               run: npx netlify build --offline
-            - name: Upload compiled sources artifact
-              uses: actions/upload-artifact@v3
-              with:
-                  name: compiled-sources
-                  path: |
-                      target/src/
-                      !target/**/*.map
-                  retention-days: 1
-                  if-no-files-found: error
             - name: Upload code coverage artifact
               uses: actions/upload-artifact@v3
               with:
@@ -86,11 +77,6 @@ jobs:
               uses: nschloe/action-cached-lfs-checkout@v1
             - name: Setup Node.js
               uses: ./.github/actions/setup-nodejs
-            - name: Download compiled sources artifact
-              uses: actions/download-artifact@v3
-              with:
-                  name: compiled-sources
-                  path: target/src/
             - name: Deploy to Netlify
               run: npx netlify deploy --build --message "Deploy from GitHub Actions" --prod
 
