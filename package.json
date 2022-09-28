@@ -18,7 +18,7 @@
         "preview": "astro preview",
         "test:unit": "ava",
         "test:unit:coverage": "c8 ava",
-        "test:e2e": "concurrently --success first --kill-others \"npm run develop\" \"wait-on http://localhost:8000 && playwright test --config=test/e2e/playwright.config.ts\"",
+        "test:e2e": "concurrently --success first --kill-others \"npm run develop\" \"wait-on http://localhost:8888 && playwright test --config=test/e2e/playwright.config.ts\"",
         "test:visual-regression": "concurrently --success first --kill-others \"npm run develop\" \"wait-on http://localhost:8888 && percy exec --config ./test/visual-regression/percy.config.json -- ts-node-esm --transpileOnly ./test/visual-regression/main.test.ts/\""
     },
     "dependencies": {

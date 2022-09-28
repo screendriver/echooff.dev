@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const statisticsApiUrl = 'http://localhost:8000/api/github/statistics';
+const statisticsApiUrl = 'http://localhost:8888/api/github/statistics';
 
 test('page title', async ({ page }) => {
     await page.goto('/');
