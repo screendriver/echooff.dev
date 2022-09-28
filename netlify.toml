@@ -1,10 +1,13 @@
+[dev]
+  framework = "astro"
+  command = "npm run astro"
+  autoLaunch = false
+  envFiles = [".env.local"]
+
 [build]
   command = "npm run build"
-  publish = "public"
+  publish = "target/dist"
   environment = { AWS_LAMBDA_JS_RUNTIME = "nodejs16.x" }
-
-[[plugins]]
-  package = "@netlify/plugin-gatsby"
 
 [[redirects]]
   from = "https://echooff.de/*"
