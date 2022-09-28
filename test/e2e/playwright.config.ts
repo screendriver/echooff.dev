@@ -6,11 +6,11 @@ function isRunningInContinuousIntegration(): boolean {
 
 const config: PlaywrightTestConfig = {
     forbidOnly: isRunningInContinuousIntegration(),
-    reporter: 'dot',
     webServer: {
         command: 'npm run develop',
         port: 8888,
     },
+    reporter: 'list',
     retries: 2,
     projects: [
         {
