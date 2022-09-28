@@ -44,6 +44,7 @@
         "@astrojs/tailwind": "2.0.1",
         "@fastify/cors": "8.1.0",
         "@fastify/formbody": "7.3.0",
+        "@netlify/functions": "1.2.0",
         "@percy/cli": "1.10.4",
         "@percy/playwright": "1.0.4",
         "@playwright/test": "1.26.1",
