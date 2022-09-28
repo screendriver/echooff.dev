@@ -1,5 +1,5 @@
 import test from 'ava';
-import { formatSinceDate } from '../../../src/resume/date';
+import { formatSinceDate } from '../../../../src/components/resume/date';
 
 interface Input {
     readonly since: string;

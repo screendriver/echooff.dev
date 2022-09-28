@@ -5,7 +5,7 @@ import {
     gitHubApiTokenSchema,
     gitHubBaseUrlSchema,
     gitHubLoginSchema,
-} from '../../../src/statistics/environment-variables';
+} from '../../../../src/components/statistics/environment-variables';
 
 test('gitHubBaseUrlSchema does not allow booleans', (t) => {
     t.throws(() => gitHubBaseUrlSchema.parse(true), {

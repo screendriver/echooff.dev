@@ -1,8 +1,11 @@
 import test from 'ava';
 import { fake } from 'sinon';
 import { Factory } from 'fishery';
-import { graphql as octokitGraphql, RequestParameters } from '@octokit/graphql/dist-types/types';
-import { fetchGitHubStatistics, FetchGitHubStatisticsOptions } from '../../../src/statistics/graphql-query';
+import type { graphql as octokitGraphql, RequestParameters } from '@octokit/graphql/dist-types/types';
+import {
+    fetchGitHubStatistics,
+    FetchGitHubStatisticsOptions,
+} from '../../../../src/components/statistics/graphql-query';
 
 const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatisticsOptions>(() => {
     const graphql = fake.resolves(undefined) as unknown as octokitGraphql;
