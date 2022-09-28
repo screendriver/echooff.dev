@@ -29,7 +29,7 @@ const config: PlaywrightTestConfig = {
     use: {
         baseURL: 'http://localhost:8888',
     },
-    outputDir: 'target/test-results/',
+    outputDir: '../../target/test-results/',
 };
 
 export default config;
