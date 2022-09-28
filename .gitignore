@@ -1,5 +1,5 @@
 .cache
 .netlify
-.env
+.env.local
 node_modules
 target
