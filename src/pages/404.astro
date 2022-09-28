@@ -1,0 +1,49 @@
+---
+import '@fontsource/source-sans-pro/400.css';
+import '@fontsource/source-sans-pro/900.css';
+import Layout from '../layouts/Layout.astro';
+import YetiSVG from '../YetiSVG.astro';
+---
+
+<Layout title="Not found">
+    <main>
+        <YetiSVG />
+        <div class="content">
+            <h3>Hello?? Is somebody there?!?</h3>
+            <p>
+                We know it’s scary, but the page you’re trying to reach can’t be found. Perhaps it was just a bad <span
+                    >link</span
+                > dream?
+            </p>
+        </div>
+    </main>
+</Layout>
+
+<style>
+    main {
+        background-color: #09334f;
+        height: 100vh;
+    }
+    .content {
+        padding: 5rem 3rem 0 25rem;
+        position: relative;
+        z-index: 10;
+        font-family: 'Source Sans Pro', sans-serif;
+        color: #fff;
+    }
+    .content > h3 {
+        margin: 0 0 0.8rem;
+        font-size: 2.625rem;
+        font-weight: 900;
+        line-height: 120%;
+    }
+    .content > p {
+        font-size: 1.25rem;
+        font-weight: normal;
+        line-height: 150%;
+        color: #d1e2ed;
+    }
+    .content > p > span {
+        text-decoration: line-through;
+    }
+</style>

@@ -2,6 +2,12 @@
 import '@fontsource/jetbrains-mono';
 import '@fontsource/jetbrains-mono/700.css';
 import '@fontsource/jetbrains-mono/800.css';
+
+export interface Props {
+    readonly title?: string;
+}
+
+const { title = 'Christian Rackerseder - Full-Stack JavaScript Engineer' } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -15,7 +21,7 @@ import '@fontsource/jetbrains-mono/800.css';
         <meta name="keywords" content="Racki,TypeScript,JavaScript,HTML,CSS,Node.js,React" />
         <meta name="author" content="Christian Rackerseder" />
         <link rel="shortcut icon" href="favicon.png" />
-        <title>Christian Rackerseder - Full-Stack JavaScript Engineer</title>
+        <title>{title}</title>
         <style is:global>
             body {
                 background-color: #282a36;
