@@ -39,7 +39,7 @@
     "devDependencies": {
         "@astrojs/image": "0.8.1",
         "@astrojs/svelte": "1.0.1",
-        "@astrojs/tailwind": "2.0.1",
+        "@astrojs/tailwind": "2.0.2",
         "@fastify/cors": "8.1.0",
         "@fastify/formbody": "7.3.0",
         "@netlify/functions": "1.2.0",
