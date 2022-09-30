@@ -20,6 +20,7 @@ import {
     StatisticsTypestate,
 } from "../../../../src/components/statistics/state-machine";
 import type { GitHubStatistics } from "../../../../src/components/statistics/statistics-schema";
+import type { ErrorReporter } from "../../../../src/error-reporter/reporter";
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
     return {
@@ -34,6 +35,12 @@ const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
     };
 });
 
+const errorReporterFactory = Factory.define<ErrorReporter>(() => {
+    return {
+        send: vi.fn(),
+    };
+});
+
 function createStatisticsMachineDependencies(
     overrides: Partial<StatisticsMachineDependencies>
 ): StatisticsMachineDependencies {
@@ -42,6 +49,7 @@ function createStatisticsMachineDependencies(
         ky: vi.fn().mockReturnValue({
             json: vi.fn().mockResolvedValue(gitHubStatistics),
         }),
+        errorReporter: errorReporterFactory.build(),
         currentTimestamp: new Date(2021, 3, 10),
         ...overrides,
     } as unknown as StatisticsMachineDependencies;
@@ -166,4 +174,23 @@ test('transit from "loading" to "failed" when fetching of GitHub statistics retu
 
     assert.isTrue(statisticsStateService.state.matches("failed"));
     assert.deepEqual(statisticsStateService.state.context.gitHubStatistics, Maybe.nothing<GitHubStatistics>());
+});
+
+test("reports the occurred error when fetching of GitHub statistics failed", async () => {
+    const error = new Error("Failed test");
+    const ky = vi.fn().mockReturnValue({
+        json: vi.fn().mockRejectedValue(error),
+    });
+    const send = vi.fn();
+    const errorReporter = errorReporterFactory.build({ send });
+    const statisticsStateService = createStatisticsStateService({
+        ky: ky as unknown as typeof KyInterface,
+        errorReporter,
+    });
+
+    statisticsStateService.send("FETCH");
+    await setImmediate();
+
+    assert.strictEqual(send.mock.calls.length, 1);
+    assert.deepStrictEqual(send.mock.calls[0]?.[0], error);
 });
