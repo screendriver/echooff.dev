@@ -12,7 +12,7 @@ import {
 } from "xstate";
 import type KyInterface from "ky";
 import { ContactStateMachineContext, contactStateMachineContextSchema } from "./state-machine-schema";
-import type { ErrorReporter } from "../../error-reporter/reporter";
+import type { ErrorReporter } from "../error-reporter/reporter";
 
 export type ContactMachineEvent =
     | { type: "NAME_FOCUSED" }

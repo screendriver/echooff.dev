@@ -2,10 +2,7 @@ import { test, assert, vi } from "vitest";
 import { Factory } from "fishery";
 import { stripIndent } from "common-tags";
 import type { graphql as octokitGraphql, RequestParameters } from "@octokit/graphql/dist-types/types";
-import {
-    fetchGitHubStatistics,
-    FetchGitHubStatisticsOptions,
-} from "../../../../src/components/statistics/graphql-query";
+import { fetchGitHubStatistics, FetchGitHubStatisticsOptions } from "../../../src/statistics/graphql-query";
 
 const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatisticsOptions>(() => {
     const graphql = vi.fn().mockResolvedValue(undefined) as unknown as octokitGraphql;

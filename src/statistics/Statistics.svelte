@@ -5,7 +5,7 @@
     import { icons } from "feather-icons";
     import * as Sentry from "@sentry/browser";
     import { createStatisticsStateMachine } from "./state-machine";
-    import { createErrorReporter } from "../../error-reporter/reporter";
+    import { createErrorReporter } from "../error-reporter/reporter";
     import YearsInBusiness from "./YearsInBusiness.svelte";
     import GitHubRepositories from "./GitHubRepositories.svelte";
     import GitHubStars from "./GitHubStars.svelte";

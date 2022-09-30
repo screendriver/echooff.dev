@@ -3,7 +3,7 @@
     import { useMachine } from "@xstate/svelte";
     import * as Sentry from "@sentry/browser";
     import { createContactStateMachine } from "./state-machine";
-    import { createErrorReporter } from "../../error-reporter/reporter";
+    import { createErrorReporter } from "../error-reporter/reporter";
 
     const errorReporter = createErrorReporter({ sentry: Sentry });
     const contactFormActionUrl = import.meta.env.PUBLIC_CONTACT_FORM_URL ?? "";

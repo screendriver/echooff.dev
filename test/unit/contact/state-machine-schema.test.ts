@@ -6,7 +6,7 @@ import {
     contactFormUrlSchema,
     ContactStateMachineContext,
     contactStateMachineContextSchema,
-} from "../../../../src/components/contact/state-machine-schema";
+} from "../../../src/contact/state-machine-schema";
 
 const contactStateMachineContextFactory = Factory.define<ContactStateMachineContext>(() => {
     return {
