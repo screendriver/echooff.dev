@@ -25,6 +25,8 @@
         "@fontsource/jetbrains-mono": "4.5.10",
         "@fontsource/source-sans-pro": "4.5.11",
         "@octokit/graphql": "5.0.1",
+        "@sentry/browser": "7.14.0",
+        "@sentry/tracing": "7.14.0",
         "@xstate/svelte": "2.0.0",
         "astro": "1.4.0",
         "date-fns": "2.29.3",
