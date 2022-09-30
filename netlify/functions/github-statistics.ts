@@ -1,12 +1,12 @@
-import type { Handler } from '@netlify/functions';
-import { graphql } from '@octokit/graphql';
+import type { Handler } from "@netlify/functions";
+import { graphql } from "@octokit/graphql";
 import {
     gitHubBaseUrlSchema,
     gitHubLoginSchema,
     gitHubApiTokenSchema,
-} from '../../src/components/statistics/environment-variables';
-import { fetchGitHubStatistics } from '../../src/components/statistics/graphql-query';
-import { gitHubStatisticsSchema } from '../../src/components/statistics/statistics-schema';
+} from "../../src/statistics/environment-variables";
+import { fetchGitHubStatistics } from "../../src/statistics/graphql-query";
+import { gitHubStatisticsSchema } from "../../src/statistics/statistics-schema";
 
 const handler: Handler = async () => {
     const gitHubStatisticsResponse = await fetchGitHubStatistics({
@@ -20,7 +20,7 @@ const handler: Handler = async () => {
     return {
         statusCode: 200,
         headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(gitHubStatistics),
     };

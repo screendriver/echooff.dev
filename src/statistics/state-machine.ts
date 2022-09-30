@@ -15,7 +15,7 @@ import { Maybe } from "true-myth";
 import type { Just, Nothing } from "true-myth/maybe";
 import type KyInterface from "ky";
 import { GitHubStatistics, gitHubStatisticsSchema } from "./statistics-schema";
-import type { ErrorReporter } from "../../error-reporter/reporter";
+import type { ErrorReporter } from "../error-reporter/reporter";
 
 export type StatisticsMachineEvent = { type: "FETCH" };
 

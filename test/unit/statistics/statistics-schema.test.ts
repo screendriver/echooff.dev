@@ -2,7 +2,7 @@ import { test, assert } from "vitest";
 import { Factory } from "fishery";
 import { stripIndent } from "common-tags";
 import { ZodError } from "zod";
-import { GitHubStatistics, gitHubStatisticsSchema } from "../../../../src/components/statistics/statistics-schema";
+import { GitHubStatistics, gitHubStatisticsSchema } from "../../../src/statistics/statistics-schema";
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
     return {

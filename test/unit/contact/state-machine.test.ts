@@ -12,13 +12,9 @@ import {
 import type KyInterface from "ky";
 import { setImmediate } from "timers/promises";
 import { Factory } from "fishery";
-import {
-    createContactStateMachine,
-    ContactMachineEvent,
-    ContactTypestate,
-} from "../../../../src/components/contact/state-machine";
-import type { ContactStateMachineContext } from "../../../../src/components/contact/state-machine-schema";
-import type { ErrorReporter } from "../../../../src/error-reporter/reporter";
+import { createContactStateMachine, ContactMachineEvent, ContactTypestate } from "../../../src/contact/state-machine";
+import type { ContactStateMachineContext } from "../../../src/contact/state-machine-schema";
+import type { ErrorReporter } from "../../../src/error-reporter/reporter";
 
 const errorReporterFactory = Factory.define<ErrorReporter>(() => {
     return {

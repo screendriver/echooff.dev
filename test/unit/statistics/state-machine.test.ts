@@ -18,9 +18,9 @@ import {
     StatisticsMachineDependencies,
     StatisticsMachineEvent,
     StatisticsTypestate,
-} from "../../../../src/components/statistics/state-machine";
-import type { GitHubStatistics } from "../../../../src/components/statistics/statistics-schema";
-import type { ErrorReporter } from "../../../../src/error-reporter/reporter";
+} from "../../../src/statistics/state-machine";
+import type { GitHubStatistics } from "../../../src/statistics/statistics-schema";
+import type { ErrorReporter } from "../../../src/error-reporter/reporter";
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
     return {

@@ -29,5 +29,5 @@
         "types": ["@astrojs/image/client"],
         "useUnknownInCatchVariables": true
     },
-    "include": ["src/**/*", "test/**/*"]
+    "include": ["src/**/*", "test/**/*", "netlify/**/*"]
 }
