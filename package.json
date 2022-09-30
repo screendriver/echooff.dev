@@ -73,7 +73,7 @@
         "prettier": "2.7.1",
         "prettier-plugin-astro": "0.5.5",
         "prettier-plugin-svelte": "2.7.1",
-        "sharp": "0.31.0",
+        "sharp": "0.31.1",
         "sinon": "14.0.0",
         "svelte": "3.50.1",
         "svelte-check": "2.9.1",
