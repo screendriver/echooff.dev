@@ -62,7 +62,6 @@
         "esbuild-register": "3.3.3",
         "eslint": "8.24.0",
         "eslint-config-prettier": "8.5.0",
-        "eslint-plugin-ava": "13.2.0",
         "eslint-plugin-prettier": "4.2.1",
         "fastify": "4.6.0",
         "fishery": "2.2.2",
