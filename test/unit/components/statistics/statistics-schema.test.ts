@@ -1,8 +1,8 @@
-import test from 'ava';
-import { Factory } from 'fishery';
-import { stripIndent } from 'common-tags';
-import { ZodError } from 'zod';
-import { GitHubStatistics, gitHubStatisticsSchema } from '../../../../src/components/statistics/statistics-schema';
+import test from "ava";
+import { Factory } from "fishery";
+import { stripIndent } from "common-tags";
+import { ZodError } from "zod";
+import { GitHubStatistics, gitHubStatisticsSchema } from "../../../../src/components/statistics/statistics-schema";
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
     return {
@@ -19,7 +19,7 @@ const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
 
 test('gitHubStatisticsSchema does allow additional properties in addition to "user" object an strips them out', (t) => {
     const gitHubStatistics = gitHubStatisticsFactory.build({
-        foo: 'bar',
+        foo: "bar",
     } as unknown as GitHubStatistics);
 
     const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
@@ -30,7 +30,7 @@ test('gitHubStatisticsSchema does allow additional properties in addition to "us
 test('gitHubStatisticsSchema does allow additional properties in "user" object and strips them out', (t) => {
     const gitHubStatistics = gitHubStatisticsFactory.build({
         user: {
-            foo: 'bar',
+            foo: "bar",
         },
     } as unknown as GitHubStatistics);
 
@@ -43,7 +43,7 @@ test('gitHubStatisticsSchema does allow additional properties in "user.repositor
     const gitHubStatistics = gitHubStatisticsFactory.build({
         user: {
             repositories: {
-                foo: 'bar',
+                foo: "bar",
             },
         },
     } as unknown as GitHubStatistics);
@@ -57,7 +57,7 @@ test('gitHubStatisticsSchema does allow additional properties in "user.starredRe
     const gitHubStatistics = gitHubStatisticsFactory.build({
         user: {
             starredRepositories: {
-                foo: 'bar',
+                foo: "bar",
             },
         },
     } as unknown as GitHubStatistics);
@@ -100,7 +100,7 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.re
     const gitHubStatistics = gitHubStatisticsFactory.build({
         user: {
             repositories: {
-                totalCount: 'foo',
+                totalCount: "foo",
             },
         },
     } as unknown as GitHubStatistics);
@@ -171,7 +171,7 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.st
     const gitHubStatistics = gitHubStatisticsFactory.build({
         user: {
             starredRepositories: {
-                totalCount: 'foo',
+                totalCount: "foo",
             },
         },
     } as unknown as GitHubStatistics);

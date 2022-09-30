@@ -1,5 +1,5 @@
-import { Result } from 'true-myth';
-import { z, ZodError } from 'zod';
+import { Result } from "true-myth";
+import { z, ZodError } from "zod";
 
 const filledStringSchema = z.string().min(1);
 
@@ -19,7 +19,7 @@ const resumesSchema = z
                     })
                     .strict(),
             })
-            .strict(),
+            .strict()
     )
     .nonempty();
 
@@ -32,9 +32,9 @@ function formatParseError(error: ZodError): string {
                 return issue.message;
             }
 
-            return `${issue.path.join('.')}: ${issue.message}`;
+            return `${issue.path.join(".")}: ${issue.message}`;
         })
-        .join('\n');
+        .join("\n");
 }
 
 export function parseResumeData(resumeData: unknown): Result<ResumesData, string> {

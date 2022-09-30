@@ -1,17 +1,17 @@
 <script lang="ts">
-    import ky from 'ky';
-    import { useMachine } from '@xstate/svelte';
-    import { createContactStateMachine } from './state-machine';
+    import ky from "ky";
+    import { useMachine } from "@xstate/svelte";
+    import { createContactStateMachine } from "./state-machine";
 
-    const contactFormActionUrl = import.meta.env.PUBLIC_CONTACT_FORM_URL ?? '';
+    const contactFormActionUrl = import.meta.env.PUBLIC_CONTACT_FORM_URL ?? "";
     const contactStateMachine = createContactStateMachine({ ky, formActionUrl: contactFormActionUrl });
 
     const { state, send } = useMachine(contactStateMachine);
 </script>
 
-{#if $state.matches('sendingFailed')}
+{#if $state.matches("sendingFailed")}
     <h2 class="col-span-2 text-2xl text-dracula-red">Sending failed</h2>
-{:else if $state.matches('sent')}
+{:else if $state.matches("sent")}
     <h2 aria-label="Thank you" class="col-span-2 text-2xl text-dracula-green">Thank you</h2>
 {:else}
     <h3 class="col-span-2">Leave me a message</h3>
@@ -19,7 +19,7 @@
         method="POST"
         name="contact"
         on:submit|preventDefault={() => {
-            send('SUBMIT');
+            send("SUBMIT");
         }}
         class="col-span-2 flex flex-col gap-3 w-11/12 sm:w-10/12 md:w-2/3"
     >
@@ -32,13 +32,13 @@
             required={true}
             value={$state.context.name}
             on:focus={() => {
-                send('NAME_FOCUSED');
+                send("NAME_FOCUSED");
             }}
             on:change={(changeEvent) => {
-                send({ type: 'TYPING', value: changeEvent.currentTarget.value });
+                send({ type: "TYPING", value: changeEvent.currentTarget.value });
             }}
             on:blur={() => {
-                send('NAME_UNFOCUSED');
+                send("NAME_UNFOCUSED");
             }}
             class="text-dracula-darker rounded indent-1 shadow-sm border focus:border-dracula-purple focus:outline-none"
         />
@@ -50,13 +50,13 @@
             required={true}
             value={$state.context.email}
             on:focus={() => {
-                send('EMAIL_FOCUSED');
+                send("EMAIL_FOCUSED");
             }}
             on:change={(changeEvent) => {
-                send({ type: 'TYPING', value: changeEvent.currentTarget.value });
+                send({ type: "TYPING", value: changeEvent.currentTarget.value });
             }}
             on:blur={() => {
-                send('EMAIL_UNFOCUSED');
+                send("EMAIL_UNFOCUSED");
             }}
             class="text-dracula-darker rounded indent-1 shadow-sm border focus:border-dracula-purple focus:outline-none"
         />
@@ -68,13 +68,13 @@
             required={true}
             value={$state.context.message}
             on:focus={() => {
-                send('MESSAGE_FOCUSED');
+                send("MESSAGE_FOCUSED");
             }}
             on:change={(changeEvent) => {
-                send({ type: 'TYPING', value: changeEvent.currentTarget.value });
+                send({ type: "TYPING", value: changeEvent.currentTarget.value });
             }}
             on:blur={() => {
-                send('MESSAGE_FOCUSED');
+                send("MESSAGE_FOCUSED");
             }}
             class="text-dracula-darker rounded indent-1 shadow-sm border focus:border-dracula-purple focus:outline-none"
         />

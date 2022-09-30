@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { ResumesData } from './data-schema';
-    import { formatSinceDate } from './date';
+    import type { ResumesData } from "./data-schema";
+    import { formatSinceDate } from "./date";
 
     export let resume: ResumesData;
 

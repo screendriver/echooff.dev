@@ -1,6 +1,6 @@
 ---
-import { icons } from 'feather-icons';
-import Contact from './Contact.svelte';
+import { icons } from "feather-icons";
+import Contact from "./Contact.svelte";
 ---
 
 <section class="bg-dracula-dark p-4 lg:p-10">
@@ -8,18 +8,18 @@ import Contact from './Contact.svelte';
         class="flex items-center lg:items-end justify-center gap-x-2 text-dracula-cyan lg:leading-none text-2xl lg:text-4xl font-extrabold my-2"
     >
         Contact
-        <Fragment set:html={icons.mail?.toSvg({ class: 'text-dracula-light w-6 h-6 lg:w-9 lg:h-9' })} />
+        <Fragment set:html={icons.mail?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
     </h3>
     <hr
         class="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg"
     />
     <address class="not-italic grid grid-cols-2 gap-6 justify-items-center m-auto max-w-screen-lg">
         <a href="https://www.openstreetmap.org/relation/62428" class="flex flex-col items-center justify-self-end mx-9">
-            <Fragment set:html={icons['map-pin']?.toSvg({ width: 23, height: 23 })} />
+            <Fragment set:html={icons["map-pin"]?.toSvg({ width: 23, height: 23 })} />
             <p>Munich</p>
         </a>
         <a href="https://threema.id/9TWBW4XN" class="flex flex-col items-center justify-self-start mx-9">
-            <Fragment set:html={icons['message-square']?.toSvg({ width: 23, height: 23 })} />
+            <Fragment set:html={icons["message-square"]?.toSvg({ width: 23, height: 23 })} />
             <p>Threema</p>
         </a>
         <Contact client:visible />

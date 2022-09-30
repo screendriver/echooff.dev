@@ -1,4 +1,4 @@
-import type { GraphQlResponse, graphql as octokitGraphql } from '@octokit/graphql/dist-types/types';
+import type { GraphQlResponse, graphql as octokitGraphql } from "@octokit/graphql/dist-types/types";
 
 export interface FetchGitHubStatisticsOptions {
     readonly graphql: octokitGraphql;
@@ -8,7 +8,7 @@ export interface FetchGitHubStatisticsOptions {
 }
 
 function stripTrailingSlash(url: string): string {
-    if (url.endsWith('/')) {
+    if (url.endsWith("/")) {
         return url.slice(0, -1);
     }
     return url;

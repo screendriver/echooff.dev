@@ -1,7 +1,7 @@
 ---
-import { icons } from 'feather-icons';
-import { Image } from '@astrojs/image/components';
-import aboutImage from '../img/about.jpg';
+import { icons } from "feather-icons";
+import { Image } from "@astrojs/image/components";
+import aboutImage from "../img/about.jpg";
 ---
 
 <section class="p-4 lg:p-10">
@@ -9,7 +9,7 @@ import aboutImage from '../img/about.jpg';
         class="flex items-center lg:items-end justify-center gap-x-2 text-dracula-cyan lg:leading-none text-2xl lg:text-4xl font-extrabold my-2"
     >
         About
-        <Fragment set:html={icons.info?.toSvg({ class: 'text-dracula-light w-6 h-6 lg:w-9 lg:h-9' })} />
+        <Fragment set:html={icons.info?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
     </h3>
     <hr
         class="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg"

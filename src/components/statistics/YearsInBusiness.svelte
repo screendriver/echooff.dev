@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { StatisticsStateMachineState } from './state-machine';
-    import Figure from './Figure.svelte';
-    import Cite from './Cite.svelte';
+    import type { StatisticsStateMachineState } from "./state-machine";
+    import Figure from "./Figure.svelte";
+    import Cite from "./Cite.svelte";
 
     export let state: StatisticsStateMachineState;
 </script>

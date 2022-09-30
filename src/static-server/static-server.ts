@@ -1,9 +1,9 @@
-import getPort from 'get-port';
-import createFastify from 'fastify';
-import fastifyCors from '@fastify/cors';
-import fastifyFormBody from '@fastify/formbody';
-import { createContactFormRoute } from './contact-form-route.js';
-import { createGraphQlRoute } from './graphql-route.js';
+import getPort from "get-port";
+import createFastify from "fastify";
+import fastifyCors from "@fastify/cors";
+import fastifyFormBody from "@fastify/formbody";
+import { createContactFormRoute } from "./contact-form-route.js";
+import { createGraphQlRoute } from "./graphql-route.js";
 
 export async function startStaticServer(): Promise<string> {
     const fastify = createFastify();

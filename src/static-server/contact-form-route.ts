@@ -1,12 +1,12 @@
-import type { RouteOptions } from 'fastify';
+import type { RouteOptions } from "fastify";
 
 export function createContactFormRoute(): RouteOptions {
     return {
-        method: 'POST',
-        url: '/contact-form',
+        method: "POST",
+        url: "/contact-form",
         schema: {
             headers: {
-                'content-type': { type: 'string', const: 'application/x-www-form-urlencoded' },
+                "content-type": { type: "string", const: "application/x-www-form-urlencoded" },
             },
             body: {},
             response: {

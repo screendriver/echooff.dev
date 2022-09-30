@@ -10,13 +10,13 @@ import {
     ServiceMap,
     ResolveTypegenMeta,
     TypegenDisabled,
-} from 'xstate';
-import { Maybe } from 'true-myth';
-import type { Just, Nothing } from 'true-myth/maybe';
-import type KyInterface from 'ky';
-import { GitHubStatistics, gitHubStatisticsSchema } from './statistics-schema';
+} from "xstate";
+import { Maybe } from "true-myth";
+import type { Just, Nothing } from "true-myth/maybe";
+import type KyInterface from "ky";
+import { GitHubStatistics, gitHubStatisticsSchema } from "./statistics-schema";
 
-export type StatisticsMachineEvent = { type: 'FETCH' };
+export type StatisticsMachineEvent = { type: "FETCH" };
 
 export interface StatisticsMachineContext {
     readonly gitHubStatistics: Maybe<GitHubStatistics>;
@@ -25,28 +25,28 @@ export interface StatisticsMachineContext {
 
 export type StatisticsTypestate =
     | {
-          value: 'idle';
+          value: "idle";
           context: StatisticsMachineContext & {
               gitHubStatistics: Nothing<GitHubStatistics>;
               yearsOfExperience: Just<number>;
           };
       }
     | {
-          value: 'loading';
+          value: "loading";
           context: StatisticsMachineContext & {
               gitHubStatistics: Nothing<GitHubStatistics>;
               yearsOfExperience: Just<number>;
           };
       }
     | {
-          value: 'loaded';
+          value: "loaded";
           context: StatisticsMachineContext & {
               gitHubStatistics: Just<GitHubStatistics>;
               yearsOfExperience: Just<number>;
           };
       }
     | {
-          value: 'failed';
+          value: "failed";
           context: StatisticsMachineContext & {
               gitHubStatistics: Nothing<GitHubStatistics>;
               yearsOfExperience: Just<number>;
@@ -85,37 +85,37 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
         TypegenDisabled
     >(
         {
-            id: 'statistics',
-            initial: 'idle',
+            id: "statistics",
+            initial: "idle",
             context: {
                 gitHubStatistics: Maybe.nothing(),
                 yearsOfExperience: Maybe.nothing(),
             },
             states: {
                 idle: {
-                    entry: 'setYearsOfExperience',
-                    on: { FETCH: 'loading' },
+                    entry: "setYearsOfExperience",
+                    on: { FETCH: "loading" },
                 },
                 loading: {
                     invoke: {
-                        id: 'fetchGitHubStatistics',
-                        src: 'fetchGitHubStatistics',
+                        id: "fetchGitHubStatistics",
+                        src: "fetchGitHubStatistics",
                         onDone: {
-                            target: 'loaded',
-                            actions: 'setFetchedGitHubStatistics',
+                            target: "loaded",
+                            actions: "setFetchedGitHubStatistics",
                         },
                         onError: {
-                            target: 'failed',
-                            actions: 'reportFetchGitHubStatisticsError',
+                            target: "failed",
+                            actions: "reportFetchGitHubStatisticsError",
                         },
                     },
                 },
                 loaded: {
-                    type: 'final',
+                    type: "final",
                 },
                 failed: {
                     on: {
-                        FETCH: 'loading',
+                        FETCH: "loading",
                     },
                 },
             },
@@ -145,11 +145,11 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
             },
             services: {
                 async fetchGitHubStatistics() {
-                    const gitHubStatistics = await dependencies.ky('/.netlify/functions/github-statistics').json();
+                    const gitHubStatistics = await dependencies.ky("/.netlify/functions/github-statistics").json();
 
                     return gitHubStatisticsSchema.parse(gitHubStatistics);
                 },
             },
-        },
+        }
     ) as StatisticsStateMachine;
 }

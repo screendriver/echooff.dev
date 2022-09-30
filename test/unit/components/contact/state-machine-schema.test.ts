@@ -1,22 +1,22 @@
-import test from 'ava';
-import { stripIndent } from 'common-tags';
-import { Factory } from 'fishery';
-import { ZodError } from 'zod';
+import test from "ava";
+import { stripIndent } from "common-tags";
+import { Factory } from "fishery";
+import { ZodError } from "zod";
 import {
     contactFormUrlSchema,
     ContactStateMachineContext,
     contactStateMachineContextSchema,
-} from '../../../../src/components/contact/state-machine-schema';
+} from "../../../../src/components/contact/state-machine-schema";
 
 const contactStateMachineContextFactory = Factory.define<ContactStateMachineContext>(() => {
     return {
-        name: 'foo',
-        email: 'bar@example.com',
-        message: 'baz',
+        name: "foo",
+        email: "bar@example.com",
+        message: "baz",
     };
 });
 
-test('contactFormUrlSchema fails when it is undefined', (t) => {
+test("contactFormUrlSchema fails when it is undefined", (t) => {
     t.throws(() => contactFormUrlSchema.parse(undefined), {
         instanceOf: ZodError,
         message: stripIndent`
@@ -32,7 +32,7 @@ test('contactFormUrlSchema fails when it is undefined', (t) => {
     });
 });
 
-test('contactFormUrlSchema fails when it is not a string', (t) => {
+test("contactFormUrlSchema fails when it is not a string", (t) => {
     t.throws(() => contactFormUrlSchema.parse(42), {
         instanceOf: ZodError,
         message: stripIndent`
@@ -48,8 +48,8 @@ test('contactFormUrlSchema fails when it is not a string', (t) => {
     });
 });
 
-test('contactFormUrlSchema fails when it is an empty string', (t) => {
-    t.throws(() => contactFormUrlSchema.parse(''), {
+test("contactFormUrlSchema fails when it is an empty string", (t) => {
+    t.throws(() => contactFormUrlSchema.parse(""), {
         instanceOf: ZodError,
         message: stripIndent`
     [
@@ -65,13 +65,13 @@ test('contactFormUrlSchema fails when it is an empty string', (t) => {
     });
 });
 
-test('contactFormUrlSchema succeeds when it is a string', (t) => {
-    const { success } = contactFormUrlSchema.safeParse('/');
+test("contactFormUrlSchema succeeds when it is a string", (t) => {
+    const { success } = contactFormUrlSchema.safeParse("/");
 
     t.true(success);
 });
 
-test('contactStateMachineContextSchema fails to parse when name is not defined', (t) => {
+test("contactStateMachineContextSchema fails to parse when name is not defined", (t) => {
     const data = contactStateMachineContextFactory.build({
         name: undefined,
     });
@@ -92,9 +92,9 @@ test('contactStateMachineContextSchema fails to parse when name is not defined',
     });
 });
 
-test('contactStateMachineContextSchema fails to parse when name is an empty string', (t) => {
+test("contactStateMachineContextSchema fails to parse when name is an empty string", (t) => {
     const data = contactStateMachineContextFactory.build({
-        name: '',
+        name: "",
     });
     t.throws(() => contactStateMachineContextSchema.parse(data), {
         instanceOf: ZodError,
@@ -114,7 +114,7 @@ test('contactStateMachineContextSchema fails to parse when name is an empty stri
     });
 });
 
-test('contactStateMachineContextSchema fails to parse when name is not a string', (t) => {
+test("contactStateMachineContextSchema fails to parse when name is not a string", (t) => {
     const data = contactStateMachineContextFactory.build({
         name: 42,
     } as unknown as ContactStateMachineContext);
@@ -135,7 +135,7 @@ test('contactStateMachineContextSchema fails to parse when name is not a string'
     });
 });
 
-test('contactStateMachineContextSchema fails to parse when email is not defined', (t) => {
+test("contactStateMachineContextSchema fails to parse when email is not defined", (t) => {
     const data = contactStateMachineContextFactory.build({
         email: undefined,
     });
@@ -156,9 +156,9 @@ test('contactStateMachineContextSchema fails to parse when email is not defined'
     });
 });
 
-test('contactStateMachineContextSchema fails to parse when email is an empty string', (t) => {
+test("contactStateMachineContextSchema fails to parse when email is an empty string", (t) => {
     const data = contactStateMachineContextFactory.build({
-        email: '',
+        email: "",
     });
     t.throws(() => contactStateMachineContextSchema.parse(data), {
         instanceOf: ZodError,
@@ -176,7 +176,7 @@ test('contactStateMachineContextSchema fails to parse when email is an empty str
     });
 });
 
-test('contactStateMachineContextSchema fails to parse email name is not a string', (t) => {
+test("contactStateMachineContextSchema fails to parse email name is not a string", (t) => {
     const data = contactStateMachineContextFactory.build({
         email: 42,
     } as unknown as ContactStateMachineContext);
@@ -197,9 +197,9 @@ test('contactStateMachineContextSchema fails to parse email name is not a string
     });
 });
 
-test('contactStateMachineContextSchema fails to parse when email is not a valid email address', (t) => {
+test("contactStateMachineContextSchema fails to parse when email is not a valid email address", (t) => {
     const data = contactStateMachineContextFactory.build({
-        email: 'foo@bar',
+        email: "foo@bar",
     });
     t.throws(() => contactStateMachineContextSchema.parse(data), {
         instanceOf: ZodError,
@@ -217,7 +217,7 @@ test('contactStateMachineContextSchema fails to parse when email is not a valid 
     });
 });
 
-test('contactStateMachineContextSchema fails to parse when message is not defined', (t) => {
+test("contactStateMachineContextSchema fails to parse when message is not defined", (t) => {
     const data = contactStateMachineContextFactory.build({
         message: undefined,
     });
@@ -238,9 +238,9 @@ test('contactStateMachineContextSchema fails to parse when message is not define
     });
 });
 
-test('contactStateMachineContextSchema fails to parse when message is an empty string', (t) => {
+test("contactStateMachineContextSchema fails to parse when message is an empty string", (t) => {
     const data = contactStateMachineContextFactory.build({
-        message: '',
+        message: "",
     });
     t.throws(() => contactStateMachineContextSchema.parse(data), {
         instanceOf: ZodError,
@@ -260,7 +260,7 @@ test('contactStateMachineContextSchema fails to parse when message is an empty s
     });
 });
 
-test('contactStateMachineContextSchema fails to parse when message is not a string', (t) => {
+test("contactStateMachineContextSchema fails to parse when message is not a string", (t) => {
     const data = contactStateMachineContextFactory.build({
         message: 42,
     } as unknown as ContactStateMachineContext);
@@ -281,7 +281,7 @@ test('contactStateMachineContextSchema fails to parse when message is not a stri
     });
 });
 
-test('contactStateMachineContextSchema succeeds when all fields are filled correctly', (t) => {
+test("contactStateMachineContextSchema succeeds when all fields are filled correctly", (t) => {
     const data = contactStateMachineContextFactory.build();
     const { success } = contactStateMachineContextSchema.safeParse(data);
 

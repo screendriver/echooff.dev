@@ -1,6 +1,6 @@
-import test from 'ava';
-import { fake } from 'sinon';
-import { Factory } from 'fishery';
+import test from "ava";
+import { fake } from "sinon";
+import { Factory } from "fishery";
 import {
     BaseActionObject,
     interpret,
@@ -9,18 +9,18 @@ import {
     ServiceMap,
     StateSchema,
     TypegenDisabled,
-} from 'xstate';
-import type KyInterface from 'ky';
-import { Maybe } from 'true-myth';
-import { setImmediate } from 'timers/promises';
+} from "xstate";
+import type KyInterface from "ky";
+import { Maybe } from "true-myth";
+import { setImmediate } from "timers/promises";
 import {
     createStatisticsStateMachine,
     StatisticsMachineContext,
     StatisticsMachineDependencies,
     StatisticsMachineEvent,
     StatisticsTypestate,
-} from '../../../../src/components/statistics/state-machine';
-import type { GitHubStatistics } from '../../../../src/components/statistics/statistics-schema';
+} from "../../../../src/components/statistics/state-machine";
+import type { GitHubStatistics } from "../../../../src/components/statistics/statistics-schema";
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
     return {
@@ -36,7 +36,7 @@ const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
 });
 
 function createStatisticsMachineDependencies(
-    overrides: Partial<StatisticsMachineDependencies>,
+    overrides: Partial<StatisticsMachineDependencies>
 ): StatisticsMachineDependencies {
     const gitHubStatistics = gitHubStatisticsFactory.build();
     return {
@@ -49,7 +49,7 @@ function createStatisticsMachineDependencies(
 }
 
 function createStatisticsStateService(
-    overrides: Partial<StatisticsMachineDependencies> = {},
+    overrides: Partial<StatisticsMachineDependencies> = {}
 ): Interpreter<
     StatisticsMachineContext,
     StateSchema<StatisticsMachineContext>,
@@ -62,13 +62,13 @@ function createStatisticsStateService(
     return interpret(statisticsStateMachine).start();
 }
 
-test('initial state', (t) => {
+test("initial state", (t) => {
     const statisticsStateService = createStatisticsStateService();
 
-    t.is(statisticsStateService.initialState.value, 'idle');
+    t.is(statisticsStateService.initialState.value, "idle");
 });
 
-test('initial context', (t) => {
+test("initial context", (t) => {
     const statisticsStateService = createStatisticsStateService();
 
     t.deepEqual(statisticsStateService.initialState.context, {
@@ -80,9 +80,9 @@ test('initial context', (t) => {
 test('transits from "idle" to "loading" on "FETCH" event', (t) => {
     const statisticsStateService = createStatisticsStateService();
 
-    statisticsStateService.send('FETCH');
+    statisticsStateService.send("FETCH");
 
-    t.true(statisticsStateService.state.matches('loading'));
+    t.true(statisticsStateService.state.matches("loading"));
 });
 
 test('makes a HTTP GET request to "/.netlify/functions/github-statistics" on "FETCH" event', (t) => {
@@ -92,15 +92,15 @@ test('makes a HTTP GET request to "/.netlify/functions/github-statistics" on "FE
     });
     const statisticsStateService = createStatisticsStateService({ ky: ky as unknown as typeof KyInterface });
 
-    statisticsStateService.send('FETCH');
+    statisticsStateService.send("FETCH");
 
-    t.true(ky.calledOnceWith('/.netlify/functions/github-statistics'));
+    t.true(ky.calledOnceWith("/.netlify/functions/github-statistics"));
 });
 
 test('sets "context.gitHubStatistics" after loading GitHub statistics', async (t) => {
     const statisticsStateService = createStatisticsStateService();
 
-    statisticsStateService.send('FETCH');
+    statisticsStateService.send("FETCH");
     await setImmediate();
 
     t.deepEqual(statisticsStateService.state.context, {
@@ -121,16 +121,16 @@ test('sets "context.gitHubStatistics" after loading GitHub statistics', async (t
 test('transits from "loading" to "loaded" after "FETCH" event is done', async (t) => {
     const statisticsStateService = createStatisticsStateService();
 
-    statisticsStateService.send('FETCH');
+    statisticsStateService.send("FETCH");
     await setImmediate();
 
-    t.true(statisticsStateService.state.matches('loaded'));
+    t.true(statisticsStateService.state.matches("loaded"));
 });
 
 test('sets "loaded" state type to "final" ', async (t) => {
     const statisticsStateService = createStatisticsStateService();
 
-    statisticsStateService.send('FETCH');
+    statisticsStateService.send("FETCH");
     await setImmediate();
 
     t.true(statisticsStateService.state.done);
@@ -142,17 +142,17 @@ test('transit from "loading" to "failed" when fetching of GitHub statistics fail
     });
     const statisticsStateService = createStatisticsStateService({ ky: ky as unknown as typeof KyInterface });
 
-    statisticsStateService.send('FETCH');
+    statisticsStateService.send("FETCH");
     await setImmediate();
 
-    t.true(statisticsStateService.state.matches('failed'));
+    t.true(statisticsStateService.state.matches("failed"));
 });
 
 test('transit from "loading" to "failed" when fetching of GitHub statistics returned invalid data', async (t) => {
     const gitHubStatistics = gitHubStatisticsFactory.build({
         user: {
             repositories: {
-                totalCount: 'foo',
+                totalCount: "foo",
             },
         },
     } as unknown as GitHubStatistics);
@@ -161,9 +161,9 @@ test('transit from "loading" to "failed" when fetching of GitHub statistics retu
     });
     const statisticsStateService = createStatisticsStateService({ ky: ky as unknown as typeof KyInterface });
 
-    statisticsStateService.send('FETCH');
+    statisticsStateService.send("FETCH");
     await setImmediate();
 
-    t.true(statisticsStateService.state.matches('failed'));
+    t.true(statisticsStateService.state.matches("failed"));
     t.deepEqual(statisticsStateService.state.context.gitHubStatistics, Maybe.nothing<GitHubStatistics>());
 });
