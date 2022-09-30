@@ -1,4 +1,4 @@
-import test from "ava";
+import { test, assert } from "vitest";
 import { fake } from "sinon";
 import {
     BaseActionObject,
@@ -49,13 +49,13 @@ function createContactStateService(
 test("initial state", (t) => {
     const contactStateService = createContactStateService();
 
-    t.is(contactStateService.initialState.value, "idle");
+    assert.strictEqual(contactStateService.initialState.value, "idle");
 });
 
 test("initial context", (t) => {
     const contactStateService = createContactStateService();
 
-    t.deepEqual(contactStateService.initialState.context, {
+    assert.deepStrictEqual(contactStateService.initialState.context, {
         name: "",
         email: "",
         message: "",
@@ -67,7 +67,7 @@ test('transits from "idle" to "nameFocused" on "NAME_FOCUSED" event', (t) => {
 
     contactStateService.send("NAME_FOCUSED");
 
-    t.true(contactStateService.getSnapshot().matches("nameFocused"));
+    assert.isTrue(contactStateService.getSnapshot().matches("nameFocused"));
 });
 
 test('transits from "idle" to "emailFocused" on "EMAIL_FOCUSED" event', (t) => {
@@ -75,7 +75,7 @@ test('transits from "idle" to "emailFocused" on "EMAIL_FOCUSED" event', (t) => {
 
     contactStateService.send("EMAIL_FOCUSED");
 
-    t.true(contactStateService.getSnapshot().matches("emailFocused"));
+    assert.isTrue(contactStateService.getSnapshot().matches("emailFocused"));
 });
 
 test('transits from "idle" to "messageFocused" on "MESSAGE_FOCUSED" event', (t) => {
@@ -83,7 +83,7 @@ test('transits from "idle" to "messageFocused" on "MESSAGE_FOCUSED" event', (t) 
 
     contactStateService.send("MESSAGE_FOCUSED");
 
-    t.true(contactStateService.getSnapshot().matches("messageFocused"));
+    assert.isTrue(contactStateService.getSnapshot().matches("messageFocused"));
 });
 
 test('transits from "nameFocused" to "idle" on "NAME_UNFOCUSED" event', (t) => {
@@ -91,7 +91,7 @@ test('transits from "nameFocused" to "idle" on "NAME_UNFOCUSED" event', (t) => {
 
     contactStateService.send(["NAME_FOCUSED", "NAME_UNFOCUSED"]);
 
-    t.true(contactStateService.getSnapshot().matches("idle"));
+    assert.isTrue(contactStateService.getSnapshot().matches("idle"));
 });
 
 test('transits from "emailFocused" to "idle" on "EMAIL_UNFOCUSED" event', (t) => {
@@ -99,7 +99,7 @@ test('transits from "emailFocused" to "idle" on "EMAIL_UNFOCUSED" event', (t) =>
 
     contactStateService.send(["EMAIL_FOCUSED", "EMAIL_UNFOCUSED"]);
 
-    t.true(contactStateService.getSnapshot().matches("idle"));
+    assert.isTrue(contactStateService.getSnapshot().matches("idle"));
 });
 
 test('transits from "messageFocused" to "idle" on "MESSAGE_UNFOCUSED" event', (t) => {
@@ -107,7 +107,7 @@ test('transits from "messageFocused" to "idle" on "MESSAGE_UNFOCUSED" event', (t
 
     contactStateService.send(["MESSAGE_FOCUSED", "MESSAGE_UNFOCUSED"]);
 
-    t.true(contactStateService.getSnapshot().matches("idle"));
+    assert.isTrue(contactStateService.getSnapshot().matches("idle"));
 });
 
 test('sets "name" in context when in "nameFocused" state and "TYPING" event is sent', (t) => {
@@ -115,7 +115,7 @@ test('sets "name" in context when in "nameFocused" state and "TYPING" event is s
 
     contactStateService.send(["NAME_FOCUSED", { type: "TYPING", value: "foo" }]);
 
-    t.is(contactStateService.getSnapshot().context.name, "foo");
+    assert.strictEqual(contactStateService.getSnapshot().context.name, "foo");
 });
 
 test('sets last value of multiple "TYPING" events as "name" in context', (t) => {
@@ -128,7 +128,7 @@ test('sets last value of multiple "TYPING" events as "name" in context', (t) => 
         { type: "TYPING", value: "baz" },
     ]);
 
-    t.is(contactStateService.getSnapshot().context.name, "baz");
+    assert.strictEqual(contactStateService.getSnapshot().context.name, "baz");
 });
 
 test('sets "email" in context when in "emailFocused" state and "TYPING" event is sent', (t) => {
@@ -136,7 +136,7 @@ test('sets "email" in context when in "emailFocused" state and "TYPING" event is
 
     contactStateService.send(["EMAIL_FOCUSED", { type: "TYPING", value: "foo" }]);
 
-    t.is(contactStateService.getSnapshot().context.email, "foo");
+    assert.strictEqual(contactStateService.getSnapshot().context.email, "foo");
 });
 
 test('sets last value of multiple "TYPING" events as "email" in context', (t) => {
@@ -149,7 +149,7 @@ test('sets last value of multiple "TYPING" events as "email" in context', (t) =>
         { type: "TYPING", value: "baz" },
     ]);
 
-    t.is(contactStateService.getSnapshot().context.email, "baz");
+    assert.strictEqual(contactStateService.getSnapshot().context.email, "baz");
 });
 
 test('sets "message" in context when in "messageFocused" state and "TYPING" event is sent', (t) => {
@@ -157,7 +157,7 @@ test('sets "message" in context when in "messageFocused" state and "TYPING" even
 
     contactStateService.send(["MESSAGE_FOCUSED", { type: "TYPING", value: "foo" }]);
 
-    t.is(contactStateService.getSnapshot().context.message, "foo");
+    assert.strictEqual(contactStateService.getSnapshot().context.message, "foo");
 });
 
 test('sets last value of multiple "TYPING" events as "message" in context', (t) => {
@@ -170,7 +170,7 @@ test('sets last value of multiple "TYPING" events as "message" in context', (t) 
         { type: "TYPING", value: "baz" },
     ]);
 
-    t.is(contactStateService.getSnapshot().context.message, "baz");
+    assert.strictEqual(contactStateService.getSnapshot().context.message, "baz");
 });
 
 test('keeps "name" in context when transition from "nameFocused" to "idle"', (t) => {
@@ -178,8 +178,8 @@ test('keeps "name" in context when transition from "nameFocused" to "idle"', (t)
 
     contactStateService.send(["NAME_FOCUSED", { type: "TYPING", value: "foo" }, "NAME_UNFOCUSED"]);
 
-    t.is(contactStateService.getSnapshot().context.name, "foo");
-    t.true(contactStateService.getSnapshot().matches("idle"));
+    assert.strictEqual(contactStateService.getSnapshot().context.name, "foo");
+    assert.isTrue(contactStateService.getSnapshot().matches("idle"));
 });
 
 test('keeps "email" in context when transition from "emailFocused" to "idle"', (t) => {
@@ -187,8 +187,8 @@ test('keeps "email" in context when transition from "emailFocused" to "idle"', (
 
     contactStateService.send(["EMAIL_FOCUSED", { type: "TYPING", value: "foo" }, "EMAIL_UNFOCUSED"]);
 
-    t.is(contactStateService.getSnapshot().context.email, "foo");
-    t.true(contactStateService.getSnapshot().matches("idle"));
+    assert.strictEqual(contactStateService.getSnapshot().context.email, "foo");
+    assert.isTrue(contactStateService.getSnapshot().matches("idle"));
 });
 
 test('keeps "message" in context when transition from "messageFocused" to "idle"', (t) => {
@@ -196,8 +196,8 @@ test('keeps "message" in context when transition from "messageFocused" to "idle"
 
     contactStateService.send(["MESSAGE_FOCUSED", { type: "TYPING", value: "foo" }, "MESSAGE_UNFOCUSED"]);
 
-    t.is(contactStateService.getSnapshot().context.message, "foo");
-    t.true(contactStateService.getSnapshot().matches("idle"));
+    assert.strictEqual(contactStateService.getSnapshot().context.message, "foo");
+    assert.isTrue(contactStateService.getSnapshot().matches("idle"));
 });
 
 test('keeps all values in context after everything was filled and transition back to "idle"', (t) => {
@@ -215,12 +215,12 @@ test('keeps all values in context after everything was filled and transition bac
         "MESSAGE_UNFOCUSED",
     ]);
 
-    t.deepEqual(contactStateService.getSnapshot().context, {
+    assert.deepStrictEqual(contactStateService.getSnapshot().context, {
         name: "foo",
         email: "bar@example.com",
         message: "bar",
     });
-    t.true(contactStateService.getSnapshot().matches("idle"));
+    assert.isTrue(contactStateService.getSnapshot().matches("idle"));
 });
 
 test('transits to "validationFailed" on "SUBMIT" event when context data is not valid', (t) => {
@@ -239,7 +239,7 @@ test('transits to "validationFailed" on "SUBMIT" event when context data is not 
         "SUBMIT",
     ]);
 
-    t.true(contactStateService.getSnapshot().matches("validationFailed"));
+    assert.isTrue(contactStateService.getSnapshot().matches("validationFailed"));
 });
 
 test('transits to "validationFailed" again on "SUBMIT" event when context data is still not valid', (t) => {
@@ -256,7 +256,7 @@ test('transits to "validationFailed" again on "SUBMIT" event when context data i
         "SUBMIT",
     ]);
 
-    t.true(contactStateService.getSnapshot().matches("validationFailed"));
+    assert.isTrue(contactStateService.getSnapshot().matches("validationFailed"));
 });
 
 test('transits to "sending" on "SUBMIT" event when context data is valid', (t) => {
@@ -275,7 +275,7 @@ test('transits to "sending" on "SUBMIT" event when context data is valid', (t) =
         "SUBMIT",
     ]);
 
-    t.true(contactStateService.getSnapshot().matches("sending"));
+    assert.isTrue(contactStateService.getSnapshot().matches("sending"));
 });
 
 test('invokes "postContactForm" service when entering "sending" state node', (t) => {
@@ -301,7 +301,7 @@ test('invokes "postContactForm" service when entering "sending" state node', (t)
         "SUBMIT",
     ]);
 
-    t.true(postContactForm.calledOnce);
+    assert.isTrue(postContactForm.calledOnce);
 });
 
 test('makes a HTTP POST request when entering "sending" state node', (t) => {
@@ -330,8 +330,8 @@ test('makes a HTTP POST request when entering "sending" state node', (t) => {
         "form-name": "contact",
     });
     const callArguments = ky.post.args[0];
-    t.is(callArguments?.[0], "/contact-form");
-    t.deepEqual(callArguments?.[1], {
+    assert.strictEqual(callArguments?.[0], "/contact-form");
+    assert.deepStrictEqual(callArguments?.[1], {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: searchParams,
     });
@@ -357,7 +357,7 @@ test('transits to "sendingFailed" when sending contact form failed', async (t) =
     ]);
     await setImmediate();
 
-    t.true(contactStateService.getSnapshot().matches("sendingFailed"));
+    assert.isTrue(contactStateService.getSnapshot().matches("sendingFailed"));
 });
 
 test('transits to "sent" after sending contact form', async (t) => {
@@ -377,7 +377,7 @@ test('transits to "sent" after sending contact form', async (t) => {
     ]);
     await setImmediate();
 
-    t.true(contactStateService.getSnapshot().matches("sent"));
+    assert.isTrue(contactStateService.getSnapshot().matches("sent"));
 });
 
 test('defines "sent" state node as final', async (t) => {
@@ -397,5 +397,5 @@ test('defines "sent" state node as final', async (t) => {
     ]);
     await setImmediate();
 
-    t.true(contactStateService.getSnapshot().done);
+    assert.isTrue(contactStateService.getSnapshot().done);
 });

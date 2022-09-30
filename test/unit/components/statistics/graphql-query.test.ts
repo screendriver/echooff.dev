@@ -1,6 +1,7 @@
-import test from "ava";
+import { test, assert } from "vitest";
 import { fake } from "sinon";
 import { Factory } from "fishery";
+import { stripIndent } from "common-tags";
 import type { graphql as octokitGraphql, RequestParameters } from "@octokit/graphql/dist-types/types";
 import {
     fetchGitHubStatistics,
@@ -17,25 +18,11 @@ const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatistics
     };
 });
 
-const fetchGitHubStatisticsMacro = test.macro<[input: keyof RequestParameters, expected: unknown]>(
-    async (t, input, expected) => {
-        const graphql = fake.resolves<RequestParameters[]>(undefined);
-        const fetchGitHubStatisticsOptions = fetchGitHubStatisticsOptionsFactory.build({
-            graphql: graphql as unknown as octokitGraphql,
-        });
-
-        await fetchGitHubStatistics(fetchGitHubStatisticsOptions);
-
-        t.true(graphql.calledOnce);
-        t.deepEqual(graphql.args[0]?.[0]?.[input], expected);
-    }
-);
-
-test(
-    "fetchGitHubStatistics() uses the correct GraphQL query",
-    fetchGitHubStatisticsMacro,
-    "query",
-    `query ($login: String!) {
+test.each<[string, keyof RequestParameters, unknown]>([
+    [
+        "GraphQL query",
+        "query",
+        stripIndent`query ($login: String!) {
             user(login: $login) {
                 repositories {
                     totalCount
@@ -44,18 +31,25 @@ test(
                     totalCount
                 }
             }
-        }`
-);
+        }`,
+    ],
+    ["GitHub base URL and strips the trailing slash", "baseUrl", "https://example.com"],
+    ["GitHub login", "login", "username"],
+    [
+        "GitHub API token",
+        "headers",
+        {
+            authorization: "token my-token",
+        },
+    ],
+])("fetchGitHubStatistics() uses the correct %s", async (_testDescription, requestParameter, expected) => {
+    const graphql = fake.resolves<RequestParameters[]>(undefined);
+    const fetchGitHubStatisticsOptions = fetchGitHubStatisticsOptionsFactory.build({
+        graphql: graphql as unknown as octokitGraphql,
+    });
 
-test(
-    "fetchGitHubStatistics() uses the correct GitHub base URL and strips the trailing slash",
-    fetchGitHubStatisticsMacro,
-    "baseUrl",
-    "https://example.com"
-);
+    await fetchGitHubStatistics(fetchGitHubStatisticsOptions);
 
-test("fetchGitHubStatistics() uses the correct GitHub login", fetchGitHubStatisticsMacro, "login", "username");
-
-test("fetchGitHubStatistics() uses the correct GitHub API token", fetchGitHubStatisticsMacro, "headers", {
-    authorization: "token my-token",
+    assert.isTrue(graphql.calledOnce);
+    assert.deepStrictEqual(graphql.args[0]?.[0]?.[requestParameter], expected);
 });

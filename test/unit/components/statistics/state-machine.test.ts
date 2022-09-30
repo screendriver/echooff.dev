@@ -1,4 +1,4 @@
-import test from "ava";
+import { test, assert } from "vitest";
 import { fake } from "sinon";
 import { Factory } from "fishery";
 import {
@@ -62,30 +62,30 @@ function createStatisticsStateService(
     return interpret(statisticsStateMachine).start();
 }
 
-test("initial state", (t) => {
+test("initial state", () => {
     const statisticsStateService = createStatisticsStateService();
 
-    t.is(statisticsStateService.initialState.value, "idle");
+    assert.strictEqual(statisticsStateService.initialState.value, "idle");
 });
 
-test("initial context", (t) => {
+test("initial context", () => {
     const statisticsStateService = createStatisticsStateService();
 
-    t.deepEqual(statisticsStateService.initialState.context, {
+    assert.deepEqual(statisticsStateService.initialState.context, {
         gitHubStatistics: Maybe.nothing<GitHubStatistics>(),
         yearsOfExperience: Maybe.just(20),
     });
 });
 
-test('transits from "idle" to "loading" on "FETCH" event', (t) => {
+test('transits from "idle" to "loading" on "FETCH" event', () => {
     const statisticsStateService = createStatisticsStateService();
 
     statisticsStateService.send("FETCH");
 
-    t.true(statisticsStateService.state.matches("loading"));
+    assert.isTrue(statisticsStateService.state.matches("loading"));
 });
 
-test('makes a HTTP GET request to "/.netlify/functions/github-statistics" on "FETCH" event', (t) => {
+test('makes a HTTP GET request to "/.netlify/functions/github-statistics" on "FETCH" event', () => {
     const gitHubStatistics = gitHubStatisticsFactory.build();
     const ky = fake.returns({
         json: fake.resolves(gitHubStatistics),
@@ -94,16 +94,16 @@ test('makes a HTTP GET request to "/.netlify/functions/github-statistics" on "FE
 
     statisticsStateService.send("FETCH");
 
-    t.true(ky.calledOnceWith("/.netlify/functions/github-statistics"));
+    assert.isTrue(ky.calledOnceWith("/.netlify/functions/github-statistics"));
 });
 
-test('sets "context.gitHubStatistics" after loading GitHub statistics', async (t) => {
+test('sets "context.gitHubStatistics" after loading GitHub statistics', async () => {
     const statisticsStateService = createStatisticsStateService();
 
     statisticsStateService.send("FETCH");
     await setImmediate();
 
-    t.deepEqual(statisticsStateService.state.context, {
+    assert.deepEqual(statisticsStateService.state.context, {
         gitHubStatistics: Maybe.just({
             user: {
                 repositories: {
@@ -118,25 +118,25 @@ test('sets "context.gitHubStatistics" after loading GitHub statistics', async (t
     });
 });
 
-test('transits from "loading" to "loaded" after "FETCH" event is done', async (t) => {
+test('transits from "loading" to "loaded" after "FETCH" event is done', async () => {
     const statisticsStateService = createStatisticsStateService();
 
     statisticsStateService.send("FETCH");
     await setImmediate();
 
-    t.true(statisticsStateService.state.matches("loaded"));
+    assert.isTrue(statisticsStateService.state.matches("loaded"));
 });
 
-test('sets "loaded" state type to "final" ', async (t) => {
+test('sets "loaded" state type to "final" ', async () => {
     const statisticsStateService = createStatisticsStateService();
 
     statisticsStateService.send("FETCH");
     await setImmediate();
 
-    t.true(statisticsStateService.state.done);
+    assert.isTrue(statisticsStateService.state.done);
 });
 
-test('transit from "loading" to "failed" when fetching of GitHub statistics failed', async (t) => {
+test('transit from "loading" to "failed" when fetching of GitHub statistics failed', async () => {
     const ky = fake.returns({
         json: fake.rejects(undefined),
     });
@@ -145,10 +145,10 @@ test('transit from "loading" to "failed" when fetching of GitHub statistics fail
     statisticsStateService.send("FETCH");
     await setImmediate();
 
-    t.true(statisticsStateService.state.matches("failed"));
+    assert.isTrue(statisticsStateService.state.matches("failed"));
 });
 
-test('transit from "loading" to "failed" when fetching of GitHub statistics returned invalid data', async (t) => {
+test('transit from "loading" to "failed" when fetching of GitHub statistics returned invalid data', async () => {
     const gitHubStatistics = gitHubStatisticsFactory.build({
         user: {
             repositories: {
@@ -164,6 +164,6 @@ test('transit from "loading" to "failed" when fetching of GitHub statistics retu
     statisticsStateService.send("FETCH");
     await setImmediate();
 
-    t.true(statisticsStateService.state.matches("failed"));
-    t.deepEqual(statisticsStateService.state.context.gitHubStatistics, Maybe.nothing<GitHubStatistics>());
+    assert.isTrue(statisticsStateService.state.matches("failed"));
+    assert.deepEqual(statisticsStateService.state.context.gitHubStatistics, Maybe.nothing<GitHubStatistics>());
 });
