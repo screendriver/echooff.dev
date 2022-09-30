@@ -1,8 +1,8 @@
-import test from "ava";
+import { test, assert } from "vitest";
 import createFastify from "fastify";
 import { createGraphQlRoute } from "../../../src/static-server/graphql-route";
 
-test("returns an user with a total count of repositories and starred repositories", async (t) => {
+test("returns an user with a total count of repositories and starred repositories", async () => {
     const fastify = createFastify();
     fastify.route(createGraphQlRoute());
 
@@ -23,5 +23,5 @@ test("returns an user with a total count of repositories and starred repositorie
             },
         },
     };
-    t.deepEqual(actual, expected);
+    assert.deepEqual(actual, expected);
 });
