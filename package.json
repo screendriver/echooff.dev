@@ -63,7 +63,7 @@
         "eslint": "8.24.0",
         "eslint-config-prettier": "8.5.0",
         "eslint-plugin-prettier": "4.2.1",
-        "fastify": "4.6.0",
+        "fastify": "4.7.0",
         "fishery": "2.2.2",
         "get-port": "6.1.2",
         "jscpd": "3.4.5",
