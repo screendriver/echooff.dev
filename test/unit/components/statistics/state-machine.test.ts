@@ -1,5 +1,4 @@
-import { test, assert } from "vitest";
-import { fake } from "sinon";
+import { test, assert, vi } from "vitest";
 import { Factory } from "fishery";
 import {
     BaseActionObject,
@@ -40,8 +39,8 @@ function createStatisticsMachineDependencies(
 ): StatisticsMachineDependencies {
     const gitHubStatistics = gitHubStatisticsFactory.build();
     return {
-        ky: fake.returns({
-            json: fake.resolves(gitHubStatistics),
+        ky: vi.fn().mockReturnValue({
+            json: vi.fn().mockResolvedValue(gitHubStatistics),
         }),
         currentTimestamp: new Date(2021, 3, 10),
         ...overrides,
@@ -87,14 +86,15 @@ test('transits from "idle" to "loading" on "FETCH" event', () => {
 
 test('makes a HTTP GET request to "/.netlify/functions/github-statistics" on "FETCH" event', () => {
     const gitHubStatistics = gitHubStatisticsFactory.build();
-    const ky = fake.returns({
-        json: fake.resolves(gitHubStatistics),
+    const ky = vi.fn().mockReturnValue({
+        json: vi.fn().mockResolvedValue(gitHubStatistics),
     });
     const statisticsStateService = createStatisticsStateService({ ky: ky as unknown as typeof KyInterface });
 
     statisticsStateService.send("FETCH");
 
-    assert.isTrue(ky.calledOnceWith("/.netlify/functions/github-statistics"));
+    assert.strictEqual(ky.mock.calls.length, 1);
+    assert.strictEqual(ky.mock.calls[0]?.[0], "/.netlify/functions/github-statistics");
 });
 
 test('sets "context.gitHubStatistics" after loading GitHub statistics', async () => {
@@ -137,8 +137,8 @@ test('sets "loaded" state type to "final" ', async () => {
 });
 
 test('transit from "loading" to "failed" when fetching of GitHub statistics failed', async () => {
-    const ky = fake.returns({
-        json: fake.rejects(undefined),
+    const ky = vi.fn().mockReturnValue({
+        json: vi.fn().mockRejectedValue(undefined),
     });
     const statisticsStateService = createStatisticsStateService({ ky: ky as unknown as typeof KyInterface });
 
@@ -156,8 +156,8 @@ test('transit from "loading" to "failed" when fetching of GitHub statistics retu
             },
         },
     } as unknown as GitHubStatistics);
-    const ky = fake.returns({
-        json: fake.resolves(gitHubStatistics),
+    const ky = vi.fn().mockReturnValue({
+        json: vi.fn().mockResolvedValue(gitHubStatistics),
     });
     const statisticsStateService = createStatisticsStateService({ ky: ky as unknown as typeof KyInterface });
 

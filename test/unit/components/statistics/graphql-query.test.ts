@@ -1,5 +1,4 @@
-import { test, assert } from "vitest";
-import { fake } from "sinon";
+import { test, assert, vi } from "vitest";
 import { Factory } from "fishery";
 import { stripIndent } from "common-tags";
 import type { graphql as octokitGraphql, RequestParameters } from "@octokit/graphql/dist-types/types";
@@ -9,7 +8,7 @@ import {
 } from "../../../../src/components/statistics/graphql-query";
 
 const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatisticsOptions>(() => {
-    const graphql = fake.resolves(undefined) as unknown as octokitGraphql;
+    const graphql = vi.fn().mockResolvedValue(undefined) as unknown as octokitGraphql;
     return {
         graphql,
         gitHubBaseUrl: new URL("https://example.com/"),
@@ -43,13 +42,13 @@ test.each<[string, keyof RequestParameters, unknown]>([
         },
     ],
 ])("fetchGitHubStatistics() uses the correct %s", async (_testDescription, requestParameter, expected) => {
-    const graphql = fake.resolves<RequestParameters[]>(undefined);
+    const graphql = vi.fn<RequestParameters[]>().mockResolvedValue(undefined);
     const fetchGitHubStatisticsOptions = fetchGitHubStatisticsOptionsFactory.build({
         graphql: graphql as unknown as octokitGraphql,
     });
 
     await fetchGitHubStatistics(fetchGitHubStatisticsOptions);
 
-    assert.isTrue(graphql.calledOnce);
-    assert.deepStrictEqual(graphql.args[0]?.[0]?.[requestParameter], expected);
+    assert.strictEqual(graphql.mock.calls.length, 1);
+    assert.deepStrictEqual(graphql.mock.calls[0]?.[0]?.[requestParameter], expected);
 });
