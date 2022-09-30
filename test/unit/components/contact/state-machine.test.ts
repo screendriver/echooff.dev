@@ -11,15 +11,24 @@ import {
 } from "xstate";
 import type KyInterface from "ky";
 import { setImmediate } from "timers/promises";
+import { Factory } from "fishery";
 import {
     createContactStateMachine,
     ContactMachineEvent,
     ContactTypestate,
 } from "../../../../src/components/contact/state-machine";
 import type { ContactStateMachineContext } from "../../../../src/components/contact/state-machine-schema";
+import type { ErrorReporter } from "../../../../src/error-reporter/reporter";
+
+const errorReporterFactory = Factory.define<ErrorReporter>(() => {
+    return {
+        send: vi.fn(),
+    };
+});
 
 interface Overrides {
     readonly ky?: typeof KyInterface;
+    readonly errorReporter?: ErrorReporter;
     readonly config?: Partial<MachineOptions<ContactStateMachineContext, ContactMachineEvent>>;
 }
 
@@ -35,10 +44,12 @@ function createContactStateService(
     const ky = {
         post: vi.fn().mockResolvedValue(undefined),
     } as unknown as typeof KyInterface;
+    const errorReporter = errorReporterFactory.build();
     const formActionUrl = "/contact-form";
     const contactStateMachine = createContactStateMachine({
         ky,
         formActionUrl,
+        errorReporter,
         ...overrides,
     }).withConfig(overrides.config ?? {});
 
@@ -357,6 +368,33 @@ test('transits to "sendingFailed" when sending contact form failed', async () =>
     await setImmediate();
 
     assert.isTrue(contactStateService.getSnapshot().matches("sendingFailed"));
+});
+
+test("reports the occurred error when sending contact form failed", async () => {
+    const error = new Error("Sending failed");
+    const ky = {
+        post: vi.fn().mockRejectedValue(error),
+    } as unknown as typeof KyInterface;
+    const send = vi.fn();
+    const errorReporter = errorReporterFactory.build({ send });
+    const contactStateService = createContactStateService({ ky, errorReporter });
+
+    contactStateService.send([
+        "NAME_FOCUSED",
+        { type: "TYPING", value: "foo" },
+        "NAME_UNFOCUSED",
+        "EMAIL_FOCUSED",
+        { type: "TYPING", value: "bar@example.com" },
+        "EMAIL_UNFOCUSED",
+        "MESSAGE_FOCUSED",
+        { type: "TYPING", value: "baz" },
+        "MESSAGE_UNFOCUSED",
+        "SUBMIT",
+    ]);
+    await setImmediate();
+
+    assert.strictEqual(send.mock.calls.length, 1);
+    assert.deepStrictEqual(send.mock.calls[0]?.[0], error);
 });
 
 test('transits to "sent" after sending contact form', async () => {

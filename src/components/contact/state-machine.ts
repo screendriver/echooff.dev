@@ -12,6 +12,7 @@ import {
 } from "xstate";
 import type KyInterface from "ky";
 import { ContactStateMachineContext, contactStateMachineContextSchema } from "./state-machine-schema";
+import type { ErrorReporter } from "../../error-reporter/reporter";
 
 export type ContactMachineEvent =
     | { type: "NAME_FOCUSED" }
@@ -54,6 +55,7 @@ export type ContactStateMachineState = State<
 
 export interface ContactMachineDependencies {
     readonly ky: typeof KyInterface;
+    readonly errorReporter: ErrorReporter;
     readonly formActionUrl: string;
 }
 
@@ -149,7 +151,7 @@ export function createContactStateMachine(dependencies: ContactMachineDependenci
                 reportSendingFailed(_context, _event) {
                     const event = _event as ErrorPlatformEvent;
 
-                    console.error(event.data);
+                    dependencies.errorReporter.send(event.data);
                 },
             },
             guards: {

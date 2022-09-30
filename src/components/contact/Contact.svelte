@@ -1,10 +1,13 @@
 <script lang="ts">
     import ky from "ky";
     import { useMachine } from "@xstate/svelte";
+    import * as Sentry from "@sentry/browser";
     import { createContactStateMachine } from "./state-machine";
+    import { createErrorReporter } from "../../error-reporter/reporter";
 
+    const errorReporter = createErrorReporter({ sentry: Sentry });
     const contactFormActionUrl = import.meta.env.PUBLIC_CONTACT_FORM_URL ?? "";
-    const contactStateMachine = createContactStateMachine({ ky, formActionUrl: contactFormActionUrl });
+    const contactStateMachine = createContactStateMachine({ ky, formActionUrl: contactFormActionUrl, errorReporter });
 
     const { state, send } = useMachine(contactStateMachine);
 </script>

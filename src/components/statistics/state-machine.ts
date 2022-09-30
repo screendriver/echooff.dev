@@ -15,6 +15,7 @@ import { Maybe } from "true-myth";
 import type { Just, Nothing } from "true-myth/maybe";
 import type KyInterface from "ky";
 import { GitHubStatistics, gitHubStatisticsSchema } from "./statistics-schema";
+import type { ErrorReporter } from "../../error-reporter/reporter";
 
 export type StatisticsMachineEvent = { type: "FETCH" };
 
@@ -55,6 +56,7 @@ export type StatisticsTypestate =
 
 export interface StatisticsMachineDependencies {
     readonly ky: typeof KyInterface;
+    readonly errorReporter: ErrorReporter;
     readonly currentTimestamp: Date;
 }
 
@@ -140,7 +142,7 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
                 reportFetchGitHubStatisticsError(_context, _event) {
                     const event = _event as ErrorPlatformEvent;
 
-                    console.error(event.data);
+                    dependencies.errorReporter.send(event.data);
                 },
             },
             services: {

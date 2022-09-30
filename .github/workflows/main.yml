@@ -68,7 +68,7 @@ jobs:
         env:
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
             NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-            SENTRY_DSN: https://729589b3d42c439a88526cacc651f50b@o207383.ingest.sentry.io/6254281
+            PUBLIC_SENTRY_DSN: https://729589b3d42c439a88526cacc651f50b@o207383.ingest.sentry.io/6254281
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
