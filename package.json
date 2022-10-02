@@ -43,6 +43,7 @@
         "@astrojs/image": "0.9.1",
         "@astrojs/svelte": "1.0.1",
         "@astrojs/tailwind": "2.0.2",
+        "@astrojs/vercel": "2.1.0",
         "@fastify/cors": "8.1.0",
         "@fastify/formbody": "7.3.0",
         "@netlify/functions": "1.2.0",
