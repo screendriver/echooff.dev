@@ -23,7 +23,7 @@
         "test:visual-regression": "concurrently --success first --kill-others \"npm run develop\" \"wait-on http://localhost:8888 && percy exec --config ./test/visual-regression/percy.config.json -- ts-node-esm --transpileOnly ./test/visual-regression/main.test.ts/\""
     },
     "dependencies": {
-        "@fontsource/jetbrains-mono": "4.5.10",
+        "@fontsource/jetbrains-mono": "4.5.11",
         "@fontsource/source-sans-pro": "4.5.11",
         "@octokit/graphql": "5.0.1",
         "@sentry/browser": "7.14.0",
