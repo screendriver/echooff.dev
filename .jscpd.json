@@ -3,6 +3,5 @@
     "minLines": 3,
     "reporters": ["html", "console", "badge"],
     "absolute": true,
-    "gitignore": true,
-    "ignore": ["**/YetiSVG.tsx"]
+    "gitignore": true
 }
