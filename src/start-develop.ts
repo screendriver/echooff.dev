@@ -4,7 +4,7 @@ import os from "node:os";
 import { writeFile, appendFile, rm } from "node:fs/promises";
 import { startStaticServer } from "./static-server/static-server.js";
 
-const envFilePath = "./.env.local";
+const envFilePath = "./.env";
 
 const listeningAddress = await startStaticServer();
 
