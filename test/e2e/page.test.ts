@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const statisticsApiUrl = "http://localhost:3000/.netlify/functions/github-statistics";
+const statisticsApiUrl = "http://localhost:3000/api/github-statistics";
 
 test("page title", async ({ page }) => {
     await page.goto("/");
