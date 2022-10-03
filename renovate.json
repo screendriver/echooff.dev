@@ -10,10 +10,6 @@
     },
     "packageRules": [
         {
-            "extends": ["monorepo:gatsby", "schedule:weekly"],
-            "groupName": "gatsby monorepo"
-        },
-        {
             "packagePatterns": ["eslint"],
             "groupName": "eslint packages"
         },
