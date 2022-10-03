@@ -6,6 +6,8 @@ jobs:
     tests:
         name: Tests
         runs-on: ubuntu-latest
+        env:
+            VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
@@ -22,7 +24,9 @@ jobs:
             - name: Run unit tests
               run: npm run test:unit:coverage
             - name: Run test build
-              run: npx netlify build --offline
+              run: |
+                  npx vercel pull --yes --environment=development --token=${VERCEL_TOKEN}
+                  npx vercel build --token=${VERCEL_TOKEN}
             - name: Upload code coverage artifact
               uses: actions/upload-artifact@v3
               with:
