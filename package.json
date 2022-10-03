@@ -7,6 +7,9 @@
     "repository": "git@github.com:screendriver/echooff.dev.git",
     "author": "Christian Rackerseder <git@echooff.de>",
     "license": "MIT",
+    "engines": {
+        "node": "16.x"
+    },
     "scripts": {
         "lint": "eslint --ext ts,tsx src test",
         "copy:paste:detector": "jscpd src test typings",
