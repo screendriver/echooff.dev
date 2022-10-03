@@ -22,8 +22,7 @@
         "preview": "astro preview",
         "test:unit": "vitest test/unit/**/*",
         "test:unit:coverage": "vitest run --coverage test/unit/**/*",
-        "test:e2e": "playwright test --config=test/e2e/playwright.config.ts",
-        "test:visual-regression": "concurrently --success first --kill-others \"npm run develop\" \"wait-on http://localhost:3000 && percy exec --config ./test/visual-regression/percy.config.json -- ts-node-esm --transpileOnly ./test/visual-regression/main.test.ts/\""
+        "test:e2e": "playwright test --config=test/e2e/playwright.config.ts"
     },
     "dependencies": {
         "@fontsource/jetbrains-mono": "4.5.11",
@@ -49,8 +48,6 @@
         "@astrojs/vercel": "2.1.0",
         "@fastify/cors": "8.1.0",
         "@fastify/formbody": "7.3.0",
-        "@percy/cli": "1.10.4",
-        "@percy/playwright": "1.0.4",
         "@playwright/test": "1.26.1",
         "@types/common-tags": "1.8.1",
         "@types/feather-icons": "4.7.0",
