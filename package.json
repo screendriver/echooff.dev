@@ -7,20 +7,22 @@
     "repository": "git@github.com:screendriver/echooff.dev.git",
     "author": "Christian Rackerseder <git@echooff.de>",
     "license": "MIT",
+    "engines": {
+        "node": "16.x"
+    },
     "scripts": {
         "lint": "eslint --ext ts,tsx src test",
         "copy:paste:detector": "jscpd src test typings",
         "compile": "tsc",
         "check:astro": "astro check",
         "check:svelte": "svelte-check",
-        "astro": "astro dev",
+        "astro": "astro dev --port $PORT",
         "develop": "FORCE_COLOR='1' ts-node-esm ./src/start-develop.ts",
         "build": "astro build",
         "preview": "astro preview",
         "test:unit": "vitest test/unit/**/*",
         "test:unit:coverage": "vitest run --coverage test/unit/**/*",
-        "test:e2e": "playwright test --config=test/e2e/playwright.config.ts",
-        "test:visual-regression": "concurrently --success first --kill-others \"npm run develop\" \"wait-on http://localhost:8888 && percy exec --config ./test/visual-regression/percy.config.json -- ts-node-esm --transpileOnly ./test/visual-regression/main.test.ts/\""
+        "test:e2e": "playwright test --config=test/e2e/playwright.config.ts"
     },
     "dependencies": {
         "@fontsource/jetbrains-mono": "4.5.11",
@@ -43,11 +45,9 @@
         "@astrojs/image": "0.9.1",
         "@astrojs/svelte": "1.0.1",
         "@astrojs/tailwind": "2.0.2",
+        "@astrojs/vercel": "2.1.0",
         "@fastify/cors": "8.1.0",
         "@fastify/formbody": "7.3.0",
-        "@netlify/functions": "1.2.0",
-        "@percy/cli": "1.10.4",
-        "@percy/playwright": "1.0.4",
         "@playwright/test": "1.26.1",
         "@types/common-tags": "1.8.1",
         "@types/feather-icons": "4.7.0",
@@ -55,6 +55,7 @@
         "@types/node": "17.0.17",
         "@typescript-eslint/eslint-plugin": "5.38.1",
         "@typescript-eslint/parser": "5.38.1",
+        "@vercel/node": "2.5.21",
         "@vitest/coverage-c8": "0.23.4",
         "autoprefixer": "10.4.12",
         "c8": "7.12.0",
@@ -67,7 +68,6 @@
         "fishery": "2.2.2",
         "get-port": "6.1.2",
         "jscpd": "3.4.5",
-        "netlify-cli": "12.0.2",
         "postcss": "8.4.17",
         "prettier": "2.7.1",
         "prettier-plugin-astro": "0.5.5",
@@ -78,6 +78,7 @@
         "tailwind-dracula": "1.1.0",
         "ts-node": "10.9.1",
         "typescript": "4.8.3",
+        "vercel": "28.4.5",
         "vitest": "0.23.4",
         "wait-on": "6.0.1",
         "zx": "7.0.8"

@@ -6,6 +6,8 @@ jobs:
     tests:
         name: Tests
         runs-on: ubuntu-latest
+        env:
+            VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
@@ -22,7 +24,9 @@ jobs:
             - name: Run unit tests
               run: npm run test:unit:coverage
             - name: Run test build
-              run: npx netlify build --offline
+              run: |
+                  npx vercel pull --yes --environment=development --token=${VERCEL_TOKEN}
+                  npx vercel build --token=${VERCEL_TOKEN}
             - name: Upload code coverage artifact
               uses: actions/upload-artifact@v3
               with:
@@ -34,6 +38,8 @@ jobs:
     end-to-end-tests:
         name: End-to-end tests
         runs-on: ubuntu-latest
+        env:
+            VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
@@ -44,45 +50,35 @@ jobs:
             - name: Run Playwright tests
               run: npm run test:e2e
 
-    visual-regression-tests:
-        name: Visual regression tests
-        runs-on: ubuntu-latest
-        env:
-            PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-        steps:
-            - name: Checkout code
-              uses: nschloe/action-cached-lfs-checkout@v1
-            - name: Setup Node.js
-              uses: ./.github/actions/setup-nodejs
-            - name: Install Playwright
-              run: npx playwright install chromium
-            - name: Run visual regression tests
-              run: npm run test:visual-regression
-
-    deploy-to-netlify:
-        name: Deploy to Netlify
+    deploy-to-vercel:
+        name: Deploy to Vercel
         runs-on: ubuntu-latest
         if: github.ref == 'refs/heads/main'
-        needs: [tests, end-to-end-tests, visual-regression-tests]
+        needs: [tests, end-to-end-tests]
         concurrency:
-            group: deploy-to-netlify
+            group: deploy-to-vercel
         env:
-            NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-            NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+            VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
             PUBLIC_SENTRY_DSN: https://729589b3d42c439a88526cacc651f50b@o207383.ingest.sentry.io/6254281
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
             - name: Setup Node.js
               uses: ./.github/actions/setup-nodejs
-            - name: Deploy to Netlify
-              run: npx netlify deploy --build --message "Deploy from GitHub Actions" --prod
+            - name: Pull Vercel Environment Information
+              run: npx vercel pull --yes --environment=production --token=${VERCEL_TOKEN}
+            - name: Build Project Artifacts
+              run: npx vercel build --prod --token=${VERCEL_TOKEN}
+            - name: Deploy Project Artifacts to Vercel
+              run: npx vercel deploy --prebuilt --prod --token=${VERCEL_TOKEN}
 
     coverage:
         name: Upload code coverage
         runs-on: ubuntu-latest
         if: github.ref == 'refs/heads/main'
-        needs: deploy-to-netlify
+        needs: deploy-to-vercel
         steps:
             - name: Download code coverage artifact
               uses: actions/download-artifact@v3

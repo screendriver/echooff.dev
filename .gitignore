@@ -1,5 +1,5 @@
 .cache
-.netlify
-.env.local
+.env
 node_modules
 target
+.vercel

@@ -338,7 +338,10 @@ test('makes a HTTP POST request when entering "sending" state node', () => {
     const callArguments = ky.post.mock.calls[0];
     assert.strictEqual(callArguments?.[0], "/contact-form");
     assert.deepStrictEqual(callArguments?.[1], {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
         body: searchParams,
     });
 });

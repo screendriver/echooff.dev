@@ -2,9 +2,10 @@
 import { $, echo } from "zx";
 import os from "node:os";
 import { writeFile, appendFile, rm } from "node:fs/promises";
+import is from "@sindresorhus/is";
 import { startStaticServer } from "./static-server/static-server.js";
 
-const envFilePath = "./.env.local";
+const envFilePath = "./.env";
 
 const listeningAddress = await startStaticServer();
 
@@ -31,4 +32,10 @@ process.on("SIGINT", () => {
         });
 });
 
-await $`npx netlify dev`;
+const vercelToken = $.env.VERCEL_TOKEN;
+
+if (is.undefined(vercelToken)) {
+    await $`npx vercel dev --listen 3000`;
+} else {
+    await $`npx vercel dev --listen 3000 --token ${vercelToken} --yes`;
+}
