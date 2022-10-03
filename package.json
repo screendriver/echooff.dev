@@ -16,7 +16,7 @@
         "compile": "tsc",
         "check:astro": "astro check",
         "check:svelte": "svelte-check",
-        "astro": "astro dev",
+        "astro": "astro dev --port $PORT",
         "develop": "FORCE_COLOR='1' ts-node-esm ./src/start-develop.ts",
         "build": "astro build",
         "preview": "astro preview",
