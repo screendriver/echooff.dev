@@ -164,7 +164,10 @@ export function createContactStateMachine(dependencies: ContactMachineDependenci
                     const searchParams = new URLSearchParams(context);
                     searchParams.set("form-name", "contact");
                     await dependencies.ky.post(dependencies.formActionUrl, {
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        headers: {
+                            Accept: "application/json",
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
                         body: searchParams,
                     });
                 },
