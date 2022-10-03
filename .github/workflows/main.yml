@@ -53,7 +53,7 @@ jobs:
     deploy-to-vercel:
         name: Deploy to Vercel
         runs-on: ubuntu-latest
-        if: github.ref != 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         needs: [tests, end-to-end-tests]
         concurrency:
             group: deploy-to-vercel
