@@ -18,7 +18,7 @@ const headerPicture = await getPicture({
 
 <header class="relative">
     <figure class="relative overflow-hidden bg-gradient-to-b from-dracula-cyan h-64 sm:h-4/5">
-        <picture class="mix-blend-luminosity object-top sm:object-center">
+        <picture class="object-top sm:object-center">
             {
                 headerPictureSmall.sources.map((source) => {
                     return (
@@ -36,6 +36,7 @@ const headerPicture = await getPicture({
                 loading="lazy"
                 decoding="async"
                 alt="Christian Rackerseder"
+                class="mix-blend-luminosity"
             />
         </picture>
     </figure>
