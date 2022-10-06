@@ -11,7 +11,7 @@
         "node": "16.x"
     },
     "scripts": {
-        "lint": "eslint --ext ts,tsx src test",
+        "lint": "eslint . --ext '.ts,.tsx'",
         "copy:paste:detector": "jscpd src test",
         "compile": "tsc",
         "check:astro": "astro check",
