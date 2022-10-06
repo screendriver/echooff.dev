@@ -5,8 +5,7 @@
     import { createErrorReporter } from "../error-reporter/reporter";
 
     const errorReporter = createErrorReporter();
-    const contactFormActionUrl = import.meta.env.PUBLIC_CONTACT_FORM_URL ?? "";
-    const contactStateMachine = createContactStateMachine({ ky, formActionUrl: contactFormActionUrl, errorReporter });
+    const contactStateMachine = createContactStateMachine({ ky, errorReporter });
 
     const { state, send } = useMachine(contactStateMachine);
 </script>

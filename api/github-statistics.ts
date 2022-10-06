@@ -31,6 +31,7 @@ export default async function handler(_request: VercelRequest, response: VercelR
         response.status(200).json(gitHubStatistics);
     } catch (error: unknown) {
         Sentry.captureException(error);
+        throw error;
     } finally {
         transaction.finish();
     }

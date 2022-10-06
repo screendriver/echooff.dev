@@ -7,6 +7,6 @@ export const gitHubBaseUrlSchema = z
         return new URL(url);
     });
 
-export const gitHubLoginSchema = z.string().nonempty();
+export const gitHubLoginSchema = z.string().min(1);
 
-export const gitHubApiTokenSchema = z.string().nonempty();
+export const gitHubApiTokenSchema = z.string().min(1);

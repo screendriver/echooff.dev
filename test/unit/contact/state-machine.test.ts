@@ -41,10 +41,8 @@ function createContactStateService(
         post: vi.fn().mockResolvedValue(undefined),
     } as unknown as typeof KyInterface;
     const errorReporter = errorReporterFactory.build();
-    const formActionUrl = "/contact-form";
     const contactStateMachine = createContactStateMachine({
         ky,
-        formActionUrl,
         errorReporter,
         ...overrides,
     }).withConfig(overrides.config ?? {});
@@ -336,10 +334,9 @@ test('makes a HTTP POST request when entering "sending" state node', () => {
         "form-name": "contact",
     });
     const callArguments = ky.post.mock.calls[0];
-    assert.strictEqual(callArguments?.[0], "/contact-form");
+    assert.strictEqual(callArguments?.[0], "/api/contact-form");
     assert.deepStrictEqual(callArguments?.[1], {
         headers: {
-            Accept: "application/json",
             "Content-Type": "application/x-www-form-urlencoded",
         },
         body: searchParams,
