@@ -41,10 +41,8 @@ function createContactStateService(
         post: vi.fn().mockResolvedValue(undefined),
     } as unknown as typeof KyInterface;
     const errorReporter = errorReporterFactory.build();
-    const formActionUrl = "/contact-form";
     const contactStateMachine = createContactStateMachine({
         ky,
-        formActionUrl,
         errorReporter,
         ...overrides,
     }).withConfig(overrides.config ?? {});

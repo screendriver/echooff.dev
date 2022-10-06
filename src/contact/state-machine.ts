@@ -56,7 +56,6 @@ export type ContactStateMachineState = State<
 export interface ContactMachineDependencies {
     readonly ky: typeof KyInterface;
     readonly errorReporter: ErrorReporter;
-    readonly formActionUrl: string;
 }
 
 export function createContactStateMachine(dependencies: ContactMachineDependencies): ContactStateMachine {
@@ -163,7 +162,6 @@ export function createContactStateMachine(dependencies: ContactMachineDependenci
                 async postContactForm(context) {
                     const searchParams = new URLSearchParams(context);
                     searchParams.set("form-name", "contact");
-                    await dependencies.ky.post(dependencies.formActionUrl, {
                         headers: {
                             Accept: "application/json",
                             "Content-Type": "application/x-www-form-urlencoded",
