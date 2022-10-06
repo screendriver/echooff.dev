@@ -337,7 +337,6 @@ test('makes a HTTP POST request when entering "sending" state node', () => {
     assert.strictEqual(callArguments?.[0], "/api/contact-form");
     assert.deepStrictEqual(callArguments?.[1], {
         headers: {
-            Accept: "application/json",
             "Content-Type": "application/x-www-form-urlencoded",
         },
         body: searchParams,

@@ -164,7 +164,6 @@ export function createContactStateMachine(dependencies: ContactMachineDependenci
                     searchParams.set("form-name", "contact");
                     await dependencies.ky.post("/api/contact-form", {
                         headers: {
-                            Accept: "application/json",
                             "Content-Type": "application/x-www-form-urlencoded",
                         },
                         body: searchParams,
