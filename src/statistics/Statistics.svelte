@@ -3,7 +3,6 @@
     import ky from "ky";
     import { useMachine } from "@xstate/svelte";
     import { icons } from "feather-icons";
-    import * as Sentry from "@sentry/browser";
     import { createStatisticsStateMachine } from "./state-machine";
     import { createErrorReporter } from "../error-reporter/reporter";
     import YearsInBusiness from "./YearsInBusiness.svelte";
@@ -11,7 +10,7 @@
     import GitHubStars from "./GitHubStars.svelte";
     import Figure from "./Figure.svelte";
 
-    const errorReporter = createErrorReporter({ sentry: Sentry });
+    const errorReporter = createErrorReporter();
     const currentTimestamp = import.meta.env.PROD ? new Date() : new Date(2022, 2, 23);
     const gitHubStateMachine = createStatisticsStateMachine({ ky, currentTimestamp, errorReporter });
 
