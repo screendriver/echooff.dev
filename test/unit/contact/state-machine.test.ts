@@ -334,7 +334,7 @@ test('makes a HTTP POST request when entering "sending" state node', () => {
         "form-name": "contact",
     });
     const callArguments = ky.post.mock.calls[0];
-    assert.strictEqual(callArguments?.[0], "/contact-form");
+    assert.strictEqual(callArguments?.[0], "/api/contact-form");
     assert.deepStrictEqual(callArguments?.[1], {
         headers: {
             Accept: "application/json",
