@@ -1,10 +1,10 @@
-import type { VercelApiHandler } from "@vercel/node";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { graphql } from "@octokit/graphql";
 import { gitHubBaseUrlSchema, gitHubLoginSchema, gitHubApiTokenSchema } from "../src/statistics/environment-variables";
 import { fetchGitHubStatistics } from "../src/statistics/graphql-query";
 import { gitHubStatisticsSchema } from "../src/statistics/statistics-schema";
 
-const handler: VercelApiHandler = async (_request, response) => {
+export default async function handler(_request: VercelRequest, response: VercelResponse): Promise<void> {
     const gitHubStatisticsResponse = await fetchGitHubStatistics({
         graphql,
         gitHubBaseUrl: gitHubBaseUrlSchema.parse(process.env.GIT_HUB_API_BASE_URL),
@@ -14,6 +14,4 @@ const handler: VercelApiHandler = async (_request, response) => {
     const gitHubStatistics = gitHubStatisticsSchema.parse(gitHubStatisticsResponse);
 
     response.status(200).json(gitHubStatistics);
-};
-
-export default handler;
+}
