@@ -5,81 +5,81 @@ import { ZodError } from "zod";
 import { GitHubStatistics, gitHubStatisticsSchema } from "../../../src/statistics/statistics-schema";
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
-    return {
-        user: {
-            repositories: {
-                totalCount: 7,
-            },
-            starredRepositories: {
-                totalCount: 42,
-            },
-        },
-    };
+	return {
+		user: {
+			repositories: {
+				totalCount: 7,
+			},
+			starredRepositories: {
+				totalCount: 42,
+			},
+		},
+	};
 });
 
 test('gitHubStatisticsSchema does allow additional properties in addition to "user" object an strips them out', () => {
-    const gitHubStatistics = gitHubStatisticsFactory.build({
-        foo: "bar",
-    } as unknown as GitHubStatistics);
+	const gitHubStatistics = gitHubStatisticsFactory.build({
+		foo: "bar",
+	} as unknown as GitHubStatistics);
 
-    const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
-    const expected = gitHubStatisticsFactory.build();
-    assert.deepStrictEqual(actual, expected);
+	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
+	const expected = gitHubStatisticsFactory.build();
+	assert.deepStrictEqual(actual, expected);
 });
 
 test('gitHubStatisticsSchema does allow additional properties in "user" object and strips them out', () => {
-    const gitHubStatistics = gitHubStatisticsFactory.build({
-        user: {
-            foo: "bar",
-        },
-    } as unknown as GitHubStatistics);
+	const gitHubStatistics = gitHubStatisticsFactory.build({
+		user: {
+			foo: "bar",
+		},
+	} as unknown as GitHubStatistics);
 
-    const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
-    const expected = gitHubStatisticsFactory.build();
-    assert.deepStrictEqual(actual, expected);
+	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
+	const expected = gitHubStatisticsFactory.build();
+	assert.deepStrictEqual(actual, expected);
 });
 
 test('gitHubStatisticsSchema does allow additional properties in "user.repositories" object and strips them out', () => {
-    const gitHubStatistics = gitHubStatisticsFactory.build({
-        user: {
-            repositories: {
-                foo: "bar",
-            },
-        },
-    } as unknown as GitHubStatistics);
+	const gitHubStatistics = gitHubStatisticsFactory.build({
+		user: {
+			repositories: {
+				foo: "bar",
+			},
+		},
+	} as unknown as GitHubStatistics);
 
-    const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
-    const expected = gitHubStatisticsFactory.build();
-    assert.deepStrictEqual(actual, expected);
+	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
+	const expected = gitHubStatisticsFactory.build();
+	assert.deepStrictEqual(actual, expected);
 });
 
 test('gitHubStatisticsSchema does allow additional properties in "user.starredRepositories" object and strips them out', () => {
-    const gitHubStatistics = gitHubStatisticsFactory.build({
-        user: {
-            starredRepositories: {
-                foo: "bar",
-            },
-        },
-    } as unknown as GitHubStatistics);
+	const gitHubStatistics = gitHubStatisticsFactory.build({
+		user: {
+			starredRepositories: {
+				foo: "bar",
+			},
+		},
+	} as unknown as GitHubStatistics);
 
-    const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
-    const expected = gitHubStatisticsFactory.build();
-    assert.deepStrictEqual(actual, expected);
+	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
+	const expected = gitHubStatisticsFactory.build();
+	assert.deepStrictEqual(actual, expected);
 });
 
 test('gitHubStatisticsSchema does not allow negative numbers for "user.repositories.totalCount', () => {
-    const gitHubStatistics = gitHubStatisticsFactory.build({
-        user: {
-            repositories: {
-                totalCount: -42,
-            },
-        },
-    });
+	const gitHubStatistics = gitHubStatisticsFactory.build({
+		user: {
+			repositories: {
+				totalCount: -42,
+			},
+		},
+	});
 
-    assert.throws(
-        () => gitHubStatisticsSchema.parse(gitHubStatistics),
-        ZodError,
-        stripIndent`
+	assert.throws(
+		() => gitHubStatisticsSchema.parse(gitHubStatistics),
+		ZodError,
+		stripIndent`
           [
             {
               "code": "too_small",
@@ -94,22 +94,22 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.repositor
               ]
             }
           ]`
-    );
+	);
 });
 
 test('gitHubStatisticsSchema does not allow other types than number for "user.repositories.totalCount', () => {
-    const gitHubStatistics = gitHubStatisticsFactory.build({
-        user: {
-            repositories: {
-                totalCount: "foo",
-            },
-        },
-    } as unknown as GitHubStatistics);
+	const gitHubStatistics = gitHubStatisticsFactory.build({
+		user: {
+			repositories: {
+				totalCount: "foo",
+			},
+		},
+	} as unknown as GitHubStatistics);
 
-    assert.throws(
-        () => gitHubStatisticsSchema.parse(gitHubStatistics),
-        ZodError,
-        stripIndent`
+	assert.throws(
+		() => gitHubStatisticsSchema.parse(gitHubStatistics),
+		ZodError,
+		stripIndent`
           [
             {
               "code": "invalid_type",
@@ -123,36 +123,36 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.re
               "message": "Expected number, received string"
             }
           ]`
-    );
+	);
 });
 
 test('gitHubStatisticsSchema allows 0 for "user.repositories.totalCount', () => {
-    const gitHubStatistics = gitHubStatisticsFactory.build({
-        user: {
-            repositories: {
-                totalCount: 0,
-            },
-        },
-    });
+	const gitHubStatistics = gitHubStatisticsFactory.build({
+		user: {
+			repositories: {
+				totalCount: 0,
+			},
+		},
+	});
 
-    const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
-    const expected = gitHubStatistics;
-    assert.deepStrictEqual(actual, expected);
+	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
+	const expected = gitHubStatistics;
+	assert.deepStrictEqual(actual, expected);
 });
 
 test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRepositories.totalCount"', () => {
-    const gitHubStatistics = gitHubStatisticsFactory.build({
-        user: {
-            starredRepositories: {
-                totalCount: -42,
-            },
-        },
-    });
+	const gitHubStatistics = gitHubStatisticsFactory.build({
+		user: {
+			starredRepositories: {
+				totalCount: -42,
+			},
+		},
+	});
 
-    assert.throws(
-        () => gitHubStatisticsSchema.parse(gitHubStatistics),
-        ZodError,
-        stripIndent`
+	assert.throws(
+		() => gitHubStatisticsSchema.parse(gitHubStatistics),
+		ZodError,
+		stripIndent`
           [
             {
               "code": "too_small",
@@ -167,22 +167,22 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRe
               ]
             }
           ]`
-    );
+	);
 });
 
 test('gitHubStatisticsSchema does not allow other types than number for "user.starredRepositories.totalCount', () => {
-    const gitHubStatistics = gitHubStatisticsFactory.build({
-        user: {
-            starredRepositories: {
-                totalCount: "foo",
-            },
-        },
-    } as unknown as GitHubStatistics);
+	const gitHubStatistics = gitHubStatisticsFactory.build({
+		user: {
+			starredRepositories: {
+				totalCount: "foo",
+			},
+		},
+	} as unknown as GitHubStatistics);
 
-    assert.throws(
-        () => gitHubStatisticsSchema.parse(gitHubStatistics),
-        ZodError,
-        stripIndent`
+	assert.throws(
+		() => gitHubStatisticsSchema.parse(gitHubStatistics),
+		ZodError,
+		stripIndent`
         [
           {
             "code": "invalid_type",
@@ -196,19 +196,19 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.st
             "message": "Expected number, received string"
           }
         ]`
-    );
+	);
 });
 
 test('gitHubStatisticsSchema allows 0 for "user.starredRepositories.totalCount', () => {
-    const gitHubStatistics = gitHubStatisticsFactory.build({
-        user: {
-            starredRepositories: {
-                totalCount: 0,
-            },
-        },
-    });
+	const gitHubStatistics = gitHubStatisticsFactory.build({
+		user: {
+			starredRepositories: {
+				totalCount: 0,
+			},
+		},
+	});
 
-    const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
-    const expected = gitHubStatistics;
-    assert.deepStrictEqual(actual, expected);
+	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
+	const expected = gitHubStatistics;
+	assert.deepStrictEqual(actual, expected);
 });

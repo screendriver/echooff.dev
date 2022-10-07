@@ -1,8 +1,8 @@
 {
-    "buildCommand": "npm run build",
-    "devCommand": "npm run astro",
-    "framework": "astro",
-    "cleanUrls": true,
-    "public": false,
-    "regions": ["fra1"]
+	"buildCommand": "npm run build",
+	"devCommand": "npm run astro",
+	"framework": "astro",
+	"cleanUrls": true,
+	"public": false,
+	"regions": ["fra1"]
 }

@@ -4,10 +4,10 @@ import { ZodError } from "zod";
 import { contactFormUrlSchema } from "../../../src/contact/environment-variables";
 
 test("contactFormUrlSchema does not allow booleans", () => {
-    assert.throws(
-        () => contactFormUrlSchema.parse(true),
-        ZodError,
-        stripIndent`
+	assert.throws(
+		() => contactFormUrlSchema.parse(true),
+		ZodError,
+		stripIndent`
           [
             {
               "code": "invalid_type",
@@ -17,14 +17,14 @@ test("contactFormUrlSchema does not allow booleans", () => {
               "message": "Expected string, received boolean"
             }
           ]`
-    );
+	);
 });
 
 test("contactFormUrlSchema does not allow numbers", () => {
-    assert.throws(
-        () => contactFormUrlSchema.parse(42),
-        ZodError,
-        stripIndent`
+	assert.throws(
+		() => contactFormUrlSchema.parse(42),
+		ZodError,
+		stripIndent`
           [
             {
               "code": "invalid_type",
@@ -34,14 +34,14 @@ test("contactFormUrlSchema does not allow numbers", () => {
               "message": "Expected string, received number"
             }
           ]`
-    );
+	);
 });
 
 test("contactFormUrlSchema does not allow empty strings", () => {
-    assert.throws(
-        () => contactFormUrlSchema.parse(""),
-        ZodError,
-        stripIndent`
+	assert.throws(
+		() => contactFormUrlSchema.parse(""),
+		ZodError,
+		stripIndent`
           [
             {
               "validation": "url",
@@ -50,14 +50,14 @@ test("contactFormUrlSchema does not allow empty strings", () => {
               "path": []
             }
           ]`
-    );
+	);
 });
 
 test("contactFormUrlSchema does not allow strings that are not an URL", () => {
-    assert.throws(
-        () => contactFormUrlSchema.parse("foo"),
-        ZodError,
-        stripIndent`
+	assert.throws(
+		() => contactFormUrlSchema.parse("foo"),
+		ZodError,
+		stripIndent`
           [
             {
               "validation": "url",
@@ -66,11 +66,11 @@ test("contactFormUrlSchema does not allow strings that are not an URL", () => {
               "path": []
             }
           ]`
-    );
+	);
 });
 
 test("contactFormUrlSchema allows a string URL", () => {
-    const gitHubBaseUrl = contactFormUrlSchema.parse("https://example.com");
+	const gitHubBaseUrl = contactFormUrlSchema.parse("https://example.com");
 
-    assert.deepEqual(gitHubBaseUrl.toString(), new URL("https://example.com").toString());
+	assert.deepEqual(gitHubBaseUrl.toString(), new URL("https://example.com").toString());
 });

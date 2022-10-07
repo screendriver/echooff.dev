@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 export const gitHubBaseUrlSchema = z
-    .string()
-    .url()
-    .transform((url) => {
-        return new URL(url);
-    });
+	.string()
+	.url()
+	.transform((url) => {
+		return new URL(url);
+	});
 
 export const gitHubLoginSchema = z.string().min(1);
 

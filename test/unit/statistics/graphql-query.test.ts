@@ -5,20 +5,20 @@ import type { graphql as octokitGraphql, RequestParameters } from "@octokit/grap
 import { fetchGitHubStatistics, FetchGitHubStatisticsOptions } from "../../../src/statistics/graphql-query";
 
 const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatisticsOptions>(() => {
-    const graphql = vi.fn().mockResolvedValue(undefined) as unknown as octokitGraphql;
-    return {
-        graphql,
-        gitHubBaseUrl: new URL("https://example.com/"),
-        gitHubLogin: "username",
-        gitHubApiToken: "my-token",
-    };
+	const graphql = vi.fn().mockResolvedValue(undefined) as unknown as octokitGraphql;
+	return {
+		graphql,
+		gitHubBaseUrl: new URL("https://example.com/"),
+		gitHubLogin: "username",
+		gitHubApiToken: "my-token",
+	};
 });
 
 test.each<[string, keyof RequestParameters, unknown]>([
-    [
-        "GraphQL query",
-        "query",
-        stripIndent`query ($login: String!) {
+	[
+		"GraphQL query",
+		"query",
+		stripIndent`query ($login: String!) {
             user(login: $login) {
                 repositories {
                     totalCount
@@ -28,24 +28,24 @@ test.each<[string, keyof RequestParameters, unknown]>([
                 }
             }
         }`,
-    ],
-    ["GitHub base URL and strips the trailing slash", "baseUrl", "https://example.com"],
-    ["GitHub login", "login", "username"],
-    [
-        "GitHub API token",
-        "headers",
-        {
-            authorization: "token my-token",
-        },
-    ],
+	],
+	["GitHub base URL and strips the trailing slash", "baseUrl", "https://example.com"],
+	["GitHub login", "login", "username"],
+	[
+		"GitHub API token",
+		"headers",
+		{
+			authorization: "token my-token",
+		},
+	],
 ])("fetchGitHubStatistics() uses the correct %s", async (_testDescription, requestParameter, expected) => {
-    const graphql = vi.fn<RequestParameters[]>().mockResolvedValue(undefined);
-    const fetchGitHubStatisticsOptions = fetchGitHubStatisticsOptionsFactory.build({
-        graphql: graphql as unknown as octokitGraphql,
-    });
+	const graphql = vi.fn<RequestParameters[]>().mockResolvedValue(undefined);
+	const fetchGitHubStatisticsOptions = fetchGitHubStatisticsOptionsFactory.build({
+		graphql: graphql as unknown as octokitGraphql,
+	});
 
-    await fetchGitHubStatistics(fetchGitHubStatisticsOptions);
+	await fetchGitHubStatistics(fetchGitHubStatisticsOptions);
 
-    assert.strictEqual(graphql.mock.calls.length, 1);
-    assert.deepStrictEqual(graphql.mock.calls[0]?.[0]?.[requestParameter], expected);
+	assert.strictEqual(graphql.mock.calls.length, 1);
+	assert.deepStrictEqual(graphql.mock.calls[0]?.[0]?.[requestParameter], expected);
 });

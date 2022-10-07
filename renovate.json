@@ -1,26 +1,26 @@
 {
-    "extends": ["config:base", ":semanticCommitsDisabled"],
-    "labels": ["renovate"],
-    "lockFileMaintenance": {
-        "enabled": true,
-        "automerge": true
-    },
-    "nvm": {
-        "enabled": false
-    },
-    "packageRules": [
-        {
-            "packagePatterns": ["eslint"],
-            "groupName": "eslint packages"
-        },
-        {
-            "extends": "monorepo:typescript-eslint",
-            "groupName": "typescript-eslint monorepo"
-        },
-        {
-            "depTypeList": ["dependencies", "devDependencies"],
-            "updateTypes": ["minor", "patch"],
-            "automerge": true
-        }
-    ]
+	"extends": ["config:base", ":semanticCommitsDisabled"],
+	"labels": ["renovate"],
+	"lockFileMaintenance": {
+		"enabled": true,
+		"automerge": true
+	},
+	"nvm": {
+		"enabled": false
+	},
+	"packageRules": [
+		{
+			"packagePatterns": ["eslint"],
+			"groupName": "eslint packages"
+		},
+		{
+			"extends": "monorepo:typescript-eslint",
+			"groupName": "typescript-eslint monorepo"
+		},
+		{
+			"depTypeList": ["dependencies", "devDependencies"],
+			"updateTypes": ["minor", "patch"],
+			"automerge": true
+		}
+	]
 }

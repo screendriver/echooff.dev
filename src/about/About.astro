@@ -5,36 +5,36 @@ import aboutImage from "../img/about.jpg";
 ---
 
 <section class="p-4 lg:p-10">
-    <h3
-        class="flex items-center lg:items-end justify-center gap-x-2 text-dracula-cyan lg:leading-none text-2xl lg:text-4xl font-extrabold my-2"
-    >
-        About
-        <Fragment set:html={icons.info?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
-    </h3>
-    <hr
-        class="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg"
-    />
-    <article class="text-justify flex flex-col items-center sm:p-4 lg:p-7 xl:px-11">
-        <p class="m-auto lg:w-3/4">
-            JavaScript is everywhere. In the old days, being a JavaScript developer meant that you were a front end web
-            developer. Forever bound to the browser.
-        </p>
-        <strong class="block text-center my-8 uppercase">Those days are gone</strong>
-        <p class="m-auto lg:w-3/4">
-            The rise of Node.js ushered in a new era. An era where being a JavaScript developer doesn’t necessarily mean
-            a front-end web developer. As a JavaScript developer today, you can target more platforms than any other
-            high level language.
-        </p>
-        <figure>
-            <Image
-                alt="My face"
-                src={aboutImage}
-                width={300}
-                height={300}
-                format="webp"
-                quality={75}
-                class="rounded-full border-4 border-dracula-blue mt-12 mb-10 md:mb-3 lg:mb-0 w-40 h-40"
-            />
-        </figure>
-    </article>
+	<h3
+		class="flex items-center lg:items-end justify-center gap-x-2 text-dracula-cyan lg:leading-none text-2xl lg:text-4xl font-extrabold my-2"
+	>
+		About
+		<Fragment set:html={icons.info?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
+	</h3>
+	<hr
+		class="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg"
+	/>
+	<article class="text-justify flex flex-col items-center sm:p-4 lg:p-7 xl:px-11">
+		<p class="m-auto lg:w-3/4">
+			JavaScript is everywhere. In the old days, being a JavaScript developer meant that you were a front end web
+			developer. Forever bound to the browser.
+		</p>
+		<strong class="block text-center my-8 uppercase">Those days are gone</strong>
+		<p class="m-auto lg:w-3/4">
+			The rise of Node.js ushered in a new era. An era where being a JavaScript developer doesn’t necessarily mean a
+			front-end web developer. As a JavaScript developer today, you can target more platforms than any other high level
+			language.
+		</p>
+		<figure>
+			<Image
+				alt="My face"
+				src={aboutImage}
+				width={300}
+				height={300}
+				format="webp"
+				quality={75}
+				class="rounded-full border-4 border-dracula-blue mt-12 mb-10 md:mb-3 lg:mb-0 w-40 h-40"
+			/>
+		</figure>
+	</article>
 </section>

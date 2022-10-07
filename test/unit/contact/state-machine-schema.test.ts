@@ -3,24 +3,24 @@ import { stripIndent } from "common-tags";
 import { Factory } from "fishery";
 import { ZodError } from "zod";
 import {
-    contactFormUrlSchema,
-    ContactStateMachineContext,
-    contactStateMachineContextSchema,
+	contactFormUrlSchema,
+	ContactStateMachineContext,
+	contactStateMachineContextSchema,
 } from "../../../src/contact/state-machine-schema";
 
 const contactStateMachineContextFactory = Factory.define<ContactStateMachineContext>(() => {
-    return {
-        name: "foo",
-        email: "bar@example.com",
-        message: "baz",
-    };
+	return {
+		name: "foo",
+		email: "bar@example.com",
+		message: "baz",
+	};
 });
 
 test("contactFormUrlSchema fails when it is undefined", () => {
-    assert.throws(
-        () => contactFormUrlSchema.parse(undefined),
-        ZodError,
-        stripIndent`
+	assert.throws(
+		() => contactFormUrlSchema.parse(undefined),
+		ZodError,
+		stripIndent`
     [
       {
         "code": "invalid_type",
@@ -30,14 +30,14 @@ test("contactFormUrlSchema fails when it is undefined", () => {
         "message": "Required"
       }
     ]`
-    );
+	);
 });
 
 test("contactFormUrlSchema fails when it is not a string", () => {
-    assert.throws(
-        () => contactFormUrlSchema.parse(42),
-        ZodError,
-        stripIndent`
+	assert.throws(
+		() => contactFormUrlSchema.parse(42),
+		ZodError,
+		stripIndent`
     [
       {
         "code": "invalid_type",
@@ -47,14 +47,14 @@ test("contactFormUrlSchema fails when it is not a string", () => {
         "message": "Expected string, received number"
       }
     ]`
-    );
+	);
 });
 
 test("contactFormUrlSchema fails when it is an empty string", () => {
-    assert.throws(
-        () => contactFormUrlSchema.parse(""),
-        ZodError,
-        stripIndent`
+	assert.throws(
+		() => contactFormUrlSchema.parse(""),
+		ZodError,
+		stripIndent`
     [
       {
         "code": "too_small",
@@ -65,23 +65,23 @@ test("contactFormUrlSchema fails when it is an empty string", () => {
         "path": []
       }
     ]`
-    );
+	);
 });
 
 test("contactFormUrlSchema succeeds when it is a string", () => {
-    const { success } = contactFormUrlSchema.safeParse("/");
+	const { success } = contactFormUrlSchema.safeParse("/");
 
-    assert.isTrue(success);
+	assert.isTrue(success);
 });
 
 test("contactStateMachineContextSchema fails to parse when name is not defined", () => {
-    const data = contactStateMachineContextFactory.build({
-        name: undefined,
-    });
-    assert.throws(
-        () => contactStateMachineContextSchema.parse(data),
-        ZodError,
-        stripIndent`
+	const data = contactStateMachineContextFactory.build({
+		name: undefined,
+	});
+	assert.throws(
+		() => contactStateMachineContextSchema.parse(data),
+		ZodError,
+		stripIndent`
       [
         {
           "code": "invalid_type",
@@ -93,17 +93,17 @@ test("contactStateMachineContextSchema fails to parse when name is not defined",
           "message": "Required"
         }
       ]`
-    );
+	);
 });
 
 test("contactStateMachineContextSchema fails to parse when name is an empty string", () => {
-    const data = contactStateMachineContextFactory.build({
-        name: "",
-    });
-    assert.throws(
-        () => contactStateMachineContextSchema.parse(data),
-        ZodError,
-        stripIndent`
+	const data = contactStateMachineContextFactory.build({
+		name: "",
+	});
+	assert.throws(
+		() => contactStateMachineContextSchema.parse(data),
+		ZodError,
+		stripIndent`
       [
         {
           "code": "too_small",
@@ -116,17 +116,17 @@ test("contactStateMachineContextSchema fails to parse when name is an empty stri
           ]
         }
       ]`
-    );
+	);
 });
 
 test("contactStateMachineContextSchema fails to parse when name is not a string", () => {
-    const data = contactStateMachineContextFactory.build({
-        name: 42,
-    } as unknown as ContactStateMachineContext);
-    assert.throws(
-        () => contactStateMachineContextSchema.parse(data),
-        ZodError,
-        stripIndent`
+	const data = contactStateMachineContextFactory.build({
+		name: 42,
+	} as unknown as ContactStateMachineContext);
+	assert.throws(
+		() => contactStateMachineContextSchema.parse(data),
+		ZodError,
+		stripIndent`
       [
         {
           "code": "invalid_type",
@@ -138,17 +138,17 @@ test("contactStateMachineContextSchema fails to parse when name is not a string"
           "message": "Expected string, received number"
         }
       ]`
-    );
+	);
 });
 
 test("contactStateMachineContextSchema fails to parse when email is not defined", () => {
-    const data = contactStateMachineContextFactory.build({
-        email: undefined,
-    });
-    assert.throws(
-        () => contactStateMachineContextSchema.parse(data),
-        ZodError,
-        stripIndent`
+	const data = contactStateMachineContextFactory.build({
+		email: undefined,
+	});
+	assert.throws(
+		() => contactStateMachineContextSchema.parse(data),
+		ZodError,
+		stripIndent`
       [
         {
           "code": "invalid_type",
@@ -160,17 +160,17 @@ test("contactStateMachineContextSchema fails to parse when email is not defined"
           "message": "Required"
         }
       ]`
-    );
+	);
 });
 
 test("contactStateMachineContextSchema fails to parse when email is an empty string", () => {
-    const data = contactStateMachineContextFactory.build({
-        email: "",
-    });
-    assert.throws(
-        () => contactStateMachineContextSchema.parse(data),
-        ZodError,
-        stripIndent`
+	const data = contactStateMachineContextFactory.build({
+		email: "",
+	});
+	assert.throws(
+		() => contactStateMachineContextSchema.parse(data),
+		ZodError,
+		stripIndent`
       [
         {
           "validation": "email",
@@ -181,17 +181,17 @@ test("contactStateMachineContextSchema fails to parse when email is an empty str
           ]
         }
       ]`
-    );
+	);
 });
 
 test("contactStateMachineContextSchema fails to parse email name is not a string", () => {
-    const data = contactStateMachineContextFactory.build({
-        email: 42,
-    } as unknown as ContactStateMachineContext);
-    assert.throws(
-        () => contactStateMachineContextSchema.parse(data),
-        ZodError,
-        stripIndent`
+	const data = contactStateMachineContextFactory.build({
+		email: 42,
+	} as unknown as ContactStateMachineContext);
+	assert.throws(
+		() => contactStateMachineContextSchema.parse(data),
+		ZodError,
+		stripIndent`
       [
         {
           "code": "invalid_type",
@@ -203,17 +203,17 @@ test("contactStateMachineContextSchema fails to parse email name is not a string
           "message": "Expected string, received number"
         }
       ]`
-    );
+	);
 });
 
 test("contactStateMachineContextSchema fails to parse when email is not a valid email address", () => {
-    const data = contactStateMachineContextFactory.build({
-        email: "foo@bar",
-    });
-    assert.throws(
-        () => contactStateMachineContextSchema.parse(data),
-        ZodError,
-        stripIndent`
+	const data = contactStateMachineContextFactory.build({
+		email: "foo@bar",
+	});
+	assert.throws(
+		() => contactStateMachineContextSchema.parse(data),
+		ZodError,
+		stripIndent`
     [
       {
         "validation": "email",
@@ -224,17 +224,17 @@ test("contactStateMachineContextSchema fails to parse when email is not a valid 
         ]
       }
     ]`
-    );
+	);
 });
 
 test("contactStateMachineContextSchema fails to parse when message is not defined", () => {
-    const data = contactStateMachineContextFactory.build({
-        message: undefined,
-    });
-    assert.throws(
-        () => contactStateMachineContextSchema.parse(data),
-        ZodError,
-        stripIndent`
+	const data = contactStateMachineContextFactory.build({
+		message: undefined,
+	});
+	assert.throws(
+		() => contactStateMachineContextSchema.parse(data),
+		ZodError,
+		stripIndent`
     [
       {
         "code": "invalid_type",
@@ -246,17 +246,17 @@ test("contactStateMachineContextSchema fails to parse when message is not define
         "message": "Required"
       }
     ]`
-    );
+	);
 });
 
 test("contactStateMachineContextSchema fails to parse when message is an empty string", () => {
-    const data = contactStateMachineContextFactory.build({
-        message: "",
-    });
-    assert.throws(
-        () => contactStateMachineContextSchema.parse(data),
-        ZodError,
-        stripIndent`
+	const data = contactStateMachineContextFactory.build({
+		message: "",
+	});
+	assert.throws(
+		() => contactStateMachineContextSchema.parse(data),
+		ZodError,
+		stripIndent`
     [
       {
         "code": "too_small",
@@ -269,17 +269,17 @@ test("contactStateMachineContextSchema fails to parse when message is an empty s
         ]
       }
     ]`
-    );
+	);
 });
 
 test("contactStateMachineContextSchema fails to parse when message is not a string", () => {
-    const data = contactStateMachineContextFactory.build({
-        message: 42,
-    } as unknown as ContactStateMachineContext);
-    assert.throws(
-        () => contactStateMachineContextSchema.parse(data),
-        ZodError,
-        stripIndent`
+	const data = contactStateMachineContextFactory.build({
+		message: 42,
+	} as unknown as ContactStateMachineContext);
+	assert.throws(
+		() => contactStateMachineContextSchema.parse(data),
+		ZodError,
+		stripIndent`
     [
       {
         "code": "invalid_type",
@@ -291,12 +291,12 @@ test("contactStateMachineContextSchema fails to parse when message is not a stri
         "message": "Expected string, received number"
       }
     ]`
-    );
+	);
 });
 
 test("contactStateMachineContextSchema succeeds when all fields are filled correctly", () => {
-    const data = contactStateMachineContextFactory.build();
-    const { success } = contactStateMachineContextSchema.safeParse(data);
+	const data = contactStateMachineContextFactory.build();
+	const { success } = contactStateMachineContextSchema.safeParse(data);
 
-    assert.isTrue(success);
+	assert.isTrue(success);
 });
