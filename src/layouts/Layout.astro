@@ -4,7 +4,7 @@ import "@fontsource/jetbrains-mono/700.css";
 import "@fontsource/jetbrains-mono/800.css";
 
 export interface Props {
-    readonly title?: string;
+	readonly title?: string;
 }
 
 const { title = "Christian Rackerseder - Full-Stack JavaScript Engineer" } = Astro.props;
@@ -12,24 +12,24 @@ const { title = "Christian Rackerseder - Full-Stack JavaScript Engineer" } = Ast
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="generator" content={Astro.generator} />
-        <meta name="theme-color" content="#bd93f9" />
-        <meta name="description" content="Full-Stack JavaScript Engineer" />
-        <meta name="keywords" content="Racki,TypeScript,JavaScript,HTML,CSS,Node.js,React" />
-        <meta name="author" content="Christian Rackerseder" />
-        <link rel="shortcut icon" href="favicon.png" />
-        <title>{title}</title>
-        <style is:global>
-            body {
-                background-color: #282a36;
-                font-family: "JetBrains Mono";
-            }
-        </style>
-    </head>
-    <body>
-        <slot />
-    </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#bd93f9" />
+		<meta name="description" content="Full-Stack JavaScript Engineer" />
+		<meta name="keywords" content="Racki,TypeScript,JavaScript,HTML,CSS,Node.js,React" />
+		<meta name="author" content="Christian Rackerseder" />
+		<link rel="shortcut icon" href="favicon.png" />
+		<title>{title}</title>
+		<style is:global>
+			body {
+				background-color: #282a36;
+				font-family: "JetBrains Mono";
+			}
+		</style>
+	</head>
+	<body>
+		<slot />
+	</body>
 </html>

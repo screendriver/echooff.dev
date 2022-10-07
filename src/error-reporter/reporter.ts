@@ -1,11 +1,11 @@
 export interface ErrorReporter {
-    send(error: unknown): void;
+	send(error: unknown): void;
 }
 
 export function createErrorReporter(): ErrorReporter {
-    return {
-        send(error) {
-            console.error(error);
-        },
-    };
+	return {
+		send(error) {
+			console.error(error);
+		},
+	};
 }

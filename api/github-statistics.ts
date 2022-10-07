@@ -7,32 +7,32 @@ import { fetchGitHubStatistics } from "../src/statistics/graphql-query";
 import { gitHubStatisticsSchema } from "../src/statistics/statistics-schema";
 
 if (process.env.NODE_ENV === "production") {
-    Sentry.init({
-        dsn: process.env.SENTRY_DSN,
-        tracesSampleRate: 1.0,
-    });
+	Sentry.init({
+		dsn: process.env.SENTRY_DSN,
+		tracesSampleRate: 1.0,
+	});
 }
 
 export default async function handler(_request: VercelRequest, response: VercelResponse): Promise<void> {
-    const transaction = Sentry.startTransaction({
-        op: "fetch",
-        name: "GitHubStatistics",
-    });
+	const transaction = Sentry.startTransaction({
+		op: "fetch",
+		name: "GitHubStatistics",
+	});
 
-    try {
-        const gitHubStatisticsResponse = await fetchGitHubStatistics({
-            graphql,
-            gitHubBaseUrl: gitHubBaseUrlSchema.parse(process.env.GIT_HUB_API_BASE_URL),
-            gitHubLogin: gitHubLoginSchema.parse(process.env.GIT_HUB_LOGIN),
-            gitHubApiToken: gitHubApiTokenSchema.parse(process.env.GIT_HUB_API_TOKEN),
-        });
-        const gitHubStatistics = gitHubStatisticsSchema.parse(gitHubStatisticsResponse);
+	try {
+		const gitHubStatisticsResponse = await fetchGitHubStatistics({
+			graphql,
+			gitHubBaseUrl: gitHubBaseUrlSchema.parse(process.env.GIT_HUB_API_BASE_URL),
+			gitHubLogin: gitHubLoginSchema.parse(process.env.GIT_HUB_LOGIN),
+			gitHubApiToken: gitHubApiTokenSchema.parse(process.env.GIT_HUB_API_TOKEN),
+		});
+		const gitHubStatistics = gitHubStatisticsSchema.parse(gitHubStatisticsResponse);
 
-        response.status(200).json(gitHubStatistics);
-    } catch (error: unknown) {
-        Sentry.captureException(error);
-        throw error;
-    } finally {
-        transaction.finish();
-    }
+		response.status(200).json(gitHubStatistics);
+	} catch (error: unknown) {
+		Sentry.captureException(error);
+		throw error;
+	} finally {
+		transaction.finish();
+	}
 }

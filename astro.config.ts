@@ -5,14 +5,14 @@ import svelte from "@astrojs/svelte";
 import image from "@astrojs/image";
 
 export default defineConfig({
-    adapter: vercel(),
-    output: "static",
-    integrations: [
-        tailwind(),
-        svelte(),
-        image({
-            serviceEntryPoint: "@astrojs/image/sharp",
-        }),
-    ],
-    site: "https://www.echooff.dev",
+	adapter: vercel(),
+	output: "static",
+	integrations: [
+		tailwind(),
+		svelte(),
+		image({
+			serviceEntryPoint: "@astrojs/image/sharp",
+		}),
+	],
+	site: "https://www.echooff.dev",
 });

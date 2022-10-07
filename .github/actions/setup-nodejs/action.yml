@@ -1,13 +1,13 @@
-name: 'npm install'
+name: "npm install"
 description: 'Setup Node.js and makes a "npm install"'
 
 runs:
-    using: 'composite'
+    using: "composite"
     steps:
         - name: Use Node.js 16.x
           uses: actions/setup-node@v3
           with:
-              node-version: '16.x'
+              node-version: "16.x"
         - name: Install dependencies
           run: npm clean-install
           shell: bash
