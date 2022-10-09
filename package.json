@@ -20,8 +20,8 @@
 		"develop": "FORCE_COLOR='1' ts-node-esm ./src/start-develop.ts",
 		"build": "astro build",
 		"preview": "astro preview",
-		"test:unit": "vitest test/unit/**/*",
-		"test:unit:coverage": "vitest run --coverage test/unit/**/*",
+		"test:unit": "vitest --dir test/unit/",
+		"test:unit:coverage": "vitest run --coverage --dir test/unit/",
 		"test:e2e": "playwright test --config=test/e2e/playwright.config.ts"
 	},
 	"dependencies": {
