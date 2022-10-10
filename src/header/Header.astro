@@ -21,7 +21,9 @@ const headerPicture = await getPicture({
 		<picture class="object-top sm:object-center">
 			{
 				headerPictureSmall.sources.map((source) => {
-					return <source type={source.type} media="(max-width: 639px)" srcset={source.srcset} sizes="100vw" />;
+					return (
+						<source type={source.type} media="(max-width: 639px)" srcset={source.srcset} sizes="100vw" />
+					);
 				})
 			}
 			{
@@ -31,7 +33,6 @@ const headerPicture = await getPicture({
 			}
 			<img
 				src={(headerPicture.image as unknown as { src: string }).src}
-				loading="lazy"
 				decoding="async"
 				alt="Christian Rackerseder"
 				class="mix-blend-luminosity"
