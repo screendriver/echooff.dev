@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/node";
 import "@sentry/tracing";
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import type { VercelApiHandler } from "@vercel/node";
 import { graphql } from "@octokit/graphql";
 import { gitHubBaseUrlSchema, gitHubLoginSchema, gitHubApiTokenSchema } from "../src/statistics/environment-variables";
 import { fetchGitHubStatistics } from "../src/statistics/graphql-query";
@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === "production") {
 	});
 }
 
-export default async function handler(_request: VercelRequest, response: VercelResponse): Promise<void> {
+const handler: VercelApiHandler = async (_request, response) => {
 	const transaction = Sentry.startTransaction({
 		op: "fetch",
 		name: "GitHubStatistics",
@@ -35,4 +35,6 @@ export default async function handler(_request: VercelRequest, response: VercelR
 	} finally {
 		transaction.finish();
 	}
-}
+};
+
+export default handler;

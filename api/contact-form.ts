@@ -1,4 +1,4 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import type { VercelApiHandler } from "@vercel/node";
 import * as Sentry from "@sentry/node";
 import "@sentry/tracing";
 import got from "got";
@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "production") {
 	});
 }
 
-export default async function handler(request: VercelRequest, response: VercelResponse): Promise<void> {
+const handler: VercelApiHandler = async (request, response) => {
 	const transaction = Sentry.startTransaction({
 		op: "post",
 		name: "ContactForm",
@@ -35,4 +35,6 @@ export default async function handler(request: VercelRequest, response: VercelRe
 	} finally {
 		transaction.finish();
 	}
-}
+};
+
+export default handler;
