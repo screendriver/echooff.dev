@@ -78,6 +78,7 @@ jobs:
         runs-on: ubuntu-latest
         if: github.ref == 'refs/heads/main'
         needs: deploy-to-vercel
+        continue-on-error: true
         steps:
             - name: Download code coverage artifact
               uses: actions/download-artifact@v3
