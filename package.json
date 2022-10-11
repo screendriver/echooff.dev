@@ -56,7 +56,7 @@
 		"@types/node": "17.0.17",
 		"@typescript-eslint/eslint-plugin": "5.39.0",
 		"@typescript-eslint/parser": "5.39.0",
-		"@vercel/node": "2.5.22",
+		"@vercel/node": "2.5.23",
 		"@vitest/coverage-c8": "0.24.1",
 		"autoprefixer": "10.4.12",
 		"c8": "7.12.0",
