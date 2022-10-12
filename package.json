@@ -17,7 +17,7 @@
 		"check:astro": "astro check",
 		"check:svelte": "svelte-check",
 		"astro": "astro dev --port $PORT",
-		"develop": "FORCE_COLOR='1' ts-node-esm ./src/start-develop.ts",
+		"develop": "FORCE_COLOR='1' tsx ./src/start-develop.ts",
 		"build": "astro build",
 		"preview": "astro preview",
 		"test:unit": "vitest --dir test/unit/",
