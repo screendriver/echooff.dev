@@ -8,7 +8,7 @@ import {
 	BaseActionObject,
 	ServiceMap,
 	ResolveTypegenMeta,
-	TypegenDisabled,
+	TypegenDisabled
 } from "xstate";
 import type KyInterface from "ky";
 import { ContactStateMachineContext, contactStateMachineContextSchema } from "./state-machine-schema";
@@ -72,45 +72,45 @@ export function createContactStateMachine(dependencies: ContactMachineDependenci
 			context: {
 				name: "",
 				email: "",
-				message: "",
+				message: ""
 			},
 			on: {
-				SUBMIT: "validating",
+				SUBMIT: "validating"
 			},
 			states: {
 				idle: {
 					on: {
 						NAME_FOCUSED: "nameFocused",
 						EMAIL_FOCUSED: "emailFocused",
-						MESSAGE_FOCUSED: "messageFocused",
-					},
+						MESSAGE_FOCUSED: "messageFocused"
+					}
 				},
 				nameFocused: {
 					on: {
 						TYPING: {
-							actions: "typing",
+							actions: "typing"
 						},
-						NAME_UNFOCUSED: "idle",
-					},
+						NAME_UNFOCUSED: "idle"
+					}
 				},
 				emailFocused: {
 					on: {
 						TYPING: {
-							actions: "typing",
+							actions: "typing"
 						},
-						EMAIL_UNFOCUSED: "idle",
-					},
+						EMAIL_UNFOCUSED: "idle"
+					}
 				},
 				messageFocused: {
 					on: {
 						TYPING: {
-							actions: "typing",
+							actions: "typing"
 						},
-						MESSAGE_UNFOCUSED: "idle",
-					},
+						MESSAGE_UNFOCUSED: "idle"
+					}
 				},
 				validating: {
-					always: [{ target: "sending", cond: "isContactFormValid" }, { target: "validationFailed" }],
+					always: [{ target: "sending", cond: "isContactFormValid" }, { target: "validationFailed" }]
 				},
 				validationFailed: {},
 				sending: {
@@ -119,15 +119,15 @@ export function createContactStateMachine(dependencies: ContactMachineDependenci
 						onDone: "sent",
 						onError: {
 							target: "sendingFailed",
-							actions: "reportSendingFailed",
-						},
-					},
+							actions: "reportSendingFailed"
+						}
+					}
 				},
 				sendingFailed: {},
 				sent: {
-					type: "final",
-				},
-			},
+					type: "final"
+				}
+			}
 		},
 		{
 			actions: {
@@ -151,12 +151,12 @@ export function createContactStateMachine(dependencies: ContactMachineDependenci
 					const event = _event as ErrorPlatformEvent;
 
 					dependencies.errorReporter.send(event.data);
-				},
+				}
 			},
 			guards: {
 				isContactFormValid(context) {
 					return contactStateMachineContextSchema.safeParse(context).success;
-				},
+				}
 			},
 			services: {
 				async postContactForm(context) {
@@ -164,12 +164,12 @@ export function createContactStateMachine(dependencies: ContactMachineDependenci
 					searchParams.set("form-name", "contact");
 					await dependencies.ky.post("/api/contact-form", {
 						headers: {
-							"Content-Type": "application/x-www-form-urlencoded",
+							"Content-Type": "application/x-www-form-urlencoded"
 						},
-						body: searchParams,
+						body: searchParams
 					});
-				},
-			},
+				}
+			}
 		}
 	) as ContactStateMachine;
 }

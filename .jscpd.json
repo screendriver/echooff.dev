@@ -1,7 +1,7 @@
 {
-    "output": "./target",
-    "minLines": 3,
-    "reporters": ["html", "console", "badge"],
-    "absolute": true,
-    "gitignore": true
+	"output": "./target",
+	"minLines": 3,
+	"reporters": ["html", "console", "badge"],
+	"absolute": true,
+	"gitignore": true
 }

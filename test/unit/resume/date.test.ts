@@ -12,13 +12,13 @@ test.each<[string, Input, string]>([
 	[
 		'is an invalid string and "onlyYear" is true',
 		{ since: "foo", onlyYear: true },
-		'Since "foo" is not a valid date',
+		'Since "foo" is not a valid date'
 	],
 	[
 		'is an invalid string and "onlyYear" is false',
 		{ since: "foo", onlyYear: false },
-		'Since "foo" is not a valid date',
-	],
+		'Since "foo" is not a valid date'
+	]
 ])('formatSinceDate() returns a Result Err when "since" %s', (_testDescription, input, expected) => {
 	const formattedDateResult = formatSinceDate(input.since, input.onlyYear);
 
@@ -31,7 +31,7 @@ test.each<[string, Input, string]>([
 
 test.each<[string, Input, string]>([
 	["with only the year", { since: "2022-01-01", onlyYear: true }, "2022"],
-	["with the year and full month", { since: "2022-02-01", onlyYear: false }, "February 2022"],
+	["with the year and full month", { since: "2022-02-01", onlyYear: false }, "February 2022"]
 ])("formatSinceDate() returns a Result Ok %s", (_testDescription, input, expected) => {
 	const formattedDateResult = formatSinceDate(input.since, input.onlyYear);
 

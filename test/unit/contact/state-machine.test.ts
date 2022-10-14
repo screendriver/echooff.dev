@@ -7,7 +7,7 @@ import {
 	ResolveTypegenMeta,
 	ServiceMap,
 	StateSchema,
-	TypegenDisabled,
+	TypegenDisabled
 } from "xstate";
 import type KyInterface from "ky";
 import { setImmediate } from "timers/promises";
@@ -18,7 +18,7 @@ import type { ErrorReporter } from "../../../src/error-reporter/reporter";
 
 const errorReporterFactory = Factory.define<ErrorReporter>(() => {
 	return {
-		send: vi.fn(),
+		send: vi.fn()
 	};
 });
 
@@ -38,13 +38,13 @@ function createContactStateService(
 	ResolveTypegenMeta<TypegenDisabled, ContactMachineEvent, BaseActionObject, ServiceMap>
 > {
 	const ky = {
-		post: vi.fn().mockResolvedValue(undefined),
+		post: vi.fn().mockResolvedValue(undefined)
 	} as unknown as typeof KyInterface;
 	const errorReporter = errorReporterFactory.build();
 	const contactStateMachine = createContactStateMachine({
 		ky,
 		errorReporter,
-		...overrides,
+		...overrides
 	}).withConfig(overrides.config ?? {});
 
 	return interpret(contactStateMachine).start();
@@ -62,7 +62,7 @@ test("initial context", () => {
 	assert.deepStrictEqual(contactStateService.initialState.context, {
 		name: "",
 		email: "",
-		message: "",
+		message: ""
 	});
 });
 
@@ -129,7 +129,7 @@ test('sets last value of multiple "TYPING" events as "name" in context', () => {
 		"NAME_FOCUSED",
 		{ type: "TYPING", value: "foo" },
 		{ type: "TYPING", value: "bar" },
-		{ type: "TYPING", value: "baz" },
+		{ type: "TYPING", value: "baz" }
 	]);
 
 	assert.strictEqual(contactStateService.getSnapshot().context.name, "baz");
@@ -150,7 +150,7 @@ test('sets last value of multiple "TYPING" events as "email" in context', () => 
 		"EMAIL_FOCUSED",
 		{ type: "TYPING", value: "foo" },
 		{ type: "TYPING", value: "bar" },
-		{ type: "TYPING", value: "baz" },
+		{ type: "TYPING", value: "baz" }
 	]);
 
 	assert.strictEqual(contactStateService.getSnapshot().context.email, "baz");
@@ -171,7 +171,7 @@ test('sets last value of multiple "TYPING" events as "message" in context', () =
 		"MESSAGE_FOCUSED",
 		{ type: "TYPING", value: "foo" },
 		{ type: "TYPING", value: "bar" },
-		{ type: "TYPING", value: "baz" },
+		{ type: "TYPING", value: "baz" }
 	]);
 
 	assert.strictEqual(contactStateService.getSnapshot().context.message, "baz");
@@ -216,13 +216,13 @@ test('keeps all values in context after everything was filled and transition bac
 		"EMAIL_UNFOCUSED",
 		"MESSAGE_FOCUSED",
 		{ type: "TYPING", value: "bar" },
-		"MESSAGE_UNFOCUSED",
+		"MESSAGE_UNFOCUSED"
 	]);
 
 	assert.deepStrictEqual(contactStateService.getSnapshot().context, {
 		name: "foo",
 		email: "bar@example.com",
-		message: "bar",
+		message: "bar"
 	});
 	assert.isTrue(contactStateService.getSnapshot().matches("idle"));
 });
@@ -240,7 +240,7 @@ test('transits to "validationFailed" on "SUBMIT" event when context data is not 
 		"MESSAGE_FOCUSED",
 		{ type: "TYPING", value: "" },
 		"MESSAGE_UNFOCUSED",
-		"SUBMIT",
+		"SUBMIT"
 	]);
 
 	assert.isTrue(contactStateService.getSnapshot().matches("validationFailed"));
@@ -257,7 +257,7 @@ test('transits to "validationFailed" again on "SUBMIT" event when context data i
 		"EMAIL_FOCUSED",
 		{ type: "TYPING", value: "still@invalid" },
 		"EMAIL_UNFOCUSED",
-		"SUBMIT",
+		"SUBMIT"
 	]);
 
 	assert.isTrue(contactStateService.getSnapshot().matches("validationFailed"));
@@ -276,7 +276,7 @@ test('transits to "sending" on "SUBMIT" event when context data is valid', () =>
 		"MESSAGE_FOCUSED",
 		{ type: "TYPING", value: "baz" },
 		"MESSAGE_UNFOCUSED",
-		"SUBMIT",
+		"SUBMIT"
 	]);
 
 	assert.isTrue(contactStateService.getSnapshot().matches("sending"));
@@ -287,9 +287,9 @@ test('invokes "postContactForm" service when entering "sending" state node', () 
 	const contactStateService = createContactStateService({
 		config: {
 			services: {
-				postContactForm,
-			},
-		},
+				postContactForm
+			}
+		}
 	});
 
 	contactStateService.send([
@@ -302,7 +302,7 @@ test('invokes "postContactForm" service when entering "sending" state node', () 
 		"MESSAGE_FOCUSED",
 		{ type: "TYPING", value: "baz" },
 		"MESSAGE_UNFOCUSED",
-		"SUBMIT",
+		"SUBMIT"
 	]);
 
 	assert.strictEqual(postContactForm.mock.calls.length, 1);
@@ -311,7 +311,7 @@ test('invokes "postContactForm" service when entering "sending" state node', () 
 test('makes a HTTP POST request when entering "sending" state node', () => {
 	const ky = { post: vi.fn().mockResolvedValue(undefined) };
 	const contactStateService = createContactStateService({
-		ky: ky as unknown as typeof KyInterface,
+		ky: ky as unknown as typeof KyInterface
 	});
 
 	contactStateService.send([
@@ -324,28 +324,28 @@ test('makes a HTTP POST request when entering "sending" state node', () => {
 		"MESSAGE_FOCUSED",
 		{ type: "TYPING", value: "baz" },
 		"MESSAGE_UNFOCUSED",
-		"SUBMIT",
+		"SUBMIT"
 	]);
 
 	const searchParams = new URLSearchParams({
 		name: "foo",
 		email: "bar@example.com",
 		message: "baz",
-		"form-name": "contact",
+		"form-name": "contact"
 	});
 	const callArguments = ky.post.mock.calls[0];
 	assert.strictEqual(callArguments?.[0], "/api/contact-form");
 	assert.deepStrictEqual(callArguments?.[1], {
 		headers: {
-			"Content-Type": "application/x-www-form-urlencoded",
+			"Content-Type": "application/x-www-form-urlencoded"
 		},
-		body: searchParams,
+		body: searchParams
 	});
 });
 
 test('transits to "sendingFailed" when sending contact form failed', async () => {
 	const ky = {
-		post: vi.fn().mockRejectedValue(new Error()),
+		post: vi.fn().mockRejectedValue(new Error())
 	} as unknown as typeof KyInterface;
 	const contactStateService = createContactStateService({ ky });
 
@@ -359,7 +359,7 @@ test('transits to "sendingFailed" when sending contact form failed', async () =>
 		"MESSAGE_FOCUSED",
 		{ type: "TYPING", value: "baz" },
 		"MESSAGE_UNFOCUSED",
-		"SUBMIT",
+		"SUBMIT"
 	]);
 	await setImmediate();
 
@@ -369,7 +369,7 @@ test('transits to "sendingFailed" when sending contact form failed', async () =>
 test("reports the occurred error when sending contact form failed", async () => {
 	const error = new Error("Sending failed");
 	const ky = {
-		post: vi.fn().mockRejectedValue(error),
+		post: vi.fn().mockRejectedValue(error)
 	} as unknown as typeof KyInterface;
 	const send = vi.fn();
 	const errorReporter = errorReporterFactory.build({ send });
@@ -385,7 +385,7 @@ test("reports the occurred error when sending contact form failed", async () => 
 		"MESSAGE_FOCUSED",
 		{ type: "TYPING", value: "baz" },
 		"MESSAGE_UNFOCUSED",
-		"SUBMIT",
+		"SUBMIT"
 	]);
 	await setImmediate();
 
@@ -406,7 +406,7 @@ test('transits to "sent" after sending contact form', async () => {
 		"MESSAGE_FOCUSED",
 		{ type: "TYPING", value: "baz" },
 		"MESSAGE_UNFOCUSED",
-		"SUBMIT",
+		"SUBMIT"
 	]);
 	await setImmediate();
 
@@ -426,7 +426,7 @@ test('defines "sent" state node as final', async () => {
 		"MESSAGE_FOCUSED",
 		{ type: "TYPING", value: "baz" },
 		"MESSAGE_UNFOCUSED",
-		"SUBMIT",
+		"SUBMIT"
 	]);
 	await setImmediate();
 

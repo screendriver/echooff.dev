@@ -7,14 +7,14 @@ import { contactFormUrlSchema } from "../src/contact/environment-variables";
 if (process.env.NODE_ENV === "production") {
 	Sentry.init({
 		dsn: process.env.SENTRY_DSN,
-		tracesSampleRate: 1.0,
+		tracesSampleRate: 1.0
 	});
 }
 
 const handler: VercelApiHandler = async (request, response) => {
 	const transaction = Sentry.startTransaction({
 		op: "post",
-		name: "ContactForm",
+		name: "ContactForm"
 	});
 
 	try {
@@ -23,9 +23,9 @@ const handler: VercelApiHandler = async (request, response) => {
 		await got.post(contactFormUrl, {
 			headers: {
 				Accept: "application/json",
-				"Content-Type": request.headers["Content-Type"],
+				"Content-Type": request.headers["Content-Type"]
 			},
-			form: request.body as Record<string, unknown>,
+			form: request.body as Record<string, unknown>
 		});
 
 		response.status(200).send({});

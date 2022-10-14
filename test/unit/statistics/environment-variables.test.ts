@@ -4,7 +4,7 @@ import { ZodError } from "zod";
 import {
 	gitHubApiTokenSchema,
 	gitHubBaseUrlSchema,
-	gitHubLoginSchema,
+	gitHubLoginSchema
 } from "../../../src/statistics/environment-variables";
 
 test("gitHubBaseUrlSchema does not allow booleans", () => {

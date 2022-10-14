@@ -29,6 +29,6 @@ export function fetchGitHubStatistics(options: FetchGitHubStatisticsOptions): Gr
         }`,
 		baseUrl: stripTrailingSlash(gitHubBaseUrl.toString()),
 		login: gitHubLogin,
-		headers: { authorization: `token ${gitHubApiToken}` },
+		headers: { authorization: `token ${gitHubApiToken}` }
 	});
 }

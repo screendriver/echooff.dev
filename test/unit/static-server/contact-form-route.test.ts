@@ -12,8 +12,8 @@ test("returns an an empty JSON object when making a HTTP POST request", async ()
 		method: "POST",
 		url: "/contact-form",
 		headers: {
-			"content-type": "application/x-www-form-urlencoded",
-		},
+			"content-type": "application/x-www-form-urlencoded"
+		}
 	});
 
 	const actual = response.json<unknown>();

@@ -5,14 +5,14 @@ import { ZodError } from "zod";
 import {
 	contactFormUrlSchema,
 	ContactStateMachineContext,
-	contactStateMachineContextSchema,
+	contactStateMachineContextSchema
 } from "../../../src/contact/state-machine-schema";
 
 const contactStateMachineContextFactory = Factory.define<ContactStateMachineContext>(() => {
 	return {
 		name: "foo",
 		email: "bar@example.com",
-		message: "baz",
+		message: "baz"
 	};
 });
 
@@ -76,7 +76,7 @@ test("contactFormUrlSchema succeeds when it is a string", () => {
 
 test("contactStateMachineContextSchema fails to parse when name is not defined", () => {
 	const data = contactStateMachineContextFactory.build({
-		name: undefined,
+		name: undefined
 	});
 	assert.throws(
 		() => contactStateMachineContextSchema.parse(data),
@@ -98,7 +98,7 @@ test("contactStateMachineContextSchema fails to parse when name is not defined",
 
 test("contactStateMachineContextSchema fails to parse when name is an empty string", () => {
 	const data = contactStateMachineContextFactory.build({
-		name: "",
+		name: ""
 	});
 	assert.throws(
 		() => contactStateMachineContextSchema.parse(data),
@@ -121,7 +121,7 @@ test("contactStateMachineContextSchema fails to parse when name is an empty stri
 
 test("contactStateMachineContextSchema fails to parse when name is not a string", () => {
 	const data = contactStateMachineContextFactory.build({
-		name: 42,
+		name: 42
 	} as unknown as ContactStateMachineContext);
 	assert.throws(
 		() => contactStateMachineContextSchema.parse(data),
@@ -143,7 +143,7 @@ test("contactStateMachineContextSchema fails to parse when name is not a string"
 
 test("contactStateMachineContextSchema fails to parse when email is not defined", () => {
 	const data = contactStateMachineContextFactory.build({
-		email: undefined,
+		email: undefined
 	});
 	assert.throws(
 		() => contactStateMachineContextSchema.parse(data),
@@ -165,7 +165,7 @@ test("contactStateMachineContextSchema fails to parse when email is not defined"
 
 test("contactStateMachineContextSchema fails to parse when email is an empty string", () => {
 	const data = contactStateMachineContextFactory.build({
-		email: "",
+		email: ""
 	});
 	assert.throws(
 		() => contactStateMachineContextSchema.parse(data),
@@ -186,7 +186,7 @@ test("contactStateMachineContextSchema fails to parse when email is an empty str
 
 test("contactStateMachineContextSchema fails to parse email name is not a string", () => {
 	const data = contactStateMachineContextFactory.build({
-		email: 42,
+		email: 42
 	} as unknown as ContactStateMachineContext);
 	assert.throws(
 		() => contactStateMachineContextSchema.parse(data),
@@ -208,7 +208,7 @@ test("contactStateMachineContextSchema fails to parse email name is not a string
 
 test("contactStateMachineContextSchema fails to parse when email is not a valid email address", () => {
 	const data = contactStateMachineContextFactory.build({
-		email: "foo@bar",
+		email: "foo@bar"
 	});
 	assert.throws(
 		() => contactStateMachineContextSchema.parse(data),
@@ -229,7 +229,7 @@ test("contactStateMachineContextSchema fails to parse when email is not a valid 
 
 test("contactStateMachineContextSchema fails to parse when message is not defined", () => {
 	const data = contactStateMachineContextFactory.build({
-		message: undefined,
+		message: undefined
 	});
 	assert.throws(
 		() => contactStateMachineContextSchema.parse(data),
@@ -251,7 +251,7 @@ test("contactStateMachineContextSchema fails to parse when message is not define
 
 test("contactStateMachineContextSchema fails to parse when message is an empty string", () => {
 	const data = contactStateMachineContextFactory.build({
-		message: "",
+		message: ""
 	});
 	assert.throws(
 		() => contactStateMachineContextSchema.parse(data),
@@ -274,7 +274,7 @@ test("contactStateMachineContextSchema fails to parse when message is an empty s
 
 test("contactStateMachineContextSchema fails to parse when message is not a string", () => {
 	const data = contactStateMachineContextFactory.build({
-		message: 42,
+		message: 42
 	} as unknown as ContactStateMachineContext);
 	assert.throws(
 		() => contactStateMachineContextSchema.parse(data),

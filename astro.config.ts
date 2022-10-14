@@ -11,8 +11,8 @@ export default defineConfig({
 		tailwind(),
 		svelte(),
 		image({
-			serviceEntryPoint: "@astrojs/image/sharp",
-		}),
+			serviceEntryPoint: "@astrojs/image/sharp"
+		})
 	],
-	site: "https://www.echooff.dev",
+	site: "https://www.echooff.dev"
 });

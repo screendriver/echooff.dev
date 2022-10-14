@@ -9,14 +9,14 @@ import { gitHubStatisticsSchema } from "../src/statistics/statistics-schema";
 if (process.env.NODE_ENV === "production") {
 	Sentry.init({
 		dsn: process.env.SENTRY_DSN,
-		tracesSampleRate: 1.0,
+		tracesSampleRate: 1.0
 	});
 }
 
 const handler: VercelApiHandler = async (_request, response) => {
 	const transaction = Sentry.startTransaction({
 		op: "fetch",
-		name: "GitHubStatistics",
+		name: "GitHubStatistics"
 	});
 
 	try {
@@ -24,7 +24,7 @@ const handler: VercelApiHandler = async (_request, response) => {
 			graphql,
 			gitHubBaseUrl: gitHubBaseUrlSchema.parse(process.env.GIT_HUB_API_BASE_URL),
 			gitHubLogin: gitHubLoginSchema.parse(process.env.GIT_HUB_LOGIN),
-			gitHubApiToken: gitHubApiTokenSchema.parse(process.env.GIT_HUB_API_TOKEN),
+			gitHubApiToken: gitHubApiTokenSchema.parse(process.env.GIT_HUB_API_TOKEN)
 		});
 		const gitHubStatistics = gitHubStatisticsSchema.parse(gitHubStatisticsResponse);
 

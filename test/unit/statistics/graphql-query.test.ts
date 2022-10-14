@@ -10,7 +10,7 @@ const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatistics
 		graphql,
 		gitHubBaseUrl: new URL("https://example.com/"),
 		gitHubLogin: "username",
-		gitHubApiToken: "my-token",
+		gitHubApiToken: "my-token"
 	};
 });
 
@@ -27,7 +27,7 @@ test.each<[string, keyof RequestParameters, unknown]>([
                     totalCount
                 }
             }
-        }`,
+        }`
 	],
 	["GitHub base URL and strips the trailing slash", "baseUrl", "https://example.com"],
 	["GitHub login", "login", "username"],
@@ -35,13 +35,13 @@ test.each<[string, keyof RequestParameters, unknown]>([
 		"GitHub API token",
 		"headers",
 		{
-			authorization: "token my-token",
-		},
-	],
+			authorization: "token my-token"
+		}
+	]
 ])("fetchGitHubStatistics() uses the correct %s", async (_testDescription, requestParameter, expected) => {
 	const graphql = vi.fn<RequestParameters[]>().mockResolvedValue(undefined);
 	const fetchGitHubStatisticsOptions = fetchGitHubStatisticsOptionsFactory.build({
-		graphql: graphql as unknown as octokitGraphql,
+		graphql: graphql as unknown as octokitGraphql
 	});
 
 	await fetchGitHubStatistics(fetchGitHubStatisticsOptions);
