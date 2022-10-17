@@ -4,5 +4,5 @@
 	"framework": "astro",
 	"cleanUrls": true,
 	"public": false,
-	"regions": ["fra1"]
+	"regions": ["sfo1"]
 }
