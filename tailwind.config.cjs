@@ -11,6 +11,19 @@ module.exports = {
 			},
 			margin: {
 				"1/12": "8.333333%"
+			},
+			keyframes: {
+				"cursor-blink": {
+					from: {
+						opacity: 0
+					},
+					to: {
+						opacity: 1
+					}
+				}
+			},
+			animation: {
+				"cursor-blink": "cursor-blink 1.5s steps(2) infinite"
 			}
 		}
 	},
