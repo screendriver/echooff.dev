@@ -1,5 +1,16 @@
 [
 	{
+		"since": "2022-11-01",
+		"showOnlyYear": false,
+		"industry": "E-Commerce",
+		"jobTitle": "Principal Software Engineer",
+		"jobDescription": "Full-Stack TypeScript / JavaScript Engineer",
+		"company": {
+			"name": "Mister Spex SE",
+			"url": "https://www.misterspex.de"
+		}
+	},
+	{
 		"since": "2021-03-01",
 		"showOnlyYear": false,
 		"industry": "Streaming Service",
