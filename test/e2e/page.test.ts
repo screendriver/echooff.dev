@@ -1,7 +1,5 @@
 import { test, expect } from "@playwright/test";
 
-const statisticsApiUrl = "http://localhost:3000/api/github-statistics";
-
 test("page title", async ({ page }) => {
 	await page.goto("/");
 	await page.waitForSelector("header > figure > picture > img");
@@ -19,8 +17,7 @@ test("Years of experience", async ({ page }) => {
 });
 
 test("GitHub Repos", async ({ page }) => {
-	await page.goto("/");
-	await page.waitForResponse(statisticsApiUrl);
+	await page.goto("/", { waitUntil: "networkidle" });
 	await page.evaluate(() => {
 		document.querySelector("section:nth-of-type(4)")?.scrollIntoView();
 	});
@@ -31,8 +28,7 @@ test("GitHub Repos", async ({ page }) => {
 });
 
 test("GitHub Stars", async ({ page }) => {
-	await page.goto("/");
-	await page.waitForResponse(statisticsApiUrl);
+	await page.goto("/", { waitUntil: "networkidle" });
 	await page.evaluate(() => {
 		document.querySelector("section:nth-of-type(4)")?.scrollIntoView();
 	});
