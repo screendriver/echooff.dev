@@ -24,7 +24,7 @@
 		"strict": true,
 		"strictFunctionTypes": true,
 		"strictNullChecks": true,
-		"target": "ESNext",
+		"target": "ES2021",
 		"tsBuildInfoFile": "./target/.tsbuildinfo",
 		"types": ["@astrojs/image/client"],
 		"useUnknownInCatchVariables": true
