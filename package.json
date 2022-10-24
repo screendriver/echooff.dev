@@ -69,7 +69,7 @@
 		"fastify": "4.9.2",
 		"fishery": "2.2.2",
 		"get-port": "6.1.2",
-		"jscpd": "3.5.0",
+		"jscpd": "3.5.1",
 		"postcss": "8.4.18",
 		"prettier": "2.7.1",
 		"prettier-plugin-astro": "0.6.0",
