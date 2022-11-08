@@ -57,7 +57,7 @@
 		"@typescript-eslint/eslint-plugin": "5.42.1",
 		"@typescript-eslint/parser": "5.42.1",
 		"@vercel/node": "2.6.2",
-		"@vitest/coverage-c8": "0.24.5",
+		"@vitest/coverage-c8": "0.25.0",
 		"autoprefixer": "10.4.13",
 		"c8": "7.12.0",
 		"common-tags": "1.8.2",
@@ -81,7 +81,7 @@
 		"tsx": "3.11.0",
 		"typescript": "4.8.4",
 		"vercel": "28.4.15",
-		"vitest": "0.24.5",
+		"vitest": "0.25.0",
 		"wait-on": "6.0.1",
 		"zx": "7.1.1"
 	}
