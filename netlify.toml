@@ -12,3 +12,15 @@
     port = 8888
     framework = "#custom"
     autoLaunch = false
+
+[[redirects]]
+    from = "https://echooff.de/*"
+    to = "https://www.echooff.dev/:splat"
+    status = 301
+    force = true
+
+[[redirects]]
+    from = "https://www.echooff.de/*"
+    to = "https://www.echooff.dev/:splat"
+    status = 301
+    force = true
