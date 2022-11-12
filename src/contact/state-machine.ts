@@ -162,7 +162,7 @@ export function createContactStateMachine(dependencies: ContactMachineDependenci
 				async postContactForm(context) {
 					const searchParams = new URLSearchParams(context);
 					searchParams.set("form-name", "contact");
-					await dependencies.ky.post("/api/contact-form", {
+					await dependencies.ky.post("/.netlify/functions/contact-form", {
 						headers: {
 							"Content-Type": "application/x-www-form-urlencoded"
 						},

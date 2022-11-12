@@ -5,7 +5,7 @@ import {
 	gitHubApiTokenSchema,
 	gitHubBaseUrlSchema,
 	gitHubLoginSchema
-} from "../../../src/statistics/environment-variables";
+} from "../../../../../src/netlify/functions/github-statistics/environment-variables";
 
 test("gitHubBaseUrlSchema does not allow booleans", () => {
 	assert.throws(

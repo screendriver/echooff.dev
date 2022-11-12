@@ -19,7 +19,7 @@ import {
 	StatisticsMachineEvent,
 	StatisticsTypestate
 } from "../../../src/statistics/state-machine";
-import type { GitHubStatistics } from "../../../src/statistics/statistics-schema";
+import type { GitHubStatistics } from "../../../src/github-statistics/github-statistics-schema";
 import type { ErrorReporter } from "../../../src/error-reporter/reporter";
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
@@ -92,7 +92,7 @@ test('transits from "idle" to "loading" on "FETCH" event', () => {
 	assert.isTrue(statisticsStateService.state.matches("loading"));
 });
 
-test('makes a HTTP GET request to "/api/github-statistics" on "FETCH" event', () => {
+test('makes a HTTP GET request to "/.netlify/functions/github-statistics" on "FETCH" event', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build();
 	const ky = vi.fn().mockReturnValue({
 		json: vi.fn().mockResolvedValue(gitHubStatistics)
@@ -102,7 +102,7 @@ test('makes a HTTP GET request to "/api/github-statistics" on "FETCH" event', ()
 	statisticsStateService.send("FETCH");
 
 	assert.strictEqual(ky.mock.calls.length, 1);
-	assert.strictEqual(ky.mock.calls[0]?.[0], "/api/github-statistics");
+	assert.strictEqual(ky.mock.calls[0]?.[0], "/.netlify/functions/github-statistics");
 });
 
 test('sets "context.gitHubStatistics" after loading GitHub statistics', async () => {
