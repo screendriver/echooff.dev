@@ -8,7 +8,7 @@ const config: PlaywrightTestConfig = {
 	forbidOnly: isRunningInContinuousIntegration(),
 	webServer: {
 		command: "npm run develop",
-		port: 3000
+		port: 8888
 	},
 	reporter: "list",
 	retries: 2,
@@ -27,7 +27,7 @@ const config: PlaywrightTestConfig = {
 		}
 	],
 	use: {
-		baseURL: "http://localhost:3000"
+		baseURL: "http://localhost:8888"
 	},
 	outputDir: "../../target/test-results/"
 };

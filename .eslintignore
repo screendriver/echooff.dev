@@ -1,4 +1,4 @@
 !.*
-.vercel/
+.netlify/
 node_modules/
 target/

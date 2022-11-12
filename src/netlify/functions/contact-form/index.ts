@@ -1,8 +1,9 @@
-import type { VercelApiHandler } from "@vercel/node";
-import * as Sentry from "@sentry/node";
 import "@sentry/tracing";
+import * as Sentry from "@sentry/node";
+import type { Handler } from "@netlify/functions";
 import got from "got";
-import { contactFormUrlSchema } from "../src/contact/environment-variables";
+import is from "@sindresorhus/is";
+import { contactFormUrlSchema } from "./environment-variables";
 
 if (process.env.NODE_ENV === "production") {
 	Sentry.init({
@@ -11,30 +12,33 @@ if (process.env.NODE_ENV === "production") {
 	});
 }
 
-const handler: VercelApiHandler = async (request, response) => {
+export const handler: Handler = async (event) => {
 	const transaction = Sentry.startTransaction({
 		op: "post",
 		name: "ContactForm"
 	});
 
 	try {
+		if (is.nullOrUndefined(event.body)) {
+			throw new Error("Empty request body");
+		}
+
 		const contactFormUrl = contactFormUrlSchema.parse(process.env.CONTACT_FORM_URL);
 
 		await got.post(contactFormUrl, {
 			headers: {
 				Accept: "application/json",
-				"Content-Type": request.headers["Content-Type"]
+				"Content-Type": "application/x-www-form-urlencoded"
 			},
-			form: request.body as Record<string, unknown>
+			body: event.body
 		});
 
-		response.status(200).send({});
+		return { statusCode: 200 };
 	} catch (error: unknown) {
 		Sentry.captureException(error);
-		throw error;
+
+		return { statusCode: 500 };
 	} finally {
 		transaction.finish();
 	}
 };
-
-export default handler;

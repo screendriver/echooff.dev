@@ -1,0 +1,14 @@
+[build]
+    publish = "target/dist/"
+    command = "npm run build"
+    environment = { AWS_LAMBDA_JS_RUNTIME = "nodejs16.x" }
+
+[functions]
+    directory = "src/netlify/functions/"
+
+[dev]
+    command = "npm run astro"
+    targetPort = 3000
+    port = 8888
+    framework = "#custom"
+    autoLaunch = false

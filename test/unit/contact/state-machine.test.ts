@@ -334,7 +334,7 @@ test('makes a HTTP POST request when entering "sending" state node', () => {
 		"form-name": "contact"
 	});
 	const callArguments = ky.post.mock.calls[0];
-	assert.strictEqual(callArguments?.[0], "/api/contact-form");
+	assert.strictEqual(callArguments?.[0], "/.netlify/functions/contact-form");
 	assert.deepStrictEqual(callArguments?.[1], {
 		headers: {
 			"Content-Type": "application/x-www-form-urlencoded"

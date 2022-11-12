@@ -1,7 +1,7 @@
 import { test, assert } from "vitest";
 import { stripIndent } from "common-tags";
 import { ZodError } from "zod";
-import { contactFormUrlSchema } from "../../../src/contact/environment-variables";
+import { contactFormUrlSchema } from "../../../../../src/netlify/functions/contact-form/environment-variables";
 
 test("contactFormUrlSchema does not allow booleans", () => {
 	assert.throws(

@@ -14,7 +14,7 @@ import {
 import { Maybe } from "true-myth";
 import type { Just, Nothing } from "true-myth/maybe";
 import type KyInterface from "ky";
-import { GitHubStatistics, gitHubStatisticsSchema } from "./statistics-schema";
+import { GitHubStatistics, gitHubStatisticsSchema } from "../github-statistics/github-statistics-schema";
 import type { ErrorReporter } from "../error-reporter/reporter";
 
 export type StatisticsMachineEvent = { type: "FETCH" };
@@ -147,7 +147,7 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
 			},
 			services: {
 				async fetchGitHubStatistics() {
-					const gitHubStatistics = await dependencies.ky("/api/github-statistics").json();
+					const gitHubStatistics = await dependencies.ky("/.netlify/functions/github-statistics").json();
 
 					return gitHubStatisticsSchema.parse(gitHubStatistics);
 				}
