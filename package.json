@@ -30,7 +30,7 @@
 		"@octokit/graphql": "5.0.4",
 		"@sentry/node": "7.23.0",
 		"@sentry/tracing": "7.23.0",
-		"@xstate/svelte": "2.0.0",
+		"@xstate/svelte": "2.0.1",
 		"astro": "1.6.12",
 		"date-fns": "2.29.3",
 		"feather-icons": "4.29.0",
