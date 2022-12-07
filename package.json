@@ -75,7 +75,7 @@
 		"prettier-plugin-astro": "0.7.0",
 		"prettier-plugin-svelte": "2.8.1",
 		"sharp": "0.31.2",
-		"svelte": "3.53.1",
+		"svelte": "3.54.0",
 		"svelte-check": "2.10.1",
 		"tailwind-dracula": "1.1.0",
 		"tsx": "3.12.1",
