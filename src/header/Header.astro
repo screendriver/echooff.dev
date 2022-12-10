@@ -6,12 +6,14 @@ import headerImage from "../img/header-01.jpg";
 const headerPictureSmall = await getPicture({
 	formats: ["avif", "webp"],
 	src: headerImageSmall,
+	alt: "Header image",
 	widths: [750, 1061]
 });
 
 const headerPicture = await getPicture({
 	formats: ["avif", "webp"],
 	src: headerImage,
+	alt: "Header image",
 	widths: [750, 1080, 1366, 1920]
 });
 ---
