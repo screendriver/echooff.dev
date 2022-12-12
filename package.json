@@ -31,7 +31,7 @@
 		"@sentry/node": "7.25.0",
 		"@sentry/tracing": "7.25.0",
 		"@xstate/svelte": "2.0.1",
-		"astro": "1.6.14",
+		"astro": "1.6.15",
 		"date-fns": "2.29.3",
 		"feather-icons": "4.29.0",
 		"got": "11.8.6",
