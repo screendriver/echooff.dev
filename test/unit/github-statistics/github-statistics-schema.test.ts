@@ -86,6 +86,7 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.repositor
               "minimum": 0,
               "type": "number",
               "inclusive": true,
+              "exact": false,
               "message": "Number must be greater than or equal to 0",
               "path": [
                 "user",
@@ -159,6 +160,7 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRe
               "minimum": 0,
               "type": "number",
               "inclusive": true,
+              "exact": false,
               "message": "Number must be greater than or equal to 0",
               "path": [
                 "user",

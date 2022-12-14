@@ -61,6 +61,7 @@ test("contactFormUrlSchema fails when it is an empty string", () => {
         "minimum": 1,
         "type": "string",
         "inclusive": true,
+        "exact": false,
         "message": "String must contain at least 1 character(s)",
         "path": []
       }
@@ -110,6 +111,7 @@ test("contactStateMachineContextSchema fails to parse when name is an empty stri
           "minimum": 1,
           "type": "string",
           "inclusive": true,
+          "exact": false,
           "message": "String must contain at least 1 character(s)",
           "path": [
             "name"
@@ -263,6 +265,7 @@ test("contactStateMachineContextSchema fails to parse when message is an empty s
         "minimum": 1,
         "type": "string",
         "inclusive": true,
+        "exact": false,
         "message": "String must contain at least 1 character(s)",
         "path": [
           "message"
