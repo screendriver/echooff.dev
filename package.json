@@ -68,7 +68,7 @@
 		"fastify": "4.10.2",
 		"fishery": "2.2.2",
 		"get-port": "6.1.2",
-		"jscpd": "3.5.1",
+		"jscpd": "3.5.3",
 		"netlify-cli": "12.3.0",
 		"postcss": "8.4.20",
 		"prettier": "2.8.1",
