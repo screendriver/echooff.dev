@@ -80,7 +80,7 @@
 		"tailwind-dracula": "1.1.0",
 		"tsx": "3.12.1",
 		"typescript": "4.9.4",
-		"vitest": "0.26.0",
+		"vitest": "0.26.1",
 		"wait-on": "7.0.1",
 		"zx": "7.1.1"
 	}
