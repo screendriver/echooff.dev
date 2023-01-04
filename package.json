@@ -72,7 +72,7 @@
 		"netlify-cli": "12.5.0",
 		"postcss": "8.4.20",
 		"prettier": "2.8.1",
-		"prettier-plugin-astro": "0.7.1",
+		"prettier-plugin-astro": "0.7.2",
 		"prettier-plugin-svelte": "2.9.0",
 		"sharp": "0.31.3",
 		"svelte": "3.55.0",
