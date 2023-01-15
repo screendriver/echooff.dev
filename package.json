@@ -62,7 +62,7 @@
 		"common-tags": "1.8.2",
 		"concurrently": "7.6.0",
 		"esbuild": "0.17.0",
-		"eslint": "8.31.0",
+		"eslint": "8.32.0",
 		"eslint-config-prettier": "8.6.0",
 		"eslint-plugin-prettier": "4.2.1",
 		"fastify": "4.11.0",
