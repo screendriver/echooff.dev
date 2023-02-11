@@ -5,6 +5,7 @@
 
 [functions]
     directory = "src/netlify/functions/"
+    node_bundler = "esbuild"
 
 [dev]
     command = "npm run astro"
