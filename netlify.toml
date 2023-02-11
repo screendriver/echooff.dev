@@ -1,7 +1,7 @@
 [build]
     publish = "target/dist/"
     command = "npm run build"
-    environment = { AWS_LAMBDA_JS_RUNTIME = "nodejs16.x" }
+    environment = { AWS_LAMBDA_JS_RUNTIME = "nodejs18.x" }
 
 [functions]
     directory = "src/netlify/functions/"
