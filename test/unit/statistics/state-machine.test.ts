@@ -94,7 +94,7 @@ test('transits from "idle" to "loading" on "FETCH" event', () => {
 
 test('makes a HTTP GET request to "/.netlify/functions/github-statistics" on "FETCH" event', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build();
-	const ky = vi.fn().mockReturnValue({
+	const ky = vi.fn<unknown[], unknown>().mockReturnValue({
 		json: vi.fn().mockResolvedValue(gitHubStatistics)
 	});
 	const statisticsStateService = createStatisticsStateService({ ky: ky as unknown as typeof KyInterface });
@@ -181,7 +181,7 @@ test("reports the occurred error when fetching of GitHub statistics failed", asy
 	const ky = vi.fn().mockReturnValue({
 		json: vi.fn().mockRejectedValue(error)
 	});
-	const send = vi.fn();
+	const send = vi.fn<unknown[], unknown>();
 	const errorReporter = errorReporterFactory.build({ send });
 	const statisticsStateService = createStatisticsStateService({
 		ky: ky as unknown as typeof KyInterface,

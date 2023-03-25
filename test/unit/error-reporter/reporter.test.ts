@@ -4,7 +4,7 @@ import { createErrorReporter } from "../../../src/error-reporter/reporter";
 test("sends the given error to Sentry", () => {
 	const originalConsoleError = console.error;
 	try {
-		const errorFunctionMock = vi.fn();
+		const errorFunctionMock = vi.fn<unknown[], unknown>();
 		console.error = errorFunctionMock;
 
 		const error = new Error("Test error");

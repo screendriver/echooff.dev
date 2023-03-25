@@ -309,7 +309,7 @@ test('invokes "postContactForm" service when entering "sending" state node', () 
 });
 
 test('makes a HTTP POST request when entering "sending" state node', () => {
-	const ky = { post: vi.fn().mockResolvedValue(undefined) };
+	const ky = { post: vi.fn<unknown[], unknown>().mockResolvedValue(undefined) };
 	const contactStateService = createContactStateService({
 		ky: ky as unknown as typeof KyInterface
 	});
@@ -371,7 +371,7 @@ test("reports the occurred error when sending contact form failed", async () => 
 	const ky = {
 		post: vi.fn().mockRejectedValue(error)
 	} as unknown as typeof KyInterface;
-	const send = vi.fn();
+	const send = vi.fn<unknown[], unknown>();
 	const errorReporter = errorReporterFactory.build({ send });
 	const contactStateService = createContactStateService({ ky, errorReporter });
 
