@@ -27,5 +27,5 @@ module.exports = {
 			}
 		}
 	},
-	plugins: [require("tailwind-dracula")("dracula")]
+	plugins: [require("tailwind-dracula")("dracula"), require("@tailwindcss/typography")]
 };
