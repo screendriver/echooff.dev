@@ -1,0 +1,28 @@
+---
+import { icons } from "feather-icons";
+---
+
+<nav class="bg-gradient-to-b from-dracula-dark to-dracula-darker text-dracula-light flex items-center justify-between px-8 py-4">
+	<ul class="flex">
+		<li>
+			<a href="/" title="Home"><Fragment set:html={icons.code?.toSvg({ class: "w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" })} /></a>
+		</li>
+	</ul>
+	<ul class="flex gap-4">
+		<li>
+			<a href="https://github.com/screendriver" title="GitHub">
+				<Fragment set:html={icons.github?.toSvg({ class: "w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" })} />
+			</a>
+		</li>
+		<li>
+			<a href="https://twitter.com/CallistoShip" title="Twitter">
+				<Fragment set:html={icons.twitter?.toSvg({ class: "w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" })} />
+			</a>
+		</li>
+		<li>
+			<a href="https://www.linkedin.com/in/unicornyuppie" title="LinkedIn">
+				<Fragment set:html={icons.linkedin?.toSvg({ class: "w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" })} />
+			</a>
+		</li>
+	</ul>
+</nav>

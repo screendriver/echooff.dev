@@ -23,16 +23,5 @@ import Contact from "./Contact.svelte";
 			<p>Threema</p>
 		</a>
 		<Contact client:visible />
-		<div class="col-span-2 flex flex-row justify-between w-72 my-6">
-			<a href="https://twitter.com/CallistoShip" title="Twitter">
-				<Fragment set:html={icons.twitter?.toSvg({ width: 32, height: 32 })} />
-			</a>
-			<a href="https://github.com/screendriver" title="GitHub">
-				<Fragment set:html={icons.github?.toSvg({ width: 32, height: 32 })} />
-			</a>
-			<a href="https://www.linkedin.com/in/unicornyuppie" title="LinkedIn">
-				<Fragment set:html={icons.linkedin?.toSvg({ width: 32, height: 32 })} />
-			</a>
-		</div>
 	</address>
 </section>
