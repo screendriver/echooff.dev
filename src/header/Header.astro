@@ -1,6 +1,6 @@
 ---
 import { getPicture } from "@astrojs/image";
-import Navigation from "./Navigation.astro"
+import Navigation from "./Navigation.astro";
 import headerImageSmall from "../img/header-01-small.jpg";
 import headerImage from "../img/header-01.jpg";
 
@@ -21,7 +21,9 @@ const headerPicture = await getPicture({
 
 <header class="relative">
 	<Navigation />
-	<figure class="relative overflow-hidden bg-gradient-to-b from-dracula-cyan border-t border-b border-dracula-purple h-64 sm:h-4/5">
+	<figure
+		class="relative overflow-hidden bg-gradient-to-b from-dracula-cyan border-t border-b border-dracula-purple h-64 sm:h-4/5"
+	>
 		<picture class="object-top sm:object-center">
 			{
 				headerPictureSmall.sources.map((source) => {
