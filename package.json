@@ -11,7 +11,7 @@
 		"node": "18.x"
 	},
 	"scripts": {
-		"lint": "eslint . --ext '.ts,.tsx'",
+		"lint": "eslint . --ext '.ts,.tsx' && prettier --check src test",
 		"copy:paste:detector": "jscpd src test",
 		"compile": "tsc",
 		"check:astro": "astro check",
@@ -50,6 +50,7 @@
 		"@fastify/formbody": "7.4.0",
 		"@netlify/functions": "1.4.0",
 		"@playwright/test": "1.32.1",
+		"@tailwindcss/typography": "0.5.9",
 		"@types/common-tags": "1.8.1",
 		"@types/feather-icons": "4.29.1",
 		"@types/gsap": "1.20.2",

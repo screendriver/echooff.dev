@@ -1,0 +1,69 @@
+---
+import { icons } from "feather-icons";
+import Layout from "../../layouts/Layout.astro";
+import Navigation from "../../header/Navigation.astro";
+import { getCollection } from "astro:content";
+import { isBefore, isAfter, intlFormat } from "date-fns";
+
+const allBlogPostsUnsorted = await getCollection("blog");
+
+const allBlogPostsSorted = [...allBlogPostsUnsorted].sort((currentBlogPost, nextBlogPost) => {
+	const currentBlogPostDate = currentBlogPost.data.date;
+	const nextBlogPostDate = nextBlogPost.data.date;
+
+	if (isBefore(currentBlogPostDate, nextBlogPostDate)) {
+		return -1;
+	}
+
+	if (isAfter(currentBlogPostDate, nextBlogPostDate)) {
+		return 1;
+	}
+
+	return 0;
+});
+---
+
+<Layout title="Blog posts | Christian Rackerseder - Full-Stack JavaScript Engineer">
+	<header>
+		<Navigation />
+	</header>
+	<main class="border-t border-dracula-purple">
+		<h1
+			class="flex items-center lg:items-end justify-center gap-x-2 text-dracula-cyan lg:leading-none text-2xl lg:text-4xl font-extrabold mt-8 mb-2"
+		>
+			Blog posts
+			<Fragment set:html={icons["book-open"]?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
+		</h1>
+		<hr
+			class="h-2 w-1/2 border-none m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg"
+		/>
+		<ul class="text-dracula-light">
+			{
+				allBlogPostsSorted.map((blogPost) => {
+					return (
+						<li>
+							<article class="flex items-stretch m-auto w-5/6 md:w-3/4 lg:w-1/2 bg-gradient-to-br from-dracula to-dracula-cyan rounded-2xl drop-shadow-lg my-10">
+								<a
+									href={`/blog/${blogPost.slug}`}
+									class="w-full bg-dracula-dark rounded-2xl m-1 p-3 hover:bg-dracula-darker-800"
+								>
+									<h2 class="text-dracula-cyan underline underline-offset-2 mb-4">
+										{blogPost.data.title}
+									</h2>
+									<p class="">{blogPost.data.description}</p>
+									<p class="text-dracula-pink text-right text-sm mt-2">
+										{intlFormat(blogPost.data.date, {
+											year: "numeric",
+											month: "long",
+											day: "numeric"
+										})}
+									</p>
+								</a>
+							</article>
+						</li>
+					);
+				})
+			}
+		</ul>
+	</main>
+</Layout>
