@@ -1,4 +1,6 @@
 !.*
+.astro/
 .netlify/
 node_modules/
 target/
+src/env.d.ts
