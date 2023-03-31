@@ -1,4 +1,5 @@
 ---
+import type { InferGetStaticPropsType } from "astro";
 import { intlFormat, formatISO } from "date-fns";
 import Layout from "../../layouts/Layout.astro";
 import Navigation from "../../header/Navigation.astro";
@@ -16,6 +17,8 @@ export async function getStaticPaths() {
 		};
 	});
 }
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { blogPost } = Astro.props;
 const { Content } = await blogPost.render();
