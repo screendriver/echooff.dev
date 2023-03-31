@@ -1,5 +1,6 @@
 ---
 import { icons } from "feather-icons";
+import { formatISO } from "date-fns";
 import Layout from "../../layouts/Layout.astro";
 import Navigation from "../../header/Navigation.astro";
 import { getCollection } from "astro:content";
@@ -51,13 +52,16 @@ const allBlogPostsSorted = [...allBlogPostsUnsorted].sort((currentBlogPost, next
 										{blogPost.data.title}
 									</h2>
 									<p class="">{blogPost.data.description}</p>
-									<p class="text-dracula-pink text-right text-sm mt-2">
+									<time
+										datetime={formatISO(blogPost.data.date, { representation: "date" })}
+										class="block text-dracula-pink text-right text-sm mt-2"
+									>
 										{intlFormat(blogPost.data.date, {
 											year: "numeric",
 											month: "long",
 											day: "numeric"
 										})}
-									</p>
+									</time>
 								</a>
 							</article>
 						</li>
