@@ -42,7 +42,7 @@ const allBlogPostsSorted = [...allBlogPostsUnsorted].sort((currentBlogPost, next
 				allBlogPostsSorted.map((blogPost) => {
 					return (
 						<li>
-							<article class="flex items-stretch m-auto w-5/6 md:w-3/4 lg:w-1/2 bg-gradient-to-br from-dracula to-dracula-cyan rounded-2xl drop-shadow-lg my-10">
+							<article class="flex items-stretch mx-4 my-6 sm:max-w-lg sm:mx-auto md:max-w-xl lg:max-w-2xl bg-gradient-to-br from-dracula to-dracula-cyan rounded-2xl drop-shadow-lg">
 								<a
 									href={`/blog/${blogPost.slug}`}
 									class="w-full bg-dracula-dark rounded-2xl m-1 p-3 hover:bg-dracula-darker-800"
