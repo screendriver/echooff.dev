@@ -81,7 +81,7 @@
 		"svelte-check": "3.2.0",
 		"tailwind-dracula": "1.1.0",
 		"tsx": "3.12.6",
-		"typescript": "5.0.3",
+		"typescript": "5.0.4",
 		"vitest": "0.29.8",
 		"wait-on": "7.0.1",
 		"zx": "7.2.1"
