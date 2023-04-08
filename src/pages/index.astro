@@ -25,7 +25,7 @@ const headerPicture = await getPicture({
 });
 ---
 
-<Layout withHeaderBottomBorder={false}>
+<Layout withHeader={true} withHeaderBottomBorder={false} withFooter={true}>
 	<Fragment slot="inside-header">
 		<figure
 			class="relative overflow-hidden bg-gradient-to-b from-dracula-cyan border-t border-b border-dracula-purple h-64 sm:h-4/5"

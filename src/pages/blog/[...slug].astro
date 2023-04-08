@@ -25,7 +25,9 @@ const { Content } = await blogPost.render();
 
 <Layout
 	title={`${blogPost.data.title} | Christian Rackerseder - Full-Stack JavaScript Engineer`}
+	withHeader={true}
 	withHeaderBottomBorder={true}
+	withFooter={true}
 >
 	<time
 		datetime={formatISO(blogPost.data.date, { representation: "date" })}
