@@ -8,9 +8,10 @@ import Footer from "../footer/Footer.astro";
 
 export interface Props {
 	readonly title?: string;
+	readonly withHeaderBottomBorder: boolean;
 }
 
-const { title = "Christian Rackerseder - Full-Stack JavaScript Engineer" } = Astro.props;
+const { title = "Christian Rackerseder - Full-Stack JavaScript Engineer", withHeaderBottomBorder } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -30,7 +31,7 @@ const { title = "Christian Rackerseder - Full-Stack JavaScript Engineer" } = Ast
 		<link rel="alternate" type="application/rss+xml" title="Christian Rackerseder - Blog" href="/rss.xml" />
 		<title>{title}</title>
 	</head>
-	<Header>
+	<Header withBottomBorder={withHeaderBottomBorder}>
 		<slot name="inside-header" />
 	</Header>
 	<body class="bg-dracula-darker h-full flex flex-col">

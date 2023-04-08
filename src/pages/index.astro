@@ -25,10 +25,10 @@ const headerPicture = await getPicture({
 });
 ---
 
-<Layout>
+<Layout withHeaderBottomBorder={false}>
 	<Fragment slot="inside-header">
 		<figure
-			class="relative overflow-hidden bg-gradient-to-b from-dracula-cyan border-t border-dracula-purple h-64 sm:h-4/5"
+			class="relative overflow-hidden bg-gradient-to-b from-dracula-cyan border-t border-b border-dracula-purple h-64 sm:h-4/5"
 		>
 			<picture class="object-top sm:object-center">
 				{
