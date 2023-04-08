@@ -2,7 +2,6 @@
 import { icons } from "feather-icons";
 import { formatISO } from "date-fns";
 import Layout from "../../layouts/Layout.astro";
-import Navigation from "../../header/Navigation.astro";
 import { getCollection } from "astro:content";
 import { isBefore, isAfter, intlFormat } from "date-fns";
 
@@ -25,9 +24,6 @@ const allBlogPostsSorted = [...allBlogPostsUnsorted].sort((currentBlogPost, next
 ---
 
 <Layout title="Blog posts | Christian Rackerseder - Full-Stack JavaScript Engineer">
-	<header class="border-b border-dracula-purple">
-		<Navigation />
-	</header>
 	<main>
 		<h1
 			class="flex items-center lg:items-end justify-center gap-x-2 text-dracula-cyan lg:leading-none text-2xl lg:text-4xl font-extrabold mt-8 mb-2"

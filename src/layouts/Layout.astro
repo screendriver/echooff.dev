@@ -2,6 +2,7 @@
 import "@fontsource/jetbrains-mono";
 import "@fontsource/jetbrains-mono/700.css";
 import "@fontsource/jetbrains-mono/800.css";
+import Header from "../header/Header.astro";
 
 export interface Props {
 	readonly title?: string;
@@ -27,6 +28,9 @@ const { title = "Christian Rackerseder - Full-Stack JavaScript Engineer" } = Ast
 		<link rel="alternate" type="application/rss+xml" title="Christian Rackerseder - Blog" href="/rss.xml" />
 		<title>{title}</title>
 	</head>
+	<Header>
+		<slot name="inside-header" />
+	</Header>
 	<body class="bg-dracula-darker">
 		<slot />
 	</body>
