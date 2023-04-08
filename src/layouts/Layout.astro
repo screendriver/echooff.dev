@@ -13,7 +13,7 @@ const { title = "Christian Rackerseder - Full-Stack JavaScript Engineer" } = Ast
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -32,7 +32,7 @@ const { title = "Christian Rackerseder - Full-Stack JavaScript Engineer" } = Ast
 	<Header>
 		<slot name="inside-header" />
 	</Header>
-	<body class="bg-dracula-darker">
+	<body class="bg-dracula-darker h-full flex flex-col">
 		<slot />
 	</body>
 </html>
