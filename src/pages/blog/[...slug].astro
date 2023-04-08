@@ -23,7 +23,10 @@ const { blogPost } = Astro.props;
 const { Content } = await blogPost.render();
 ---
 
-<Layout title={`${blogPost.data.title} | Christian Rackerseder - Full-Stack JavaScript Engineer`}>
+<Layout
+	title={`${blogPost.data.title} | Christian Rackerseder - Full-Stack JavaScript Engineer`}
+	withHeaderBottomBorder={true}
+>
 	<time
 		datetime={formatISO(blogPost.data.date, { representation: "date" })}
 		class="block text-dracula-pink text-right m-4 sm:max-w-lg sm:m-auto sm:my-4 md:max-w-xl lg:max-w-2xl"
@@ -36,7 +39,9 @@ const { Content } = await blogPost.render();
 			})
 		}
 	</time>
-	<main class="m-4 sm:max-w-lg sm:m-auto sm:my-4 md:max-w-xl lg:max-w-2xl p-4 rounded-xl bg-dracula-dark">
+	<main
+		class="flex-grow flex-shrink-0 basis-auto m-4 sm:max-w-lg sm:m-auto sm:my-4 md:max-w-xl lg:max-w-2xl p-4 rounded-xl bg-dracula-dark"
+	>
 		<h1 class="text-2xl font-extrabold text-dracula-cyan underline underline-offset-2 mb-8">
 			{blogPost.data.title}
 		</h1>

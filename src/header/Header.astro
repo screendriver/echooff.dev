@@ -1,8 +1,14 @@
 ---
 import Navigation from "./Navigation.astro";
+
+interface Props {
+	readonly withBottomBorder: boolean;
+}
+
+const { withBottomBorder } = Astro.props;
 ---
 
-<header class="relative border-b border-dracula-purple">
+<header class=`relative ${withBottomBorder ? 'border-b border-dracula-purple' : ""}`>
 	<Navigation />
 	<slot />
 </header>
