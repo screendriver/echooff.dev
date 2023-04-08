@@ -6,9 +6,15 @@ interface Props {
 }
 
 const { withBottomBorder } = Astro.props;
+
+let cssClass = "relative";
+
+if (withBottomBorder) {
+	cssClass = "border-b border-dracula-purple";
+}
 ---
 
-<header class=`relative ${withBottomBorder ? 'border-b border-dracula-purple' : ""}`>
+<header class={cssClass}>
 	<Navigation />
 	<slot />
 </header>
