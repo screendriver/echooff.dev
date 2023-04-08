@@ -29,21 +29,21 @@ const { Content } = await blogPost.render();
 	withHeaderBottomBorder={true}
 	withFooter={true}
 >
-	<time
-		datetime={formatISO(blogPost.data.date, { representation: "date" })}
-		class="block text-dracula-pink text-right m-4 sm:max-w-lg sm:m-auto sm:my-4 md:max-w-xl lg:max-w-2xl"
-	>
-		{
-			intlFormat(blogPost.data.date, {
-				year: "numeric",
-				month: "long",
-				day: "numeric"
-			})
-		}
-	</time>
 	<main
 		class="flex-grow flex-shrink-0 basis-auto m-4 sm:max-w-lg sm:m-auto sm:my-4 md:max-w-xl lg:max-w-2xl p-4 rounded-xl bg-dracula-dark"
 	>
+		<time
+			datetime={formatISO(blogPost.data.date, { representation: "date" })}
+			class="block text-dracula-pink text-right"
+		>
+			{
+				intlFormat(blogPost.data.date, {
+					year: "numeric",
+					month: "long",
+					day: "numeric"
+				})
+			}
+		</time>
 		<h1 class="text-2xl font-extrabold text-dracula-cyan underline underline-offset-2 mb-8">
 			{blogPost.data.title}
 		</h1>
