@@ -58,7 +58,7 @@
 		"@types/node": "18.15.11",
 		"@typescript-eslint/eslint-plugin": "5.57.1",
 		"@typescript-eslint/parser": "5.57.1",
-		"@vitest/coverage-c8": "0.29.8",
+		"@vitest/coverage-c8": "0.30.0",
 		"autoprefixer": "10.4.14",
 		"c8": "7.13.0",
 		"common-tags": "1.8.2",
@@ -82,7 +82,7 @@
 		"tailwind-dracula": "1.1.0",
 		"tsx": "3.12.6",
 		"typescript": "5.0.4",
-		"vitest": "0.29.8",
+		"vitest": "0.30.0",
 		"wait-on": "7.0.1",
 		"zx": "7.2.1"
 	}
