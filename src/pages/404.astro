@@ -1,11 +1,11 @@
 ---
 import "@fontsource/source-sans-pro/400.css";
 import "@fontsource/source-sans-pro/900.css";
-import Layout from "../layouts/Layout.astro";
+import PageShell from "../layouts/PageShell.astro";
 import YetiSVG from "../yeti/YetiSVG.astro";
 ---
 
-<Layout title="Not found" withHeader={false} withHeaderBottomBorder={false} withFooter={false}>
+<PageShell title="Not found">
 	<main>
 		<YetiSVG />
 		<div class="content">
@@ -17,7 +17,7 @@ import YetiSVG from "../yeti/YetiSVG.astro";
 			</p>
 		</div>
 	</main>
-</Layout>
+</PageShell>
 
 <style>
 	main {

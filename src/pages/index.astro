@@ -1,6 +1,9 @@
 ---
 import { getPicture } from "@astrojs/image";
-import Layout from "../layouts/Layout.astro";
+import PageShell from "../layouts/PageShell.astro";
+import Header from "../layouts/Header.astro";
+import Body from "../layouts/Body.astro";
+import Footer from "../layouts/Footer.astro";
 import About from "../about/About.astro";
 import Skills from "../skills/Skills.astro";
 import Passions from "../passions/Passions.astro";
@@ -25,8 +28,8 @@ const headerPicture = await getPicture({
 });
 ---
 
-<Layout withHeader={true} withHeaderBottomBorder={false} withFooter={true}>
-	<Fragment slot="inside-header">
+<PageShell>
+	<Header withBottomBorder={false}>
 		<figure
 			class="relative overflow-hidden bg-gradient-to-b from-dracula-cyan border-t border-b border-dracula-purple h-64 sm:h-4/5"
 		>
@@ -80,13 +83,18 @@ const headerPicture = await getPicture({
 				</p>
 			</code>
 		</div>
-	</Fragment>
-	<main class="flex-grow flex-shrink-0 basis-auto text-dracula-light">
-		<About />
-		<Skills />
-		<Passions />
-		<Statistics />
-		<Resume />
-		<Contact />
-	</main>
-</Layout>
+	</Header>
+
+	<Body>
+		<main class="flex-grow flex-shrink-0 basis-auto text-dracula-light">
+			<About />
+			<Skills />
+			<Passions />
+			<Statistics />
+			<Resume />
+			<Contact />
+		</main>
+	</Body>
+
+	<Footer />
+</PageShell>

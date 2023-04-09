@@ -1,7 +1,10 @@
 ---
 import type { InferGetStaticPropsType } from "astro";
 import { intlFormat, formatISO } from "date-fns";
-import Layout from "../../layouts/Layout.astro";
+import PageShell from "../../layouts/PageShell.astro";
+import Header from "../../layouts/Header.astro";
+import Body from "../../layouts/Body.astro";
+import Footer from "../../layouts/Footer.astro";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
@@ -23,34 +26,35 @@ const { blogPost } = Astro.props;
 const { Content } = await blogPost.render();
 ---
 
-<Layout
-	title={`${blogPost.data.title} | Christian Rackerseder - Full-Stack JavaScript Engineer`}
-	withHeader={true}
-	withHeaderBottomBorder={true}
-	withFooter={true}
->
-	<main
-		class="flex-grow flex-shrink-0 basis-auto m-4 sm:max-w-lg sm:m-auto sm:my-4 md:max-w-xl lg:max-w-2xl p-4 rounded-xl bg-dracula-dark"
-	>
-		<time
-			datetime={formatISO(blogPost.data.date, { representation: "date" })}
-			class="block text-dracula-pink text-right"
+<PageShell title={`${blogPost.data.title} | Christian Rackerseder - Full-Stack JavaScript Engineer`}>
+	<Header withBottomBorder={true} />
+
+	<Body>
+		<main
+			class="flex-grow flex-shrink-0 basis-auto m-4 sm:max-w-lg sm:m-auto sm:my-4 md:max-w-xl lg:max-w-2xl p-4 rounded-xl bg-dracula-dark"
 		>
-			{
-				intlFormat(blogPost.data.date, {
-					year: "numeric",
-					month: "long",
-					day: "numeric"
-				})
-			}
-		</time>
-		<h1 class="text-2xl font-extrabold text-dracula-cyan underline underline-offset-2 mb-8">
-			{blogPost.data.title}
-		</h1>
-		<article
-			class="prose prose-invert max-w-none prose-headings:underline prose-headings:text-dracula-cyan prose-headings:underline-offset-2 prose-a:text-dracula-green prose-a:no-underline prose-a:transition-colors hover:prose-a:text-dracula-purple"
-		>
-			<Content />
-		</article>
-	</main>
-</Layout>
+			<time
+				datetime={formatISO(blogPost.data.date, { representation: "date" })}
+				class="block text-dracula-pink text-right"
+			>
+				{
+					intlFormat(blogPost.data.date, {
+						year: "numeric",
+						month: "long",
+						day: "numeric"
+					})
+				}
+			</time>
+			<h1 class="text-2xl font-extrabold text-dracula-cyan underline underline-offset-2 mb-8">
+				{blogPost.data.title}
+			</h1>
+			<article
+				class="prose prose-invert max-w-none prose-headings:underline prose-headings:text-dracula-cyan prose-headings:underline-offset-2 prose-a:text-dracula-green prose-a:no-underline prose-a:transition-colors hover:prose-a:text-dracula-purple"
+			>
+				<Content />
+			</article>
+		</main>
+	</Body>
+
+	<Footer />
+</PageShell>
