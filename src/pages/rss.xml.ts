@@ -10,7 +10,7 @@ export const get: APIRoute = async (context) => {
 	const blogPosts = await getCollection("blog");
 
 	return rss({
-		title: "Christian Rackerseder - Blog",
+		title: "Christian Rackerseder — Blog",
 		description: "Full-Stack JavaScript Engineer with a passion for the JAMStack and test driven development.",
 		site: context.site.toString(),
 		items: blogPosts.map((blogPost) => {
