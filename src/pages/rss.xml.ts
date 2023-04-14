@@ -11,7 +11,7 @@ export const get: APIRoute = async (context) => {
 
 	return rss({
 		title: "Christian Rackerseder — Blog",
-		description: "Full-Stack JavaScript Engineer with a passion for the JAMStack and test driven development.",
+		description: "Full-Stack Software Engineer with a passion for the JAMStack and test driven development.",
 		site: context.site.toString(),
 		items: blogPosts.map((blogPost) => {
 			const { data } = blogPost;
