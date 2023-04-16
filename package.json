@@ -72,7 +72,7 @@
 		"get-port": "6.1.2",
 		"jscpd": "3.5.4",
 		"netlify-cli": "13.2.2",
-		"postcss": "8.4.21",
+		"postcss": "8.4.22",
 		"prettier": "2.8.7",
 		"prettier-plugin-astro": "0.8.0",
 		"prettier-plugin-svelte": "2.10.0",
