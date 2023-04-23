@@ -73,7 +73,7 @@
 		"jscpd": "3.5.4",
 		"netlify-cli": "14.2.1",
 		"postcss": "8.4.23",
-		"prettier": "2.8.7",
+		"prettier": "2.8.8",
 		"prettier-plugin-astro": "0.8.0",
 		"prettier-plugin-svelte": "2.10.0",
 		"sharp": "0.32.0",
