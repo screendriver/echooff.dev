@@ -15,6 +15,12 @@
     autoLaunch = false
 
 [[redirects]]
+    from = "https://blog.echooff.de/*"
+    to = "/404.html"
+    status = 410
+	force = true
+
+[[redirects]]
     from = "https://echooff.de/*"
     to = "https://www.echooff.dev/:splat"
     status = 301
@@ -25,3 +31,4 @@
     to = "https://www.echooff.dev/:splat"
     status = 301
     force = true
+
