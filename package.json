@@ -71,7 +71,7 @@
 		"fishery": "2.2.2",
 		"get-port": "6.1.2",
 		"jscpd": "3.5.4",
-		"netlify-cli": "14.2.1",
+		"netlify-cli": "14.3.0",
 		"postcss": "8.4.23",
 		"prettier": "2.8.8",
 		"prettier-plugin-astro": "0.8.0",
