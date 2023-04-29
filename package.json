@@ -44,7 +44,7 @@
 	},
 	"devDependencies": {
 		"@astrojs/image": "0.16.6",
-		"@astrojs/rss": "2.3.2",
+		"@astrojs/rss": "2.4.0",
 		"@astrojs/svelte": "2.1.0",
 		"@astrojs/tailwind": "3.1.1",
 		"@fastify/cors": "8.2.1",
