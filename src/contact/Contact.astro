@@ -1,6 +1,5 @@
 ---
 import { icons } from "feather-icons";
-import Contact from "./Contact.svelte";
 ---
 
 <section class="bg-dracula-dark p-4 lg:p-10">
@@ -22,6 +21,5 @@ import Contact from "./Contact.svelte";
 			<Fragment set:html={icons["message-square"]?.toSvg({ width: 23, height: 23 })} />
 			<p>Threema</p>
 		</a>
-		<Contact client:visible />
 	</address>
 </section>
