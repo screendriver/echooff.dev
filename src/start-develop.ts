@@ -31,4 +31,4 @@ process.on("SIGINT", () => {
 		});
 });
 
-await $`npx netlify dev`;
+await $`npx vercel dev`;
