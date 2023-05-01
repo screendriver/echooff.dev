@@ -6,7 +6,6 @@ import vercel from "@astrojs/vercel/serverless";
 
 export default defineConfig({
 	output: "static",
-	outDir: "target/dist",
 	adapter: vercel(),
 	integrations: [
 		tailwind(),
