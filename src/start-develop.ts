@@ -31,4 +31,4 @@ process.on("SIGINT", () => {
 		});
 });
 
-await $`npx vercel dev`;
+await $`npx vercel dev --listen 3000`;
