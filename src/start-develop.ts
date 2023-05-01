@@ -31,4 +31,8 @@ process.on("SIGINT", () => {
 		});
 });
 
-await $`npx vercel dev --listen 3000`;
+if (process.env.VERCEL_TOKEN !== undefined) {
+	await $`npx vercel dev --listen 3000 --token ${process.env.VERCEL_TOKEN} --yes`;
+} else {
+	await $`npx vercel dev --listen 3000`;
+}
