@@ -147,7 +147,7 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
 			},
 			services: {
 				async fetchGitHubStatistics() {
-					const gitHubStatistics = await dependencies.ky("/github-statistics").json();
+					const gitHubStatistics = await dependencies.ky("/api/github-statistics").json();
 
 					return gitHubStatisticsSchema.parse(gitHubStatistics);
 				}
