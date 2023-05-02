@@ -15,12 +15,12 @@ import { icons } from "feather-icons";
 	<address class="not-italic grid grid-cols-2 gap-6 justify-items-center m-auto max-w-screen-lg">
 		<a
 			href="https://www.openstreetmap.org/relation/497335"
-			class="flex flex-col items-center justify-self-end mx-9"
+			class="flex flex-col items-center justify-self-end ml-9 md:mx-9"
 		>
 			<Fragment set:html={icons["map-pin"]?.toSvg({ width: 23, height: 23 })} />
-			<p>Nearby Munich</p>
+			<p class="whitespace-nowrap">Nearby Munich</p>
 		</a>
-		<a href="https://threema.id/9TWBW4XN" class="flex flex-col items-center justify-self-start mx-9">
+		<a href="https://threema.id/9TWBW4XN" class="flex flex-col items-center justify-self-start ml-9 md:mx-9">
 			<Fragment set:html={icons["message-square"]?.toSvg({ width: 23, height: 23 })} />
 			<p>Threema</p>
 		</a>
