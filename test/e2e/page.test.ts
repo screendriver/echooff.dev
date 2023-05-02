@@ -17,22 +17,24 @@ test("Years of experience", async ({ page }) => {
 });
 
 test("GitHub Repos", async ({ page }) => {
-	await page.goto("/", { waitUntil: "networkidle" });
+	await page.goto("/");
 	await page.evaluate(() => {
 		document.querySelector("section:nth-of-type(4)")?.scrollIntoView();
 	});
-	const element = await page.waitForSelector('[aria-label="GitHub Repos"]');
+	await page.waitForLoadState("networkidle");
+	const element = await page.waitForSelector('[aria-label="GitHub Repos"]', { timeout: 1000 });
 	const text = await element.textContent();
 
 	expect(text).toBe("42");
 });
 
 test("GitHub Stars", async ({ page }) => {
-	await page.goto("/", { waitUntil: "networkidle" });
+	await page.goto("/");
 	await page.evaluate(() => {
 		document.querySelector("section:nth-of-type(4)")?.scrollIntoView();
 	});
-	const element = await page.waitForSelector('[aria-label="GitHub Stars"]');
+	await page.waitForLoadState("networkidle");
+	const element = await page.waitForSelector('[aria-label="GitHub Stars"]', { timeout: 1000 });
 	const text = await element.textContent();
 
 	expect(text).toBe("101");
