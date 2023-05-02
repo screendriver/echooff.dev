@@ -1,6 +1,6 @@
 !.*
 .astro/
-.netlify/
+.vercel/
 node_modules/
 target/
 src/env.d.ts
