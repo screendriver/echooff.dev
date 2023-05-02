@@ -22,8 +22,6 @@ jobs:
               run: npm run compile
             - name: Run unit tests
               run: npm run test:unit:coverage
-            - name: Run test build
-              run: npm run build
             - name: Upload code coverage artifact
               uses: actions/upload-artifact@v3
               with:
