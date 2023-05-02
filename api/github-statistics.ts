@@ -1,10 +1,16 @@
-import * as Sentry from "@sentry/node";
 import "@sentry/tracing";
-import type { Handler } from "@netlify/functions";
+import * as Sentry from "@sentry/node";
+import type { VercelApiHandler } from "@vercel/node";
 import { graphql } from "@octokit/graphql";
-import { gitHubBaseUrlSchema, gitHubLoginSchema, gitHubApiTokenSchema } from "./environment-variables.js";
-import { fetchGitHubStatistics } from "./graphql-query";
-import { gitHubStatisticsSchema } from "../../../github-statistics/github-statistics-schema";
+import {
+	gitHubBaseUrlSchema,
+	gitHubLoginSchema,
+	gitHubApiTokenSchema
+} from "../src/github-statistics/environment-variables.js";
+import { fetchGitHubStatistics } from "../src/github-statistics/graphql-query.js";
+import { gitHubStatisticsSchema } from "../src/github-statistics/github-statistics-schema.js";
+
+export const prerender = false;
 
 if (process.env.NODE_ENV === "production") {
 	Sentry.init({
@@ -13,7 +19,7 @@ if (process.env.NODE_ENV === "production") {
 	});
 }
 
-export const handler: Handler = async () => {
+const gitHubStatisticsHandler: VercelApiHandler = async (_request, response) => {
 	const transaction = Sentry.startTransaction({
 		op: "fetch",
 		name: "GitHubStatistics"
@@ -28,18 +34,14 @@ export const handler: Handler = async () => {
 		});
 		const gitHubStatistics = gitHubStatisticsSchema.parse(gitHubStatisticsResponse);
 
-		return {
-			statusCode: 200,
-			headers: {
-				"Content-Type": "application/json; charset=utf-8"
-			},
-			body: JSON.stringify(gitHubStatistics)
-		};
+		response.status(200).json(gitHubStatistics);
 	} catch (error: unknown) {
 		Sentry.captureException(error);
 
-		return { statusCode: 500 };
+		response.status(500);
 	} finally {
-		transaction.finish();
+		transaction?.finish();
 	}
 };
+
+export default gitHubStatisticsHandler;

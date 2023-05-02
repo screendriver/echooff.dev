@@ -11,11 +11,13 @@ function stripTrailingSlash(url: string): string {
 	if (url.endsWith("/")) {
 		return url.slice(0, -1);
 	}
+
 	return url;
 }
 
 export function fetchGitHubStatistics(options: FetchGitHubStatisticsOptions): GraphQlResponse<unknown> {
 	const { graphql, gitHubBaseUrl, gitHubLogin, gitHubApiToken } = options;
+
 	return graphql({
 		query: `query ($login: String!) {
             user(login: $login) {

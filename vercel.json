@@ -1,0 +1,7 @@
+{
+	"buildCommand": "npm run build",
+	"framework": "astro",
+	"public": false,
+	"regions": ["fra1"],
+	"redirects": []
+}
