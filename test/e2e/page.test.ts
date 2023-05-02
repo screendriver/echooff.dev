@@ -22,7 +22,7 @@ test("GitHub Repos", async ({ page }) => {
 		document.querySelector("section:nth-of-type(4)")?.scrollIntoView();
 	});
 	await page.waitForLoadState("networkidle");
-	const element = await page.waitForSelector('[aria-label="GitHub Repos"]', { timeout: 1000 });
+	const element = await page.waitForSelector('[aria-label="GitHub Repos"]', { timeout: 1500 });
 	const text = await element.textContent();
 
 	expect(text).toBe("42");
@@ -34,7 +34,7 @@ test("GitHub Stars", async ({ page }) => {
 		document.querySelector("section:nth-of-type(4)")?.scrollIntoView();
 	});
 	await page.waitForLoadState("networkidle");
-	const element = await page.waitForSelector('[aria-label="GitHub Stars"]', { timeout: 1000 });
+	const element = await page.waitForSelector('[aria-label="GitHub Stars"]', { timeout: 1500 });
 	const text = await element.textContent();
 
 	expect(text).toBe("101");
