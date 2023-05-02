@@ -36,6 +36,17 @@ const { title = "Christian Rackerseder — Full-Stack Software Engineer" } = Ast
 		<meta property="og:type" content="website" />
 		<link rel="shortcut icon" href="/favicon.png" />
 		<link rel="alternate" type="application/rss+xml" title="Christian Rackerseder — Blog" href="/rss.xml" />
+		{
+			import.meta.env.PROD && (
+				<script
+					async
+					defer
+					data-website-id="d45fca6e-76ed-489f-b0ba-f57d444afff2"
+					data-do-not-track="true"
+					src="https://statistics.echooff.dev/tasty.js"
+				/>
+			)
+		}
 		<title>{title}</title>
 	</head>
 
