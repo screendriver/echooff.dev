@@ -7,7 +7,7 @@ export default getViteConfig({
 			provider: "c8",
 			all: true,
 			extension: [".ts"],
-			include: ["src/**/*"],
+			include: ["source/**/*"],
 			reporter: ["lcov", "text-summary", "clover"],
 			reportsDirectory: "./target/coverage"
 		},

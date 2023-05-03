@@ -29,5 +29,5 @@
 		"types": ["@astrojs/image/client"],
 		"useUnknownInCatchVariables": true
 	},
-	"include": ["./astro.config.ts", "vitest.config.ts", "src/**/*", "test/**/*", "api/**/*"]
+	"include": ["./astro.config.ts", "vitest.config.ts", "source/**/*", "test/**/*", "api/**/*"]
 }

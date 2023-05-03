@@ -5,6 +5,7 @@ import image from "@astrojs/image";
 import vercel from "@astrojs/vercel/static";
 
 export default defineConfig({
+	srcDir: "source",
 	output: "static",
 	adapter: vercel(),
 	integrations: [
