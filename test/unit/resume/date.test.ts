@@ -1,5 +1,5 @@
 import { test, assert } from "vitest";
-import { formatSinceDate } from "../../../src/resume/date";
+import { formatSinceDate } from "../../../source/resume/date";
 
 interface Input {
 	readonly since: string;

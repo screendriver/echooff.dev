@@ -1,6 +1,6 @@
 import { test, assert } from "vitest";
 import createFastify from "fastify";
-import { createGraphQlRoute } from "../../../src/static-server/graphql-route";
+import { createGraphQlRoute } from "../../../source/static-server/graphql-route";
 
 test("returns an user with a total count of repositories and starred repositories", async () => {
 	const fastify = createFastify();

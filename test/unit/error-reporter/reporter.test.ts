@@ -1,5 +1,5 @@
 import { test, assert, vi } from "vitest";
-import { createErrorReporter } from "../../../src/error-reporter/reporter";
+import { createErrorReporter } from "../../../source/error-reporter/reporter";
 
 test("sends the given error to Sentry", () => {
 	const originalConsoleError = console.error;

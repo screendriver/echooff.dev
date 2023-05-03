@@ -2,7 +2,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: ["./src/**/*.{astro,html,svelte,md,mdx,svg}"],
+	content: ["./source/**/*.{astro,html,svelte,md,mdx,svg}"],
 	theme: {
 		letterSpacing: {
 			widest: ".25em"

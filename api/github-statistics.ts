@@ -6,9 +6,9 @@ import {
 	gitHubBaseUrlSchema,
 	gitHubLoginSchema,
 	gitHubApiTokenSchema
-} from "../src/github-statistics/environment-variables.js";
-import { fetchGitHubStatistics } from "../src/github-statistics/graphql-query.js";
-import { gitHubStatisticsSchema } from "../src/github-statistics/github-statistics-schema.js";
+} from "../source/github-statistics/environment-variables.js";
+import { fetchGitHubStatistics } from "../source/github-statistics/graphql-query.js";
+import { gitHubStatisticsSchema } from "../source/github-statistics/github-statistics-schema.js";
 
 export const prerender = false;
 
