@@ -47,7 +47,7 @@
 		"@astrojs/rss": "2.4.1",
 		"@astrojs/svelte": "2.1.1",
 		"@astrojs/tailwind": "3.1.2",
-		"@astrojs/vercel": "3.2.5",
+		"@astrojs/vercel": "3.3.0",
 		"@fastify/cors": "8.2.1",
 		"@fastify/formbody": "7.4.0",
 		"@playwright/test": "1.33.0",
