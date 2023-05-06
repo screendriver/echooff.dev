@@ -1,4 +1,5 @@
 ---
+import { Schema } from "astro-seo-schema";
 import type { InferGetStaticPropsType } from "astro";
 import { intlFormat, formatISO } from "date-fns";
 import PageShell from "../../layouts/PageShell.astro";
@@ -22,21 +23,39 @@ export async function getStaticPaths() {
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
+function countWords(stringToCount: string): number {
+	return stringToCount.split(" ").filter((word) => {
+		return word !== "";
+	}).length;
+}
+
 const { blogPost } = Astro.props;
 const { Content } = await blogPost.render();
+const blogPostDate = formatISO(blogPost.data.date, { representation: "date" });
 ---
 
 <PageShell title={`${blogPost.data.title} — Christian Rackerseder`}>
+	<Schema
+		slot="search-engine-optimization-schema"
+		item={{
+			"@context": "https://schema.org",
+			"@type": "BlogPosting",
+			author: { "@type": "Person", name: "Christian Rackerseder", url: `${Astro.url.origin}` },
+			headline: `${blogPost.data.title}`,
+			articleBody: `${blogPost.body}`,
+			wordCount: `${countWords(blogPost.body)}`,
+			datePublished: `${blogPostDate}`,
+			dateCreated: `${blogPostDate}`,
+			url: `${Astro.url.toString()}`
+		}}
+	/>
 	<Header withBottomBorder={true} />
 
 	<Body>
 		<main
 			class="flex-grow flex-shrink-0 basis-auto m-4 sm:max-w-lg sm:m-auto sm:my-4 md:max-w-xl lg:max-w-2xl p-4 rounded-xl bg-dracula-dark"
 		>
-			<time
-				datetime={formatISO(blogPost.data.date, { representation: "date" })}
-				class="block text-dracula-pink text-right"
-			>
+			<time datetime={blogPostDate} class="block text-dracula-pink text-right">
 				{
 					intlFormat(blogPost.data.date, {
 						year: "numeric",
