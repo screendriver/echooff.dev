@@ -26,7 +26,7 @@
 	},
 	"dependencies": {
 		"@fontsource/jetbrains-mono": "5.0.1",
-		"@fontsource/source-sans-pro": "5.0.0",
+		"@fontsource/source-sans-pro": "5.0.1",
 		"@octokit/graphql": "5.0.6",
 		"@sentry/node": "7.52.1",
 		"@sentry/tracing": "7.52.1",
