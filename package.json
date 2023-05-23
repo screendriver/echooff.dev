@@ -82,7 +82,7 @@
 		"tailwind-dracula": "1.1.0",
 		"tsx": "3.12.7",
 		"typescript": "5.0.4",
-		"vercel": "29.3.6",
+		"vercel": "29.4.0",
 		"vitest": "0.31.1",
 		"wait-on": "7.0.1",
 		"zx": "7.2.2"
