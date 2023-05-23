@@ -53,9 +53,9 @@ const headerPicture = await getPicture({
 				}
 				<img
 					src={(headerPicture.image as unknown as { src: string }).src}
-					decoding="async"
 					width={headerPicture.image.width}
 					height={headerPicture.image.height}
+					decoding="sync"
 					alt="Christian Rackerseder"
 					class="mix-blend-luminosity"
 				/>
