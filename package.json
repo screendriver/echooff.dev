@@ -51,7 +51,7 @@
 		"@astrojs/vercel": "3.5.0",
 		"@fastify/cors": "8.3.0",
 		"@fastify/formbody": "7.4.0",
-		"@playwright/test": "1.34.3",
+		"@playwright/test": "1.35.0",
 		"@tailwindcss/typography": "0.5.9",
 		"@types/common-tags": "1.8.1",
 		"@types/feather-icons": "4.29.1",
