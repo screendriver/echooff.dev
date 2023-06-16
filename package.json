@@ -32,7 +32,7 @@
 		"@sentry/tracing": "7.55.2",
 		"@xstate/svelte": "2.0.1",
 		"astro": "2.6.4",
-		"astro-seo-schema": "2.0.0",
+		"astro-seo-schema": "2.2.0",
 		"date-fns": "2.30.0",
 		"feather-icons": "4.29.0",
 		"got": "13.0.0",
