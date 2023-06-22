@@ -44,7 +44,7 @@
 		"zod": "3.21.4"
 	},
 	"devDependencies": {
-		"@astrojs/image": "0.17.0",
+		"@astrojs/image": "0.17.1",
 		"@astrojs/rss": "2.4.3",
 		"@astrojs/svelte": "3.0.0",
 		"@astrojs/tailwind": "4.0.0",
