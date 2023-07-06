@@ -13,13 +13,13 @@ export default defineConfig({
 		tailwind(),
 		svelte(),
 		image({
-			serviceEntryPoint: "@astrojs/image/sharp"
-		})
+			serviceEntryPoint: "@astrojs/image/sharp",
+		}),
 	],
 	markdown: {
 		shikiConfig: {
-			theme: "dracula"
-		}
+			theme: "dracula",
+		},
 	},
-	site: "https://www.echooff.dev"
+	site: "https://www.echooff.dev",
 });

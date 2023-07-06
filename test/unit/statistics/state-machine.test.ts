@@ -7,7 +7,7 @@ import {
 	ResolveTypegenMeta,
 	ServiceMap,
 	StateSchema,
-	TypegenDisabled
+	TypegenDisabled,
 } from "xstate";
 import type KyInterface from "ky";
 import { Maybe } from "true-myth";
@@ -17,7 +17,7 @@ import {
 	StatisticsMachineContext,
 	StatisticsMachineDependencies,
 	StatisticsMachineEvent,
-	StatisticsTypestate
+	StatisticsTypestate,
 } from "../../../source/statistics/state-machine";
 import type { GitHubStatistics } from "../../../source/github-statistics/github-statistics-schema";
 import type { ErrorReporter } from "../../../source/error-reporter/reporter";
@@ -26,37 +26,37 @@ const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
 	return {
 		user: {
 			repositories: {
-				totalCount: 7
+				totalCount: 7,
 			},
 			starredRepositories: {
-				totalCount: 42
-			}
-		}
+				totalCount: 42,
+			},
+		},
 	};
 });
 
 const errorReporterFactory = Factory.define<ErrorReporter>(() => {
 	return {
-		send: vi.fn()
+		send: vi.fn(),
 	};
 });
 
 function createStatisticsMachineDependencies(
-	overrides: Partial<StatisticsMachineDependencies>
+	overrides: Partial<StatisticsMachineDependencies>,
 ): StatisticsMachineDependencies {
 	const gitHubStatistics = gitHubStatisticsFactory.build();
 	return {
 		ky: vi.fn().mockReturnValue({
-			json: vi.fn().mockResolvedValue(gitHubStatistics)
+			json: vi.fn().mockResolvedValue(gitHubStatistics),
 		}),
 		errorReporter: errorReporterFactory.build(),
 		currentTimestamp: new Date(2021, 3, 10),
-		...overrides
+		...overrides,
 	} as unknown as StatisticsMachineDependencies;
 }
 
 function createStatisticsStateService(
-	overrides: Partial<StatisticsMachineDependencies> = {}
+	overrides: Partial<StatisticsMachineDependencies> = {},
 ): Interpreter<
 	StatisticsMachineContext,
 	StateSchema<StatisticsMachineContext>,
@@ -80,7 +80,7 @@ test("initial context", () => {
 
 	assert.deepEqual(statisticsStateService.initialState.context, {
 		gitHubStatistics: Maybe.nothing<GitHubStatistics>(),
-		yearsOfExperience: Maybe.just(20)
+		yearsOfExperience: Maybe.just(20),
 	});
 });
 
@@ -95,7 +95,7 @@ test('transits from "idle" to "loading" on "FETCH" event', () => {
 test('makes a HTTP GET request to "/api/github-statistics" on "FETCH" event', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build();
 	const ky = vi.fn<unknown[], unknown>().mockReturnValue({
-		json: vi.fn().mockResolvedValue(gitHubStatistics)
+		json: vi.fn().mockResolvedValue(gitHubStatistics),
 	});
 	const statisticsStateService = createStatisticsStateService({ ky: ky as unknown as typeof KyInterface });
 
@@ -115,14 +115,14 @@ test('sets "context.gitHubStatistics" after loading GitHub statistics', async ()
 		gitHubStatistics: Maybe.just({
 			user: {
 				repositories: {
-					totalCount: 7
+					totalCount: 7,
 				},
 				starredRepositories: {
-					totalCount: 42
-				}
-			}
+					totalCount: 42,
+				},
+			},
 		}),
-		yearsOfExperience: Maybe.just(20)
+		yearsOfExperience: Maybe.just(20),
 	});
 });
 
@@ -146,7 +146,7 @@ test('sets "loaded" state type to "final" ', async () => {
 
 test('transit from "loading" to "failed" when fetching of GitHub statistics failed', async () => {
 	const ky = vi.fn().mockReturnValue({
-		json: vi.fn().mockRejectedValue(undefined)
+		json: vi.fn().mockRejectedValue(undefined),
 	});
 	const statisticsStateService = createStatisticsStateService({ ky: ky as unknown as typeof KyInterface });
 
@@ -160,12 +160,12 @@ test('transit from "loading" to "failed" when fetching of GitHub statistics retu
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
-				totalCount: "foo"
-			}
-		}
+				totalCount: "foo",
+			},
+		},
 	} as unknown as GitHubStatistics);
 	const ky = vi.fn().mockReturnValue({
-		json: vi.fn().mockResolvedValue(gitHubStatistics)
+		json: vi.fn().mockResolvedValue(gitHubStatistics),
 	});
 	const statisticsStateService = createStatisticsStateService({ ky: ky as unknown as typeof KyInterface });
 
@@ -179,13 +179,13 @@ test('transit from "loading" to "failed" when fetching of GitHub statistics retu
 test("reports the occurred error when fetching of GitHub statistics failed", async () => {
 	const error = new Error("Failed test");
 	const ky = vi.fn().mockReturnValue({
-		json: vi.fn().mockRejectedValue(error)
+		json: vi.fn().mockRejectedValue(error),
 	});
 	const send = vi.fn<unknown[], unknown>();
 	const errorReporter = errorReporterFactory.build({ send });
 	const statisticsStateService = createStatisticsStateService({
 		ky: ky as unknown as typeof KyInterface,
-		errorReporter
+		errorReporter,
 	});
 
 	statisticsStateService.send("FETCH");

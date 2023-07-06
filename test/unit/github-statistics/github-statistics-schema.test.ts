@@ -4,25 +4,25 @@ import { stripIndent } from "common-tags";
 import { ZodError } from "zod";
 import {
 	GitHubStatistics,
-	gitHubStatisticsSchema
+	gitHubStatisticsSchema,
 } from "../../../source/github-statistics/github-statistics-schema.js";
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
 	return {
 		user: {
 			repositories: {
-				totalCount: 7
+				totalCount: 7,
 			},
 			starredRepositories: {
-				totalCount: 42
-			}
-		}
+				totalCount: 42,
+			},
+		},
 	};
 });
 
 test('gitHubStatisticsSchema does allow additional properties in addition to "user" object an strips them out', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
-		foo: "bar"
+		foo: "bar",
 	} as unknown as GitHubStatistics);
 
 	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
@@ -33,8 +33,8 @@ test('gitHubStatisticsSchema does allow additional properties in addition to "us
 test('gitHubStatisticsSchema does allow additional properties in "user" object and strips them out', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
-			foo: "bar"
-		}
+			foo: "bar",
+		},
 	} as unknown as GitHubStatistics);
 
 	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
@@ -46,9 +46,9 @@ test('gitHubStatisticsSchema does allow additional properties in "user.repositor
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
-				foo: "bar"
-			}
-		}
+				foo: "bar",
+			},
+		},
 	} as unknown as GitHubStatistics);
 
 	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
@@ -60,9 +60,9 @@ test('gitHubStatisticsSchema does allow additional properties in "user.starredRe
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			starredRepositories: {
-				foo: "bar"
-			}
-		}
+				foo: "bar",
+			},
+		},
 	} as unknown as GitHubStatistics);
 
 	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
@@ -74,9 +74,9 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.repositor
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
-				totalCount: -42
-			}
-		}
+				totalCount: -42,
+			},
+		},
 	});
 
 	assert.throws(
@@ -97,7 +97,7 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.repositor
                 "totalCount"
               ]
             }
-          ]`
+          ]`,
 	);
 });
 
@@ -105,9 +105,9 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.re
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
-				totalCount: "foo"
-			}
-		}
+				totalCount: "foo",
+			},
+		},
 	} as unknown as GitHubStatistics);
 
 	assert.throws(
@@ -126,7 +126,7 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.re
               ],
               "message": "Expected number, received string"
             }
-          ]`
+          ]`,
 	);
 });
 
@@ -134,9 +134,9 @@ test('gitHubStatisticsSchema allows 0 for "user.repositories.totalCount', () => 
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
-				totalCount: 0
-			}
-		}
+				totalCount: 0,
+			},
+		},
 	});
 
 	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
@@ -148,9 +148,9 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRe
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			starredRepositories: {
-				totalCount: -42
-			}
-		}
+				totalCount: -42,
+			},
+		},
 	});
 
 	assert.throws(
@@ -171,7 +171,7 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRe
                 "totalCount"
               ]
             }
-          ]`
+          ]`,
 	);
 });
 
@@ -179,9 +179,9 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.st
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			starredRepositories: {
-				totalCount: "foo"
-			}
-		}
+				totalCount: "foo",
+			},
+		},
 	} as unknown as GitHubStatistics);
 
 	assert.throws(
@@ -200,7 +200,7 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.st
             ],
             "message": "Expected number, received string"
           }
-        ]`
+        ]`,
 	);
 });
 
@@ -208,9 +208,9 @@ test('gitHubStatisticsSchema allows 0 for "user.starredRepositories.totalCount',
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			starredRepositories: {
-				totalCount: 0
-			}
-		}
+				totalCount: 0,
+			},
+		},
 	});
 
 	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);

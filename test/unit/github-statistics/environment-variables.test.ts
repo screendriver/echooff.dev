@@ -4,7 +4,7 @@ import { ZodError } from "zod";
 import {
 	gitHubApiTokenSchema,
 	gitHubBaseUrlSchema,
-	gitHubLoginSchema
+	gitHubLoginSchema,
 } from "../../../source/github-statistics/environment-variables";
 
 test("gitHubBaseUrlSchema does not allow booleans", () => {
@@ -20,7 +20,7 @@ test("gitHubBaseUrlSchema does not allow booleans", () => {
               "path": [],
               "message": "Expected string, received boolean"
             }
-          ]`
+          ]`,
 	);
 });
 
@@ -37,7 +37,7 @@ test("gitHubBaseUrlSchema does not allow numbers", () => {
               "path": [],
               "message": "Expected string, received number"
             }
-          ]`
+          ]`,
 	);
 });
 
@@ -53,7 +53,7 @@ test("gitHubBaseUrlSchema does not allow empty strings", () => {
               "message": "Invalid url",
               "path": []
             }
-          ]`
+          ]`,
 	);
 });
 
@@ -69,7 +69,7 @@ test("gitHubBaseUrlSchema does not allow strings that are not an URL", () => {
               "message": "Invalid url",
               "path": []
             }
-          ]`
+          ]`,
 	);
 });
 
@@ -92,7 +92,7 @@ test("gitHubLoginSchema does not allow booleans", () => {
           "path": [],
           "message": "Expected string, received boolean"
         }
-      ]`
+      ]`,
 	);
 });
 
@@ -109,7 +109,7 @@ test("gitHubLoginSchema does not allow numbers", () => {
             "path": [],
             "message": "Expected string, received number"
           }
-        ]`
+        ]`,
 	);
 });
 
@@ -128,7 +128,7 @@ test("gitHubLoginSchema does not allow empty strings", () => {
             "message": "String must contain at least 1 character(s)",
             "path": []
           }
-        ]`
+        ]`,
 	);
 });
 
@@ -151,7 +151,7 @@ test("gitHubApiTokenSchema does not allow booleans", () => {
           "path": [],
           "message": "Expected string, received boolean"
         }
-      ]`
+      ]`,
 	);
 });
 
@@ -168,7 +168,7 @@ test("gitHubApiTokenSchema does not allow numbers", () => {
             "path": [],
             "message": "Expected string, received number"
           }
-        ]`
+        ]`,
 	);
 });
 
@@ -187,7 +187,7 @@ test("gitHubApiTokenSchema does not allow empty strings", () => {
             "message": "String must contain at least 1 character(s)",
             "path": []
           }
-        ]`
+        ]`,
 	);
 });
 

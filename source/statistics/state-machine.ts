@@ -9,7 +9,7 @@ import {
 	BaseActionObject,
 	ServiceMap,
 	ResolveTypegenMeta,
-	TypegenDisabled
+	TypegenDisabled,
 } from "xstate";
 import { Maybe } from "true-myth";
 import type { Just, Nothing } from "true-myth/maybe";
@@ -91,12 +91,12 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
 			initial: "idle",
 			context: {
 				gitHubStatistics: Maybe.nothing(),
-				yearsOfExperience: Maybe.nothing()
+				yearsOfExperience: Maybe.nothing(),
 			},
 			states: {
 				idle: {
 					entry: "setYearsOfExperience",
-					on: { FETCH: "loading" }
+					on: { FETCH: "loading" },
 				},
 				loading: {
 					invoke: {
@@ -104,23 +104,23 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
 						src: "fetchGitHubStatistics",
 						onDone: {
 							target: "loaded",
-							actions: "setFetchedGitHubStatistics"
+							actions: "setFetchedGitHubStatistics",
 						},
 						onError: {
 							target: "failed",
-							actions: "reportFetchGitHubStatisticsError"
-						}
-					}
+							actions: "reportFetchGitHubStatisticsError",
+						},
+					},
 				},
 				loaded: {
-					type: "final"
+					type: "final",
 				},
 				failed: {
 					on: {
-						FETCH: "loading"
-					}
-				}
-			}
+						FETCH: "loading",
+					},
+				},
+			},
 		},
 		{
 			actions: {
@@ -130,28 +130,28 @@ export function createStatisticsStateMachine(dependencies: StatisticsMachineDepe
 						const careerStartYear = 2001;
 
 						return Maybe.just(currentYear - careerStartYear);
-					}
+					},
 				}),
 				setFetchedGitHubStatistics: assign({
 					gitHubStatistics(_context, _event) {
 						const event = _event as DoneInvokeEvent<GitHubStatistics>;
 
 						return Maybe.just(event.data);
-					}
+					},
 				}),
 				reportFetchGitHubStatisticsError(_context, _event) {
 					const event = _event as ErrorPlatformEvent;
 
 					dependencies.errorReporter.send(event.data);
-				}
+				},
 			},
 			services: {
 				async fetchGitHubStatistics() {
 					const gitHubStatistics = await dependencies.ky("/api/github-statistics").json();
 
 					return gitHubStatisticsSchema.parse(gitHubStatistics);
-				}
-			}
-		}
+				},
+			},
+		},
 	) as StatisticsStateMachine;
 }

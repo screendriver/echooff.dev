@@ -9,8 +9,8 @@ export default getViteConfig({
 			extension: [".ts"],
 			include: ["source/**/*"],
 			reporter: ["lcov", "text-summary", "clover"],
-			reportsDirectory: "./target/coverage"
+			reportsDirectory: "./target/coverage",
 		},
-		threads: false
-	}
+		threads: false,
+	},
 });

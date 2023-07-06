@@ -10,8 +10,8 @@ test("returns an user with a total count of repositories and starred repositorie
 		method: "POST",
 		url: "/graphql",
 		payload: {
-			query: "{}"
-		}
+			query: "{}",
+		},
 	});
 
 	const actual = response.json<unknown>();
@@ -19,9 +19,9 @@ test("returns an user with a total count of repositories and starred repositorie
 		data: {
 			user: {
 				starredRepositories: { totalCount: 101 },
-				repositories: { totalCount: 42 }
-			}
-		}
+				repositories: { totalCount: 42 },
+			},
+		},
 	};
 	assert.deepEqual(actual, expected);
 });

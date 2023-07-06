@@ -14,7 +14,7 @@ await writeFile(envFilePath, `GIT_HUB_API_BASE_URL=${listeningAddress}${os.EOL}`
 await appendFile(envFilePath, `GIT_HUB_LOGIN="foo"${os.EOL}`, { encoding: "utf-8" });
 await appendFile(envFilePath, `GIT_HUB_API_TOKEN="test-token"${os.EOL}`, { encoding: "utf-8" });
 await appendFile(envFilePath, `CONTACT_FORM_URL="${listeningAddress}/contact-form"`, {
-	encoding: "utf-8"
+	encoding: "utf-8",
 });
 
 echo("Environment variables written to", envFilePath);

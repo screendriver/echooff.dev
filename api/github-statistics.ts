@@ -5,7 +5,7 @@ import { graphql } from "@octokit/graphql";
 import {
 	gitHubBaseUrlSchema,
 	gitHubLoginSchema,
-	gitHubApiTokenSchema
+	gitHubApiTokenSchema,
 } from "../source/github-statistics/environment-variables.js";
 import { fetchGitHubStatistics } from "../source/github-statistics/graphql-query.js";
 import { gitHubStatisticsSchema } from "../source/github-statistics/github-statistics-schema.js";
@@ -15,14 +15,14 @@ export const prerender = false;
 if (process.env.NODE_ENV === "production") {
 	Sentry.init({
 		dsn: process.env.SENTRY_DSN,
-		tracesSampleRate: 1.0
+		tracesSampleRate: 1.0,
 	});
 }
 
 const gitHubStatisticsHandler: VercelApiHandler = async (_request, response) => {
 	const transaction = Sentry.startTransaction({
 		op: "fetch",
-		name: "GitHubStatistics"
+		name: "GitHubStatistics",
 	});
 
 	try {
@@ -30,7 +30,7 @@ const gitHubStatisticsHandler: VercelApiHandler = async (_request, response) => 
 			graphql,
 			gitHubBaseUrl: gitHubBaseUrlSchema.parse(process.env.GIT_HUB_API_BASE_URL),
 			gitHubLogin: gitHubLoginSchema.parse(process.env.GIT_HUB_LOGIN),
-			gitHubApiToken: gitHubApiTokenSchema.parse(process.env.GIT_HUB_API_TOKEN)
+			gitHubApiToken: gitHubApiTokenSchema.parse(process.env.GIT_HUB_API_TOKEN),
 		});
 		const gitHubStatistics = gitHubStatisticsSchema.parse(gitHubStatisticsResponse);
 

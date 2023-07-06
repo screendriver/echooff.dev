@@ -5,10 +5,10 @@ const blogCollection = defineCollection({
 		title: z.string(),
 		description: z.string(),
 		date: z.date(),
-		draft: z.boolean()
-	})
+		draft: z.boolean(),
+	}),
 });
 
 export const collections = {
-	blog: blogCollection
+	blog: blogCollection,
 };

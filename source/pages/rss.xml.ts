@@ -20,8 +20,8 @@ export const get: APIRoute = async (context) => {
 				title: data.title,
 				pubDate: data.date,
 				description: data.description,
-				link: `/blog/${blogPost.slug}/`
+				link: `/blog/${blogPost.slug}/`,
 			};
-		})
+		}),
 	});
 };

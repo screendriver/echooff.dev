@@ -15,11 +15,11 @@ const resumesSchema = z
 				company: z
 					.object({
 						name: filledStringSchema,
-						url: z.string().url()
+						url: z.string().url(),
 					})
-					.strict()
+					.strict(),
 			})
-			.strict()
+			.strict(),
 	)
 	.nonempty();
 
