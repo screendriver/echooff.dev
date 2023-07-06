@@ -78,7 +78,7 @@
 		"prettier-plugin-svelte": "2.10.1",
 		"sharp": "0.32.1",
 		"svelte": "4.0.4",
-		"svelte-check": "3.4.4",
+		"svelte-check": "3.4.5",
 		"tailwind-dracula": "1.1.0",
 		"tsx": "3.12.7",
 		"typescript": "5.1.6",
