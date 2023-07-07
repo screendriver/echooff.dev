@@ -27,7 +27,9 @@
 		"target": "ES2021",
 		"tsBuildInfoFile": "./target/.tsbuildinfo",
 		"types": ["@astrojs/image/client"],
-		"useUnknownInCatchVariables": true
+		"useUnknownInCatchVariables": true,
+		"jsx": "react-jsx",
+		"jsxImportSource": "react"
 	},
 	"include": ["./astro.config.ts", "vitest.config.ts", "source/**/*", "test/**/*", "api/**/*"]
 }
