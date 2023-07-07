@@ -14,8 +14,15 @@
 		"plugin:@typescript-eslint/eslint-recommended",
 		"plugin:@typescript-eslint/recommended",
 		"plugin:@typescript-eslint/recommended-requiring-type-checking",
+		"plugin:react/recommended",
+		"plugin:react/jsx-runtime",
 		"plugin:prettier/recommended"
 	],
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	},
 	"plugins": ["@typescript-eslint"],
 	"env": {
 		"browser": true,
