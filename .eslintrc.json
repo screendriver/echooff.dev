@@ -38,5 +38,13 @@
 			}
 		],
 		"@typescript-eslint/unbound-method": "off"
-	}
+	},
+	"overrides": [
+		{
+			"files": "source/**/*.test.ts",
+			"rules": {
+				"@typescript-eslint/no-floating-promises": "off"
+			}
+		}
+	]
 }

@@ -1,11 +1,8 @@
-import { test, assert } from "vitest";
+import test from "node:test";
+import assert from "node:assert";
 import { stripIndent } from "common-tags";
 import { ZodError } from "zod";
-import {
-	gitHubApiTokenSchema,
-	gitHubBaseUrlSchema,
-	gitHubLoginSchema,
-} from "../../../source/github-statistics/environment-variables";
+import { gitHubApiTokenSchema, gitHubBaseUrlSchema, gitHubLoginSchema } from "./environment-variables";
 
 test("gitHubBaseUrlSchema does not allow booleans", () => {
 	assert.throws(
