@@ -15,7 +15,6 @@
 		"copy:paste:detector": "jscpd api source test",
 		"compile": "tsc",
 		"check:astro": "astro check",
-		"check:svelte": "svelte-check",
 		"astro": "astro dev",
 		"develop": "FORCE_COLOR='1' tsx ./source/start-develop.ts",
 		"build": "astro build",
