@@ -28,7 +28,7 @@
 		"@octokit/graphql": "6.0.1",
 		"@sentry/node": "7.57.0",
 		"@sentry/tracing": "7.57.0",
-		"astro": "2.7.4",
+		"astro": "2.8.0",
 		"astro-seo-schema": "2.2.0",
 		"date-fns": "2.30.0",
 		"feather-icons": "4.29.0",
