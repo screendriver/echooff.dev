@@ -770,11 +770,11 @@
 
 			TweenMax.set(".lettersSide", {
 				fill: lettersSideDark,
-				stroke: lettersStrokeDark
+				stroke: lettersStrokeDark,
 			});
 			TweenMax.set(".lettersFront", {
 				fill: lettersFrontDark,
-				stroke: lettersStrokeDark
+				stroke: lettersStrokeDark,
 			});
 			TweenMax.set("#lettersShadow", { opacity: 0.05 });
 
@@ -787,11 +787,11 @@
 
 			TweenMax.set(".lettersSide", {
 				fill: lettersSideLight,
-				stroke: lettersStrokeLight
+				stroke: lettersStrokeLight,
 			});
 			TweenMax.set(".lettersFront", {
 				fill: lettersFrontLight,
-				stroke: lettersStrokeLight
+				stroke: lettersStrokeLight,
 			});
 			TweenMax.set("#lettersShadow", { opacity: 0.2 });
 
@@ -807,7 +807,7 @@
 			paused: true,
 			repeat: -1,
 			repeatDelay: 0,
-			delay: 0
+			delay: 0,
 		});
 		yetiTL
 			.addCallback(() => {
@@ -831,7 +831,7 @@
 				TweenMax.to(
 					["#mouthBG", "#mouthPath", "#mouthOutline"],
 					0.1,
-					{ morphSVG: mouthShape1 }
+					{ morphSVG: mouthShape1 },
 					// '0',
 				);
 			}, "3.2")
@@ -846,9 +846,9 @@
 					y: 30,
 					rotation: 10,
 					transformOrigin: "bottom center",
-					ease: Power1.easeOut
+					ease: Power1.easeOut,
 				},
-				"4"
+				"4",
 			)
 			.to(["#eyeL", "#eyeR"], 0.25, { scaleX: 1.4, scaleY: 1.4, transformOrigin: "center center" }, "5")
 
@@ -868,9 +868,9 @@
 					y: 0,
 					rotation: 0,
 					transformOrigin: "bottom center",
-					ease: Power1.easeOut
+					ease: Power1.easeOut,
 				},
-				"9"
+				"9",
 			)
 			.to(["#eyeL", "#eyeR"], 0.25, { scaleX: 1, scaleY: 1, transformOrigin: "center center" }, "9")
 			.addCallback(() => {

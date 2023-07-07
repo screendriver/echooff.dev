@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 	return blogPosts.map((blogPost) => {
 		return {
 			params: { slug: blogPost.slug },
-			props: { blogPost }
+			props: { blogPost },
 		};
 	});
 }
@@ -46,7 +46,7 @@ const blogPostDate = formatISO(blogPost.data.date, { representation: "date" });
 			wordCount: `${countWords(blogPost.body)}`,
 			datePublished: `${blogPostDate}`,
 			dateCreated: `${blogPostDate}`,
-			url: `${Astro.url.toString()}`
+			url: `${Astro.url.toString()}`,
 		}}
 	/>
 	<Header withBottomBorder={true} />
@@ -60,7 +60,7 @@ const blogPostDate = formatISO(blogPost.data.date, { representation: "date" });
 					intlFormat(blogPost.data.date, {
 						year: "numeric",
 						month: "long",
-						day: "numeric"
+						day: "numeric",
 					})
 				}
 			</time>
