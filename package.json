@@ -61,7 +61,7 @@
 		"@types/react-dom": "18.2.6",
 		"@typescript-eslint/eslint-plugin": "5.61.0",
 		"@typescript-eslint/parser": "5.61.0",
-		"@vitest/coverage-c8": "0.32.4",
+		"@vitest/coverage-c8": "0.33.0",
 		"autoprefixer": "10.4.14",
 		"c8": "8.0.0",
 		"common-tags": "1.8.2",
@@ -82,7 +82,7 @@
 		"tsx": "3.12.7",
 		"typescript": "5.1.6",
 		"vercel": "31.0.1",
-		"vitest": "0.32.4",
+		"vitest": "0.33.0",
 		"wait-on": "7.0.1",
 		"zx": "7.2.3"
 	}
