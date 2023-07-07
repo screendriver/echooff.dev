@@ -1,7 +1,8 @@
-import { test, assert } from "vitest";
+import test from "node:test";
+import assert from "node:assert";
 import createFastify from "fastify";
 import fastifyFormBody from "@fastify/formbody";
-import { createContactFormRoute } from "../../../source/static-server/contact-form-route";
+import { createContactFormRoute } from "./contact-form-route.js";
 
 test("returns an an empty JSON object when making a HTTP POST request", async () => {
 	const fastify = createFastify();
