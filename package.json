@@ -63,6 +63,7 @@
 		"@typescript-eslint/eslint-plugin": "5.61.0",
 		"@typescript-eslint/parser": "5.61.0",
 		"autoprefixer": "10.4.14",
+		"ava": "5.3.1",
 		"c8": "8.0.0",
 		"common-tags": "1.8.2",
 		"concurrently": "8.2.0",
