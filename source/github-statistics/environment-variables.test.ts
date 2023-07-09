@@ -1,13 +1,12 @@
-import test from "node:test";
-import assert from "node:assert";
+import test from "ava";
 import { stripIndent } from "common-tags";
 import { ZodError } from "zod";
 import { gitHubApiTokenSchema, gitHubBaseUrlSchema, gitHubLoginSchema } from "./environment-variables";
 
-test("gitHubBaseUrlSchema does not allow booleans", () => {
-	assert.throws(
+test("gitHubBaseUrlSchema does not allow booleans", (t) => {
+	t.throws(
 		() => gitHubBaseUrlSchema.parse(true),
-		ZodError,
+		{ instanceOf: ZodError },
 		stripIndent`
           [
             {
@@ -21,10 +20,10 @@ test("gitHubBaseUrlSchema does not allow booleans", () => {
 	);
 });
 
-test("gitHubBaseUrlSchema does not allow numbers", () => {
-	assert.throws(
+test("gitHubBaseUrlSchema does not allow numbers", (t) => {
+	t.throws(
 		() => gitHubBaseUrlSchema.parse(42),
-		ZodError,
+		{ instanceOf: ZodError },
 		stripIndent`
           [
             {
@@ -38,10 +37,10 @@ test("gitHubBaseUrlSchema does not allow numbers", () => {
 	);
 });
 
-test("gitHubBaseUrlSchema does not allow empty strings", () => {
-	assert.throws(
+test("gitHubBaseUrlSchema does not allow empty strings", (t) => {
+	t.throws(
 		() => gitHubBaseUrlSchema.parse(""),
-		ZodError,
+		{ instanceOf: ZodError },
 		stripIndent`
           [
             {
@@ -54,10 +53,10 @@ test("gitHubBaseUrlSchema does not allow empty strings", () => {
 	);
 });
 
-test("gitHubBaseUrlSchema does not allow strings that are not an URL", () => {
-	assert.throws(
+test("gitHubBaseUrlSchema does not allow strings that are not an URL", (t) => {
+	t.throws(
 		() => gitHubBaseUrlSchema.parse("foo"),
-		ZodError,
+		{ instanceOf: ZodError },
 		stripIndent`
           [
             {
@@ -70,16 +69,16 @@ test("gitHubBaseUrlSchema does not allow strings that are not an URL", () => {
 	);
 });
 
-test("gitHubBaseUrlSchema allows a string URL", () => {
+test("gitHubBaseUrlSchema allows a string URL", (t) => {
 	const gitHubBaseUrl = gitHubBaseUrlSchema.parse("https://example.com");
 
-	assert.deepEqual(gitHubBaseUrl.toString(), new URL("https://example.com").toString());
+	t.deepEqual(gitHubBaseUrl.toString(), new URL("https://example.com").toString());
 });
 
-test("gitHubLoginSchema does not allow booleans", () => {
-	assert.throws(
+test("gitHubLoginSchema does not allow booleans", (t) => {
+	t.throws(
 		() => gitHubLoginSchema.parse(true),
-		ZodError,
+		{ instanceOf: ZodError },
 		stripIndent`
       [
         {
@@ -93,10 +92,10 @@ test("gitHubLoginSchema does not allow booleans", () => {
 	);
 });
 
-test("gitHubLoginSchema does not allow numbers", () => {
-	assert.throws(
+test("gitHubLoginSchema does not allow numbers", (t) => {
+	t.throws(
 		() => gitHubLoginSchema.parse(42),
-		ZodError,
+		{ instanceOf: ZodError },
 		stripIndent`
         [
           {
@@ -110,10 +109,10 @@ test("gitHubLoginSchema does not allow numbers", () => {
 	);
 });
 
-test("gitHubLoginSchema does not allow empty strings", () => {
-	assert.throws(
+test("gitHubLoginSchema does not allow empty strings", (t) => {
+	t.throws(
 		() => gitHubLoginSchema.parse(""),
-		ZodError,
+		{ instanceOf: ZodError },
 		stripIndent`
         [
           {
@@ -129,16 +128,16 @@ test("gitHubLoginSchema does not allow empty strings", () => {
 	);
 });
 
-test("gitHubLoginSchema allows non empty strings", () => {
+test("gitHubLoginSchema allows non empty strings", (t) => {
 	const gitHubLogin = gitHubLoginSchema.parse("foo");
 
-	assert.strictEqual(gitHubLogin, "foo");
+	t.is(gitHubLogin, "foo");
 });
 
-test("gitHubApiTokenSchema does not allow booleans", () => {
-	assert.throws(
+test("gitHubApiTokenSchema does not allow booleans", (t) => {
+	t.throws(
 		() => gitHubApiTokenSchema.parse(true),
-		ZodError,
+		{ instanceOf: ZodError },
 		stripIndent`
       [
         {
@@ -152,10 +151,10 @@ test("gitHubApiTokenSchema does not allow booleans", () => {
 	);
 });
 
-test("gitHubApiTokenSchema does not allow numbers", () => {
-	assert.throws(
+test("gitHubApiTokenSchema does not allow numbers", (t) => {
+	t.throws(
 		() => gitHubApiTokenSchema.parse(42),
-		ZodError,
+		{ instanceOf: ZodError },
 		stripIndent`
         [
           {
@@ -169,10 +168,10 @@ test("gitHubApiTokenSchema does not allow numbers", () => {
 	);
 });
 
-test("gitHubApiTokenSchema does not allow empty strings", () => {
-	assert.throws(
+test("gitHubApiTokenSchema does not allow empty strings", (t) => {
+	t.throws(
 		() => gitHubApiTokenSchema.parse(""),
-		ZodError,
+		{ instanceOf: ZodError },
 		stripIndent`
         [
           {
@@ -188,8 +187,8 @@ test("gitHubApiTokenSchema does not allow empty strings", () => {
 	);
 });
 
-test("gitHubApiTokenSchema allows non empty strings", () => {
+test("gitHubApiTokenSchema allows non empty strings", (t) => {
 	const gitHubLogin = gitHubApiTokenSchema.parse("foo");
 
-	assert.strictEqual(gitHubLogin, "foo");
+	t.is(gitHubLogin, "foo");
 });

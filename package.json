@@ -18,7 +18,7 @@
 		"develop": "FORCE_COLOR='1' tsx ./source/start-develop.ts",
 		"build": "astro build",
 		"preview": "astro preview",
-		"test:unit": "glob --cmd 'node --loader tsx --no-warnings --test-reporter spec --test' './source/**/*.test.ts'",
+		"test:unit": "ava",
 		"test:unit:coverage": "c8 npm run test:unit",
 		"test:e2e": "playwright test --config=test/e2e/playwright.config.ts"
 	},
