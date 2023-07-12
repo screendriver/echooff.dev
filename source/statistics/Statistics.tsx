@@ -33,7 +33,7 @@ export const Statistics: FunctionComponent = () => {
 		void fetchGitHubStatistics();
 
 		if (typeof umami !== "undefined") {
-			umami.trackEvent("fetch-github-statistics");
+			umami.track("fetch-github-statistics");
 		}
 	}, [fetchGitHubStatistics]);
 
