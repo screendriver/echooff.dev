@@ -28,7 +28,8 @@
 		"tsBuildInfoFile": "./target/.tsbuildinfo",
 		"useUnknownInCatchVariables": true,
 		"jsx": "react-jsx",
-		"jsxImportSource": "react"
+		"jsxImportSource": "react",
+		"typeRoots": ["./typings", "./node_modules/@types"]
 	},
 	"include": ["./astro.config.ts", "vitest.config.ts", "source/**/*", "test/**/*", "api/**/*"]
 }
