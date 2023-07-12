@@ -26,7 +26,6 @@
 		"strictNullChecks": true,
 		"target": "ES2021",
 		"tsBuildInfoFile": "./target/.tsbuildinfo",
-		"types": ["@astrojs/image/client"],
 		"useUnknownInCatchVariables": true,
 		"jsx": "react-jsx",
 		"jsxImportSource": "react"
