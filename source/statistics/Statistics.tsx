@@ -31,7 +31,11 @@ export const Statistics: FunctionComponent = () => {
 
 	useEffect(() => {
 		void fetchGitHubStatistics();
-	}, []);
+
+		if (typeof umami !== "undefined") {
+			umami.trackEvent("fetch-github-statistics");
+		}
+	}, [fetchGitHubStatistics]);
 
 	return (
 		<Fragment>
