@@ -18,11 +18,14 @@ test("Years of experience", async ({ page }) => {
 
 test("GitHub Repos", async ({ page }) => {
 	await page.goto("/");
+	const responsePromise = page.waitForResponse((response) => {
+		return response.url().endsWith("/api/github-statistics") && response.status() === 200;
+	});
 	await page.evaluate(() => {
 		document.querySelector("section:nth-of-type(4)")?.scrollIntoView();
 	});
-	await page.waitForLoadState("networkidle");
-	const element = await page.waitForSelector('[aria-label="GitHub Repos"]', { timeout: 5000 });
+	await responsePromise;
+	const element = await page.waitForSelector('[aria-label="GitHub Repos"]');
 	const text = await element.textContent();
 
 	expect(text).toBe("42");
@@ -30,11 +33,14 @@ test("GitHub Repos", async ({ page }) => {
 
 test("GitHub Stars", async ({ page }) => {
 	await page.goto("/");
+	const responsePromise = page.waitForResponse((response) => {
+		return response.url().endsWith("/api/github-statistics") && response.status() === 200;
+	});
 	await page.evaluate(() => {
 		document.querySelector("section:nth-of-type(4)")?.scrollIntoView();
 	});
-	await page.waitForLoadState("networkidle");
-	const element = await page.waitForSelector('[aria-label="GitHub Stars"]', { timeout: 5000 });
+	await responsePromise;
+	const element = await page.waitForSelector('[aria-label="GitHub Stars"]');
 	const text = await element.textContent();
 
 	expect(text).toBe("101");
