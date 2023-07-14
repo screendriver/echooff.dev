@@ -81,7 +81,7 @@
 		"postcss": "8.4.26",
 		"prettier": "3.0.0",
 		"prettier-plugin-astro": "0.11.0",
-		"sharp": "0.32.2",
+		"sharp": "0.32.3",
 		"sinon": "15.2.0",
 		"tailwind-dracula": "1.1.0",
 		"tsx": "3.12.7",
