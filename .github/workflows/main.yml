@@ -16,6 +16,7 @@ jobs:
                   npx astro sync
                   npm run lint
                   npm run check:astro
+                  npm run check:svelte
                   npm run copy:paste:detector
             - name: Compile source code
               run: npm run compile
