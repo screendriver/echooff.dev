@@ -26,9 +26,7 @@
 		"strictNullChecks": true,
 		"target": "ES2021",
 		"tsBuildInfoFile": "./target/.tsbuildinfo",
-		"useUnknownInCatchVariables": true,
-		"jsx": "react-jsx",
-		"jsxImportSource": "react"
+		"useUnknownInCatchVariables": true
 	},
 	"include": ["./astro.config.ts", "vitest.config.ts", "source/**/*", "test/**/*", "api/**/*"]
 }

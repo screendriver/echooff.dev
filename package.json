@@ -10,7 +10,7 @@
 		"node": "18.x"
 	},
 	"scripts": {
-		"lint": "eslint . --ext '.ts,.tsx' && prettier --check api source test",
+		"lint": "eslint . --ext '.ts,.svelte' && prettier --check api source test",
 		"copy:paste:detector": "jscpd api source test",
 		"compile": "tsc",
 		"check:astro": "astro check",
@@ -68,6 +68,7 @@
 		"eslint-config-prettier": "8.8.0",
 		"eslint-plugin-ava": "14.0.0",
 		"eslint-plugin-prettier": "5.0.0",
+		"eslint-plugin-svelte": "2.32.3",
 		"fastify": "4.20.0",
 		"fishery": "2.2.2",
 		"get-port": "7.0.0",
