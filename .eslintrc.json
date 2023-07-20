@@ -31,7 +31,15 @@
 			}
 		],
 		"@typescript-eslint/unbound-method": "off",
-		"svelte/no-at-html-tags": "off"
+		"svelte/no-at-html-tags": "off",
+		"svelte/block-lang": [
+			"error",
+			{
+				"enforceScriptPresent": false,
+				"enforceStylePresent": false,
+				"script": ["ts"]
+			}
+		]
 	},
 	"overrides": [
 		{
