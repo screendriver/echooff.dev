@@ -10,7 +10,7 @@
 		"node": "18.x"
 	},
 	"scripts": {
-		"lint": "eslint . --ext '.ts,.tsx' && prettier --check api source test",
+		"lint": "eslint . --ext '.ts,.svelte' && prettier --check api source test",
 		"copy:paste:detector": "jscpd api source test",
 		"compile": "tsc",
 		"check:astro": "astro check",

@@ -2,11 +2,9 @@
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"sourceType": "module",
-		"ecmaVersion": 2020,
-		"ecmaFeatures": {
-			"jsx": false
-		},
-		"project": "tsconfig.json"
+		"ecmaVersion": 2021,
+		"project": "tsconfig.json",
+		"extraFileExtensions": [".svelte"]
 	},
 	"extends": [
 		"prettier",
@@ -14,8 +12,10 @@
 		"plugin:@typescript-eslint/eslint-recommended",
 		"plugin:@typescript-eslint/recommended",
 		"plugin:@typescript-eslint/recommended-requiring-type-checking",
+		"plugin:svelte/recommended",
 		"plugin:ava/recommended",
-		"plugin:prettier/recommended"
+		"plugin:prettier/recommended",
+		"plugin:svelte/prettier"
 	],
 	"plugins": ["@typescript-eslint", "ava"],
 	"env": {
@@ -30,13 +30,27 @@
 				"allowTypedFunctionExpressions": true
 			}
 		],
-		"@typescript-eslint/unbound-method": "off"
+		"@typescript-eslint/unbound-method": "off",
+		"svelte/no-at-html-tags": "off"
 	},
 	"overrides": [
+		{
+			"files": ["*.svelte"],
+			"parser": "svelte-eslint-parser",
+			"parserOptions": {
+				"parser": "@typescript-eslint/parser"
+			}
+		},
 		{
 			"files": "source/**/*.test.ts",
 			"rules": {
 				"@typescript-eslint/no-floating-promises": "off"
+			}
+		},
+		{
+			"files": "source/statistics/Statistics.svelte",
+			"rules": {
+				"no-undef": "off"
 			}
 		}
 	]
