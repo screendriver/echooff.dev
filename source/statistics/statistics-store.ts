@@ -1,8 +1,10 @@
-import { StoreApi, createStore } from "zustand";
+import { writable, Readable } from "svelte/store";
 import { Maybe } from "true-myth";
 import type KyInterface from "ky";
+import ky from "ky";
 import { GitHubStatistics, gitHubStatisticsSchema } from "../github-statistics/github-statistics-schema";
 import type { ErrorReporter } from "../error-reporter/reporter";
+import { createErrorReporter } from "../error-reporter/reporter";
 
 interface StatisticsStoreDependencies {
 	readonly ky: typeof KyInterface;
@@ -16,41 +18,52 @@ export interface StatisticsStoreState {
 	readonly yearsOfExperience: number;
 }
 
-export interface StatisticsStoreActions {
+export interface StatisticsStore extends Readable<StatisticsStoreState> {
 	fetchGitHubStatistics(): Promise<void>;
 }
 
-export type StatisticsStore = ReturnType<typeof createStatisticsStore>;
-
-export function createStatisticsStore(
-	dependencies: StatisticsStoreDependencies,
-): StoreApi<StatisticsStoreState & StatisticsStoreActions> {
+function createStatisticsStore(dependencies: StatisticsStoreDependencies): StatisticsStore {
 	const currentYear = dependencies.currentTimestamp.getFullYear();
 	const careerStartYear = 2001;
 	const yearsOfExperience = currentYear - careerStartYear;
 
-	return createStore<StatisticsStoreState & StatisticsStoreActions>()((set) => {
-		return {
-			fetchGitHubStatisticsState: "idle",
-			gitHubStatistics: Maybe.nothing(),
-			yearsOfExperience,
-			async fetchGitHubStatistics() {
-				set({ fetchGitHubStatisticsState: "loading" });
+	const { subscribe, update } = writable<StatisticsStoreState>({
+		fetchGitHubStatisticsState: "idle",
+		gitHubStatistics: Maybe.nothing(),
+		yearsOfExperience,
+	});
 
-				try {
-					const gitHubStatistics = await dependencies.ky("/api/github-statistics").json();
-					const parsedGitHubStatistics = gitHubStatisticsSchema.parse(gitHubStatistics);
+	return {
+		subscribe,
+		async fetchGitHubStatistics() {
+			update((state) => {
+				return { ...state, fetchGitHubStatisticsState: "loading" };
+			});
 
-					set({
+			try {
+				const gitHubStatistics = await dependencies.ky("/api/github-statistics").json();
+				const parsedGitHubStatistics = gitHubStatisticsSchema.parse(gitHubStatistics);
+
+				update((state) => {
+					return {
+						...state,
 						fetchGitHubStatisticsState: "loaded",
 						gitHubStatistics: Maybe.just(parsedGitHubStatistics),
-					});
-				} catch (error: unknown) {
-					set({ fetchGitHubStatisticsState: "error" });
+					};
+				});
+			} catch (error: unknown) {
+				update((state) => {
+					return { ...state, fetchGitHubStatisticsState: "error" };
+				});
 
-					dependencies.errorReporter.send(error);
-				}
-			},
-		};
-	});
+				dependencies.errorReporter.send(error);
+			}
+		},
+	};
 }
+
+export const statisticsStore = createStatisticsStore({
+	ky,
+	currentTimestamp: import.meta.env.PROD ? new Date() : new Date(2022, 2, 23),
+	errorReporter: createErrorReporter(),
+});
