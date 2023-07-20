@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
-import react from "@astrojs/react";
+import svelte from "@astrojs/svelte";
 import image from "@astrojs/image";
 import vercel from "@astrojs/vercel/static";
 
@@ -11,7 +11,7 @@ export default defineConfig({
 	adapter: vercel(),
 	integrations: [
 		tailwind(),
-		react(),
+		svelte(),
 		image({
 			serviceEntryPoint: "@astrojs/image/sharp",
 		}),
