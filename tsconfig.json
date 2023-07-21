@@ -26,7 +26,8 @@
 		"strictNullChecks": true,
 		"target": "ES2021",
 		"tsBuildInfoFile": "./target/.tsbuildinfo",
-		"useUnknownInCatchVariables": true
+		"useUnknownInCatchVariables": true,
+		"useDefineForClassFields": true
 	},
 	"include": ["./astro.config.ts", "vitest.config.ts", "source/**/*", "test/**/*", "api/**/*"]
 }
