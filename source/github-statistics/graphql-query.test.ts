@@ -17,7 +17,7 @@ const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatistics
 
 const testFetchGitHubStatisticsMacro = test.macro<[keyof RequestParameters, unknown]>(
 	async (t, requestParameter, expectedRequestParameters) => {
-		const graphql = fake.resolves<RequestParameters[]>(undefined);
+		const graphql = fake.resolves<readonly RequestParameters[]>(undefined);
 		const fetchGitHubStatisticsOptions = fetchGitHubStatisticsOptionsFactory.build({
 			graphql: graphql as unknown as octokitGraphql,
 		});
