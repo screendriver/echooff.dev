@@ -12,12 +12,13 @@
 		"plugin:@typescript-eslint/eslint-recommended",
 		"plugin:@typescript-eslint/recommended",
 		"plugin:@typescript-eslint/recommended-requiring-type-checking",
+		"plugin:functional/external-typescript-recommended",
 		"plugin:svelte/recommended",
 		"plugin:ava/recommended",
 		"plugin:prettier/recommended",
 		"plugin:svelte/prettier"
 	],
-	"plugins": ["@typescript-eslint", "ava"],
+	"plugins": ["@typescript-eslint", "ava", "functional"],
 	"env": {
 		"browser": true,
 		"node": true
@@ -39,7 +40,8 @@
 				"enforceStylePresent": false,
 				"script": ["ts"]
 			}
-		]
+		],
+		"functional/prefer-readonly-type": "error"
 	},
 	"overrides": [
 		{
@@ -59,6 +61,12 @@
 			"files": "source/statistics/Statistics.svelte",
 			"rules": {
 				"no-undef": "off"
+			}
+		},
+		{
+			"files": ["source/github-statistics/graphql-query.test.ts", "source/resume/date.test.ts"],
+			"rules": {
+				"functional/prefer-readonly-type": "off"
 			}
 		}
 	]
