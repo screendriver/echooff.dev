@@ -1,6 +1,10 @@
-<script lang="ts">
-	export let ariaLabel: string;
-</script>
+---
+interface Props {
+	readonly ariaLabel: string;
+}
+
+const { ariaLabel } = Astro.props;
+---
 
 <cite aria-label={ariaLabel} class="text-lg text-dracula-green font-bold not-italic mt-2">
 	<slot />

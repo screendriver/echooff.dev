@@ -1,8 +1,8 @@
 import { Result } from "true-myth";
 import is from "@sindresorhus/is";
 import type KyInterface from "ky";
-import type { GitHubStatistics } from "../github-statistics/github-statistics-schema";
-import { gitHubStatisticsSchema } from "../github-statistics/github-statistics-schema";
+import type { GitHubStatistics } from "../github-statistics/github-statistics-schema.js";
+import { gitHubStatisticsSchema } from "../github-statistics/github-statistics-schema.js";
 
 interface FetchGitHubStatisticsDependencies {
 	readonly ky: typeof KyInterface;

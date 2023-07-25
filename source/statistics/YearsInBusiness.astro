@@ -1,0 +1,14 @@
+---
+import Figure from "./Figure.astro";
+import Cite from "./Cite.astro";
+
+interface Props {
+	readonly yearsOfExperience: number;
+}
+
+const { yearsOfExperience } = Astro.props;
+---
+
+<Figure description="Experience">
+	<Cite ariaLabel="Years of experience">{yearsOfExperience} yrs</Cite>
+</Figure>
