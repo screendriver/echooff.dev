@@ -28,10 +28,6 @@
 					gitHubStatistics: Maybe.just(parsedGitHubStatisticsResult.value),
 				};
 			});
-
-			if (typeof umami !== "undefined") {
-				umami.track("fetch-github-statistics");
-			}
 		}
 	});
 </script>
