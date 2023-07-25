@@ -1,4 +1,4 @@
-name: Periodically build application once a day
+name: Periodically build application
 
 on:
     schedule:
