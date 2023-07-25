@@ -1,0 +1,16 @@
+---
+import Figure from "./Figure.astro";
+import Cite from "./Cite.astro";
+
+interface Props {
+	readonly repositoriesTotalCount: number;
+}
+
+const { repositoriesTotalCount } = Astro.props;
+---
+
+<Figure description="GitHub Repos">
+	<Cite ariaLabel="GitHub Repos">
+		{repositoriesTotalCount}
+	</Cite>
+</Figure>

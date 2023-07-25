@@ -1,6 +1,29 @@
 ---
+import { graphql } from "@octokit/graphql";
 import { icons } from "feather-icons";
-import ClientStatistics from "./Statistics.svelte";
+import YearsInBusiness from "./YearsInBusiness.astro";
+import GitHubRepositories from "./GitHubRepositories.astro";
+import GitHubStars from "./GitHubStars.astro";
+import Figure from "./Figure.astro";
+import {
+	gitHubBaseUrlSchema,
+	gitHubLoginSchema,
+	gitHubApiTokenSchema,
+} from "../github-statistics/environment-variables.js";
+import { gitHubStatisticsSchema } from "../github-statistics/github-statistics-schema.js";
+import { fetchGitHubStatistics } from "../github-statistics/graphql-query";
+
+const gitHubStatisticsResponse = await fetchGitHubStatistics({
+	graphql,
+	gitHubBaseUrl: gitHubBaseUrlSchema.parse(import.meta.env.GIT_HUB_API_BASE_URL),
+	gitHubLogin: gitHubLoginSchema.parse(import.meta.env.GIT_HUB_LOGIN),
+	gitHubApiToken: gitHubApiTokenSchema.parse(import.meta.env.GIT_HUB_API_TOKEN),
+});
+const gitHubStatistics = gitHubStatisticsSchema.parse(gitHubStatisticsResponse);
+
+const currentYear = import.meta.env.PROD ? new Date() : new Date(2022, 2, 23);
+const careerStartYear = 2001;
+const yearsOfExperience = currentYear.getFullYear() - careerStartYear;
 ---
 
 <section class="bg-dracula-dark p-4 lg:p-10">
@@ -14,6 +37,11 @@ import ClientStatistics from "./Statistics.svelte";
 		class="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg"
 	/>
 	<div class="m-auto max-w-screen-lg grid gap-2 sm:gap-4 grid-cols-2 lg:grid-cols-4 sm:p-4">
-		<ClientStatistics client:visible />
+		<YearsInBusiness yearsOfExperience={yearsOfExperience} />
+		<GitHubRepositories repositoriesTotalCount={gitHubStatistics.user.repositories.totalCount} />
+		<GitHubStars starredRepositoriesTotalCount={gitHubStatistics.user.starredRepositories.totalCount} />
+		<Figure description="Lines of Code">
+			<figure set:html={icons["bar-chart"]?.toSvg({ class: "text-dracula-green w-6 h-6 mt-2" })} />
+		</Figure>
 	</div>
 </section>
