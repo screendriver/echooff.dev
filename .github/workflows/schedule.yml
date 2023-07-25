@@ -1,0 +1,22 @@
+name: Periodically build application once a day
+
+on:
+    schedule:
+        - cron: "0 0 * * *"
+
+jobs:
+    deploy-to-vercel:
+        name: Deploy to Vercel
+        runs-on: ubuntu-latest
+        concurrency:
+            group: deploy-to-vercel
+        env:
+            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        steps:
+            - name: Checkout code
+              uses: nschloe/action-cached-lfs-checkout@v1
+            - name: Setup Node.js
+              uses: ./.github/actions/setup-nodejs
+            - name: Deploy Project to Vercel
+              run: npx vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
