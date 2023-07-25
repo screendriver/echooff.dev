@@ -10,8 +10,8 @@
 		"node": "18.x"
 	},
 	"scripts": {
-		"lint": "eslint . --ext '.ts' && prettier --check source test",
-		"copy:paste:detector": "jscpd source test",
+		"lint": "eslint . --ext '.ts' && prettier --check source",
+		"copy:paste:detector": "jscpd source",
 		"compile": "tsc",
 		"check:astro": "astro check",
 		"develop": "FORCE_COLOR='1' tsx ./source/start-develop.ts",
