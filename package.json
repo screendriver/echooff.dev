@@ -18,8 +18,7 @@
 		"build": "astro build",
 		"preview": "astro preview",
 		"test:unit": "ava",
-		"test:unit:coverage": "c8 npm run test:unit",
-		"test:e2e": "playwright test --config=test/e2e/playwright.config.ts"
+		"test:unit:coverage": "c8 npm run test:unit"
 	},
 	"dependencies": {
 		"@fontsource/jetbrains-mono": "5.0.5",
@@ -46,7 +45,6 @@
 		"@astrojs/vercel": "3.7.4",
 		"@fastify/cors": "8.3.0",
 		"@fastify/formbody": "7.4.0",
-		"@playwright/test": "1.36.2",
 		"@tailwindcss/typography": "0.5.9",
 		"@types/common-tags": "1.8.1",
 		"@types/feather-icons": "4.29.1",
