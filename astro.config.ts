@@ -8,7 +8,9 @@ export default defineConfig({
 	srcDir: "source",
 	output: "static",
 	compressHTML: true,
-	adapter: vercel(),
+	adapter: vercel({
+		analytics: true,
+	}),
 	integrations: [
 		tailwind(),
 		svelte(),
