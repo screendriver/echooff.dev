@@ -22,4 +22,7 @@ export default defineConfig({
 		},
 	},
 	site: "https://www.echooff.dev",
+	experimental: {
+		assets: true,
+	},
 });
