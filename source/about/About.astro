@@ -1,7 +1,7 @@
 ---
 import { icons } from "feather-icons";
-import { Image } from "@astrojs/image/components";
-import aboutImage from "../images/about.jpg";
+import { Image } from "astro:assets";
+import aboutImage from "../assets/images/about.jpg";
 ---
 
 <section class="p-4 lg:p-10">
@@ -31,9 +31,7 @@ import aboutImage from "../images/about.jpg";
 				src={aboutImage}
 				width={300}
 				height={300}
-				format="webp"
 				quality={75}
-				loading="lazy"
 				class="rounded-full border-4 border-dracula-blue mt-12 mb-10 md:mb-3 lg:mb-0 w-40 h-40"
 			/>
 		</figure>

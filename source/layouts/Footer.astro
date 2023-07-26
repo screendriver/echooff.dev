@@ -1,9 +1,9 @@
 ---
-import { Image  } from '@astrojs/image/components';
-import pretzelSvg from "../images/pretzel.svg";
+import pretzelSvg from "../assets/images/pretzel.svg";
 ---
 
 <footer class="h-12 flex-shrink-0 flex justify-center items-center gap-2 border-t border-dracula-purple">
 	<p class="text-sm text-dracula-light font-extralight">Made with</p>
-	<Image src={pretzelSvg} alt="Pretzel" width={28} height={28} />
+
+	<img src={pretzelSvg.src} alt="Pretzel" loading="lazy" width={28} height={28} />
 </footer>

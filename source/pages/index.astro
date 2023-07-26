@@ -1,5 +1,5 @@
 ---
-import { getPicture } from "@astrojs/image";
+import { Image } from "astro:assets";
 import PageShell from "../layouts/PageShell.astro";
 import Header from "../layouts/Header.astro";
 import Body from "../layouts/Body.astro";
@@ -10,22 +10,7 @@ import Passions from "../passions/Passions.astro";
 import Statistics from "../statistics/Statistics.astro";
 import Resume from "../resume/Resume.astro";
 import Contact from "../contact/Contact.astro";
-import headerImageSmall from "../images/header-01-small.jpg";
-import headerImage from "../images/header-01.jpg";
-
-const headerPictureSmall = await getPicture({
-	formats: ["avif", "webp"],
-	src: headerImageSmall,
-	alt: "Header image",
-	widths: [750, 1061],
-});
-
-const headerPicture = await getPicture({
-	formats: ["avif", "webp"],
-	src: headerImage,
-	alt: "Header image",
-	widths: [750, 1080, 1366, 1920],
-});
+import headerImage from "../assets/images/header-01.jpg";
 ---
 
 <PageShell>
@@ -33,33 +18,12 @@ const headerPicture = await getPicture({
 		<figure
 			class="relative overflow-hidden bg-gradient-to-b from-dracula-cyan border-t border-b border-dracula-purple h-64 sm:h-4/5"
 		>
-			<picture class="object-top sm:object-center">
-				{
-					headerPictureSmall.sources.map((source) => {
-						return (
-							<source
-								type={source.type}
-								media="(max-width: 639px)"
-								srcset={source.srcset}
-								sizes="100vw"
-							/>
-						);
-					})
-				}
-				{
-					headerPicture.sources.map((source) => {
-						return <source type={source.type} srcset={source.srcset} sizes="100vw" />;
-					})
-				}
-				<img
-					src={(headerPicture.image as unknown as { src: string }).src}
-					width={headerPicture.image.width}
-					height={headerPicture.image.height}
-					decoding="sync"
-					alt="Christian Rackerseder"
-					class="mix-blend-luminosity"
-				/>
-			</picture>
+			<Image
+				src={headerImage}
+				alt="Christian Rackerseder"
+				loading="eager"
+				class="h-full object-top object-cover scale-125 translate-x-7 translate-y-7 mix-blend-luminosity sm:transform-none"
+			/>
 		</figure>
 		<div
 			class="relative -mt-11 sm:absolute sm:bottom-4 lg:bottom-8 sm:right-4 lg:right-8 bg-dracula-darker border border-dracula-dark border-solid rounded-md shadow-md shadow-dracula-darker bg-opacity-90 max-w-screen-sm pb-10 lg:pb-16 xl:pb-24 w-4/5 sm:w-auto m-auto"
