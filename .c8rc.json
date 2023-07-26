@@ -1,9 +1,9 @@
 {
 	"checkCoverage": false,
 	"all": true,
-	"extension": [".ts", ".tsx"],
-	"include": ["source/**/*"],
-	"exclude": [],
+	"src": "source",
+	"include": ["target/source/**/*"],
+	"exclude": ["target/source/**/*.test.js"],
 	"reporter": ["lcov", "text-summary", "clover"],
 	"reportsDir": "./target/coverage"
 }

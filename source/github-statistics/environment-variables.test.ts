@@ -1,7 +1,7 @@
 import test from "ava";
 import { stripIndent } from "common-tags";
 import { ZodError } from "zod";
-import { gitHubApiTokenSchema, gitHubBaseUrlSchema, gitHubLoginSchema } from "./environment-variables";
+import { gitHubApiTokenSchema, gitHubBaseUrlSchema, gitHubLoginSchema } from "./environment-variables.js";
 
 test("gitHubBaseUrlSchema does not allow booleans", (t) => {
 	t.throws(
