@@ -1,6 +1,5 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
-import image from "@astrojs/image";
 import vercel from "@astrojs/vercel/static";
 
 export default defineConfig({
@@ -10,12 +9,7 @@ export default defineConfig({
 	adapter: vercel({
 		analytics: true,
 	}),
-	integrations: [
-		tailwind(),
-		image({
-			serviceEntryPoint: "@astrojs/image/sharp",
-		}),
-	],
+	integrations: [tailwind()],
 	markdown: {
 		shikiConfig: {
 			theme: "dracula",
