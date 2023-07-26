@@ -1,8 +1,9 @@
 export default {
 	files: ["./source/**/*.test.ts"],
-	extensions: {
-		ts: "module",
-		tsx: "module",
+	typescript: {
+		rewritePaths: {
+			"source/": "target/source/",
+		},
+		compile: false,
 	},
-	nodeArguments: ["--no-warnings", "--loader=tsx"],
 };

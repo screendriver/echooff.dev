@@ -1,6 +1,6 @@
 import test from "ava";
 import { fake } from "sinon";
-import { createErrorReporter } from "./reporter";
+import { createErrorReporter } from "./reporter.js";
 
 test("sends the given error to Sentry", (t) => {
 	const originalConsoleError = console.error;
