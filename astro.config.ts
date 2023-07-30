@@ -7,7 +7,6 @@ export default defineConfig({
 	output: "static",
 	compressHTML: true,
 	adapter: vercel({
-		analytics: true,
 		imageService: true,
 		imagesConfig: {
 			sizes: [640, 768, 1024, 1280, 1920],
