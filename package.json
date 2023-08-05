@@ -27,7 +27,7 @@
 		"@sentry/node": "7.60.0",
 		"@sentry/tracing": "7.60.0",
 		"@sindresorhus/is": "5.6.0",
-		"astro": "2.9.2",
+		"astro": "2.10.1",
 		"astro-seo-schema": "2.2.0",
 		"date-fns": "2.30.0",
 		"feather-icons": "4.29.0",
