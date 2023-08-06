@@ -21,8 +21,8 @@
 		"test:unit:coverage": "c8 npm run test:unit"
 	},
 	"dependencies": {
-		"@fontsource/jetbrains-mono": "5.0.7",
-		"@fontsource/source-sans-pro": "5.0.7",
+		"@fontsource/jetbrains-mono": "5.0.8",
+		"@fontsource/source-sans-pro": "5.0.8",
 		"@octokit/graphql": "7.0.1",
 		"@sentry/node": "7.60.0",
 		"@sentry/tracing": "7.60.0",
