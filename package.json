@@ -24,8 +24,6 @@
 		"@fontsource/jetbrains-mono": "5.0.8",
 		"@fontsource/source-sans-pro": "5.0.8",
 		"@octokit/graphql": "7.0.1",
-		"@sentry/node": "7.60.0",
-		"@sentry/tracing": "7.60.0",
 		"@sindresorhus/is": "5.6.0",
 		"astro": "2.10.1",
 		"astro-seo-schema": "2.2.0",
