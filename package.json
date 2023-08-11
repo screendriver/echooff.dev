@@ -39,7 +39,7 @@
 	"devDependencies": {
 		"@astrojs/rss": "2.4.4",
 		"@astrojs/tailwind": "4.0.0",
-		"@astrojs/vercel": "3.8.0",
+		"@astrojs/vercel": "3.8.1",
 		"@ava/typescript": "4.1.0",
 		"@fastify/cors": "8.3.0",
 		"@fastify/formbody": "7.4.0",
