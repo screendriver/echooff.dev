@@ -21,7 +21,7 @@
 		"test:unit:coverage": "c8 npm run test:unit"
 	},
 	"dependencies": {
-		"@fontsource/jetbrains-mono": "5.0.8",
+		"@fontsource/jetbrains-mono": "5.0.9",
 		"@fontsource/source-sans-pro": "5.0.8",
 		"@octokit/graphql": "7.0.1",
 		"@sindresorhus/is": "5.6.0",
