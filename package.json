@@ -24,7 +24,7 @@
 		"@fontsource/jetbrains-mono": "5.0.9",
 		"@fontsource/source-sans-pro": "5.0.8",
 		"@octokit/graphql": "7.0.1",
-		"@sindresorhus/is": "5.6.0",
+		"@sindresorhus/is": "6.0.0",
 		"astro": "2.10.9",
 		"astro-seo-schema": "2.2.0",
 		"date-fns": "2.30.0",
