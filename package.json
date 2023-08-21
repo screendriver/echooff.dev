@@ -17,6 +17,7 @@
 		"develop": "FORCE_COLOR='1' tsx ./source/start-develop.ts",
 		"build": "astro build",
 		"preview": "astro preview",
+		"pretest:unit": "npm run compile",
 		"test:unit": "ava",
 		"test:unit:coverage": "c8 npm run test:unit"
 	},
