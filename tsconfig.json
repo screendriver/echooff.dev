@@ -1,11 +1,10 @@
 {
-	"extends": "astro/tsconfigs/strict",
+	"$schema": "https://json.schemastore.org/tsconfig",
 	"compilerOptions": {
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"importHelpers": true,
-		"importsNotUsedAsValues": "error",
 		"incremental": true,
 		"isolatedModules": true,
 		"module": "ESNext",
@@ -27,7 +26,8 @@
 		"strictNullChecks": true,
 		"target": "ES2021",
 		"useUnknownInCatchVariables": true,
-		"useDefineForClassFields": true
+		"useDefineForClassFields": true,
+		"verbatimModuleSyntax": true
 	},
 	"include": ["./astro.config.ts", "source/**/*"]
 }
