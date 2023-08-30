@@ -1,4 +1,3 @@
-#! ./node_modules/.bin/ts-node-esm
 import { $, echo } from "zx";
 import os from "node:os";
 import { writeFile, appendFile, rm } from "node:fs/promises";
