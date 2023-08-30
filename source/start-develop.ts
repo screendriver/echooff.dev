@@ -1,4 +1,3 @@
-#! ./node_modules/.bin/ts-node-esm
 import { $, echo } from "zx";
 import os from "node:os";
 import { writeFile, appendFile, rm } from "node:fs/promises";
@@ -32,7 +31,7 @@ process.on("SIGINT", () => {
 });
 
 if (process.env.VERCEL_TOKEN !== undefined) {
-	await $`npx vercel dev --listen 3000 --token ${process.env.VERCEL_TOKEN} --yes`;
+	await $`npx vercel dev --listen 4321 --token ${process.env.VERCEL_TOKEN} --yes`;
 } else {
-	await $`npx vercel dev --listen 3000`;
+	await $`npx vercel dev --listen 4321`;
 }

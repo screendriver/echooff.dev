@@ -2,7 +2,8 @@ import test from "ava";
 import { Factory } from "fishery";
 import { stripIndent } from "common-tags";
 import { ZodError } from "zod";
-import { GitHubStatistics, gitHubStatisticsSchema } from "./github-statistics-schema.js";
+import type { GitHubStatistics } from "./github-statistics-schema.js";
+import { gitHubStatisticsSchema } from "./github-statistics-schema.js";
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
 	return {
