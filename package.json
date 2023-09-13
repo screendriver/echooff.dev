@@ -74,7 +74,7 @@
 		"sharp": "0.32.5",
 		"sinon": "15.2.0",
 		"tailwind-dracula": "1.1.0",
-		"tsx": "3.12.9",
+		"tsx": "3.12.10",
 		"typescript": "5.2.2",
 		"vercel": "32.2.1",
 		"wait-on": "7.0.1",
