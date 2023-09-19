@@ -43,7 +43,7 @@
 		"@astrojs/tailwind": "5.0.0",
 		"@astrojs/vercel": "5.0.1",
 		"@ava/typescript": "4.1.0",
-		"@fastify/cors": "8.3.0",
+		"@fastify/cors": "8.4.0",
 		"@fastify/formbody": "7.4.0",
 		"@tailwindcss/typography": "0.5.10",
 		"@types/common-tags": "1.8.2",
