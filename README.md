@@ -1,7 +1,6 @@
 # echooff.dev
 
 [![Main](https://github.com/screendriver/echooff.dev/actions/workflows/main.yml/badge.svg)](https://github.com/screendriver/echooff.dev/actions/workflows/main.yml)
-[![codecov](https://codecov.io/gh/screendriver/echooff.dev/branch/main/graph/badge.svg)](https://codecov.io/gh/screendriver/echooff.dev)
 
 Source code for my personal website [echooff.dev](https://www.echooff.dev). Mostly it's just a resume / CV website about myself but also a playground for technical experiments.
 
