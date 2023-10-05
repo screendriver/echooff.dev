@@ -41,7 +41,7 @@
 		"@astrojs/check": "0.2.0",
 		"@astrojs/rss": "3.0.0",
 		"@astrojs/tailwind": "5.0.1",
-		"@astrojs/vercel": "5.0.1",
+		"@astrojs/vercel": "5.0.2",
 		"@ava/typescript": "4.1.0",
 		"@fastify/cors": "8.4.0",
 		"@fastify/formbody": "7.4.0",
