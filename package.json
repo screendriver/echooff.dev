@@ -47,7 +47,7 @@
 		"@fastify/formbody": "7.4.0",
 		"@tailwindcss/typography": "0.5.10",
 		"@types/common-tags": "1.8.3",
-		"@types/feather-icons": "4.29.2",
+		"@types/feather-icons": "4.29.3",
 		"@types/gsap": "1.20.2",
 		"@types/node": "18.18.5",
 		"@types/sinon": "10.0.19",
