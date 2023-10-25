@@ -70,7 +70,7 @@
 		"jscpd": "3.5.10",
 		"postcss": "8.4.31",
 		"prettier": "3.0.3",
-		"prettier-plugin-astro": "0.12.0",
+		"prettier-plugin-astro": "0.12.1",
 		"sharp": "0.32.6",
 		"sinon": "17.0.0",
 		"tailwind-dracula": "1.1.0",
