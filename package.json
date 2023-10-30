@@ -38,7 +38,7 @@
 		"zod": "3.22.4"
 	},
 	"devDependencies": {
-		"@astrojs/check": "0.2.1",
+		"@astrojs/check": "0.3.0",
 		"@astrojs/rss": "3.0.0",
 		"@astrojs/tailwind": "5.0.2",
 		"@astrojs/vercel": "5.1.0",
