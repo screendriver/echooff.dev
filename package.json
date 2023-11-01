@@ -7,7 +7,7 @@
 	"author": "Christian Rackerseder <git@echooff.de>",
 	"license": "MIT",
 	"engines": {
-		"node": "18.x"
+		"node": "20.x"
 	},
 	"scripts": {
 		"lint": "eslint . --ext '.ts' && prettier --check source",
