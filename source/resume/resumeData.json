@@ -1,5 +1,16 @@
 [
 	{
+		"since": "2023-11-01",
+		"showOnlyYear": false,
+		"industry": "Human Resources",
+		"jobTitle": "Software Engineer",
+		"jobDescription": "TypeScript / JavaScript Engineer",
+		"company": {
+			"name": "Cobrainer GmbH",
+			"url": "https://www.cobrainer.com"
+		}
+	},
+	{
 		"since": "2022-11-01",
 		"showOnlyYear": false,
 		"industry": "E-Commerce",
