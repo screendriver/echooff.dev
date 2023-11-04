@@ -5,18 +5,30 @@ on:
         - cron: "0 0 * * *"
 
 jobs:
-    deploy-to-vercel:
-        name: Deploy to Vercel
+    deploy-to-cloudflare:
+        name: Deploy to Cloudflare
         runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            deployments: write
         concurrency:
-            group: deploy-to-vercel
+            group: deploy-to-cloudflare
         env:
-            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+            GIT_HUB_API_BASE_URL: ${{ secrets.GIT_HUB_API_BASE_URL }}
+            GIT_HUB_API_TOKEN: ${{ secrets.GIT_HUB_API_TOKEN }}
+            GIT_HUB_LOGIN: ${{ secrets.GIT_HUB_LOGIN }}
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
             - name: Setup Node.js
               uses: ./.github/actions/setup-nodejs
-            - name: Deploy Project to Vercel
-              run: npx vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+            - name: Build website
+              run: npm run build
+            - name: Publish to Cloudflare Pages
+              uses: cloudflare/pages-action@v1
+              with:
+                  apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                  accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+                  projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+                  directory: ./target/dist
+                  wranglerVersion: "3"
