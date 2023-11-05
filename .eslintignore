@@ -1,6 +1,5 @@
 !.*
 .astro/
-.vercel/
 node_modules/
 target/
 source/env.d.ts
