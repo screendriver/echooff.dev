@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 
-export const get: APIRoute = async (context) => {
+export const GET: APIRoute = async (context) => {
 	if (context.site === undefined) {
 		throw new Error("Context has no site attached");
 	}
