@@ -12,7 +12,7 @@ import { icons } from "feather-icons";
 	<hr
 		class="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg"
 	/>
-	<address class="not-italic grid grid-cols-2 gap-6 justify-items-center m-auto max-w-screen-lg">
+	<address class="not-italic grid grid-cols-2 gap-6 justify-items-center m-auto max-w-screen-lg py-4">
 		<a
 			href="https://www.openstreetmap.org/relation/497335"
 			class="flex flex-col items-center justify-self-end ml-9 md:mx-9"
@@ -24,10 +24,5 @@ import { icons } from "feather-icons";
 			<Fragment set:html={icons["message-square"]?.toSvg({ width: 23, height: 23 })} />
 			<p>Threema</p>
 		</a>
-		<a
-			href="mailto:hello@echooff.de"
-			class="col-span-2 font-bold my-2 text-xl bg-clip-text text-transparent bg-gradient-to-r from-dracula-pink-500 to-dracula-orange-500 transition duration-150 hover:underline hover:underline-offset-4 hover:decoration-dracula-purple md:text-2xl"
-			>hello@echooff.de</a
-		>
 	</address>
 </section>
