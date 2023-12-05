@@ -1,5 +1,5 @@
 {
-	"extends": ["config:base", ":semanticCommitsDisabled"],
+	"extends": ["config:base", ":semanticCommitsDisabled", ":disableDependencyDashboard"],
 	"labels": ["renovate"],
 	"lockFileMaintenance": {
 		"enabled": true,
