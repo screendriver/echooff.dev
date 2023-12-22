@@ -38,7 +38,7 @@
 		"zod": "3.22.4"
 	},
 	"devDependencies": {
-		"@astrojs/check": "0.3.3",
+		"@astrojs/check": "0.3.4",
 		"@astrojs/rss": "4.0.1",
 		"@astrojs/tailwind": "5.0.4",
 		"@ava/typescript": "4.1.0",
