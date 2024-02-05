@@ -67,7 +67,7 @@
 		"fishery": "2.2.2",
 		"get-port": "7.0.0",
 		"jscpd": "3.5.10",
-		"postcss": "8.4.33",
+		"postcss": "8.4.34",
 		"prettier": "3.2.5",
 		"prettier-plugin-astro": "0.13.0",
 		"sharp": "0.33.2",
