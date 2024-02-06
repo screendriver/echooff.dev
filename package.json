@@ -39,7 +39,7 @@
 	},
 	"devDependencies": {
 		"@astrojs/check": "0.4.1",
-		"@astrojs/rss": "4.0.4",
+		"@astrojs/rss": "4.0.5",
 		"@astrojs/tailwind": "5.1.0",
 		"@ava/typescript": "4.1.0",
 		"@fastify/cors": "9.0.1",
