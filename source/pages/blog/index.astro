@@ -32,31 +32,31 @@ const allBlogPostsSorted = [...allBlogPostsUnsorted].sort((currentBlogPost, next
 	<Body>
 		<main class="flex-grow flex-shrink-0 basis-auto">
 			<h1
-				class="flex items-center lg:items-end justify-center gap-x-2 text-dracula-cyan lg:leading-none text-2xl lg:text-4xl font-extrabold mt-8 mb-2"
+				class="flex gap-x-2 justify-center items-center mt-8 mb-2 text-2xl font-extrabold lg:items-end lg:text-4xl lg:leading-none text-dracula-cyan"
 			>
 				Blog
 				<Fragment set:html={icons["book-open"]?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
 			</h1>
 			<hr
-				class="h-2 w-1/2 border-none m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg"
+				class="m-auto w-1/2 h-2 bg-gradient-to-br rounded-lg border-none bg-dracula-red from-yellow to-dracula-pink"
 			/>
 			<ul class="text-dracula-light">
 				{
 					allBlogPostsSorted.map((blogPost) => {
 						return (
 							<li>
-								<article class="flex items-stretch mx-4 my-6 sm:max-w-lg sm:mx-auto md:max-w-xl lg:max-w-2xl bg-gradient-to-br from-dracula to-dracula-cyan rounded-2xl drop-shadow-lg">
+								<article class="flex items-stretch my-6 mx-4 bg-gradient-to-br rounded-2xl sm:mx-auto sm:max-w-lg md:max-w-xl lg:max-w-2xl from-dracula to-dracula-cyan drop-shadow-lg">
 									<a
 										href={`/blog/${blogPost.slug}`}
-										class="w-full bg-dracula-dark rounded-2xl m-1 p-3 hover:bg-dracula-darker-800"
+										class="p-3 m-1 w-full rounded-2xl bg-dracula-dark hover:bg-dracula-darker-800"
 									>
-										<h2 class="text-dracula-cyan underline underline-offset-2 mb-4">
+										<h2 class="mb-4 underline text-dracula-cyan underline-offset-2">
 											{blogPost.data.title}
 										</h2>
 										<p class="">{blogPost.data.description}</p>
 										<time
 											datetime={formatISO(blogPost.data.date, { representation: "date" })}
-											class="block text-dracula-pink text-right text-sm mt-2"
+											class="block mt-2 text-sm text-right text-dracula-pink"
 										>
 											{intlFormat(blogPost.data.date, {
 												year: "numeric",

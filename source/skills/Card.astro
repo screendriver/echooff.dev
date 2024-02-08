@@ -10,7 +10,7 @@ const { link, title, description, style } = Astro.props;
 ---
 
 <article class:list={["flex items-stretch rounded-2xl bg-gradient-to-br", style]}>
-	<a href={link.toString()} title={title} class="block text-center bg-dracula-darker rounded-2xl m-1 p-3">
+	<a href={link.toString()} title={title} class="block p-3 m-1 text-center rounded-2xl bg-dracula-darker">
 		<slot />
 		<h3 class="inline text-transparent bg-clip-text bg-gradient-to-r from-dracula to-dracula-cyan">
 			{title}
