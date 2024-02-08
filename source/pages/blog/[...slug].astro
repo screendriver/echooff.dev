@@ -53,9 +53,9 @@ const blogPostDate = formatISO(blogPost.data.date, { representation: "date" });
 
 	<Body>
 		<main
-			class="flex-grow flex-shrink-0 basis-auto m-4 sm:max-w-lg sm:m-auto sm:my-4 md:max-w-xl lg:max-w-2xl p-4 rounded-xl bg-dracula-dark"
+			class="flex-grow flex-shrink-0 p-4 m-4 rounded-xl sm:m-auto sm:my-4 sm:max-w-lg md:max-w-xl lg:max-w-2xl basis-auto bg-dracula-dark"
 		>
-			<time datetime={blogPostDate} class="block text-dracula-pink text-right">
+			<time datetime={blogPostDate} class="block text-right text-dracula-pink">
 				{
 					intlFormat(blogPost.data.date, {
 						year: "numeric",
@@ -64,11 +64,11 @@ const blogPostDate = formatISO(blogPost.data.date, { representation: "date" });
 					})
 				}
 			</time>
-			<h1 class="text-2xl font-extrabold text-dracula-cyan underline underline-offset-2 mb-8">
+			<h1 class="mb-8 text-2xl font-extrabold underline text-dracula-cyan underline-offset-2">
 				{blogPost.data.title}
 			</h1>
 			<article
-				class="prose prose-invert max-w-none prose-headings:underline prose-headings:text-dracula-cyan prose-headings:underline-offset-2 prose-a:text-dracula-green prose-a:no-underline prose-a:transition-colors hover:prose-a:text-dracula-purple"
+				class="max-w-none prose prose-invert prose-headings:underline prose-headings:text-dracula-cyan prose-headings:underline-offset-2 prose-a:text-dracula-green prose-a:no-underline prose-a:transition-colors hover:prose-a:text-dracula-purple"
 			>
 				<Content />
 			</article>

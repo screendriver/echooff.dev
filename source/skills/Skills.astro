@@ -9,18 +9,18 @@ import CSSIcon from "./icons/CSS.astro";
 import ElmIcon from "./icons/Elm.astro";
 ---
 
-<section class="bg-dracula-dark p-4 lg:p-10">
+<section class="p-4 lg:p-10 bg-dracula-dark">
 	<h3
-		class="flex items-center lg:items-end justify-center gap-x-2 text-dracula-cyan lg:leading-none text-2xl lg:text-4xl font-extrabold my-2"
+		class="flex gap-x-2 justify-center items-center my-2 text-2xl font-extrabold lg:items-end lg:text-4xl lg:leading-none text-dracula-cyan"
 	>
 		Skills
 		<Fragment set:html={icons.award?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
 	</h3>
 	<hr
-		class="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg"
+		class="m-auto mb-4 w-1/2 h-2 bg-gradient-to-br rounded-lg border-none bg-dracula-red from-yellow to-dracula-pink"
 	/>
 	<div
-		class="text-dracula-light grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center max-w-screen-lg m-auto sm:p-4"
+		class="grid grid-cols-1 gap-5 justify-items-center m-auto max-w-screen-lg sm:grid-cols-2 sm:p-4 lg:grid-cols-3 text-dracula-light"
 	>
 		<Card
 			title="TypeScript"

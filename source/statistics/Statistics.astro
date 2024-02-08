@@ -26,17 +26,17 @@ const careerStartYear = 2001;
 const yearsOfExperience = currentYear.getFullYear() - careerStartYear;
 ---
 
-<section class="bg-dracula-dark p-4 lg:p-10">
+<section class="p-4 lg:p-10 bg-dracula-dark">
 	<h3
-		class="flex items-center lg:items-end justify-center gap-x-2 text-dracula-cyan lg:leading-none text-2xl lg:text-4xl font-extrabold my-2"
+		class="flex gap-x-2 justify-center items-center my-2 text-2xl font-extrabold lg:items-end lg:text-4xl lg:leading-none text-dracula-cyan"
 	>
 		Some Stats
 		<Fragment set:html={icons["bar-chart-2"]?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
 	</h3>
 	<hr
-		class="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg"
+		class="m-auto mb-4 w-1/2 h-2 bg-gradient-to-br rounded-lg border-none bg-dracula-red from-yellow to-dracula-pink"
 	/>
-	<div class="m-auto max-w-screen-lg grid gap-2 sm:gap-4 grid-cols-2 lg:grid-cols-4 sm:p-4">
+	<div class="grid grid-cols-2 gap-2 m-auto max-w-screen-lg sm:gap-4 sm:p-4 lg:grid-cols-4">
 		<YearsInBusiness yearsOfExperience={yearsOfExperience} />
 		<GitHubRepositories repositoriesTotalCount={gitHubStatistics.user.repositories.totalCount} />
 		<GitHubStars starredRepositoriesTotalCount={gitHubStatistics.user.starredRepositories.totalCount} />

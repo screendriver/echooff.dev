@@ -15,26 +15,26 @@ const resume = parsedResumeResult.value;
 
 <section class="p-4 lg:p-10">
 	<h3
-		class="flex items-center lg:items-end justify-center gap-x-2 text-dracula-cyan lg:leading-none text-2xl lg:text-4xl font-extrabold my-2"
+		class="flex gap-x-2 justify-center items-center my-2 text-2xl font-extrabold lg:items-end lg:text-4xl lg:leading-none text-dracula-cyan"
 	>
 		Resume
 		<Fragment set:html={icons["file-text"]?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
 	</h3>
 	<hr
-		class="h-2 w-1/2 border-none mb-4 m-auto bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink rounded-lg"
+		class="m-auto mb-4 w-1/2 h-2 bg-gradient-to-br rounded-lg border-none bg-dracula-red from-yellow to-dracula-pink"
 	/>
-	<ol class="w-4/5 ml-1/12 sm:px-4 sm:pt-4">
+	<ol class="w-4/5 sm:px-4 sm:pt-4 ml-1/12">
 		{
 			resume.map((job) => {
 				const sinceDateFormatted = formatSinceDate(job.since, job.showOnlyYear);
 
 				return sinceDateFormatted.mapOr(null, (sinceDate) => {
 					return (
-						<li class="group relative pl-10 md:grid md:grid-cols-[0.5fr_auto_1fr] md:gap-x-7 md:justify-between md:justify-items-start md:pl-0">
-							<p class="uppercase text-xs mb-1 tracking-widest text-dracula-green md:justify-self-end">
+						<li class="relative pl-10 md:grid md:gap-x-7 md:justify-between md:justify-items-start md:pl-0 group md:grid-cols-[0.5fr_auto_1fr]">
+							<p class="mb-1 text-xs tracking-widest uppercase md:justify-self-end text-dracula-green">
 								{sinceDate}
 							</p>
-							<div class="absolute top-1 left-0 bottom-0 before:block before:bg-dracula-orange before:group-hover:bg-transparent before:border-3 before:border-solid before:border-dracula-orange before:rounded-full before:w-4 before:h-4 before:transition-colors before:duration-300 before:ease-in-out after:block after:bg-dracula-blue after:w-1 after:absolute after:top-6 after:bottom-1 md:after:bottom-2 after:left-1.5 md:relative after:group-last:hidden" />
+							<div class="absolute bottom-0 left-0 top-1 md:relative before:block before:bg-dracula-orange before:group-hover:bg-transparent before:border-3 before:border-solid before:border-dracula-orange before:rounded-full before:w-4 before:h-4 before:transition-colors before:duration-300 before:ease-in-out after:block after:bg-dracula-blue after:w-1 after:absolute after:top-6 after:bottom-1 after:left-1.5 after:group-last:hidden md:after:bottom-2" />
 							<div class="pb-10">
 								<h3 class="text-lg leading-none">{job.jobTitle}</h3>
 								<h4 class="text-dracula-green">
