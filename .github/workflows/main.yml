@@ -13,7 +13,6 @@ jobs:
               uses: ./.github/actions/setup-nodejs
             - name: Check source code
               run: |
-                  npx astro sync
                   npm run lint
                   npm run check:astro
                   npm run copy:paste:detector
