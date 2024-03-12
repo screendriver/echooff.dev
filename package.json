@@ -26,7 +26,7 @@
 		"@fontsource/source-sans-pro": "5.0.8",
 		"@octokit/graphql": "8.0.1",
 		"@sindresorhus/is": "6.2.0",
-		"astro": "4.5.1",
+		"astro": "4.5.2",
 		"astro-seo-schema": "4.0.0",
 		"date-fns": "3.4.0",
 		"feather-icons": "4.29.1",
