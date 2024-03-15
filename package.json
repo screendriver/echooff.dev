@@ -28,7 +28,7 @@
 		"@sindresorhus/is": "6.2.0",
 		"astro": "4.5.4",
 		"astro-seo-schema": "4.0.0",
-		"date-fns": "3.4.0",
+		"date-fns": "3.5.0",
 		"feather-icons": "4.29.1",
 		"got": "14.2.1",
 		"gsap": "2.1.3",
