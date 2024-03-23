@@ -71,7 +71,7 @@
 		"prettier": "3.2.5",
 		"prettier-plugin-astro": "0.13.0",
 		"rustywind": "0.21.1",
-		"sharp": "0.33.2",
+		"sharp": "0.33.3",
 		"sinon": "17.0.1",
 		"tailwind-dracula": "1.1.0",
 		"tsx": "4.7.1",
