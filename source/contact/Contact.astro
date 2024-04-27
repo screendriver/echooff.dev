@@ -2,25 +2,25 @@
 import { icons } from "feather-icons";
 ---
 
-<section class="p-4 lg:p-10 bg-dracula-dark">
+<section class="bg-dracula-dark p-4 lg:p-10">
 	<h3
-		class="flex gap-x-2 justify-center items-center my-2 text-2xl font-extrabold lg:items-end lg:text-4xl lg:leading-none text-dracula-cyan"
+		class="my-2 flex items-center justify-center gap-x-2 text-2xl font-extrabold text-dracula-cyan lg:items-end lg:text-4xl lg:leading-none"
 	>
 		Contact
 		<Fragment set:html={icons.mail?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
 	</h3>
 	<hr
-		class="m-auto mb-4 w-1/2 h-2 bg-gradient-to-br rounded-lg border-none bg-dracula-red from-yellow to-dracula-pink"
+		class="m-auto mb-4 h-2 w-1/2 rounded-lg border-none bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink"
 	/>
-	<address class="grid grid-cols-2 gap-6 justify-items-center py-4 m-auto max-w-screen-lg not-italic">
+	<address class="m-auto grid max-w-screen-lg grid-cols-2 justify-items-center gap-6 py-4 not-italic">
 		<a
 			href="https://www.openstreetmap.org/relation/497335"
-			class="flex flex-col justify-self-end items-center ml-9 md:mx-9"
+			class="ml-9 flex flex-col items-center justify-self-end md:mx-9"
 		>
 			<Fragment set:html={icons["map-pin"]?.toSvg({ width: 23, height: 23 })} />
 			<p class="whitespace-nowrap">Nearby Munich</p>
 		</a>
-		<a href="https://threema.id/9TWBW4XN" class="flex flex-col justify-self-start items-center ml-9 md:mx-9">
+		<a href="https://threema.id/9TWBW4XN" class="ml-9 flex flex-col items-center justify-self-start md:mx-9">
 			<Fragment set:html={icons["message-square"]?.toSvg({ width: 23, height: 23 })} />
 			<p>Threema</p>
 		</a>

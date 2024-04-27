@@ -10,7 +10,7 @@
 		"node": "20.x"
 	},
 	"scripts": {
-		"lint": "astro sync && eslint . --ext '.ts' && prettier --check source && rustywind --check-formatted source",
+		"lint": "astro sync && eslint . --ext '.ts' && prettier --check source",
 		"copy:paste:detector": "jscpd source",
 		"compile": "tsc",
 		"check:astro": "astro check",
@@ -70,7 +70,7 @@
 		"postcss": "8.4.38",
 		"prettier": "3.2.5",
 		"prettier-plugin-astro": "0.13.0",
-		"rustywind": "0.22.0",
+		"prettier-plugin-tailwindcss": "0.5.14",
 		"sharp": "0.33.3",
 		"sinon": "17.0.1",
 		"tailwind-dracula": "1.1.0",

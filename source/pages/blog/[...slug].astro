@@ -53,7 +53,7 @@ const blogPostDate = formatISO(blogPost.data.date, { representation: "date" });
 
 	<Body>
 		<main
-			class="flex-grow flex-shrink-0 p-4 m-4 rounded-xl sm:m-auto sm:my-4 sm:max-w-lg md:max-w-xl lg:max-w-2xl basis-auto bg-dracula-dark"
+			class="m-4 flex-shrink-0 flex-grow basis-auto rounded-xl bg-dracula-dark p-4 sm:m-auto sm:my-4 sm:max-w-lg md:max-w-xl lg:max-w-2xl"
 		>
 			<time datetime={blogPostDate} class="block text-right text-dracula-pink">
 				{
@@ -64,11 +64,11 @@ const blogPostDate = formatISO(blogPost.data.date, { representation: "date" });
 					})
 				}
 			</time>
-			<h1 class="mb-8 text-2xl font-extrabold underline text-dracula-cyan underline-offset-2">
+			<h1 class="mb-8 text-2xl font-extrabold text-dracula-cyan underline underline-offset-2">
 				{blogPost.data.title}
 			</h1>
 			<article
-				class="max-w-none prose prose-invert prose-headings:underline prose-headings:text-dracula-cyan prose-headings:underline-offset-2 prose-a:text-dracula-green prose-a:no-underline prose-a:transition-colors hover:prose-a:text-dracula-purple"
+				class="prose prose-invert max-w-none prose-headings:text-dracula-cyan prose-headings:underline prose-headings:underline-offset-2 prose-a:text-dracula-green prose-a:no-underline prose-a:transition-colors hover:prose-a:text-dracula-purple"
 			>
 				<Content />
 			</article>
