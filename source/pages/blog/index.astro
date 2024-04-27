@@ -30,33 +30,33 @@ const allBlogPostsSorted = [...allBlogPostsUnsorted].sort((currentBlogPost, next
 	<Header withBottomBorder={true} />
 
 	<Body>
-		<main class="flex-grow flex-shrink-0 basis-auto">
+		<main class="flex-shrink-0 flex-grow basis-auto">
 			<h1
-				class="flex gap-x-2 justify-center items-center mt-8 mb-2 text-2xl font-extrabold lg:items-end lg:text-4xl lg:leading-none text-dracula-cyan"
+				class="mb-2 mt-8 flex items-center justify-center gap-x-2 text-2xl font-extrabold text-dracula-cyan lg:items-end lg:text-4xl lg:leading-none"
 			>
 				Blog
 				<Fragment set:html={icons["book-open"]?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
 			</h1>
 			<hr
-				class="m-auto w-1/2 h-2 bg-gradient-to-br rounded-lg border-none bg-dracula-red from-yellow to-dracula-pink"
+				class="m-auto h-2 w-1/2 rounded-lg border-none bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink"
 			/>
 			<ul class="text-dracula-light">
 				{
 					allBlogPostsSorted.map((blogPost) => {
 						return (
 							<li>
-								<article class="flex items-stretch my-6 mx-4 bg-gradient-to-br rounded-2xl sm:mx-auto sm:max-w-lg md:max-w-xl lg:max-w-2xl from-dracula to-dracula-cyan drop-shadow-lg">
+								<article class="mx-4 my-6 flex items-stretch rounded-2xl bg-gradient-to-br from-dracula to-dracula-cyan drop-shadow-lg sm:mx-auto sm:max-w-lg md:max-w-xl lg:max-w-2xl">
 									<a
 										href={`/blog/${blogPost.slug}`}
-										class="p-3 m-1 w-full rounded-2xl bg-dracula-dark hover:bg-dracula-darker-800"
+										class="m-1 w-full rounded-2xl bg-dracula-dark p-3 hover:bg-dracula-darker-800"
 									>
-										<h2 class="mb-4 underline text-dracula-cyan underline-offset-2">
+										<h2 class="mb-4 text-dracula-cyan underline underline-offset-2">
 											{blogPost.data.title}
 										</h2>
 										<p class="">{blogPost.data.description}</p>
 										<time
 											datetime={formatISO(blogPost.data.date, { representation: "date" })}
-											class="block mt-2 text-sm text-right text-dracula-pink"
+											class="mt-2 block text-right text-sm text-dracula-pink"
 										>
 											{intlFormat(blogPost.data.date, {
 												year: "numeric",
