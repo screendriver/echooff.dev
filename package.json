@@ -10,10 +10,9 @@
 		"node": "20.x"
 	},
 	"scripts": {
-		"lint": "astro sync && eslint . --ext '.ts' && prettier --check source",
+		"lint": "astro sync && astro check && eslint . --ext '.ts' && prettier --check source",
 		"copy:paste:detector": "jscpd source",
 		"compile": "tsc",
-		"check:astro": "astro check",
 		"develop": "FORCE_COLOR='1' tsx ./source/start-develop.ts",
 		"build": "astro build",
 		"preview": "astro preview",
