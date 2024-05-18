@@ -9,6 +9,9 @@
 	"engines": {
 		"node": "22.x"
 	},
+	"volta": {
+		"node": "22.2.0"
+	},
 	"scripts": {
 		"lint": "astro sync && astro check && eslint . --ext '.ts' && prettier --check source",
 		"copy:paste:detector": "jscpd source",
