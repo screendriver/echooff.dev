@@ -40,6 +40,17 @@ const { title = "Christian Rackerseder — Full-Stack Software Engineer" } = Ast
 		<meta name="robots" content="noimageindex" />
 		<link rel="shortcut icon" href="/favicon.png" />
 		<link rel="alternate" type="application/rss+xml" title="Christian Rackerseder — Blog" href="/rss.xml" />
+		{
+			import.meta.env.PROD && (
+				<script
+					async={true}
+					defer={true}
+					data-website-id="773627f9-afb0-4f15-9d97-58dba0386f51"
+					data-do-not-track="true"
+					src="https://statistics.echooff.de/tasty.js"
+				/>
+			)
+		}
 		<slot name="search-engine-optimization-schema" />
 		<title>{title}</title>
 	</head>
