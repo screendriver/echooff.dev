@@ -1,5 +1,5 @@
 import { Result } from "true-myth";
-import { z, ZodError } from "zod";
+import { z, type ZodError } from "zod";
 
 const filledStringSchema = z.string().min(1);
 
