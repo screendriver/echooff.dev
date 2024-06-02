@@ -1,15 +1,16 @@
+---
 name: "npm install"
 description: 'Setup Node.js and makes a "npm install"'
 
 runs:
-    using: "composite"
-    steps:
-        - name: Use Node.js 22.x
-          uses: actions/setup-node@v4
-          with:
-              node-version: "22.x"
-        - name: Install dependencies
-          run: npm clean-install
-          shell: bash
-          env:
-              PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+  using: "composite"
+  steps:
+    - name: Use Node.js 22.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: "22.x"
+    - name: Install dependencies
+      run: npm clean-install
+      shell: bash
+      env:
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
