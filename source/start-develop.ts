@@ -30,4 +30,4 @@ process.on("SIGINT", () => {
 		});
 });
 
-$`npx astro dev`;
+await $`npx astro dev 2>&1`.pipe(process.stdout);
