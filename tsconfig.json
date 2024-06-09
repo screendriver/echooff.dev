@@ -27,7 +27,9 @@
 		"target": "ES2021",
 		"useUnknownInCatchVariables": true,
 		"useDefineForClassFields": true,
-		"verbatimModuleSyntax": true
+		"verbatimModuleSyntax": true,
+		"jsx": "preserve"
 	},
 	"include": ["./astro.config.ts", "source/**/*"]
 }
+
