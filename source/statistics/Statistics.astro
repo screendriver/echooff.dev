@@ -1,29 +1,6 @@
 ---
-import { graphql } from "@octokit/graphql";
+import StatisticsData from "./StatisticsData.vue";
 import { icons } from "feather-icons";
-import YearsInBusiness from "./YearsInBusiness.astro";
-import GitHubRepositories from "./GitHubRepositories.astro";
-import GitHubStars from "./GitHubStars.astro";
-import Figure from "./Figure.astro";
-import {
-	gitHubBaseUrlSchema,
-	gitHubLoginSchema,
-	gitHubApiTokenSchema,
-} from "../github-statistics/environment-variables.js";
-import { gitHubStatisticsSchema } from "../github-statistics/github-statistics-schema.js";
-import { fetchGitHubStatistics } from "../github-statistics/graphql-query";
-
-const gitHubStatisticsResponse = await fetchGitHubStatistics({
-	graphql,
-	gitHubBaseUrl: gitHubBaseUrlSchema.parse(import.meta.env.GIT_HUB_API_BASE_URL),
-	gitHubLogin: gitHubLoginSchema.parse(import.meta.env.GIT_HUB_LOGIN),
-	gitHubApiToken: gitHubApiTokenSchema.parse(import.meta.env.GIT_HUB_API_TOKEN),
-});
-const gitHubStatistics = gitHubStatisticsSchema.parse(gitHubStatisticsResponse);
-
-const currentYear = import.meta.env.PROD ? new Date() : new Date(2022, 2, 23);
-const careerStartYear = 2001;
-const yearsOfExperience = currentYear.getFullYear() - careerStartYear;
 ---
 
 <section class="bg-dracula-dark p-4 lg:p-10">
@@ -37,11 +14,6 @@ const yearsOfExperience = currentYear.getFullYear() - careerStartYear;
 		class="m-auto mb-4 h-2 w-1/2 rounded-lg border-none bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink"
 	/>
 	<div class="m-auto grid max-w-screen-lg grid-cols-2 gap-2 sm:gap-4 sm:p-4 lg:grid-cols-4">
-		<YearsInBusiness yearsOfExperience={yearsOfExperience} />
-		<GitHubRepositories repositoriesTotalCount={gitHubStatistics.user.repositories.totalCount} />
-		<GitHubStars starredRepositoriesTotalCount={gitHubStatistics.user.starredRepositories.totalCount} />
-		<Figure description="Lines of Code">
-			<figure set:html={icons["bar-chart"]?.toSvg({ class: "text-dracula-green w-6 h-6 mt-2" })} />
-		</Figure>
+		<StatisticsData client:load />
 	</div>
 </section>
