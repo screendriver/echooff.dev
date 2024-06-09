@@ -1,5 +1,6 @@
 import { defineConfig, sharpImageService } from "astro/config";
 import node from "@astrojs/node";
+import vue from "@astrojs/vue";
 import tailwind from "@astrojs/tailwind";
 
 export default defineConfig({
@@ -9,6 +10,7 @@ export default defineConfig({
 	adapter: node({
 		mode: "standalone",
 	}),
+	integrations: [vue({ devtools: true }), tailwind()],
 	image: {
 		service: sharpImageService(),
 	},
