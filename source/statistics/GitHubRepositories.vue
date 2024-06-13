@@ -1,18 +1,23 @@
 <script setup lang="ts">
+import type { Maybe } from "true-myth";
+import type { GitHubStatistics } from "../github-statistics/github-statistics-schema";
 import Figure from "./Figure.vue";
+import LoadingSpinner from "./LoadingSpinner.vue";
 import Cite from "./Cite.vue";
 
 interface Properties {
-	readonly repositoriesTotalCount: number;
+	readonly isFetching: boolean;
+	readonly gitHubStatistics: Maybe<GitHubStatistics>;
 }
 
-const { repositoriesTotalCount } = defineProps<Properties>();
+const { isFetching, gitHubStatistics } = defineProps<Properties>();
 </script>
 
 <template>
 	<Figure description="GitHub Repos">
-		<Cite aria-label="GitHub Repos">
-			{{ repositoriesTotalCount }}
+		<LoadingSpinner v-if="isFetching" />
+		<Cite v-if="!isFetching" aria-label="GitHub Repos">
+			{{ gitHubStatistics.get("user").get("repositories").get("totalCount").unwrapOr(0) }}
 		</Cite>
 	</Figure>
 </template>

@@ -3,3 +3,4 @@
 node_modules
 target
 .astro
+github_api_test_token
