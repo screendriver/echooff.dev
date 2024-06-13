@@ -5,9 +5,6 @@
 		"enabled": true,
 		"automerge": true
 	},
-	"nvm": {
-		"enabled": false
-	},
 	"packageRules": [
 		{
 			"packagePatterns": ["eslint"],
