@@ -2,11 +2,11 @@ FROM ubuntu:24.04 as just
 RUN apt update && apt install just
 
 FROM node:22.2.0 as build
+COPY --from=just /usr/bin/just /usr/local/bin/just
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --no-save
 COPY . .
-COPY --from=just /usr/bin/just /usr/local/bin/just
 ENV GITHUB_API_BASE_URL="" GITHUB_LOGIN="" GITHUB_API_TOKEN_FILE=""
 RUN just build
 

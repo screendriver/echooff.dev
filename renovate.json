@@ -5,7 +5,6 @@
 		"enabled": true,
 		"automerge": true
 	},
-	"enabledManagers": ["npm"],
 	"packageRules": [
 		{
 			"packagePatterns": ["eslint"],
