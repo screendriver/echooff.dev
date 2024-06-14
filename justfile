@@ -8,7 +8,7 @@ lint:
 	npx jscpd source
 
 @compile:
-	npx vue-tsc --noEmit
+	npx vue-tsc
 
 @develop $FORCE_COLOR="1":
 	npx tsx ./source/start-develop.ts
