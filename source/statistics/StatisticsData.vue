@@ -6,7 +6,7 @@ import { Maybe } from "true-myth";
 import YearsInBusiness from "./YearsInBusiness.vue";
 import GitHubRepositories from "./GitHubRepositories.vue";
 import GitHubStars from "./GitHubStars.vue";
-import Figure from "./Figure.vue";
+import StatisticsFigure from "./StatisticsFigure.vue";
 import { gitHubStatisticsSchema, type GitHubStatistics } from "../github-statistics/github-statistics-schema";
 
 const currentYear = import.meta.env.PROD ? new Date() : new Date(2022, 2, 23);
@@ -30,7 +30,7 @@ const barChartIcon = icons["bar-chart"].toSvg({ class: "text-dracula-green w-6 h
 	<YearsInBusiness :years-of-experience="yearsOfExperience" />
 	<GitHubRepositories :is-fetching="isFetching" :gitHubStatistics="gitHubStatistics" />
 	<GitHubStars :is-fetching="isFetching" :gitHubStatistics="gitHubStatistics" />
-	<Figure description="Lines of Code">
+	<StatisticsFigure description="Lines of Code">
 		<figure v-html="barChartIcon" />
-	</Figure>
+	</StatisticsFigure>
 </template>

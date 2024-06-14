@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Maybe } from "true-myth";
 import type { GitHubStatistics } from "../github-statistics/github-statistics-schema";
-import Figure from "./Figure.vue";
+import StatisticsFigure from "./StatisticsFigure.vue";
 import LoadingSpinner from "./LoadingSpinner.vue";
-import Cite from "./Cite.vue";
+import StatisticsCite from "./StatisticsCite.vue";
 
 interface Properties {
 	readonly isFetching: boolean;
@@ -14,10 +14,10 @@ const { isFetching, gitHubStatistics } = defineProps<Properties>();
 </script>
 
 <template>
-	<Figure description="GitHub Repos">
+	<StatisticsFigure description="GitHub Repos">
 		<LoadingSpinner v-if="isFetching" />
-		<Cite v-if="!isFetching" ariaLabel="GitHub Repos">
+		<StatisticsCite v-if="!isFetching" ariaLabel="GitHub Repos">
 			{{ gitHubStatistics.get("user").get("repositories").get("totalCount").unwrapOr(0) }}
-		</Cite>
-	</Figure>
+		</StatisticsCite>
+	</StatisticsFigure>
 </template>
