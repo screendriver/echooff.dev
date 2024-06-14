@@ -1,21 +1,11 @@
 default: develop
 
-astro-sync:
+lint:
 	npx astro sync
-
-astro-check: astro-sync
 	npx astro check
-
-prettier-check:
 	npx prettier --check source
-
-eslint:
 	npx eslint . --ext ".ts"
-
-copy-paste-detection:
 	npx jscpd source
-
-lint: astro-check prettier-check eslint copy-paste-detection
 
 @compile:
 	npx tsc
