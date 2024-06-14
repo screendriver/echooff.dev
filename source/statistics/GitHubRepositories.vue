@@ -16,7 +16,7 @@ const { isFetching, gitHubStatistics } = defineProps<Properties>();
 <template>
 	<Figure description="GitHub Repos">
 		<LoadingSpinner v-if="isFetching" />
-		<Cite v-if="!isFetching" aria-label="GitHub Repos">
+		<Cite v-if="!isFetching" ariaLabel="GitHub Repos">
 			{{ gitHubStatistics.get("user").get("repositories").get("totalCount").unwrapOr(0) }}
 		</Cite>
 	</Figure>

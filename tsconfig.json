@@ -30,6 +30,5 @@
 		"verbatimModuleSyntax": true,
 		"jsx": "preserve"
 	},
-	"include": ["./astro.config.ts", "source/**/*"]
+	"include": ["./astro.config.ts", "source/**/*", "source/**/*.vue"]
 }
-
