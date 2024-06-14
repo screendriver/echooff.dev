@@ -12,17 +12,7 @@
 	"volta": {
 		"node": "22.2.0"
 	},
-	"scripts": {
-		"lint": "astro sync && astro check && eslint . --ext '.ts' && prettier --check source",
-		"copy:paste:detector": "jscpd source",
-		"compile": "tsc",
-		"develop": "FORCE_COLOR='1' tsx ./source/start-develop.ts",
-		"build": "astro build",
-		"preview": "astro preview",
-		"pretest:unit": "npm run compile",
-		"test:unit": "ava",
-		"test:unit:coverage": "c8 npm run test:unit"
-	},
+	"scripts": {},
 	"dependencies": {
 		"@astrojs/node": "8.3.0",
 		"@astrojs/vue": "4.4.0",
