@@ -1,9 +1,11 @@
 {
-	"parser": "@typescript-eslint/parser",
+	"parser": "vue-eslint-parser",
 	"parserOptions": {
+		"parser": "@typescript-eslint/parser",
 		"sourceType": "module",
 		"ecmaVersion": 2021,
-		"project": "tsconfig.json"
+		"project": "tsconfig.json",
+		"extraFileExtensions": [".vue"]
 	},
 	"extends": [
 		"prettier",
@@ -11,6 +13,7 @@
 		"plugin:@typescript-eslint/eslint-recommended",
 		"plugin:@typescript-eslint/recommended",
 		"plugin:@typescript-eslint/recommended-requiring-type-checking",
+		"plugin:vue/vue3-recommended",
 		"plugin:functional/external-typescript-recommended",
 		"plugin:ava/recommended",
 		"plugin:prettier/recommended"
