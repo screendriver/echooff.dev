@@ -10,7 +10,7 @@
 		"node": "22.x"
 	},
 	"volta": {
-		"node": "22.2.0"
+		"node": "22.3.0"
 	},
 	"scripts": {},
 	"dependencies": {
