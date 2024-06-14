@@ -4,7 +4,7 @@ lint:
 	npx astro sync
 	npx astro check
 	npx prettier --check source
-	npx eslint . --ext ".ts"
+	npx eslint . --ext ".ts,.vue"
 	npx jscpd source
 
 @compile:
