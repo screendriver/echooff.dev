@@ -10,16 +10,18 @@ jobs:
         steps:
             - name: Checkout code
               uses: nschloe/action-cached-lfs-checkout@v1
+            - name: Install just command runner
+              uses: extractions/setup-just@v2
+              with:
+                  just-version: "1.x"
             - name: Setup Node.js
               uses: ./.github/actions/setup-nodejs
             - name: Check source code
-              run: |
-                  npm run lint
-                  npm run copy:paste:detector
+              run: just lint
             - name: Compile source code
-              run: npm run compile
+              run: just compile
             - name: Run unit tests
-              run: npm run test:unit:coverage
+              run: just test-unit-coverage
             - name: Upload code coverage artifact
               uses: actions/upload-artifact@v4
               with:
