@@ -12,9 +12,7 @@
 	"volta": {
 		"node": "22.2.0"
 	},
-	"scripts": {
-		"build": "astro build"
-	},
+	"scripts": {},
 	"dependencies": {
 		"@astrojs/node": "8.3.0",
 		"@astrojs/vue": "4.4.0",
