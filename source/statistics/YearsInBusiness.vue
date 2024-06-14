@@ -11,6 +11,6 @@ const { yearsOfExperience } = defineProps<Properties>();
 
 <template>
 	<Figure description="Experience">
-		<Cite aria-label="Years of experience">{{ yearsOfExperience }} yrs</Cite>
+		<Cite ariaLabel="Years of experience">{{ yearsOfExperience }} yrs</Cite>
 	</Figure>
 </template>
