@@ -9,9 +9,6 @@
 	"engines": {
 		"node": "22.x"
 	},
-	"volta": {
-		"node": "22.3.0"
-	},
 	"scripts": {},
 	"dependencies": {
 		"@astrojs/node": "8.3.1",
