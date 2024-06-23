@@ -1,5 +1,4 @@
 FROM node:22.3.0 as build
-COPY --from=just /usr/bin/just /usr/local/bin/just
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --no-save
