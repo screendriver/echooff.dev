@@ -1,4 +1,5 @@
-default: develop
+default:
+	just --list
 
 lint:
 	npx astro sync
