@@ -2,7 +2,7 @@ import test from "ava";
 import { fake } from "sinon";
 import { Factory } from "fishery";
 import { stripIndent } from "common-tags";
-import type { graphql as octokitGraphql, RequestParameters } from "@octokit/graphql/dist-types/types";
+import type { graphql as octokitGraphql, RequestParameters } from "@octokit/graphql/types";
 import type { FetchGitHubStatisticsOptions } from "./graphql-query.js";
 import { fetchGitHubStatistics } from "./graphql-query.js";
 

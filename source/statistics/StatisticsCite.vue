@@ -1,13 +1,13 @@
 <script setup lang="ts">
 interface Properties {
-	readonly ariaLabel: string;
+	readonly description: string;
 }
 
-const { ariaLabel } = defineProps<Properties>();
+const { description } = defineProps<Properties>();
 </script>
 
 <template>
-	<cite :aria-label="ariaLabel" class="mt-2 text-lg font-bold not-italic text-dracula-green">
+	<cite :aria-label="description" class="mt-2 text-lg font-bold not-italic text-dracula-green">
 		<slot />
 	</cite>
 </template>

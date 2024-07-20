@@ -28,8 +28,8 @@ const barChartIcon = icons["bar-chart"].toSvg({ class: "text-dracula-green w-6 h
 
 <template>
 	<YearsInBusiness :years-of-experience="yearsOfExperience" />
-	<GitHubRepositories :is-fetching="isFetching" :gitHubStatistics="gitHubStatistics" />
-	<GitHubStars :is-fetching="isFetching" :gitHubStatistics="gitHubStatistics" />
+	<GitHubRepositories :is-fetching="isFetching" :github-statistics="gitHubStatistics" />
+	<GitHubStars :is-fetching="isFetching" :github-statistics="gitHubStatistics" />
 	<StatisticsFigure description="Lines of Code">
 		<figure v-html="barChartIcon" />
 	</StatisticsFigure>

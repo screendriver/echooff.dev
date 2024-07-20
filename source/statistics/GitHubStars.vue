@@ -7,17 +7,17 @@ import StatisticsCite from "./StatisticsCite.vue";
 
 interface Properties {
 	readonly isFetching: boolean;
-	readonly gitHubStatistics: Maybe<GitHubStatistics>;
+	readonly githubStatistics: Maybe<GitHubStatistics>;
 }
 
-const { isFetching, gitHubStatistics } = defineProps<Properties>();
+const { isFetching, githubStatistics } = defineProps<Properties>();
 </script>
 
 <template>
 	<StatisticsFigure description="GitHub Stars">
 		<LoadingSpinner v-if="isFetching" />
-		<StatisticsCite v-if="!isFetching" ariaLabel="GitHub Stars">
-			{{ gitHubStatistics.get("user").get("starredRepositories").get("totalCount").unwrapOr(0) }}
+		<StatisticsCite v-if="!isFetching" description="GitHub Stars">
+			{{ githubStatistics.get("user").get("starredRepositories").get("totalCount").unwrapOr(0) }}
 		</StatisticsCite>
 	</StatisticsFigure>
 </template>

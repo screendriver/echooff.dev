@@ -1,4 +1,4 @@
-import type { GraphQlResponse, graphql as octokitGraphql } from "@octokit/graphql/dist-types/types";
+import type { GraphQlResponse, graphql as octokitGraphql } from "@octokit/graphql/types";
 
 export interface FetchGitHubStatisticsOptions {
 	readonly graphql: octokitGraphql;
