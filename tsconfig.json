@@ -2,6 +2,9 @@
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"extends": ["astro/tsconfigs/strictest", "@vue/tsconfig/tsconfig.json"],
 	"compilerOptions": {
+		"noEmit": false,
+		"outDir": "./target",
+		"allowImportingTsExtensions": false,
 		"jsx": "preserve"
 	},
 	"include": ["./astro.config.ts", "source/**/*", "source/**/*.vue"]
