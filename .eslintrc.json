@@ -15,10 +15,9 @@
 		"plugin:@typescript-eslint/recommended-requiring-type-checking",
 		"plugin:vue/vue3-recommended",
 		"plugin:functional/external-typescript-recommended",
-		"plugin:ava/recommended",
 		"plugin:prettier/recommended"
 	],
-	"plugins": ["@typescript-eslint", "ava", "functional"],
+	"plugins": ["@typescript-eslint", "functional"],
 	"env": {
 		"browser": true,
 		"node": true
