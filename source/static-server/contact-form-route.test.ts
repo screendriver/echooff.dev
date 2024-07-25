@@ -1,9 +1,9 @@
-import test from "ava";
+import { test, expect } from "vitest";
 import createFastify from "fastify";
 import fastifyFormBody from "@fastify/formbody";
 import { createContactFormRoute } from "./contact-form-route.js";
 
-test("returns an an empty JSON object when making a HTTP POST request", async (t) => {
+test("returns an an empty JSON object when making a HTTP POST request", async () => {
 	const fastify = createFastify();
 	void fastify.register(fastifyFormBody);
 	fastify.route(createContactFormRoute());
@@ -19,5 +19,5 @@ test("returns an an empty JSON object when making a HTTP POST request", async (t
 	const actual = response.json<unknown>();
 	const expected = {};
 
-	t.deepEqual(actual, expected);
+	expect(actual).toStrictEqual(expected);
 });

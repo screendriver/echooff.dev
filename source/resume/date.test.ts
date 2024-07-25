@@ -1,80 +1,44 @@
-import test from "ava";
+import { test, expect } from "vitest";
 import { formatSinceDate } from "./date.js";
 
-interface TestFormatSinceDateErrorInput {
+type TestFormatSinceDateErrorInput = {
 	readonly since: string;
 	readonly onlyYear: boolean;
-}
+	readonly expectedErrorMessage: string;
+};
 
-const testFormatSinceDateErrorMacro = test.macro<[TestFormatSinceDateErrorInput, string]>(
-	(t, input, expectedErrorMessage) => {
-		const { since, onlyYear } = input;
-		const formattedDateResult = formatSinceDate(since, onlyYear);
+test.each<TestFormatSinceDateErrorInput>([
+	{ since: "", onlyYear: true, expectedErrorMessage: 'Since "" is not a valid date' },
+	{ since: "", onlyYear: false, expectedErrorMessage: 'Since "" is not a valid date' },
+	{ since: "foo", onlyYear: true, expectedErrorMessage: 'Since "foo" is not a valid date' },
+	{ since: "foo", onlyYear: false, expectedErrorMessage: 'Since "foo" is not a valid date' },
+])("formatSinceDate() returns a Result Err when 'since' is equals $since and 'onlyYear' is $onlyYear", (input) => {
+	const { since, onlyYear, expectedErrorMessage } = input;
+	const formattedDateResult = formatSinceDate(since, onlyYear);
 
-		if (formattedDateResult.isErr) {
-			t.is(formattedDateResult.error, expectedErrorMessage);
-		} else {
-			t.fail("Result is not an Err");
-		}
-	},
-);
+	if (formattedDateResult.isErr) {
+		expect(formattedDateResult.error).toBe(expectedErrorMessage);
+	} else {
+		expect.fail("Result is not an Err");
+	}
+});
 
-test(
-	'formatSinceDate() returns a Result Err when "since" is an empty string and "onlyYear" is true',
-	testFormatSinceDateErrorMacro,
-	{ since: "", onlyYear: true },
-	'Since "" is not a valid date',
-);
-
-test(
-	'formatSinceDate() returns a Result Err when "since" is an empty string and "onlyYear" is false',
-	testFormatSinceDateErrorMacro,
-	{ since: "", onlyYear: false },
-	'Since "" is not a valid date',
-);
-
-test(
-	'formatSinceDate() returns a Result Err when "since" is an invalid string and "onlyYear" is true',
-	testFormatSinceDateErrorMacro,
-	{ since: "foo", onlyYear: true },
-	'Since "foo" is not a valid date',
-);
-
-test(
-	'formatSinceDate() returns a Result Err when "since" is an invalid string and "onlyYear" is false',
-	testFormatSinceDateErrorMacro,
-	{ since: "foo", onlyYear: false },
-	'Since "foo" is not a valid date',
-);
-
-interface TestFormatSinceDateOkInput {
+type TestFormatSinceDateOkInput = {
 	readonly since: string;
 	readonly onlyYear: boolean;
-}
+	readonly expectedFormatResult: string;
+};
 
-const testFormatSinceDateOkMacro = test.macro<[TestFormatSinceDateOkInput, string]>(
-	(t, input, expectedFormatResult) => {
-		const { since, onlyYear } = input;
-		const formattedDateResult = formatSinceDate(since, onlyYear);
+test.each<TestFormatSinceDateOkInput>([
+	{ since: "2022-01-01", onlyYear: true, expectedFormatResult: "2022" },
+	{ since: "2022-01-01", onlyYear: false, expectedFormatResult: "January 2022" },
+])("formatSinceDate() returns a Result Ok when 'onlyYear' is $onlyYear", (input) => {
+	const { since, onlyYear, expectedFormatResult } = input;
+	const formattedDateResult = formatSinceDate(since, onlyYear);
 
-		if (formattedDateResult.isOk) {
-			t.is(formattedDateResult.value, expectedFormatResult);
-		} else {
-			t.fail("Result is not an Ok");
-		}
-	},
-);
-
-test(
-	"formatSinceDate() returns a Result Ok with only the year",
-	testFormatSinceDateOkMacro,
-	{ since: "2022-01-01", onlyYear: true },
-	"2022",
-);
-
-test(
-	"formatSinceDate() returns a Result Ok with the year and full month",
-	testFormatSinceDateOkMacro,
-	{ since: "2022-01-01", onlyYear: false },
-	"January 2022",
-);
+	if (formattedDateResult.isOk) {
+		expect(formattedDateResult.value).toBe(expectedFormatResult);
+	} else {
+		expect.fail("Result is not an Ok");
+	}
+});

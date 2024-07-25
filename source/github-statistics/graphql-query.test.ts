@@ -1,4 +1,4 @@
-import test from "ava";
+import { test, expect, type TestFunction } from "vitest";
 import { fake } from "sinon";
 import { Factory } from "fishery";
 import { stripIndent } from "common-tags";
@@ -16,8 +16,15 @@ const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatistics
 	};
 });
 
-const testFetchGitHubStatisticsMacro = test.macro<[keyof RequestParameters, unknown]>(
-	async (t, requestParameter, expectedRequestParameters) => {
+type TestFetchGitHubStatisticsInput = {
+	readonly requestParameter: keyof RequestParameters;
+	readonly expectedRequestParameters: unknown;
+};
+
+function testFetchGitHubStatistics(testInput: TestFetchGitHubStatisticsInput): TestFunction {
+	const { requestParameter, expectedRequestParameters } = testInput;
+
+	return async () => {
 		const graphql = fake.resolves<readonly RequestParameters[]>(undefined);
 		const fetchGitHubStatisticsOptions = fetchGitHubStatisticsOptionsFactory.build({
 			graphql: graphql as unknown as octokitGraphql,
@@ -25,16 +32,16 @@ const testFetchGitHubStatisticsMacro = test.macro<[keyof RequestParameters, unkn
 
 		await fetchGitHubStatistics(fetchGitHubStatisticsOptions);
 
-		t.is(graphql.callCount, 1);
-		t.deepEqual(graphql.args[0]?.[0]?.[requestParameter], expectedRequestParameters);
-	},
-);
+		expect(graphql.callCount).toBe(1);
+		expect(graphql.args[0]?.[0]?.[requestParameter]).toStrictEqual(expectedRequestParameters);
+	};
+}
 
 test(
 	"fetchGitHubStatistics() uses the correct GraphQL query",
-	testFetchGitHubStatisticsMacro,
-	"query",
-	stripIndent`query ($login: String!) {
+	testFetchGitHubStatistics({
+		requestParameter: "query",
+		expectedRequestParameters: stripIndent`query ($login: String!) {
             user(login: $login) {
                 repositories {
                     totalCount
@@ -44,17 +51,31 @@ test(
                 }
             }
         }`,
+	}),
 );
 
 test(
 	"fetchGitHubStatistics() uses the correct GitHub base URL and strips the trailing slash",
-	testFetchGitHubStatisticsMacro,
-	"baseUrl",
-	"https://example.com",
+	testFetchGitHubStatistics({
+		requestParameter: "baseUrl",
+		expectedRequestParameters: "https://example.com",
+	}),
 );
 
-test("fetchGitHubStatistics() uses the correct GitHub login", testFetchGitHubStatisticsMacro, "login", "username");
+test(
+	"fetchGitHubStatistics() uses the correct GitHub login",
+	testFetchGitHubStatistics({
+		requestParameter: "login",
+		expectedRequestParameters: "username",
+	}),
+);
 
-test("fetchGitHubStatistics() uses the correct GitHub API token", testFetchGitHubStatisticsMacro, "headers", {
-	authorization: "token my-token",
-});
+test(
+	"fetchGitHubStatistics() uses the correct GitHub API token",
+	testFetchGitHubStatistics({
+		requestParameter: "headers",
+		expectedRequestParameters: {
+			authorization: "token my-token",
+		},
+	}),
+);

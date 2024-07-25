@@ -1,7 +1,6 @@
-import test from "ava";
+import { test, expect } from "vitest";
 import { Factory } from "fishery";
 import { stripIndent } from "common-tags";
-import { ZodError } from "zod";
 import type { GitHubStatistics } from "./github-statistics-schema.js";
 import { gitHubStatisticsSchema } from "./github-statistics-schema.js";
 
@@ -18,7 +17,7 @@ const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
 	};
 });
 
-test('gitHubStatisticsSchema does allow additional properties in addition to "user" object an strips them out', (t) => {
+test('gitHubStatisticsSchema does allow additional properties in addition to "user" object an strips them out', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		foo: "bar",
 	} as unknown as GitHubStatistics);
@@ -26,10 +25,10 @@ test('gitHubStatisticsSchema does allow additional properties in addition to "us
 	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
 	const expected = gitHubStatisticsFactory.build();
 
-	t.deepEqual(actual, expected);
+	expect(actual).toStrictEqual(expected);
 });
 
-test('gitHubStatisticsSchema does allow additional properties in "user" object and strips them out', (t) => {
+test('gitHubStatisticsSchema does allow additional properties in "user" object and strips them out', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			foo: "bar",
@@ -39,10 +38,10 @@ test('gitHubStatisticsSchema does allow additional properties in "user" object a
 	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
 	const expected = gitHubStatisticsFactory.build();
 
-	t.deepEqual(actual, expected);
+	expect(actual).toStrictEqual(expected);
 });
 
-test('gitHubStatisticsSchema does allow additional properties in "user.repositories" object and strips them out', (t) => {
+test('gitHubStatisticsSchema does allow additional properties in "user.repositories" object and strips them out', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
@@ -54,10 +53,10 @@ test('gitHubStatisticsSchema does allow additional properties in "user.repositor
 	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
 	const expected = gitHubStatisticsFactory.build();
 
-	t.deepEqual(actual, expected);
+	expect(actual).toStrictEqual(expected);
 });
 
-test('gitHubStatisticsSchema does allow additional properties in "user.starredRepositories" object and strips them out', (t) => {
+test('gitHubStatisticsSchema does allow additional properties in "user.starredRepositories" object and strips them out', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			starredRepositories: {
@@ -69,10 +68,10 @@ test('gitHubStatisticsSchema does allow additional properties in "user.starredRe
 	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
 	const expected = gitHubStatisticsFactory.build();
 
-	t.deepEqual(actual, expected);
+	expect(actual).toStrictEqual(expected);
 });
 
-test('gitHubStatisticsSchema does not allow negative numbers for "user.repositories.totalCount', (t) => {
+test('gitHubStatisticsSchema does not allow negative numbers for "user.repositories.totalCount', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
@@ -81,9 +80,7 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.repositor
 		},
 	});
 
-	t.throws(
-		() => gitHubStatisticsSchema.parse(gitHubStatistics),
-		{ instanceOf: ZodError },
+	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrowError(
 		stripIndent`
           [
             {
@@ -103,7 +100,7 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.repositor
 	);
 });
 
-test('gitHubStatisticsSchema does not allow other types than number for "user.repositories.totalCount', (t) => {
+test('gitHubStatisticsSchema does not allow other types than number for "user.repositories.totalCount', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
@@ -112,9 +109,7 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.re
 		},
 	} as unknown as GitHubStatistics);
 
-	t.throws(
-		() => gitHubStatisticsSchema.parse(gitHubStatistics),
-		{ instanceOf: ZodError },
+	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrowError(
 		stripIndent`
           [
             {
@@ -132,7 +127,7 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.re
 	);
 });
 
-test('gitHubStatisticsSchema allows 0 for "user.repositories.totalCount', (t) => {
+test('gitHubStatisticsSchema allows 0 for "user.repositories.totalCount', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
@@ -144,10 +139,10 @@ test('gitHubStatisticsSchema allows 0 for "user.repositories.totalCount', (t) =>
 	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
 	const expected = gitHubStatistics;
 
-	t.deepEqual(actual, expected);
+	expect(actual).toStrictEqual(expected);
 });
 
-test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRepositories.totalCount"', (t) => {
+test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRepositories.totalCount"', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			starredRepositories: {
@@ -156,9 +151,7 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRe
 		},
 	});
 
-	t.throws(
-		() => gitHubStatisticsSchema.parse(gitHubStatistics),
-		{ instanceOf: ZodError },
+	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrowError(
 		stripIndent`
           [
             {
@@ -178,7 +171,7 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRe
 	);
 });
 
-test('gitHubStatisticsSchema does not allow other types than number for "user.starredRepositories.totalCount', (t) => {
+test('gitHubStatisticsSchema does not allow other types than number for "user.starredRepositories.totalCount', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			starredRepositories: {
@@ -187,9 +180,7 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.st
 		},
 	} as unknown as GitHubStatistics);
 
-	t.throws(
-		() => gitHubStatisticsSchema.parse(gitHubStatistics),
-		{ instanceOf: ZodError },
+	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrowError(
 		stripIndent`
         [
           {
@@ -207,7 +198,7 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.st
 	);
 });
 
-test('gitHubStatisticsSchema allows 0 for "user.starredRepositories.totalCount', (t) => {
+test('gitHubStatisticsSchema allows 0 for "user.starredRepositories.totalCount', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			starredRepositories: {
@@ -219,5 +210,5 @@ test('gitHubStatisticsSchema allows 0 for "user.starredRepositories.totalCount',
 	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
 	const expected = gitHubStatistics;
 
-	t.deepEqual(actual, expected);
+	expect(actual).toStrictEqual(expected);
 });
