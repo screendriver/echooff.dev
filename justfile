@@ -20,8 +20,7 @@ lint:
 @preview:
 	npx astro preview
 
-@test-unit: compile
-	npx ava
+@test-unit *options:
+	npx vitest {{options}}
 
-@test-unit-coverage: compile
-	npx c8 ava
+test: compile lint (test-unit "--coverage --run")
