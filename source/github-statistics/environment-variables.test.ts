@@ -3,7 +3,7 @@ import { stripIndent } from "common-tags";
 import { gitHubApiTokenSchema, gitHubBaseUrlSchema, gitHubLoginSchema } from "./environment-variables.js";
 
 test("gitHubBaseUrlSchema does not allow booleans", () => {
-	expect(() => gitHubBaseUrlSchema.parse(true)).toThrowError(
+	expect(() => gitHubBaseUrlSchema.parse(true)).toThrow(
 		stripIndent`
           [
             {
@@ -18,7 +18,7 @@ test("gitHubBaseUrlSchema does not allow booleans", () => {
 });
 
 test("gitHubBaseUrlSchema does not allow numbers", () => {
-	expect(() => gitHubBaseUrlSchema.parse(42)).toThrowError(
+	expect(() => gitHubBaseUrlSchema.parse(42)).toThrow(
 		stripIndent`
           [
             {
@@ -33,7 +33,7 @@ test("gitHubBaseUrlSchema does not allow numbers", () => {
 });
 
 test("gitHubBaseUrlSchema does not allow empty strings", () => {
-	expect(() => gitHubBaseUrlSchema.parse("")).toThrowError(
+	expect(() => gitHubBaseUrlSchema.parse("")).toThrow(
 		stripIndent`
           [
             {
@@ -47,7 +47,7 @@ test("gitHubBaseUrlSchema does not allow empty strings", () => {
 });
 
 test("gitHubBaseUrlSchema does not allow strings that are not an URL", () => {
-	expect(() => gitHubBaseUrlSchema.parse("foo")).toThrowError(
+	expect(() => gitHubBaseUrlSchema.parse("foo")).toThrow(
 		stripIndent`
           [
             {
@@ -67,7 +67,7 @@ test("gitHubBaseUrlSchema allows a string URL", () => {
 });
 
 test("gitHubLoginSchema does not allow booleans", () => {
-	expect(() => gitHubLoginSchema.parse(true)).toThrowError(
+	expect(() => gitHubLoginSchema.parse(true)).toThrow(
 		stripIndent`
       [
         {
@@ -82,7 +82,7 @@ test("gitHubLoginSchema does not allow booleans", () => {
 });
 
 test("gitHubLoginSchema does not allow numbers", () => {
-	expect(() => gitHubLoginSchema.parse(42)).toThrowError(
+	expect(() => gitHubLoginSchema.parse(42)).toThrow(
 		stripIndent`
         [
           {
@@ -97,7 +97,7 @@ test("gitHubLoginSchema does not allow numbers", () => {
 });
 
 test("gitHubLoginSchema does not allow empty strings", () => {
-	expect(() => gitHubLoginSchema.parse("")).toThrowError(
+	expect(() => gitHubLoginSchema.parse("")).toThrow(
 		stripIndent`
         [
           {
@@ -120,7 +120,7 @@ test("gitHubLoginSchema allows non empty strings", () => {
 });
 
 test("gitHubApiTokenSchema does not allow booleans", () => {
-	expect(() => gitHubApiTokenSchema.parse(true)).toThrowError(
+	expect(() => gitHubApiTokenSchema.parse(true)).toThrow(
 		stripIndent`
       [
         {
@@ -135,7 +135,7 @@ test("gitHubApiTokenSchema does not allow booleans", () => {
 });
 
 test("gitHubApiTokenSchema does not allow numbers", () => {
-	expect(() => gitHubApiTokenSchema.parse(42)).toThrowError(
+	expect(() => gitHubApiTokenSchema.parse(42)).toThrow(
 		stripIndent`
         [
           {
@@ -150,7 +150,7 @@ test("gitHubApiTokenSchema does not allow numbers", () => {
 });
 
 test("gitHubApiTokenSchema does not allow empty strings", () => {
-	expect(() => gitHubApiTokenSchema.parse("")).toThrowError(
+	expect(() => gitHubApiTokenSchema.parse("")).toThrow(
 		stripIndent`
         [
           {

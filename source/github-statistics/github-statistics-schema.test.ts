@@ -80,7 +80,7 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.repositor
 		},
 	});
 
-	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrowError(
+	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrow(
 		stripIndent`
           [
             {
@@ -109,7 +109,7 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.re
 		},
 	} as unknown as GitHubStatistics);
 
-	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrowError(
+	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrow(
 		stripIndent`
           [
             {
@@ -151,7 +151,7 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRe
 		},
 	});
 
-	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrowError(
+	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrow(
 		stripIndent`
           [
             {
@@ -180,7 +180,7 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.st
 		},
 	} as unknown as GitHubStatistics);
 
-	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrowError(
+	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrow(
 		stripIndent`
         [
           {
