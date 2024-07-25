@@ -1,8 +1,10 @@
 default:
 	@just --list
 
-lint:
+sync:
 	npx astro sync
+
+lint: sync
 	npx astro check
 	npx prettier --check source
 	npx eslint . --ext ".ts,.vue"
@@ -23,4 +25,4 @@ lint:
 @test-unit *options:
 	npx vitest {{options}}
 
-test: compile lint (test-unit "--coverage --run")
+test: sync compile lint (test-unit "--coverage --run")
