@@ -20,12 +20,7 @@ jobs:
               run: just lint
             - name: Compile source code
               run: just compile
-            - name: Run unit tests
-              run: just test-unit-coverage
-            - name: Upload code coverage artifact
-              uses: actions/upload-artifact@v4
-              with:
-                  name: code-coverage
-                  path: target/coverage/clover.xml
-                  retention-days: 1
-                  if-no-files-found: error
+            - name: Run tests
+              run: just test
+            - name: Build application
+              run: just build
