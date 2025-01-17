@@ -17,7 +17,7 @@
 		"@fontsource/source-sans-pro": "5.0.8",
 		"@octokit/graphql": "8.1.2",
 		"@sindresorhus/is": "6.3.1",
-		"@vueuse/core": "10.11.0",
+		"@vueuse/core": "10.11.1",
 		"astro": "4.11.0",
 		"astro-seo-schema": "4.0.2",
 		"date-fns": "3.6.0",
