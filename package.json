@@ -28,7 +28,7 @@
 		"zod": "3.23.8"
 	},
 	"devDependencies": {
-		"@astrojs/check": "0.7.0",
+		"@astrojs/check": "0.9.4",
 		"@astrojs/rss": "4.0.11",
 		"@astrojs/tailwind": "5.1.4",
 		"@fastify/cors": "9.0.1",
