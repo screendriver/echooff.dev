@@ -62,7 +62,7 @@
 		"just-install": "2.0.2",
 		"postcss": "8.4.38",
 		"prettier": "3.3.2",
-		"prettier-plugin-astro": "0.14.0",
+		"prettier-plugin-astro": "0.14.1",
 		"prettier-plugin-tailwindcss": "0.6.5",
 		"sharp": "0.33.5",
 		"sinon": "18.0.0",
