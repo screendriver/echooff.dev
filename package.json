@@ -54,7 +54,7 @@
 		"eslint-plugin-functional": "6.6.3",
 		"eslint-plugin-prettier": "5.2.3",
 		"eslint-plugin-vitest": "0.5.4",
-		"eslint-plugin-vue": "9.26.0",
+		"eslint-plugin-vue": "9.32.0",
 		"fastify": "4.28.0",
 		"fishery": "2.2.2",
 		"get-port": "7.1.0",
