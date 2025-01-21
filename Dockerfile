@@ -12,7 +12,7 @@ WORKDIR /home/node/app
 COPY package*.json ./
 USER node
 RUN npm clean-install --omit=dev
-COPY --chown=node:node --from=build /app/target/dist .
+COPY --chown=node:node --from=build /app/target .
 ENV HOST="0.0.0.0"
 EXPOSE 4321
 CMD [ "node", "./server/entry.mjs" ]
