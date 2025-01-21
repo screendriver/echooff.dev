@@ -7,6 +7,11 @@
 	},
 	"packageRules": [
 		{
+			"groupName": "Nuxt dependencies",
+			"groupSlug": "nuxt-dependencies",
+			"matchPackageNames": ["@astrojs/*", "@*/nuxt", "astro", "astro-*", "*-astro"]
+		},
+		{
 			"matchDepTypes": ["dependencies", "devDependencies"],
 			"matchUpdateTypes": ["minor", "patch"],
 			"automerge": true,
