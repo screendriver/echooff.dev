@@ -7,16 +7,11 @@ import { icons } from "feather-icons";
 >
 	<ul class="flex items-center gap-8">
 		<li>
-			<a href="/" title="Home"
-				><Fragment
-					set:html={icons.code?.toSvg({
-						class: "w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 transition hover:text-dracula-purple",
-					})}
-				/></a
-			>
-		</li>
-		<li>
-			<a href="/blog/" class="transition duration-150 hover:text-dracula-purple">Blog</a>
+			<Fragment
+				set:html={icons.code?.toSvg({
+					class: "w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8",
+				})}
+			/>
 		</li>
 	</ul>
 	<ul class="flex gap-4">
