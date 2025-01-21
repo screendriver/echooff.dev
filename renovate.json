@@ -7,6 +7,11 @@
 	},
 	"packageRules": [
 		{
+			"groupName": "Astro dependencies",
+			"groupSlug": "astro-dependencies",
+			"matchPackageNames": ["@astrojs/*", "astro", "astro-*", "*-astro"]
+		},
+		{
 			"matchDepTypes": ["dependencies", "devDependencies"],
 			"matchUpdateTypes": ["minor", "patch"],
 			"automerge": true,
