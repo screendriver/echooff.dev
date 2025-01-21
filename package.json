@@ -60,7 +60,7 @@
 		"get-port": "7.1.0",
 		"jscpd": "4.0.5",
 		"just-install": "2.0.2",
-		"postcss": "8.4.38",
+		"postcss": "8.5.1",
 		"prettier": "3.3.2",
 		"prettier-plugin-astro": "0.14.1",
 		"prettier-plugin-tailwindcss": "0.6.10",
