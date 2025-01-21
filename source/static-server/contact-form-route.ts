@@ -6,11 +6,20 @@ export function createContactFormRoute(): RouteOptions {
 		url: "/contact-form",
 		schema: {
 			headers: {
-				"content-type": { type: "string", const: "application/x-www-form-urlencoded" },
+				type: "object",
+				properties: {
+					"content-type": { type: "string", const: "application/x-www-form-urlencoded" },
+				},
 			},
-			body: {},
+			body: {
+				type: "object",
+				properties: {},
+			},
 			response: {
-				200: {},
+				200: {
+					type: "object",
+					properties: {},
+				},
 			},
 		},
 		async handler(_request, reply) {

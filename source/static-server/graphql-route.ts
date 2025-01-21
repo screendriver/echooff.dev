@@ -6,12 +6,18 @@ export function createGraphQlRoute(): RouteOptions {
 		url: "/graphql",
 		schema: {
 			headers: {
-				accept: { type: "string", const: "application/vnd.github.v3+json" },
-				authorization: { type: "string" },
-				"user-agent": { type: "string" },
+				type: "object",
+				properties: {
+					accept: { type: "string", const: "application/vnd.github.v3+json" },
+					authorization: { type: "string" },
+					"user-agent": { type: "string" },
+				},
 			},
 			body: {
-				query: { type: "string" },
+				type: "object",
+				properties: {
+					query: { type: "string" },
+				},
 			},
 			response: {
 				200: {
