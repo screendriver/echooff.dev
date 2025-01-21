@@ -6,5 +6,5 @@
 		"allowImportingTsExtensions": false,
 		"jsx": "preserve"
 	},
-	"include": ["./astro.config.ts", "./vitest.config.ts", "source/**/*", "source/**/*.vue"]
+	"include": [".astro/types.d.ts", "./astro.config.ts", "./vitest.config.ts", "source/**/*", "source/**/*.vue"]
 }
