@@ -31,7 +31,7 @@
 		"@astrojs/check": "0.9.4",
 		"@astrojs/tailwind": "5.1.5",
 		"@fastify/cors": "10.0.2",
-		"@fastify/formbody": "7.4.0",
+		"@fastify/formbody": "8.0.2",
 		"@jscpd/badge-reporter": "4.0.1",
 		"@jscpd/finder": "4.0.1",
 		"@tailwindcss/typography": "0.5.16",
