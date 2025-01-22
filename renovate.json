@@ -12,6 +12,11 @@
 			"matchPackageNames": ["@astrojs/*", "astro", "astro-*", "*-astro"]
 		},
 		{
+			"groupName": "Fastify dependencies",
+			"groupSlug": "fastify-dependencies",
+			"matchPackageNames": ["@fastify/*", "fastify"]
+		},
+		{
 			"matchDepTypes": ["dependencies", "devDependencies"],
 			"matchUpdateTypes": ["minor", "patch"],
 			"automerge": true,
