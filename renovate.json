@@ -32,7 +32,7 @@
 	"regexManagers": [
 		{
 			"fileMatch": ["^Dockerfile$"],
-			"matchStrings": ["FROM node:(?<currentValue>.*?)-alpine", "FROM node:(?<currentValue>.*?)\\s"],
+			"matchStrings": ["FROM node:(?<currentValue>\\d+\\.\\d+\\.\\d+)", "FROM node:(?<currentValue>.*?)-alpine"],
 			"depNameTemplate": "node",
 			"datasourceTemplate": "node",
 			"versioningTemplate": "node"
