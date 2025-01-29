@@ -12,7 +12,7 @@ lint: sync
 	npx eslint . --ext ".ts,.vue"
 	npx jscpd source
 
-@compile:
+@compile: sync
 	npx vue-tsc
 
 @develop $FORCE_COLOR="1":
