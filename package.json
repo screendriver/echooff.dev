@@ -54,7 +54,7 @@
 		"eslint-plugin-vitest": "0.5.4",
 		"eslint-plugin-vue": "9.32.0",
 		"fastify": "5.2.1",
-		"fishery": "2.2.2",
+		"fishery": "2.2.3",
 		"get-port": "7.1.0",
 		"jscpd": "4.0.5",
 		"just-install": "2.0.2",
