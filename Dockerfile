@@ -1,4 +1,4 @@
-FROM node:22.13.1 AS build
+FROM node:22.14.0 AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm clean-install
@@ -6,7 +6,7 @@ COPY . .
 ENV GITHUB_API_BASE_URL="" GITHUB_LOGIN="" GITHUB_API_TOKEN_FILE=""
 RUN npx just build
 
-FROM node:22.13.1-alpine AS runtime
+FROM node:22.14.0-alpine AS runtime
 RUN mkdir -p /home/node/app/node_modules && chown --recursive node:node /home/node/app
 WORKDIR /home/node/app
 COPY package*.json ./
