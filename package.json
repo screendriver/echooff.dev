@@ -15,7 +15,7 @@
 		"@astrojs/vue": "5.0.6",
 		"@fontsource/jetbrains-mono": "5.1.2",
 		"@fontsource/source-sans-pro": "5.1.0",
-		"@octokit/graphql": "8.2.0",
+		"@octokit/graphql": "8.2.1",
 		"@sindresorhus/is": "7.0.1",
 		"@vueuse/core": "12.6.1",
 		"astro": "5.3.0",
