@@ -1,0 +1,14 @@
+---
+when:
+    - event: manual
+
+steps:
+    - name: build
+      image: woodpeckerci/plugin-docker-buildx:5.2.1
+      settings:
+          dry-run: true
+          buildkit_debug: true
+          repo: echooff
+          tag: ${CI_COMMIT_SHA}
+          platforms: linux/amd64
+          output: type=docker,dest=echooff.tar
