@@ -3,6 +3,7 @@
 	"dependencyDashboard": true,
 	"labels": ["renovate"],
 	"prConcurrentLimit": 5,
+	"branchConcurrentLimit": 10,
 	"lockFileMaintenance": {
 		"enabled": true,
 		"automerge": true
