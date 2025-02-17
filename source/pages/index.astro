@@ -16,35 +16,35 @@ import headerImage from "../assets/images/header-01.jpg";
 <PageShell>
 	<Header withBottomBorder={false}>
 		<figure
-			class="relative h-64 overflow-hidden border-b border-t border-dracula-purple bg-gradient-to-b from-dracula-cyan sm:h-4/5"
+			class="border-dracula-purple from-dracula-cyan relative h-64 overflow-hidden border-t border-b bg-gradient-to-b sm:h-4/5"
 		>
 			<Image
 				src={headerImage}
 				alt="Christian Rackerseder"
 				quality={80}
 				loading="eager"
-				class="h-full translate-x-7 translate-y-7 scale-125 object-cover object-top mix-blend-luminosity sm:transform-none"
+				class="h-full translate-x-6 translate-y-6 scale-120 object-cover object-top mix-blend-luminosity sm:translate-none sm:scale-none"
 			/>
 		</figure>
 		<div
-			class="relative m-auto -mt-11 w-4/5 max-w-screen-sm rounded-md border border-solid border-dracula-dark bg-dracula-darker bg-opacity-90 pb-10 shadow-md shadow-dracula-darker sm:absolute sm:bottom-4 sm:right-4 sm:w-auto lg:bottom-8 lg:right-8 lg:pb-16 xl:pb-24"
+			class="border-dracula-dark bg-dracula-darker/90 shadow-dracula-darker relative m-auto -mt-11 w-4/5 max-w-screen-sm rounded-md border border-solid pb-10 shadow-md sm:absolute sm:right-4 sm:bottom-4 sm:w-auto lg:right-8 lg:bottom-8 lg:pb-16 xl:pb-24"
 		>
-			<div class="relative mb-2 flex h-4 flex-row justify-center rounded-t-md bg-dracula-dark p-2 md:h-7">
-				<div class="absolute left-2 top-1 flex flex-row space-x-1 md:top-2 md:space-x-2">
-					<div class="h-2 w-2 rounded-full bg-dracula-red md:h-3 md:w-3"></div>
-					<div class="h-2 w-2 rounded-full bg-yellow md:h-3 md:w-3"></div>
-					<div class="h-2 w-2 rounded-full bg-dracula-green md:h-3 md:w-3"></div>
+			<div class="bg-dracula-dark relative mb-2 flex h-4 flex-row justify-center rounded-t-md p-2 md:h-7">
+				<div class="absolute top-1 left-2 flex flex-row space-x-1 md:top-2 md:space-x-2">
+					<div class="bg-dracula-red h-2 w-2 rounded-full md:h-3 md:w-3"></div>
+					<div class="bg-dracula-yellow h-2 w-2 rounded-full md:h-3 md:w-3"></div>
+					<div class="bg-dracula-green h-2 w-2 rounded-full md:h-3 md:w-3"></div>
 				</div>
 			</div>
 			<code class="block px-2 text-base sm:mr-10 md:px-4 lg:mr-20 xl:mr-32">
-				<p class="mb-1 text-dracula-light">$ whoami</p>
-				<p class="bg-gradient-to-r from-dracula-pink to-dracula bg-clip-text text-transparent">Christian</p>
-				<p class="mb-1 text-dracula-light">$ groups</p>
-				<p class="bg-gradient-to-r from-dracula-pink to-dracula bg-clip-text text-transparent">
+				<p class="text-dracula-light mb-1">$ whoami</p>
+				<p class="from-dracula-pink to-dracula bg-gradient-to-r bg-clip-text text-transparent">Christian</p>
+				<p class="text-dracula-light mb-1">$ groups</p>
+				<p class="from-dracula-pink to-dracula bg-gradient-to-r bg-clip-text text-transparent">
 					Full-Stack Software Engineer
 				</p>
 				<p
-					class="flex items-center gap-2 text-dracula-light after:relative after:inline-block after:h-6 after:w-2 after:animate-cursor-blink after:bg-dracula-light"
+					class="text-dracula-light after:animate-cursor-blink after:bg-dracula-light flex items-center gap-2 after:relative after:inline-block after:h-6 after:w-2"
 				>
 					$
 				</p>
@@ -53,7 +53,7 @@ import headerImage from "../assets/images/header-01.jpg";
 	</Header>
 
 	<Body>
-		<main class="flex-shrink-0 flex-grow basis-auto text-dracula-light">
+		<main class="text-dracula-light flex-shrink-0 flex-grow basis-auto">
 			<About />
 			<Skills />
 			<Passions />

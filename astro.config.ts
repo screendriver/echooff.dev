@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 import node from "@astrojs/node";
 import vue from "@astrojs/vue";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
 	srcDir: "source",
@@ -10,7 +10,10 @@ export default defineConfig({
 	adapter: node({
 		mode: "standalone",
 	}),
-	integrations: [vue({ devtools: true }), tailwind()],
+	integrations: [vue({ devtools: true })],
+	vite: {
+		plugins: [tailwindcss()],
+	},
 	markdown: {
 		shikiConfig: {
 			theme: "dracula",
