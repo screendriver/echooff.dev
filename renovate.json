@@ -30,10 +30,14 @@
 			"automergeType": "pr"
 		}
 	],
-	"regexManagers": [
+	"customManagers": [
 		{
+			"customType": "regex",
 			"fileMatch": ["^Dockerfile$"],
-			"matchStrings": ["FROM node:(?<currentValue>\\d+\\.\\d+\\.\\d+)", "FROM node:(?<currentValue>.*?)-alpine"],
+			"matchStrings": [
+				"FROM node:(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+				"FROM node:(?<currentValue>.*?)-alpine"
+			],
 			"depNameTemplate": "node",
 			"datasourceTemplate": "node",
 			"versioningTemplate": "node"
