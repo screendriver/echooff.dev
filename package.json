@@ -47,7 +47,7 @@
 		"autoprefixer": "10.4.20",
 		"common-tags": "1.8.2",
 		"concurrently": "9.1.2",
-		"eslint": "8.57.1",
+		"eslint": "9.20.1",
 		"eslint-config-prettier": "10.0.1",
 		"eslint-plugin-functional": "6.6.3",
 		"eslint-plugin-prettier": "5.2.3",
