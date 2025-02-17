@@ -1,5 +1,5 @@
 <template>
-	<svg class="text-dracula-green h-6 fill-current" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg">
+	<svg class="h-6 fill-current text-dracula-green" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg">
 		<rect y="10" width="15" height="120" rx="6">
 			<animate
 				attributeName="height"

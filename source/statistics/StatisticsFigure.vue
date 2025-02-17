@@ -7,7 +7,7 @@ const { description } = defineProps<Properties>();
 </script>
 
 <template>
-	<div class="bg-dracula-darker flex h-20 flex-col items-center justify-center rounded lg:h-28 lg:text-lg">
+	<div class="flex h-20 flex-col items-center justify-center rounded bg-dracula-darker lg:h-28 lg:text-lg">
 		<p class="text-dracula-light">{{ description }}</p>
 
 		<slot />
