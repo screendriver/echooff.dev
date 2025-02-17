@@ -1,0 +1,15 @@
+---
+when:
+    - event: push
+
+steps:
+    - name: tests
+      image: node:22.14.0
+      environment:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+      commands:
+          - npm clean-install
+          - npx rust-just lint
+          - npx rust-just compile
+          - npx rust-just test
+          - npx rust-just build
