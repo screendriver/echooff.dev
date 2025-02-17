@@ -15,13 +15,13 @@ const resume = parsedResumeResult.value;
 
 <section class="p-4 lg:p-10">
 	<h3
-		class="my-2 flex items-center justify-center gap-x-2 text-2xl font-extrabold text-dracula-cyan lg:items-end lg:text-4xl lg:leading-none"
+		class="text-dracula-cyan my-2 flex items-center justify-center gap-x-2 text-2xl font-extrabold lg:items-end lg:text-4xl lg:leading-none"
 	>
 		Resume
 		<Fragment set:html={icons["file-text"]?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
 	</h3>
 	<hr
-		class="m-auto mb-4 h-2 w-1/2 rounded-lg border-none bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink"
+		class="bg-dracula-red from-yellow to-dracula-pink m-auto mb-4 h-2 w-1/2 rounded-lg border-none bg-gradient-to-br"
 	/>
 	<ol class="ml-1/12 w-4/5 sm:px-4 sm:pt-4">
 		{
@@ -31,14 +31,14 @@ const resume = parsedResumeResult.value;
 				return sinceDateFormatted.mapOr(null, (sinceDate) => {
 					return (
 						<li class="group relative pl-10 md:grid md:grid-cols-[0.5fr_auto_1fr] md:justify-between md:justify-items-start md:gap-x-7 md:pl-0">
-							<p class="mb-1 text-xs uppercase tracking-widest text-dracula-green md:justify-self-end">
+							<p class="text-dracula-green mb-1 text-xs tracking-widest uppercase md:justify-self-end">
 								{sinceDate}
 							</p>
-							<div class="absolute bottom-0 left-0 top-1 before:block before:h-4 before:w-4 before:rounded-full before:border-3 before:border-solid before:border-dracula-orange before:bg-dracula-orange before:transition-colors before:duration-300 before:ease-in-out after:absolute after:bottom-1 after:left-1.5 after:top-6 after:block after:w-1 after:bg-dracula-blue after:group-last:hidden before:group-hover:bg-transparent md:relative md:after:bottom-2" />
+							<div class="before:border-dracula-orange before:bg-dracula-orange after:bg-dracula-blue absolute top-1 bottom-0 left-0 before:block before:h-4 before:w-4 before:rounded-full before:border-3 before:border-solid before:transition-colors before:duration-300 before:ease-in-out before:group-hover:bg-transparent after:absolute after:top-6 after:bottom-1 after:left-1.5 after:block after:w-1 after:group-last:hidden md:relative md:after:bottom-2" />
 							<div class="pb-10">
 								<h3 class="text-lg leading-none">{job.jobTitle}</h3>
 								<h4 class="text-dracula-green">
-									<a href={job.company.url} class="transition-colors hover:text-dracula-purple">
+									<a href={job.company.url} class="hover:text-dracula-purple transition-colors">
 										{job.company.name}
 									</a>
 									<span class="text-dracula-blue"> ({job.industry})</span>

@@ -11,16 +11,16 @@ import ElmIcon from "./icons/Elm.astro";
 
 <section class="bg-dracula-dark p-4 lg:p-10">
 	<h3
-		class="my-2 flex items-center justify-center gap-x-2 text-2xl font-extrabold text-dracula-cyan lg:items-end lg:text-4xl lg:leading-none"
+		class="text-dracula-cyan my-2 flex items-center justify-center gap-x-2 text-2xl font-extrabold lg:items-end lg:text-4xl lg:leading-none"
 	>
 		Skills
 		<Fragment set:html={icons.award?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
 	</h3>
 	<hr
-		class="m-auto mb-4 h-2 w-1/2 rounded-lg border-none bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink"
+		class="bg-dracula-red from-yellow to-dracula-pink m-auto mb-4 h-2 w-1/2 rounded-lg border-none bg-gradient-to-br"
 	/>
 	<div
-		class="m-auto grid max-w-screen-lg grid-cols-1 justify-items-center gap-5 text-dracula-light sm:grid-cols-2 sm:p-4 lg:grid-cols-3"
+		class="text-dracula-light m-auto grid max-w-screen-lg grid-cols-1 justify-items-center gap-5 sm:grid-cols-2 sm:p-4 lg:grid-cols-3"
 	>
 		<Card
 			title="TypeScript"
