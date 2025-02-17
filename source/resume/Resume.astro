@@ -21,9 +21,9 @@ const resume = parsedResumeResult.value;
 		<Fragment set:html={icons["file-text"]?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
 	</h3>
 	<hr
-		class="bg-dracula-red from-yellow to-dracula-pink m-auto mb-4 h-2 w-1/2 rounded-lg border-none bg-gradient-to-br"
+		class="bg-dracula-red from-dracula-yellow to-dracula-pink m-auto mb-4 h-2 w-1/2 rounded-lg border-none bg-gradient-to-br"
 	/>
-	<ol class="ml-1/12 w-4/5 sm:px-4 sm:pt-4">
+	<ol class="mx-auto w-4/5 sm:px-4 sm:pt-4">
 		{
 			resume.map((job) => {
 				const sinceDateFormatted = formatSinceDate(job.since, job.showOnlyYear);
