@@ -6,13 +6,13 @@ import aboutImage from "../assets/images/about.jpg";
 
 <section class="p-4 lg:p-10">
 	<h3
-		class="my-2 flex items-center justify-center gap-x-2 text-2xl font-extrabold text-dracula-cyan lg:items-end lg:text-4xl lg:leading-none"
+		class="text-dracula-cyan my-2 flex items-center justify-center gap-x-2 text-2xl font-extrabold lg:items-end lg:text-4xl lg:leading-none"
 	>
 		About
 		<Fragment set:html={icons.info?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
 	</h3>
 	<hr
-		class="m-auto mb-4 h-2 w-1/2 rounded-lg border-none bg-dracula-red bg-gradient-to-br from-yellow to-dracula-pink"
+		class="bg-dracula-red from-yellow to-dracula-pink m-auto mb-4 h-2 w-1/2 rounded-lg border-none bg-gradient-to-br"
 	/>
 	<article class="flex flex-col items-center text-justify sm:p-4 lg:p-7 xl:px-11">
 		<p class="m-auto lg:w-3/4">
@@ -32,7 +32,7 @@ import aboutImage from "../assets/images/about.jpg";
 				width={300}
 				height={300}
 				quality={75}
-				class="mb-10 mt-12 h-40 w-40 rounded-full border-4 border-dracula-blue md:mb-3 lg:mb-0"
+				class="border-dracula-blue mt-12 mb-10 h-40 w-40 rounded-full border-4 md:mb-3 lg:mb-0"
 			/>
 		</figure>
 	</article>

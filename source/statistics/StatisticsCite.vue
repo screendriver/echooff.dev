@@ -7,7 +7,7 @@ const { description } = defineProps<Properties>();
 </script>
 
 <template>
-	<cite :aria-label="description" class="mt-2 text-lg font-bold not-italic text-dracula-green">
+	<cite :aria-label="description" class="text-dracula-green mt-2 text-lg font-bold not-italic">
 		<slot />
 	</cite>
 </template>
