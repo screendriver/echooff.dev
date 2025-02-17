@@ -1,0 +1,30 @@
+---
+when:
+    - event: manual
+
+steps:
+    - name: build-application
+      image: node:22.14.0
+      environment:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+      commands:
+          - npm clean-install
+          - npx rust-just build
+
+    - name: publish-docker-container
+      image: woodpeckerci/plugin-docker-buildx:5.2.1
+      settings:
+          repo:
+              from_secret: repository
+          registry:
+              from_secret: registry
+          dockerfile: Dockerfile
+          platforms: linux/amd64
+          tags: latest
+          username:
+              from_secret: username
+          password:
+              from_secret: access_token
+
+depends_on:
+    - test
