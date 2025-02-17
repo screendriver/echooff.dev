@@ -26,7 +26,7 @@
 			"matchDepTypes": ["dependencies", "devDependencies"],
 			"matchUpdateTypes": ["minor", "patch"],
 			"automerge": true,
-			"automergeType": "branch"
+			"automergeType": "pr"
 		}
 	],
 	"regexManagers": [
