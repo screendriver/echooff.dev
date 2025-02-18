@@ -4,7 +4,7 @@ when:
 
 steps:
     - name: tests
-      image: node:22.14.0
+      image: node:23.8.0
       environment:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
       commands:
