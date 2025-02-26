@@ -23,6 +23,12 @@
 			"matchPackageNames": ["@fastify/*", "fastify"]
 		},
 		{
+			"matchFileNames": [".woodpecker/*.yaml"],
+			"matchUpdateTypes": ["minor", "patch"],
+			"automerge": true,
+			"automergeType": "branch"
+		},
+		{
 			"matchDepTypes": ["dependencies", "devDependencies"],
 			"matchUpdateTypes": ["minor", "patch"],
 			"automerge": true,
