@@ -29,7 +29,7 @@
 	},
 	"devDependencies": {
 		"@astrojs/check": "0.9.4",
-		"@fastify/cors": "10.1.0",
+		"@fastify/cors": "11.0.0",
 		"@fastify/formbody": "8.0.2",
 		"@jscpd/badge-reporter": "4.0.1",
 		"@jscpd/finder": "4.0.1",
