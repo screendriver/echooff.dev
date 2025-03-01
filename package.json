@@ -68,7 +68,7 @@
 		"typescript": "5.8.2",
 		"vitest": "3.0.7",
 		"vue-eslint-parser": "9.4.3",
-		"vue-tsc": "2.2.4",
+		"vue-tsc": "2.2.6",
 		"wait-on": "8.0.2",
 		"zx": "8.3.2"
 	},
