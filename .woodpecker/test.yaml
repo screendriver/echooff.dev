@@ -1,6 +1,6 @@
 ---
 when:
-    - event: push
+    - event: [push, manual]
 
 steps:
     - name: test
