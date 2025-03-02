@@ -12,7 +12,9 @@ steps:
               from_secret: registry
           dockerfile: Dockerfile
           platforms: linux/amd64
-          tags: latest
+          tags:
+              - latest
+              - ${CI_COMMIT_SHA}
           username:
               from_secret: username
           password:
