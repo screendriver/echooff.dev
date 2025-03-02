@@ -3,11 +3,26 @@ when:
     - event: [push, manual]
 
 steps:
-    - name: test
+    - name: install
       image: node:22.14.0
       environment:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
       commands:
           - npm clean-install
+
+    - name: test
+      image: node:22.14.0
+      commands:
           - npx rust-just test
+
+    - name: build
+      image: node:22.14.0
+      commands:
           - npx rust-just build
+
+    - name: build-test-docker-container
+      image: woodpeckerci/plugin-docker-buildx:5.2.1
+      settings:
+          dry-run: true
+          dockerfile: Dockerfile
+          platforms: linux/amd64
