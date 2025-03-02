@@ -7,6 +7,10 @@ steps:
       image: node:22.14.0
       environment:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+          GITHUB_API_BASE_URL: ""
+          GITHUB_LOGIN: ""
+          GITHUB_API_TOKEN_FILE: ""
+
       commands:
           - npm clean-install
           - npx rust-just build
