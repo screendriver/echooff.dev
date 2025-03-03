@@ -15,7 +15,7 @@ steps:
           - npm clean-install
           - npx rust-just build
 
-    - name: publish-docker-container
+    - name: publish-docker-image
       image: woodpeckerci/plugin-docker-buildx:5.2.1
       settings:
           repo:
