@@ -14,15 +14,3 @@ steps:
       image: node:22.14.0
       commands:
           - npx rust-just test
-
-    - name: build application
-      image: node:22.14.0
-      commands:
-          - npx rust-just build
-
-    - name: build container image
-      image: woodpeckerci/plugin-docker-buildx:5.2.1
-      settings:
-          dry-run: true
-          dockerfile: Dockerfile
-          platforms: linux/amd64

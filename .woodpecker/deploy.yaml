@@ -10,7 +10,6 @@ steps:
           GITHUB_API_BASE_URL: ""
           GITHUB_LOGIN: ""
           GITHUB_API_TOKEN_FILE: ""
-
       commands:
           - npm clean-install
           - npx rust-just build
@@ -34,3 +33,4 @@ steps:
 
 depends_on:
     - test
+    - build
