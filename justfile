@@ -7,7 +7,7 @@ sync:
 	astro sync
 
 lint: sync
-	astro check
+	astro check --minimumFailingSeverity=hint
 	prettier --check source
 	eslint . --ext ".ts,.vue"
 	jscpd source
