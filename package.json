@@ -69,7 +69,7 @@
 		"vue-eslint-parser": "9.4.3",
 		"vue-tsc": "2.2.8",
 		"wait-on": "8.0.2",
-		"zx": "8.3.2"
+		"zx": "8.4.0"
 	},
 	"optionalDependencies": {
 		"@rollup/rollup-linux-arm64-gnu": "4.34.9",
