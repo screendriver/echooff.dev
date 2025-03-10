@@ -59,7 +59,7 @@
 		"prettier": "3.5.3",
 		"prettier-plugin-astro": "0.14.1",
 		"prettier-plugin-tailwindcss": "0.6.11",
-		"rust-just": "1.39.0",
+		"rust-just": "1.40.0",
 		"sharp": "0.33.5",
 		"sinon": "19.0.2",
 		"tailwindcss": "4.0.12",
