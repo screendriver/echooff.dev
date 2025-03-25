@@ -49,7 +49,7 @@
 		"eslint": "8.57.1",
 		"eslint-config-prettier": "10.1.1",
 		"eslint-plugin-functional": "6.6.3",
-		"eslint-plugin-prettier": "5.2.4",
+		"eslint-plugin-prettier": "5.2.5",
 		"eslint-plugin-vitest": "0.5.4",
 		"eslint-plugin-vue": "9.33.0",
 		"fastify": "5.2.1",
