@@ -29,7 +29,7 @@
 	},
 	"devDependencies": {
 		"@astrojs/check": "0.9.4",
-		"@fastify/cors": "11.0.0",
+		"@fastify/cors": "11.0.1",
 		"@fastify/formbody": "8.0.2",
 		"@jscpd/badge-reporter": "4.0.1",
 		"@jscpd/finder": "4.0.1",
@@ -52,7 +52,7 @@
 		"eslint-plugin-prettier": "5.2.5",
 		"eslint-plugin-vitest": "0.5.4",
 		"eslint-plugin-vue": "9.33.0",
-		"fastify": "5.2.1",
+		"fastify": "5.2.2",
 		"fishery": "2.2.3",
 		"get-port": "7.1.0",
 		"jscpd": "4.0.5",
