@@ -16,7 +16,7 @@ steps:
           - npx rust-just build
 
     - name: build container image
-      image: woodpeckerci/plugin-docker-buildx:5.2.1
+      image: woodpeckerci/plugin-docker-buildx:5.2.2
       settings:
           dry-run: true
           dockerfile: Dockerfile
