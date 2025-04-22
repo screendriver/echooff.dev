@@ -20,4 +20,4 @@ steps:
       settings:
           dry-run: true
           dockerfile: Dockerfile
-          platforms: linux/amd64
+          platforms: linux/arm64

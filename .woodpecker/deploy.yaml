@@ -22,7 +22,7 @@ steps:
           registry:
               from_secret: registry
           dockerfile: Dockerfile
-          platforms: linux/amd64
+          platforms: linux/arm64
           tags:
               - latest
               - ${CI_COMMIT_SHA}
