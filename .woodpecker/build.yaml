@@ -4,14 +4,14 @@ when:
 
 steps:
     - name: install
-      image: node:22.14.0
+      image: node:22.15.0
       environment:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
       commands:
           - npm clean-install
 
     - name: build application
-      image: node:22.14.0
+      image: node:22.15.0
       commands:
           - npx rust-just build
 
