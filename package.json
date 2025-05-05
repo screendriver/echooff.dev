@@ -70,9 +70,5 @@
 		"vue-tsc": "2.2.10",
 		"wait-on": "8.0.3",
 		"zx": "8.5.3"
-	},
-	"optionalDependencies": {
-		"@rollup/rollup-linux-arm64-gnu": "4.40.0",
-		"@rollup/rollup-linux-x64-gnu": "4.40.1"
 	}
 }
