@@ -4,7 +4,7 @@ when:
 
 steps:
     - name: build
-      image: node:22.15.0
+      image: node:24.0.0
       environment:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
           GITHUB_API_BASE_URL: ""
