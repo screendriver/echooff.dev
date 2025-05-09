@@ -8,11 +8,6 @@
 	},
 	"packageRules": [
 		{
-			"matchPackageNames": ["node"],
-			"matchManagers": ["dockerfile"],
-			"enabled": false
-		},
-		{
 			"groupName": "Astro dependencies",
 			"groupSlug": "astro-dependencies",
 			"matchPackageNames": ["@astrojs/*", "astro", "astro-*", "*-astro"]
@@ -49,16 +44,6 @@
 			"matchUpdateTypes": ["minor", "patch"],
 			"automerge": true,
 			"automergeType": "branch"
-		}
-	],
-	"customManagers": [
-		{
-			"customType": "regex",
-			"managerFilePatterns": ["/^Dockerfile$/"],
-			"matchStrings": ["FROM node:(?<currentValue>\\d+\\.\\d+\\.\\d+)", "FROM node:(?<currentValue>.*?)-alpine"],
-			"depNameTemplate": "node",
-			"datasourceTemplate": "node",
-			"versioningTemplate": "node"
 		}
 	]
 }
