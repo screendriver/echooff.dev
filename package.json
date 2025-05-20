@@ -61,7 +61,7 @@
 		"prettier-plugin-astro": "0.14.1",
 		"prettier-plugin-tailwindcss": "0.6.11",
 		"rust-just": "1.40.0",
-		"sharp": "0.34.1",
+		"sharp": "0.34.2",
 		"sinon": "20.0.0",
 		"tailwindcss": "4.1.7",
 		"tsx": "4.19.4",
