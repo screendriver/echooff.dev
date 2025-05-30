@@ -59,7 +59,7 @@
 		"jscpd": "4.0.5",
 		"prettier": "3.5.3",
 		"prettier-plugin-astro": "0.14.1",
-		"prettier-plugin-tailwindcss": "0.6.11",
+		"prettier-plugin-tailwindcss": "0.6.12",
 		"rust-just": "1.40.0",
 		"sharp": "0.34.2",
 		"sinon": "20.0.0",
