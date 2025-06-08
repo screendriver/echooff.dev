@@ -13,7 +13,7 @@
 	"dependencies": {
 		"@astrojs/node": "9.2.2",
 		"@astrojs/vue": "5.1.0",
-		"@fontsource/jetbrains-mono": "5.2.5",
+		"@fontsource/jetbrains-mono": "5.2.6",
 		"@fontsource/source-sans-pro": "5.2.5",
 		"@octokit/graphql": "9.0.1",
 		"@sindresorhus/is": "7.0.2",
