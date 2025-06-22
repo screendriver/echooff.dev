@@ -46,7 +46,7 @@
 		"@vue/tsconfig": "0.7.0",
 		"@vue/typescript-plugin": "2.2.10",
 		"common-tags": "1.8.2",
-		"concurrently": "9.1.2",
+		"concurrently": "9.2.0",
 		"eslint": "8.57.1",
 		"eslint-config-prettier": "10.1.5",
 		"eslint-plugin-functional": "6.6.3",
