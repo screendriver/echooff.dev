@@ -15,7 +15,7 @@ steps:
           - npx rust-just build
 
     - name: publish-container-image
-      image: woodpeckerci/plugin-docker-buildx:6.0.1
+      image: woodpeckerci/plugin-docker-buildx:6.0.2
       settings:
           repo:
               from_secret: repository
