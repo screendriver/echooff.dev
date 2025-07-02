@@ -13,6 +13,9 @@ export default defineConfig({
 	integrations: [vue({ devtools: true })],
 	vite: {
 		plugins: [tailwindcss()],
+		build: {
+			sourcemap: true,
+		},
 	},
 	markdown: {
 		shikiConfig: {
