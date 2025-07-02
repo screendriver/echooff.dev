@@ -16,6 +16,9 @@ export default defineConfig({
 		build: {
 			sourcemap: true,
 		},
+		esbuild: {
+			legalComments: "none",
+		},
 	},
 	markdown: {
 		shikiConfig: {
