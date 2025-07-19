@@ -1,4 +1,4 @@
-FROM node:24.3.0-alpine
+FROM node:24.4.1-alpine
 RUN mkdir -p /home/node/app/node_modules && chown --recursive node:node /home/node/app
 WORKDIR /home/node/app
 COPY package*.json .
