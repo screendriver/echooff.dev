@@ -6,7 +6,7 @@ import JavaScriptIcon from "./icons/JavaScript.astro";
 import ReactIcon from "./icons/React.astro";
 import NodejsIcon from "./icons/Nodejs.astro";
 import CSSIcon from "./icons/CSS.astro";
-import ElmIcon from "./icons/Elm.astro";
+import VueIcon from "./icons/Vue.astro";
 ---
 
 <section class="bg-dracula-dark p-4 lg:p-10">
@@ -47,6 +47,14 @@ import ElmIcon from "./icons/Elm.astro";
 			<ReactIcon />
 		</Card>
 		<Card
+			title="Vue.js"
+			description="is an approachable, performant and versatile framework for building web user interfaces"
+			style="from-dracula-yellow to-dracula-pink"
+			link={new URL("https://vuejs.org")}
+		>
+			<VueIcon />
+		</Card>
+		<Card
 			title="Node.js"
 			description="is a JavaScript runtime built on Chrome's V8 JavaScript engine."
 			style="from-dracula-yellow to-dracula-pink"
@@ -61,14 +69,6 @@ import ElmIcon from "./icons/Elm.astro";
 			link={new URL("https://www.w3.org/Style/CSS/")}
 		>
 			<CSSIcon />
-		</Card>
-		<Card
-			title="Elm"
-			description="is a delightful language for reliable webapps."
-			style="from-dracula-yellow to-dracula-pink"
-			link={new URL("https://elm-lang.org")}
-		>
-			<ElmIcon />
 		</Card>
 	</div>
 </section>
