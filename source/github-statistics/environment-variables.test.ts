@@ -1,173 +1,61 @@
 import { test, expect } from "vitest";
-import { stripIndent } from "common-tags";
+import { parse } from "valibot";
 import { gitHubApiTokenSchema, gitHubBaseUrlSchema, gitHubLoginSchema } from "./environment-variables.js";
 
 test("gitHubBaseUrlSchema does not allow booleans", () => {
-	expect(() => gitHubBaseUrlSchema.parse(true)).toThrow(
-		stripIndent`
-          [
-            {
-              "code": "invalid_type",
-              "expected": "string",
-              "received": "boolean",
-              "path": [],
-              "message": "Expected string, received boolean"
-            }
-          ]`,
-	);
+	expect(() => parse(gitHubBaseUrlSchema, true)).toThrow("Invalid type: Expected string but received true");
 });
 
 test("gitHubBaseUrlSchema does not allow numbers", () => {
-	expect(() => gitHubBaseUrlSchema.parse(42)).toThrow(
-		stripIndent`
-          [
-            {
-              "code": "invalid_type",
-              "expected": "string",
-              "received": "number",
-              "path": [],
-              "message": "Expected string, received number"
-            }
-          ]`,
-	);
+	expect(() => parse(gitHubBaseUrlSchema, 42)).toThrow("Invalid type: Expected string but received 42");
 });
 
 test("gitHubBaseUrlSchema does not allow empty strings", () => {
-	expect(() => gitHubBaseUrlSchema.parse("")).toThrow(
-		stripIndent`
-          [
-            {
-              "validation": "url",
-              "code": "invalid_string",
-              "message": "Invalid url",
-              "path": []
-            }
-          ]`,
-	);
+	expect(() => parse(gitHubBaseUrlSchema, "")).toThrow('Invalid URL: Received ""');
 });
 
 test("gitHubBaseUrlSchema does not allow strings that are not an URL", () => {
-	expect(() => gitHubBaseUrlSchema.parse("foo")).toThrow(
-		stripIndent`
-          [
-            {
-              "validation": "url",
-              "code": "invalid_string",
-              "message": "Invalid url",
-              "path": []
-            }
-          ]`,
-	);
+	expect(() => parse(gitHubBaseUrlSchema, "foo")).toThrow('Invalid URL: Received "foo"');
 });
 
 test("gitHubBaseUrlSchema allows a string URL", () => {
-	const gitHubBaseUrl = gitHubBaseUrlSchema.parse("https://example.com");
+	const gitHubBaseUrl = parse(gitHubBaseUrlSchema, "https://example.com");
 
 	expect(gitHubBaseUrl.toString()).toStrictEqual(new URL("https://example.com").toString());
 });
 
 test("gitHubLoginSchema does not allow booleans", () => {
-	expect(() => gitHubLoginSchema.parse(true)).toThrow(
-		stripIndent`
-      [
-        {
-          "code": "invalid_type",
-          "expected": "string",
-          "received": "boolean",
-          "path": [],
-          "message": "Expected string, received boolean"
-        }
-      ]`,
-	);
+	expect(() => parse(gitHubLoginSchema, true)).toThrow("Invalid type: Expected string but received true");
 });
 
 test("gitHubLoginSchema does not allow numbers", () => {
-	expect(() => gitHubLoginSchema.parse(42)).toThrow(
-		stripIndent`
-        [
-          {
-            "code": "invalid_type",
-            "expected": "string",
-            "received": "number",
-            "path": [],
-            "message": "Expected string, received number"
-          }
-        ]`,
-	);
+	expect(() => parse(gitHubLoginSchema, 42)).toThrow("Invalid type: Expected string but received 42");
 });
 
 test("gitHubLoginSchema does not allow empty strings", () => {
-	expect(() => gitHubLoginSchema.parse("")).toThrow(
-		stripIndent`
-        [
-          {
-            "code": "too_small",
-            "minimum": 1,
-            "type": "string",
-            "inclusive": true,
-            "exact": false,
-            "message": "String must contain at least 1 character(s)",
-            "path": []
-          }
-        ]`,
-	);
+	expect(() => parse(gitHubLoginSchema, "")).toThrow("Invalid length: Expected >=1 but received 0");
 });
 
 test("gitHubLoginSchema allows non empty strings", () => {
-	const gitHubLogin = gitHubLoginSchema.parse("foo");
+	const gitHubLogin = parse(gitHubLoginSchema, "foo");
 
 	expect(gitHubLogin).toBe("foo");
 });
 
 test("gitHubApiTokenSchema does not allow booleans", () => {
-	expect(() => gitHubApiTokenSchema.parse(true)).toThrow(
-		stripIndent`
-      [
-        {
-          "code": "invalid_type",
-          "expected": "string",
-          "received": "boolean",
-          "path": [],
-          "message": "Expected string, received boolean"
-        }
-      ]`,
-	);
+	expect(() => parse(gitHubApiTokenSchema, true)).toThrow("Invalid type: Expected string but received true");
 });
 
 test("gitHubApiTokenSchema does not allow numbers", () => {
-	expect(() => gitHubApiTokenSchema.parse(42)).toThrow(
-		stripIndent`
-        [
-          {
-            "code": "invalid_type",
-            "expected": "string",
-            "received": "number",
-            "path": [],
-            "message": "Expected string, received number"
-          }
-        ]`,
-	);
+	expect(() => parse(gitHubApiTokenSchema, 42)).toThrow("Invalid type: Expected string but received 42");
 });
 
 test("gitHubApiTokenSchema does not allow empty strings", () => {
-	expect(() => gitHubApiTokenSchema.parse("")).toThrow(
-		stripIndent`
-        [
-          {
-            "code": "too_small",
-            "minimum": 1,
-            "type": "string",
-            "inclusive": true,
-            "exact": false,
-            "message": "String must contain at least 1 character(s)",
-            "path": []
-          }
-        ]`,
-	);
+	expect(() => parse(gitHubApiTokenSchema, "")).toThrow("Invalid length: Expected >=1 but received 0");
 });
 
 test("gitHubApiTokenSchema allows non empty strings", () => {
-	const gitHubLogin = gitHubApiTokenSchema.parse("foo");
+	const gitHubLogin = parse(gitHubApiTokenSchema, "foo");
 
 	expect(gitHubLogin).toBe("foo");
 });

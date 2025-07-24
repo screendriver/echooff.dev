@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
+import { parse } from "valibot";
 import { Factory } from "fishery";
-import { stripIndent } from "common-tags";
 import type { GitHubStatistics } from "./github-statistics-schema.js";
 import { gitHubStatisticsSchema } from "./github-statistics-schema.js";
 
@@ -22,7 +22,7 @@ test('gitHubStatisticsSchema does allow additional properties in addition to "us
 		foo: "bar",
 	} as unknown as GitHubStatistics);
 
-	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
+	const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
 	const expected = gitHubStatisticsFactory.build();
 
 	expect(actual).toStrictEqual(expected);
@@ -35,7 +35,7 @@ test('gitHubStatisticsSchema does allow additional properties in "user" object a
 		},
 	} as unknown as GitHubStatistics);
 
-	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
+	const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
 	const expected = gitHubStatisticsFactory.build();
 
 	expect(actual).toStrictEqual(expected);
@@ -50,7 +50,7 @@ test('gitHubStatisticsSchema does allow additional properties in "user.repositor
 		},
 	} as unknown as GitHubStatistics);
 
-	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
+	const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
 	const expected = gitHubStatisticsFactory.build();
 
 	expect(actual).toStrictEqual(expected);
@@ -65,13 +65,13 @@ test('gitHubStatisticsSchema does allow additional properties in "user.starredRe
 		},
 	} as unknown as GitHubStatistics);
 
-	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
+	const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
 	const expected = gitHubStatisticsFactory.build();
 
 	expect(actual).toStrictEqual(expected);
 });
 
-test('gitHubStatisticsSchema does not allow negative numbers for "user.repositories.totalCount', () => {
+test('gitHubStatisticsSchema does not allow negative numbers for "user.repositories.totalCount"', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
@@ -80,27 +80,12 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.repositor
 		},
 	});
 
-	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrow(
-		stripIndent`
-          [
-            {
-              "code": "too_small",
-              "minimum": 0,
-              "type": "number",
-              "inclusive": true,
-              "exact": false,
-              "message": "Number must be greater than or equal to 0",
-              "path": [
-                "user",
-                "repositories",
-                "totalCount"
-              ]
-            }
-          ]`,
+	expect(() => parse(gitHubStatisticsSchema, gitHubStatistics)).toThrow(
+		"Invalid value: Expected >=0 but received -42",
 	);
 });
 
-test('gitHubStatisticsSchema does not allow other types than number for "user.repositories.totalCount', () => {
+test('gitHubStatisticsSchema does not allow other types than number for "user.repositories.totalCount"', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
@@ -109,25 +94,12 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.re
 		},
 	} as unknown as GitHubStatistics);
 
-	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrow(
-		stripIndent`
-          [
-            {
-              "code": "invalid_type",
-              "expected": "number",
-              "received": "string",
-              "path": [
-                "user",
-                "repositories",
-                "totalCount"
-              ],
-              "message": "Expected number, received string"
-            }
-          ]`,
+	expect(() => parse(gitHubStatisticsSchema, gitHubStatistics)).toThrow(
+		'Invalid type: Expected number but received "foo"',
 	);
 });
 
-test('gitHubStatisticsSchema allows 0 for "user.repositories.totalCount', () => {
+test('gitHubStatisticsSchema allows 0 for "user.repositories.totalCount"', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
@@ -136,7 +108,7 @@ test('gitHubStatisticsSchema allows 0 for "user.repositories.totalCount', () => 
 		},
 	});
 
-	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
+	const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
 	const expected = gitHubStatistics;
 
 	expect(actual).toStrictEqual(expected);
@@ -151,27 +123,12 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRe
 		},
 	});
 
-	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrow(
-		stripIndent`
-          [
-            {
-              "code": "too_small",
-              "minimum": 0,
-              "type": "number",
-              "inclusive": true,
-              "exact": false,
-              "message": "Number must be greater than or equal to 0",
-              "path": [
-                "user",
-                "starredRepositories",
-                "totalCount"
-              ]
-            }
-          ]`,
+	expect(() => parse(gitHubStatisticsSchema, gitHubStatistics)).toThrow(
+		"Invalid value: Expected >=0 but received -42",
 	);
 });
 
-test('gitHubStatisticsSchema does not allow other types than number for "user.starredRepositories.totalCount', () => {
+test('gitHubStatisticsSchema does not allow other types than number for "user.starredRepositories.totalCount"', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			starredRepositories: {
@@ -180,25 +137,12 @@ test('gitHubStatisticsSchema does not allow other types than number for "user.st
 		},
 	} as unknown as GitHubStatistics);
 
-	expect(() => gitHubStatisticsSchema.parse(gitHubStatistics)).toThrow(
-		stripIndent`
-        [
-          {
-            "code": "invalid_type",
-            "expected": "number",
-            "received": "string",
-            "path": [
-              "user",
-              "starredRepositories",
-              "totalCount"
-            ],
-            "message": "Expected number, received string"
-          }
-        ]`,
+	expect(() => parse(gitHubStatisticsSchema, gitHubStatistics)).toThrow(
+		'Invalid type: Expected number but received "foo"',
 	);
 });
 
-test('gitHubStatisticsSchema allows 0 for "user.starredRepositories.totalCount', () => {
+test('gitHubStatisticsSchema allows 0 for "user.starredRepositories.totalCount"', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			starredRepositories: {
@@ -207,7 +151,7 @@ test('gitHubStatisticsSchema allows 0 for "user.starredRepositories.totalCount',
 		},
 	});
 
-	const actual = gitHubStatisticsSchema.parse(gitHubStatistics);
+	const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
 	const expected = gitHubStatistics;
 
 	expect(actual).toStrictEqual(expected);

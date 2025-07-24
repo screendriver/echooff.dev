@@ -1,14 +1,14 @@
-import { z } from "zod";
+import { object, number, minValue, pipe, type InferOutput } from "valibot";
 
-export const gitHubStatisticsSchema = z.object({
-	user: z.object({
-		repositories: z.object({
-			totalCount: z.number().nonnegative(),
+export const gitHubStatisticsSchema = object({
+	user: object({
+		repositories: object({
+			totalCount: pipe(number(), minValue(0)),
 		}),
-		starredRepositories: z.object({
-			totalCount: z.number().nonnegative(),
+		starredRepositories: object({
+			totalCount: pipe(number(), minValue(0)),
 		}),
 	}),
 });
 
-export type GitHubStatistics = z.infer<typeof gitHubStatisticsSchema>;
+export type GitHubStatistics = InferOutput<typeof gitHubStatisticsSchema>;
