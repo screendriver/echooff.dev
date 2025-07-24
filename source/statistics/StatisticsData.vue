@@ -2,7 +2,9 @@
 import { computed } from "vue";
 import { useFetch } from "@vueuse/core";
 import { icons } from "feather-icons";
-import { Maybe } from "true-myth";
+import type Maybe from "true-myth/maybe";
+import { just, nothing } from "true-myth/maybe";
+import { parse } from "valibot";
 import YearsInBusiness from "./YearsInBusiness.vue";
 import GitHubRepositories from "./GitHubRepositories.vue";
 import GitHubStars from "./GitHubStars.vue";
@@ -17,10 +19,10 @@ const { isFinished, isFetching, data: gitHubStatisticsResponse } = useFetch("/ap
 
 const gitHubStatistics = computed<Maybe<GitHubStatistics>>(() => {
 	if (isFinished.value) {
-		return Maybe.just(gitHubStatisticsSchema.parse(gitHubStatisticsResponse.value));
+		return just(parse(gitHubStatisticsSchema, gitHubStatisticsResponse.value));
 	}
 
-	return Maybe.nothing();
+	return nothing();
 });
 
 const barChartIcon = icons["bar-chart"].toSvg({ class: "text-dracula-green w-6 h-6 mt-2" });

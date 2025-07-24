@@ -1,12 +1,13 @@
-import { z } from "zod";
+import { pipe, string, url, transform, minLength } from "valibot";
 
-export const gitHubBaseUrlSchema = z
-	.string()
-	.url()
-	.transform((url) => {
+export const gitHubBaseUrlSchema = pipe(
+	string(),
+	url(),
+	transform((url) => {
 		return new URL(url);
-	});
+	}),
+);
 
-export const gitHubLoginSchema = z.string().min(1);
+export const gitHubLoginSchema = pipe(string(), minLength(1));
 
-export const gitHubApiTokenSchema = z.string().min(1);
+export const gitHubApiTokenSchema = pipe(string(), minLength(1));

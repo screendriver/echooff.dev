@@ -27,4 +27,4 @@ lint: sync
 @test-unit *options:
 	vitest {{options}}
 
-test: sync compile lint (test-unit "--coverage --run")
+test: sync compile lint (test-unit "--run")
