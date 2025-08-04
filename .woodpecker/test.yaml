@@ -12,3 +12,4 @@ steps:
       image: node:24.4.1
       commands:
           - npx just test
+          - npx just build
