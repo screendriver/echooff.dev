@@ -11,7 +11,7 @@ steps:
           GITHUB_API_TOKEN_FILE: ""
       commands:
           - npm clean-install
-          - npx rust-just build
+          - npx just build
 
     - name: publish-container-image
       image: woodpeckerci/plugin-docker-buildx:6.0.2
