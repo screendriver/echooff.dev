@@ -1,4 +1,4 @@
-FROM node:24.5.0 AS builder
+FROM node:24.4.1 AS builder
 WORKDIR /app
 ENV GITHUB_API_BASE_URL=""
 ENV GITHUB_LOGIN=""
@@ -8,7 +8,7 @@ RUN npm clean-install
 COPY . .
 RUN npx just build && npm prune --omit=dev
 
-FROM node:24.5.0-alpine
+FROM node:24.4.1-alpine
 ENV NODE_ENV=production
 ENV HOST="0.0.0.0"
 WORKDIR /app

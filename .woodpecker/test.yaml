@@ -4,12 +4,12 @@ when:
 
 steps:
     - name: install
-      image: node:24.5.0
+      image: node:24.4.1
       commands:
           - npm clean-install
 
     - name: test
-      image: node:24.5.0
+      image: node:24.4.1
       commands:
           - npx just test
           - npx just build
