@@ -9,6 +9,7 @@
 				calcMode="linear"
 				repeatCount="indefinite"
 			/>
+
 			<animate
 				attributeName="y"
 				begin="0.5s"
@@ -18,6 +19,7 @@
 				repeatCount="indefinite"
 			/>
 		</rect>
+
 		<rect x="30" y="10" width="15" height="120" rx="6">
 			<animate
 				attributeName="height"
@@ -27,6 +29,7 @@
 				calcMode="linear"
 				repeatCount="indefinite"
 			/>
+
 			<animate
 				attributeName="y"
 				begin="0.25s"
@@ -36,6 +39,7 @@
 				repeatCount="indefinite"
 			/>
 		</rect>
+
 		<rect x="60" width="15" height="140" rx="6">
 			<animate
 				attributeName="height"
@@ -45,6 +49,7 @@
 				calcMode="linear"
 				repeatCount="indefinite"
 			/>
+
 			<animate
 				attributeName="y"
 				begin="0s"
@@ -54,6 +59,7 @@
 				repeatCount="indefinite"
 			/>
 		</rect>
+
 		<rect x="90" y="10" width="15" height="120" rx="6">
 			<animate
 				attributeName="height"
@@ -63,6 +69,7 @@
 				calcMode="linear"
 				repeatCount="indefinite"
 			/>
+
 			<animate
 				attributeName="y"
 				begin="0.25s"
@@ -72,6 +79,7 @@
 				repeatCount="indefinite"
 			/>
 		</rect>
+
 		<rect x="120" y="10" width="15" height="120" rx="6">
 			<animate
 				attributeName="height"
@@ -81,6 +89,7 @@
 				calcMode="linear"
 				repeatCount="indefinite"
 			/>
+
 			<animate
 				attributeName="y"
 				begin="0.5s"

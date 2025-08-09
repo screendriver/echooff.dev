@@ -8,22 +8,22 @@ export function createContactFormRoute(): RouteOptions {
 			headers: {
 				type: "object",
 				properties: {
-					"content-type": { type: "string", const: "application/x-www-form-urlencoded" },
-				},
+					"content-type": { type: "string", const: "application/x-www-form-urlencoded" }
+				}
 			},
 			body: {
 				type: "object",
-				properties: {},
+				properties: {}
 			},
 			response: {
 				200: {
 					type: "object",
-					properties: {},
-				},
-			},
+					properties: {}
+				}
+			}
 		},
 		async handler(_request, reply) {
 			return reply.send({});
-		},
+		}
 	};
 }

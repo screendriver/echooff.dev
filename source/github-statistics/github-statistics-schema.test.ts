@@ -1,25 +1,24 @@
 import { test, expect } from "vitest";
 import { parse } from "valibot";
 import { Factory } from "fishery";
-import type { GitHubStatistics } from "./github-statistics-schema.js";
-import { gitHubStatisticsSchema } from "./github-statistics-schema.js";
+import { type GitHubStatistics, gitHubStatisticsSchema } from "./github-statistics-schema.js";
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
 	return {
 		user: {
 			repositories: {
-				totalCount: 7,
+				totalCount: 7
 			},
 			starredRepositories: {
-				totalCount: 42,
-			},
-		},
+				totalCount: 42
+			}
+		}
 	};
 });
 
 test('gitHubStatisticsSchema does allow additional properties in addition to "user" object an strips them out', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
-		foo: "bar",
+		foo: "bar"
 	} as unknown as GitHubStatistics);
 
 	const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
@@ -31,8 +30,8 @@ test('gitHubStatisticsSchema does allow additional properties in addition to "us
 test('gitHubStatisticsSchema does allow additional properties in "user" object and strips them out', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
-			foo: "bar",
-		},
+			foo: "bar"
+		}
 	} as unknown as GitHubStatistics);
 
 	const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
@@ -45,9 +44,9 @@ test('gitHubStatisticsSchema does allow additional properties in "user.repositor
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
-				foo: "bar",
-			},
-		},
+				foo: "bar"
+			}
+		}
 	} as unknown as GitHubStatistics);
 
 	const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
@@ -60,9 +59,9 @@ test('gitHubStatisticsSchema does allow additional properties in "user.starredRe
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			starredRepositories: {
-				foo: "bar",
-			},
-		},
+				foo: "bar"
+			}
+		}
 	} as unknown as GitHubStatistics);
 
 	const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
@@ -75,37 +74,37 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.repositor
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
-				totalCount: -42,
-			},
-		},
+				totalCount: -42
+			}
+		}
 	});
 
-	expect(() => parse(gitHubStatisticsSchema, gitHubStatistics)).toThrow(
-		"Invalid value: Expected >=0 but received -42",
-	);
+	expect(() => {
+		return parse(gitHubStatisticsSchema, gitHubStatistics);
+	}).toThrow("Invalid value: Expected >=0 but received -42");
 });
 
 test('gitHubStatisticsSchema does not allow other types than number for "user.repositories.totalCount"', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
-				totalCount: "foo",
-			},
-		},
+				totalCount: "foo"
+			}
+		}
 	} as unknown as GitHubStatistics);
 
-	expect(() => parse(gitHubStatisticsSchema, gitHubStatistics)).toThrow(
-		'Invalid type: Expected number but received "foo"',
-	);
+	expect(() => {
+		return parse(gitHubStatisticsSchema, gitHubStatistics);
+	}).toThrow('Invalid type: Expected number but received "foo"');
 });
 
 test('gitHubStatisticsSchema allows 0 for "user.repositories.totalCount"', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			repositories: {
-				totalCount: 0,
-			},
-		},
+				totalCount: 0
+			}
+		}
 	});
 
 	const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
@@ -118,37 +117,37 @@ test('gitHubStatisticsSchema does not allow negative numbers for "user.starredRe
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			starredRepositories: {
-				totalCount: -42,
-			},
-		},
+				totalCount: -42
+			}
+		}
 	});
 
-	expect(() => parse(gitHubStatisticsSchema, gitHubStatistics)).toThrow(
-		"Invalid value: Expected >=0 but received -42",
-	);
+	expect(() => {
+		return parse(gitHubStatisticsSchema, gitHubStatistics);
+	}).toThrow("Invalid value: Expected >=0 but received -42");
 });
 
 test('gitHubStatisticsSchema does not allow other types than number for "user.starredRepositories.totalCount"', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			starredRepositories: {
-				totalCount: "foo",
-			},
-		},
+				totalCount: "foo"
+			}
+		}
 	} as unknown as GitHubStatistics);
 
-	expect(() => parse(gitHubStatisticsSchema, gitHubStatistics)).toThrow(
-		'Invalid type: Expected number but received "foo"',
-	);
+	expect(() => {
+		return parse(gitHubStatisticsSchema, gitHubStatistics);
+	}).toThrow('Invalid type: Expected number but received "foo"');
 });
 
 test('gitHubStatisticsSchema allows 0 for "user.starredRepositories.totalCount"', () => {
 	const gitHubStatistics = gitHubStatisticsFactory.build({
 		user: {
 			starredRepositories: {
-				totalCount: 0,
-			},
-		},
+				totalCount: 0
+			}
+		}
 	});
 
 	const actual = parse(gitHubStatisticsSchema, gitHubStatistics);

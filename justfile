@@ -9,8 +9,12 @@ sync:
 lint: sync
 	astro check --minimumFailingSeverity=hint
 	prettier --check source
-	eslint . --ext ".ts,.vue"
+	eslint . --cache --cache-location "./target/eslintcache" --cache-strategy content --max-warnings 0
 	jscpd source
+
+lint-fix:
+	prettier --log-level warn --write .
+	eslint --fix .
 
 @compile: sync
 	vue-tsc

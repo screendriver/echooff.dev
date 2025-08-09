@@ -3,8 +3,7 @@ import { fake } from "sinon";
 import { Factory } from "fishery";
 import { stripIndent } from "common-tags";
 import type { graphql as octokitGraphql, RequestParameters } from "@octokit/graphql/types";
-import type { FetchGitHubStatisticsOptions } from "./graphql-query.js";
-import { fetchGitHubStatistics } from "./graphql-query.js";
+import { type FetchGitHubStatisticsOptions, fetchGitHubStatistics } from "./graphql-query.js";
 
 const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatisticsOptions>(() => {
 	const graphql = fake.resolves(undefined) as unknown as octokitGraphql;
@@ -12,7 +11,7 @@ const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatistics
 		graphql,
 		gitHubBaseUrl: new URL("https://example.com/"),
 		gitHubLogin: "username",
-		gitHubApiToken: "my-token",
+		gitHubApiToken: "my-token"
 	};
 });
 
@@ -27,7 +26,7 @@ function testFetchGitHubStatistics(testInput: TestFetchGitHubStatisticsInput): T
 	return async () => {
 		const graphql = fake.resolves<readonly RequestParameters[]>(undefined);
 		const fetchGitHubStatisticsOptions = fetchGitHubStatisticsOptionsFactory.build({
-			graphql: graphql as unknown as octokitGraphql,
+			graphql: graphql as unknown as octokitGraphql
 		});
 
 		await fetchGitHubStatistics(fetchGitHubStatisticsOptions);
@@ -50,24 +49,24 @@ test(
                     totalCount
                 }
             }
-        }`,
-	}),
+        }`
+	})
 );
 
 test(
 	"fetchGitHubStatistics() uses the correct GitHub base URL and strips the trailing slash",
 	testFetchGitHubStatistics({
 		requestParameter: "baseUrl",
-		expectedRequestParameters: "https://example.com",
-	}),
+		expectedRequestParameters: "https://example.com"
+	})
 );
 
 test(
 	"fetchGitHubStatistics() uses the correct GitHub login",
 	testFetchGitHubStatistics({
 		requestParameter: "login",
-		expectedRequestParameters: "username",
-	}),
+		expectedRequestParameters: "username"
+	})
 );
 
 test(
@@ -75,7 +74,7 @@ test(
 	testFetchGitHubStatistics({
 		requestParameter: "headers",
 		expectedRequestParameters: {
-			authorization: "token my-token",
-		},
-	}),
+			authorization: "token my-token"
+		}
+	})
 );
