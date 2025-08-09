@@ -1,48 +1,33 @@
 import { Result } from "true-myth";
-import { z, type ZodError } from "zod";
+import { pipe, string, minLength, array, object, boolean, url, safeParse, summarize, type InferOutput } from "valibot";
 
-const filledStringSchema = z.string().min(1);
+const filledStringSchema = pipe(string(), minLength(1));
 
-const resumesSchema = z
-	.array(
-		z
-			.object({
-				since: filledStringSchema,
-				showOnlyYear: z.boolean(),
-				industry: filledStringSchema,
-				jobTitle: filledStringSchema,
-				jobDescription: filledStringSchema,
-				company: z
-					.object({
-						name: filledStringSchema,
-						url: z.string().url()
-					})
-					.strict()
+const resumesSchema = pipe(
+	array(
+		object({
+			since: filledStringSchema,
+			showOnlyYear: boolean(),
+			industry: filledStringSchema,
+			jobTitle: filledStringSchema,
+			jobDescription: filledStringSchema,
+			company: object({
+				name: filledStringSchema,
+				url: pipe(string(), url())
 			})
-			.strict()
-	)
-	.nonempty();
-
-export type ResumesData = z.infer<typeof resumesSchema>;
-
-function formatParseError(error: ZodError): string {
-	return error.issues
-		.map((issue) => {
-			if (issue.path.length === 0) {
-				return issue.message;
-			}
-
-			return `${issue.path.join(".")}: ${issue.message}`;
 		})
-		.join("\n");
-}
+	),
+	minLength(1)
+);
+
+export type ResumesData = InferOutput<typeof resumesSchema>;
 
 export function parseResumeData(resumeData: unknown): Result<ResumesData, string> {
-	const parseResult = resumesSchema.safeParse(resumeData);
+	const parseResult = safeParse(resumesSchema, resumeData);
 
 	if (parseResult.success) {
-		return Result.ok(parseResult.data);
+		return Result.ok(parseResult.output);
 	}
 
-	return Result.err(formatParseError(parseResult.error));
+	return Result.err(summarize(parseResult.issues));
 }
