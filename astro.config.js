@@ -8,25 +8,25 @@ export default defineConfig({
 	output: "static",
 	outDir: "./target",
 	adapter: node({
-		mode: "standalone",
+		mode: "standalone"
 	}),
 	integrations: [vue({ devtools: true })],
 	vite: {
 		plugins: [tailwindcss()],
 		build: {
-			sourcemap: true,
+			sourcemap: true
 		},
 		esbuild: {
-			legalComments: "none",
-		},
+			legalComments: "none"
+		}
 	},
 	markdown: {
 		shikiConfig: {
-			theme: "dracula",
-		},
+			theme: "dracula"
+		}
 	},
 	server: {
-		port: 4321,
+		port: 4321
 	},
-	site: "https://www.echooff.dev",
+	site: "https://www.echooff.dev"
 });

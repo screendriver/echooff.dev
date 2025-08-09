@@ -1,11 +1,11 @@
 import type { GraphQlResponse, graphql as octokitGraphql } from "@octokit/graphql/types";
 
-export interface FetchGitHubStatisticsOptions {
+export type FetchGitHubStatisticsOptions = {
 	readonly graphql: octokitGraphql;
 	readonly gitHubBaseUrl: URL;
 	readonly gitHubLogin: string;
 	readonly gitHubApiToken: string;
-}
+};
 
 function stripTrailingSlash(url: string): string {
 	if (url.endsWith("/")) {
@@ -15,7 +15,7 @@ function stripTrailingSlash(url: string): string {
 	return url;
 }
 
-export function fetchGitHubStatistics(options: FetchGitHubStatisticsOptions): GraphQlResponse<unknown> {
+export async function fetchGitHubStatistics(options: FetchGitHubStatisticsOptions): GraphQlResponse<unknown> {
 	const { graphql, gitHubBaseUrl, gitHubLogin, gitHubApiToken } = options;
 
 	return graphql({
@@ -31,6 +31,6 @@ export function fetchGitHubStatistics(options: FetchGitHubStatisticsOptions): Gr
         }`,
 		baseUrl: stripTrailingSlash(gitHubBaseUrl.toString()),
 		login: gitHubLogin,
-		headers: { authorization: `token ${gitHubApiToken}` },
+		headers: { authorization: `token ${gitHubApiToken}` }
 	});
 }

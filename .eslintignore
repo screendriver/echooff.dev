@@ -1,6 +1,0 @@
-!.*
-.astro/
-node_modules/
-target/
-source/env.d.ts
-typings/
