@@ -1,4 +1,4 @@
-import { test, expect, type TestFunction } from "vitest";
+import { describe, it, expect, type TestFunction } from "vitest";
 import { fake } from "sinon";
 import { Factory } from "fishery";
 import { stripIndent } from "common-tags";
@@ -36,11 +36,12 @@ function testFetchGitHubStatistics(testInput: TestFetchGitHubStatisticsInput): T
 	};
 }
 
-test(
-	"fetchGitHubStatistics() uses the correct GraphQL query",
-	testFetchGitHubStatistics({
-		requestParameter: "query",
-		expectedRequestParameters: stripIndent`query ($login: String!) {
+describe("fetchGitHubStatistics()", () => {
+	it(
+		"uses the correct GraphQL query",
+		testFetchGitHubStatistics({
+			requestParameter: "query",
+			expectedRequestParameters: stripIndent`query ($login: String!) {
             user(login: $login) {
                 repositories {
                     totalCount
@@ -50,31 +51,32 @@ test(
                 }
             }
         }`
-	})
-);
+		})
+	);
 
-test(
-	"fetchGitHubStatistics() uses the correct GitHub base URL and strips the trailing slash",
-	testFetchGitHubStatistics({
-		requestParameter: "baseUrl",
-		expectedRequestParameters: "https://example.com"
-	})
-);
+	it(
+		"uses the correct GitHub base URL and strips the trailing slash",
+		testFetchGitHubStatistics({
+			requestParameter: "baseUrl",
+			expectedRequestParameters: "https://example.com"
+		})
+	);
 
-test(
-	"fetchGitHubStatistics() uses the correct GitHub login",
-	testFetchGitHubStatistics({
-		requestParameter: "login",
-		expectedRequestParameters: "username"
-	})
-);
+	it(
+		"uses the correct GitHub login",
+		testFetchGitHubStatistics({
+			requestParameter: "login",
+			expectedRequestParameters: "username"
+		})
+	);
 
-test(
-	"fetchGitHubStatistics() uses the correct GitHub API token",
-	testFetchGitHubStatistics({
-		requestParameter: "headers",
-		expectedRequestParameters: {
-			authorization: "token my-token"
-		}
-	})
-);
+	it(
+		"uses the correct GitHub API token",
+		testFetchGitHubStatistics({
+			requestParameter: "headers",
+			expectedRequestParameters: {
+				authorization: "token my-token"
+			}
+		})
+	);
+});
