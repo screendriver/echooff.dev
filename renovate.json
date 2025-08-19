@@ -27,12 +27,6 @@
 			"matchPackageNames": ["eslint", "@enormora/eslint-config-*"],
 			"groupName": "eslint packages"
 		},
-
-		{
-			"groupName": "TypeScript ESLint",
-			"groupSlug": "typescript-eslint monorepo",
-			"extends": ["monorepo:typescript-eslint"]
-		},
 		{
 			"matchDepTypes": ["dependencies", "devDependencies"],
 			"matchUpdateTypes": ["minor", "patch"],
