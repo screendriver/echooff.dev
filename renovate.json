@@ -24,16 +24,10 @@
 			"automergeType": "branch"
 		},
 		{
-			"groupName": "ESLint dependencies",
-			"groupSlug": "eslint",
-			"matchPackageNames": [
-				"eslint",
-				"eslint-plugin-*",
-				"@vitest/eslint-plugin",
-				"@vue/eslint-config-*",
-				"vue-eslint-*"
-			]
+			"matchPackageNames": ["eslint", "@enormora/eslint-config-*"],
+			"groupName": "eslint packages"
 		},
+
 		{
 			"groupName": "TypeScript ESLint",
 			"groupSlug": "typescript-eslint monorepo",
