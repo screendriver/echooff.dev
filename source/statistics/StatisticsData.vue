@@ -10,7 +10,7 @@ import GitHubRepositories from "./GitHubRepositories.vue";
 import GitHubStars from "./GitHubStars.vue";
 import StatisticsFigure from "./StatisticsFigure.vue";
 
-// eslint-disable-next-line no-magic-numbers -- fine here
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers -- fine here
 const currentYear = import.meta.env.PROD ? new Date() : new Date(2022, 2, 23);
 const careerStartYear = 2001;
 const yearsOfExperience = currentYear.getFullYear() - careerStartYear;
