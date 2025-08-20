@@ -2,9 +2,9 @@
 import StatisticsFigure from "./StatisticsFigure.vue";
 import StatisticsCite from "./StatisticsCite.vue";
 
-interface Properties {
+type Properties = {
 	readonly yearsOfExperience: number;
-}
+};
 
 const { yearsOfExperience } = defineProps<Properties>();
 </script>

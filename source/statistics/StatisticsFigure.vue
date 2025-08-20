@@ -1,7 +1,7 @@
 <script setup lang="ts">
-interface Properties {
+type Properties = {
 	readonly description: string;
-}
+};
 
 const { description } = defineProps<Properties>();
 </script>
