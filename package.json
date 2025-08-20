@@ -34,7 +34,7 @@
 		"@enormora/eslint-config-node": "0.0.18",
 		"@enormora/eslint-config-typescript": "0.0.23",
 		"@enormora/eslint-config-vitest": "0.0.3",
-		"@enormora/eslint-config-vue-ts": "0.0.5",
+		"@enormora/eslint-config-vue-ts": "0.0.6",
 		"@fastify/cors": "11.1.0",
 		"@fastify/formbody": "8.0.2",
 		"@jscpd/badge-reporter": "4.0.1",
