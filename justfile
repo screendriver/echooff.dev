@@ -9,7 +9,7 @@ sync:
 lint: sync
 	astro check --minimumFailingSeverity=hint
 	prettier --check source
-	eslint . --cache --cache-location "./target/eslintcache" --cache-strategy content --max-warnings 0
+	eslint . --cache --cache-location "./target/eslintcache" --cache-strategy content --max-warnings 0 --concurrency=auto
 	jscpd source
 
 lint-fix:
