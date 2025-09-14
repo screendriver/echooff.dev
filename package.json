@@ -44,7 +44,7 @@
 		"@types/common-tags": "1.8.4",
 		"@types/feather-icons": "4.29.4",
 		"@types/gsap": "1.20.2",
-		"@types/node": "24.3.3",
+		"@types/node": "24.4.0",
 		"@types/sinon": "17.0.4",
 		"@vue/tsconfig": "0.8.1",
 		"@vue/typescript-plugin": "3.0.7",
