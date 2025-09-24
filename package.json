@@ -39,7 +39,7 @@
 		"@fastify/formbody": "8.0.2",
 		"@jscpd/badge-reporter": "4.0.1",
 		"@jscpd/finder": "4.0.1",
-		"@tailwindcss/typography": "0.5.18",
+		"@tailwindcss/typography": "0.5.19",
 		"@tailwindcss/vite": "4.1.13",
 		"@types/common-tags": "1.8.4",
 		"@types/feather-icons": "4.29.4",
