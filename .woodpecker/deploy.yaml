@@ -4,7 +4,7 @@ when:
 
 steps:
     - name: publish-container-image
-      image: woodpeckerci/plugin-docker-buildx:6.0.2
+      image: woodpeckerci/plugin-docker-buildx:6.0.3
       settings:
           repo:
               from_secret: repository
