@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/node:24.10.0 AS builder
+FROM public.ecr.aws/docker/library/node:25.0.0 AS builder
 WORKDIR /app
 ENV GITHUB_API_BASE_URL=""
 ENV GITHUB_LOGIN=""
@@ -8,7 +8,7 @@ RUN npm clean-install
 COPY . .
 RUN npx just build && npm prune --omit=dev
 
-FROM public.ecr.aws/docker/library/node:24.10.0-alpine
+FROM public.ecr.aws/docker/library/node:25.0.0-alpine
 ENV NODE_ENV=production
 ENV HOST="0.0.0.0"
 WORKDIR /app
