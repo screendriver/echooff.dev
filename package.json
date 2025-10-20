@@ -7,7 +7,7 @@
 	"author": "Christian Rackerseder <git@echooff.de>",
 	"license": "MIT",
 	"engines": {
-		"node": "24.10.0"
+		"node": "25.0.0"
 	},
 	"scripts": {},
 	"dependencies": {
@@ -69,5 +69,8 @@
 		"vue-tsc": "3.1.1",
 		"wait-on": "9.0.1",
 		"zx": "8.8.5"
+	},
+	"overrides": {
+		"@vue/devtools-kit": "8.0.3"
 	}
 }
