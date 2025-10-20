@@ -69,5 +69,8 @@
 		"vue-tsc": "3.1.1",
 		"wait-on": "9.0.1",
 		"zx": "8.8.5"
+	},
+	"overrides": {
+		"@vue/devtools-kit": "8.0.3"
 	}
 }
