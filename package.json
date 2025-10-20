@@ -18,7 +18,7 @@
 		"@octokit/graphql": "9.0.2",
 		"@sindresorhus/is": "7.1.0",
 		"@vueuse/core": "13.9.0",
-		"astro": "5.14.6",
+		"astro": "5.14.7",
 		"astro-seo-schema": "5.1.0",
 		"date-fns": "4.1.0",
 		"feather-icons": "4.29.2",
@@ -28,7 +28,7 @@
 		"vue": "3.5.22"
 	},
 	"devDependencies": {
-		"@astrojs/check": "0.9.4",
+		"@astrojs/check": "0.9.5",
 		"@enormora/eslint-config-base": "0.0.25",
 		"@enormora/eslint-config-browser": "0.0.14",
 		"@enormora/eslint-config-node": "0.0.21",
