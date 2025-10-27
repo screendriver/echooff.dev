@@ -104,13 +104,6 @@ export default [
 	},
 	{
 		...nodeConfigFileConfig,
-		files: ["astro.config.js", "eslint.config.js", "prettier.config.js", "tailwind.config.cjs", "vitest.config.js"]
-	},
-	{
-		files: ["tailwind.config.cjs"],
-		rules: {
-			"import/no-commonjs": "off",
-			"no-undef": "off"
-		}
+		files: ["astro.config.js", "eslint.config.js", "prettier.config.js", "vitest.config.js"]
 	}
 ];

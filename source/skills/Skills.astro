@@ -9,66 +9,112 @@ import CSSIcon from "./icons/CSS.astro";
 import VueIcon from "./icons/Vue.astro";
 ---
 
-<section class="bg-dracula-dark p-4 lg:p-10">
-	<h3
-		class="text-dracula-cyan my-2 flex items-center justify-center gap-x-2 text-2xl font-extrabold lg:items-end lg:text-4xl lg:leading-none"
-	>
+<section>
+	<h3>
 		Skills
-		<Fragment set:html={icons.award?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
+		<Fragment set:html={icons.award?.toSvg()} />
 	</h3>
-	<hr
-		class="bg-dracula-red from-dracula-yellow to-dracula-pink m-auto mb-4 h-2 w-1/2 rounded-lg border-none bg-gradient-to-br"
-	/>
-	<div
-		class="text-dracula-light m-auto grid max-w-screen-lg grid-cols-1 justify-items-center gap-5 sm:grid-cols-2 sm:p-4 lg:grid-cols-3"
-	>
+
+	<hr />
+
+	<div>
 		<Card
 			title="TypeScript"
 			description="is a typed superset of JavaScript that compiles to plain JavaScript."
-			style="from-dracula to-dracula-cyan"
+			style="cyan"
 			link={new URL("https://www.typescriptlang.org")}
 		>
 			<TypeScriptIcon />
 		</Card>
+
 		<Card
 			title="JavaScript"
 			description="is a high-level, interpreted programming language that conforms to the ECMAScript specification."
-			style="from-dracula-yellow to-dracula-pink"
+			style="pink"
 			link={new URL("https://www.ecma-international.org/publications-and-standards/standards/ecma-262/")}
 		>
 			<JavaScriptIcon />
 		</Card>
+
 		<Card
 			title="React"
 			description="is a library for building user interfaces."
-			style="from-dracula to-dracula-cyan"
+			style="cyan"
 			link={new URL("https://react.dev")}
 		>
 			<ReactIcon />
 		</Card>
+
 		<Card
 			title="Vue.js"
 			description="is an approachable, performant and versatile framework for building web user interfaces"
-			style="from-dracula-yellow to-dracula-pink"
+			style="pink"
 			link={new URL("https://vuejs.org")}
 		>
 			<VueIcon />
 		</Card>
+
 		<Card
 			title="Node.js"
 			description="is a JavaScript runtime built on Chrome's V8 JavaScript engine."
-			style="from-dracula-yellow to-dracula-pink"
+			style="cyan"
 			link={new URL("https://nodejs.org")}
 		>
 			<NodejsIcon />
 		</Card>
+
 		<Card
 			title="Cascading Style Sheets (CSS)"
 			description="is a simple mechanism for adding style (e.g., fonts, colors, spacing) to Web documents."
-			style="from-dracula to-dracula-cyan"
+			style="pink"
 			link={new URL("https://www.w3.org/Style/CSS/")}
 		>
 			<CSSIcon />
 		</Card>
 	</div>
 </section>
+
+<style lang="scss">
+	@use "../styles/variables";
+	@use "../styles/mixins";
+
+	section {
+		background-color: variables.$selection;
+		padding: 1rem;
+
+		@media (min-width: variables.$large-width) {
+			padding: 2.5rem;
+		}
+	}
+
+	h3 {
+		@include mixins.heading;
+
+		:global(svg) {
+			@include mixins.heading-icon;
+		}
+	}
+
+	hr {
+		@include mixins.divider;
+	}
+
+	div {
+		color: variables.$foreground;
+		margin: auto;
+		display: grid;
+		max-width: 1024px;
+		grid-template-columns: 1fr;
+		justify-items: center;
+		gap: 1.25rem;
+
+		@media (min-width: variables.$small-width) {
+			grid-template-columns: repeat(2, 1fr);
+			padding: 1rem;
+		}
+
+		@media (min-width: variables.$large-width) {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+</style>

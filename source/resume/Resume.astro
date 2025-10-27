@@ -13,37 +13,36 @@ if (parsedResumeResult.isErr) {
 const resume = parsedResumeResult.value;
 ---
 
-<section class="p-4 lg:p-10">
-	<h3
-		class="text-dracula-cyan my-2 flex items-center justify-center gap-x-2 text-2xl font-extrabold lg:items-end lg:text-4xl lg:leading-none"
-	>
+<section>
+	<h3>
 		Resume
-		<Fragment set:html={icons["file-text"]?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
+		<Fragment set:html={icons["file-text"]?.toSvg()} />
 	</h3>
-	<hr
-		class="bg-dracula-red from-dracula-yellow to-dracula-pink m-auto mb-4 h-2 w-1/2 rounded-lg border-none bg-gradient-to-br"
-	/>
-	<ol class="mx-auto w-4/5 sm:px-4 sm:pt-4">
+
+	<hr />
+
+	<ol>
 		{
 			resume.map((job) => {
 				const sinceDateFormatted = formatSinceDate(job.since, job.showOnlyYear);
 
 				return sinceDateFormatted.mapOr(null, (sinceDate) => {
 					return (
-						<li class="group relative pl-10 md:grid md:grid-cols-[0.5fr_auto_1fr] md:justify-between md:justify-items-start md:gap-x-7 md:pl-0">
-							<p class="text-dracula-green mb-1 text-xs tracking-widest uppercase md:justify-self-end">
-								{sinceDate}
-							</p>
-							<div class="before:border-dracula-orange before:bg-dracula-orange after:bg-dracula-blue absolute top-1 bottom-0 left-0 before:block before:h-4 before:w-4 before:rounded-full before:border-3 before:border-solid before:transition-colors before:duration-300 before:ease-in-out before:group-hover:bg-transparent after:absolute after:top-6 after:bottom-1 after:left-1.5 after:block after:w-1 after:group-last:hidden md:relative md:after:bottom-2" />
-							<div class="pb-10">
-								<h3 class="text-lg leading-none">{job.jobTitle}</h3>
-								<h4 class="text-dracula-green">
-									<a href={job.company.url} class="hover:text-dracula-purple transition-colors">
-										{job.company.name}
-									</a>
-									<span class="text-dracula-blue"> ({job.industry})</span>
+						<li>
+							<p>{sinceDate}</p>
+
+							<div class="timeline-marker" />
+
+							<div class="job-details">
+								<h3>{job.jobTitle}</h3>
+
+								<h4>
+									<a href={job.company.url}>{job.company.name}</a>
+
+									<span> ({job.industry})</span>
 								</h4>
-								<p class="text-sm">{job.jobDescription}</p>
+
+								<p>{job.jobDescription}</p>
 							</div>
 						</li>
 					);
@@ -52,3 +51,141 @@ const resume = parsedResumeResult.value;
 		}
 	</ol>
 </section>
+
+<style lang="scss">
+	@use "../styles/variables";
+	@use "../styles/mixins";
+
+	section {
+		padding: 1rem;
+
+		@media (min-width: variables.$large-width) {
+			padding: 2.5rem;
+		}
+	}
+
+	section > h3 {
+		@include mixins.heading;
+
+		:global(svg) {
+			@include mixins.heading-icon;
+		}
+	}
+
+	hr {
+		@include mixins.divider;
+	}
+
+	ol {
+		margin: 0 auto;
+		width: 80%;
+
+		@media (min-width: 640px) {
+			padding-top: 1rem;
+		}
+	}
+
+	li {
+		position: relative;
+		padding-left: 2.5rem;
+		display: block;
+
+		@media (min-width: variables.$medium-width) {
+			display: grid;
+			grid-template-columns: 0.5fr auto 1fr;
+			justify-content: space-between;
+			justify-items: start;
+			gap: 1.75rem;
+			padding-left: 0;
+		}
+	}
+
+	li > p {
+		color: variables.$green;
+		margin-bottom: 0.25rem;
+		font-size: 0.75rem;
+		letter-spacing: 0.25em;
+		text-transform: uppercase;
+		line-height: 1rem;
+
+		@media (min-width: variables.$medium-width) {
+			justify-self: end;
+		}
+	}
+
+	.timeline-marker {
+		position: absolute;
+		top: 0.25rem;
+		bottom: 0;
+		left: 0;
+
+		&::before {
+			content: "";
+			display: block;
+			height: 1rem;
+			width: 1rem;
+			border-radius: 9999px;
+			border: 3px solid variables.$orange;
+			background-color: variables.$orange;
+			transition: background-color 0.3s ease-in-out;
+		}
+
+		&::after {
+			content: "";
+			position: absolute;
+			top: 1.5rem;
+			bottom: 0.25rem;
+			left: 0.375rem;
+			display: block;
+			width: 0.25rem;
+			background-color: variables.$comment;
+		}
+
+		.resume-item:last-child &::after {
+			display: none;
+		}
+
+		@media (min-width: variables.$medium-width) {
+			position: relative;
+
+			&::after {
+				bottom: 0.5rem;
+			}
+		}
+
+		.resume-item:hover &::before {
+			background-color: transparent;
+		}
+	}
+
+	.job-details {
+		padding-bottom: 2.5rem;
+
+		h3 {
+			font-size: 1.125rem;
+			line-height: 1;
+		}
+
+		h4 {
+			color: variables.$green;
+
+			a {
+				color: inherit;
+				transition: color 0.1s ease-in-out;
+
+				&:hover {
+					color: variables.$purple;
+				}
+			}
+
+			span {
+				color: variables.$comment;
+			}
+		}
+
+		p {
+			font-size: 0.875rem;
+			line-height: 1.25rem;
+		}
+	}
+</style>

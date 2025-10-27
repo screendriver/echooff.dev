@@ -7,9 +7,32 @@ const { description } = defineProps<Properties>();
 </script>
 
 <template>
-	<div class="bg-dracula-darker flex h-20 flex-col items-center justify-center rounded lg:h-28 lg:text-lg">
-		<p class="text-dracula-light">{{ description }}</p>
+	<div>
+		<p>{{ description }}</p>
 
 		<slot />
 	</div>
 </template>
+
+<style lang="scss" scoped>
+@use "../styles/variables";
+
+div {
+	background-color: variables.$background;
+	display: flex;
+	height: 5rem;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border-radius: 0.25rem;
+
+	@media (min-width: variables.$large-width) {
+		height: 7rem;
+		font-size: 1.125rem;
+	}
+}
+
+p {
+	color: variables.$foreground;
+}
+</style>

@@ -1,5 +1,4 @@
 <svg
-	class="mb-3 h-12"
 	width="100%"
 	height="100%"
 	version="1.1"
@@ -11,12 +10,19 @@
 	style="enable-background:new 0 0 2500 2156.3"
 	xml:space="preserve"
 >
-	<style>
-		.st0 {
-			fill: #41b883;
-		}
-	</style>
 	<path class="st0" d="M2000 0h500L1250 2156.3 0 0h956.3L1250 500 1537.5 0H2000z"></path>
 	<path class="st0" d="m0 0 1250 2156.3L2500 0h-500l-750 1293.8L493.8 0H0z"> </path>
 	<path d="M493.8 0 1250 1300 2000 0h-462.5L1250 500 956.3 0H493.8z" style="fill:#35495e"> </path>
 </svg>
+
+<style lang="scss">
+	@use "../../styles/mixins";
+
+	svg {
+		@include mixins.skills-card-icon;
+	}
+
+	.st0 {
+		fill: #41b883;
+	}
+</style>

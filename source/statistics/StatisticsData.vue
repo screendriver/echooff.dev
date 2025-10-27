@@ -25,7 +25,7 @@ const gitHubStatistics = computed<Maybe<GitHubStatistics>>(() => {
 	return nothing();
 });
 
-const barChartIcon = icons["bar-chart"].toSvg({ class: "text-dracula-green w-6 h-6 mt-2" });
+const barChartIcon = icons["bar-chart"].toSvg();
 </script>
 
 <template>
@@ -39,3 +39,14 @@ const barChartIcon = icons["bar-chart"].toSvg({ class: "text-dracula-green w-6 h
 		<figure v-html="barChartIcon" />
 	</StatisticsFigure>
 </template>
+
+<style lang="scss" scoped>
+@use "../styles/variables";
+
+figure {
+	color: variables.$green;
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-top: 0.5rem;
+}
+</style>

@@ -1,0 +1,39 @@
+@import "modern-normalize/modern-normalize.css";
+
+*,
+:after,
+:before {
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	height: 100%;
+	font-family: "JetBrains Mono", sans-serif;
+	line-height: 1.5;
+}
+
+a {
+	color: inherit;
+	text-decoration: inherit;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-size: inherit;
+	font-weight: inherit;
+}
+
+svg {
+	display: block;
+}
