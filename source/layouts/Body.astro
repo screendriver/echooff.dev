@@ -1,3 +1,14 @@
-<body class="bg-dracula-darker flex h-full flex-col">
+<body>
 	<slot />
 </body>
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	body {
+		background-color: variables.$background;
+		display: flex;
+		height: 100%;
+		flex-direction: column;
+	}
+</style>

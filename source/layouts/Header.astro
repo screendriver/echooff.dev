@@ -1,21 +1,15 @@
 ---
 import Navigation from "./Navigation.astro";
-
-interface Props {
-	readonly withBottomBorder: boolean;
-}
-
-const { withBottomBorder } = Astro.props;
-
-let cssClass = "relative";
-
-if (withBottomBorder) {
-	cssClass = "border-b border-dracula-purple";
-}
 ---
 
-<header class={cssClass}>
+<header>
 	<Navigation />
 
 	<slot />
 </header>
+
+<style>
+	header {
+		position: relative;
+	}
+</style>

@@ -2,44 +2,112 @@
 import { icons } from "feather-icons";
 ---
 
-<section class="p-4 lg:p-10">
-	<h3
-		class="text-dracula-cyan my-2 flex items-center justify-center gap-x-2 text-2xl font-extrabold lg:items-end lg:text-4xl lg:leading-none"
-	>
+<section>
+	<h3>
 		Passions
-		<Fragment set:html={icons.heart?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
+		<Fragment set:html={icons.heart?.toSvg()} />
 	</h3>
-	<hr
-		class="bg-dracula-red from-dracula-yellow to-dracula-pink m-auto mb-4 h-2 w-1/2 rounded-lg border-none bg-gradient-to-br"
-	/>
-	<article class="m-auto grid max-w-screen-lg grid-cols-2 gap-2 sm:p-4 md:grid-cols-3">
-		<div class="bg-dracula-dark flex flex-row items-center justify-center rounded py-3">
-			<Fragment set:html={icons.activity?.toSvg({ class: "text-dracula-green mr-1" })} />
+
+	<hr />
+
+	<article>
+		<div>
+			<Fragment set:html={icons.activity?.toSvg()} />
 			<p>Agile</p>
 		</div>
-		<div class="bg-dracula-dark flex flex-row items-center justify-center rounded py-3">
-			<Fragment set:html={icons.compass?.toSvg({ class: "text-dracula-green mr-1" })} />
+
+		<div>
+			<Fragment set:html={icons.compass?.toSvg()} />
 			<p>Clean Code</p>
 		</div>
-		<div class="bg-dracula-dark flex flex-row items-center justify-center rounded py-3">
-			<Fragment set:html={icons.zap?.toSvg({ class: "text-dracula-green mr-1" })} />
+
+		<div>
+			<Fragment set:html={icons.zap?.toSvg()} />
 			<p>Performance</p>
 		</div>
-		<div class="bg-dracula-dark flex flex-row items-center justify-center rounded py-3">
-			<Fragment set:html={icons.server?.toSvg({ class: "text-dracula-green mr-1" })} />
+
+		<div>
+			<Fragment set:html={icons.server?.toSvg()} />
 			<p>Serverless</p>
 		</div>
-		<div class="bg-dracula-dark flex flex-row items-center justify-center rounded py-3">
-			<Fragment set:html={icons.layers?.toSvg({ class: "text-dracula-green mr-1" })} />
+
+		<div>
+			<Fragment set:html={icons.layers?.toSvg()} />
 			<p>Jamstack</p>
 		</div>
-		<div class="bg-dracula-dark flex flex-row items-center justify-center rounded py-3">
-			<Fragment set:html={icons.cloud?.toSvg({ class: "text-dracula-green mr-1" })} />
+
+		<div>
+			<Fragment set:html={icons.cloud?.toSvg()} />
 			<p>Cloud</p>
 		</div>
-		<div class="bg-dracula-dark col-span-2 flex flex-row items-center justify-center rounded py-3 md:col-span-3">
-			<Fragment set:html={icons.check?.toSvg({ class: "text-dracula-green mr-1" })} />
+
+		<div class="last-item">
+			<Fragment set:html={icons.check?.toSvg()} />
 			<p>TDD</p>
 		</div>
 	</article>
 </section>
+
+<style lang="scss">
+	@use "../styles/variables";
+	@use "../styles/mixins";
+
+	section {
+		padding: 1rem;
+
+		@media (min-width: variables.$large-width) {
+			padding: 2.5rem;
+		}
+	}
+
+	h3 {
+		@include mixins.heading;
+
+		:global(svg) {
+			@include mixins.heading-icon;
+		}
+	}
+
+	hr {
+		@include mixins.divider;
+	}
+
+	article {
+		margin: auto;
+		display: grid;
+		max-width: variables.$large-width;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.5rem;
+
+		@media (min-width: variables.$small-width) {
+			padding: 1rem;
+		}
+
+		@media (min-width: variables.$medium-width) {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		div {
+			background-color: variables.$selection;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			border-radius: 0.25rem;
+			padding: 0.75rem 0;
+
+			:global(svg) {
+				color: variables.$green;
+				margin-right: 0.25rem;
+			}
+		}
+
+		div:last-of-type {
+			grid-column: span 2;
+
+			@media (min-width: variables.$medium-width) {
+				grid-column: span 3;
+			}
+		}
+	}
+</style>

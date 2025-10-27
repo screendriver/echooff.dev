@@ -1,5 +1,5 @@
 <template>
-	<svg class="text-dracula-green h-6 fill-current" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg">
+	<svg viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg">
 		<rect y="10" width="15" height="120" rx="6">
 			<animate
 				attributeName="height"
@@ -101,3 +101,13 @@
 		</rect>
 	</svg>
 </template>
+
+<style lang="scss" scoped>
+@use "../styles/variables";
+
+svg {
+	color: variables.$green;
+	height: 1.5rem;
+	fill: currentColor;
+}
+</style>

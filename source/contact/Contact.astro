@@ -2,27 +2,85 @@
 import { icons } from "feather-icons";
 ---
 
-<section class="bg-dracula-dark p-4 lg:p-10">
-	<h3
-		class="text-dracula-cyan my-2 flex items-center justify-center gap-x-2 text-2xl font-extrabold lg:items-end lg:text-4xl lg:leading-none"
-	>
+<section>
+	<h3>
 		Contact
-		<Fragment set:html={icons.mail?.toSvg({ class: "text-dracula-light w-6 h-6 lg:w-9 lg:h-9" })} />
+		<Fragment set:html={icons.mail?.toSvg()} />
 	</h3>
-	<hr
-		class="bg-dracula-red from-dracula-yellow to-dracula-pink m-auto mb-4 h-2 w-1/2 rounded-lg border-none bg-gradient-to-br"
-	/>
-	<address class="m-auto grid max-w-screen-lg grid-cols-2 justify-items-center gap-6 py-4 not-italic">
-		<a
-			href="https://www.openstreetmap.org/relation/497335"
-			class="ml-9 flex flex-col items-center justify-self-end md:mx-9"
-		>
+
+	<hr />
+
+	<address>
+		<a href="https://www.openstreetmap.org/relation/497335">
 			<Fragment set:html={icons["map-pin"]?.toSvg({ width: 23, height: 23 })} />
-			<p class="whitespace-nowrap">Nearby Munich</p>
+			<p>Nearby Munich</p>
 		</a>
-		<a href="https://threema.id/9TWBW4XN" class="ml-9 flex flex-col items-center justify-self-start md:mx-9">
+
+		<a href="https://threema.id/9TWBW4XN">
 			<Fragment set:html={icons["message-square"]?.toSvg({ width: 23, height: 23 })} />
 			<p>Threema</p>
 		</a>
 	</address>
 </section>
+
+<style lang="scss">
+	@use "../styles/variables";
+	@use "../styles/mixins";
+
+	section {
+		background-color: variables.$selection;
+		padding: 1rem;
+
+		@media (min-width: variables.$large-width) {
+			padding: 2.5rem;
+		}
+	}
+
+	h3 {
+		@include mixins.heading;
+
+		:global(svg) {
+			@include mixins.heading-icon;
+		}
+	}
+
+	hr {
+		@include mixins.divider;
+	}
+
+	address {
+		margin: auto;
+		display: grid;
+		max-width: 1024px;
+		grid-template-columns: repeat(2, 1fr);
+		justify-items: center;
+		gap: 1.5rem;
+		padding: 1rem 0;
+		font-style: normal;
+	}
+
+	a {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		color: variables.$foreground;
+		text-decoration: none;
+
+		@media (min-width: variables.$medium-width) {
+			margin: 0 2.25rem;
+		}
+	}
+
+	a:first-child {
+		justify-self: end;
+	}
+
+	a:last-child {
+		justify-self: start;
+		margin-left: 2.25rem;
+	}
+
+	p {
+		white-space: nowrap;
+	}
+</style>

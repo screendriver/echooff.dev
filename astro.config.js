@@ -1,7 +1,6 @@
 import { defineConfig } from "astro/config";
 import node from "@astrojs/node";
 import vue from "@astrojs/vue";
-import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
 	srcDir: "source",
@@ -12,7 +11,6 @@ export default defineConfig({
 	}),
 	integrations: [vue({ devtools: true })],
 	vite: {
-		plugins: [tailwindcss()],
 		build: {
 			sourcemap: true
 		},

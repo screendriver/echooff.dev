@@ -14,46 +14,32 @@ import headerImage from "../assets/images/header-01.jpg";
 ---
 
 <PageShell>
-	<Header withBottomBorder={false}>
-		<figure
-			class="border-dracula-purple from-dracula-cyan relative h-64 overflow-hidden border-t border-b bg-gradient-to-b sm:h-4/5"
-		>
-			<Image
-				src={headerImage}
-				alt="Christian Rackerseder"
-				quality={80}
-				loading="eager"
-				class="h-full translate-x-6 translate-y-6 scale-120 object-cover object-top mix-blend-luminosity sm:translate-none sm:scale-none"
-			/>
+	<Header>
+		<figure>
+			<Image src={headerImage} alt="Christian Rackerseder" quality={80} loading="eager" class="header-image" />
 		</figure>
-		<div
-			class="border-dracula-dark bg-dracula-darker/90 shadow-dracula-darker relative m-auto -mt-11 w-4/5 max-w-screen-sm rounded-md border border-solid pb-10 shadow-md sm:absolute sm:right-4 sm:bottom-4 sm:w-auto lg:right-8 lg:bottom-8 lg:pb-16 xl:pb-24"
-		>
-			<div class="bg-dracula-dark relative mb-2 flex h-4 flex-row justify-center rounded-t-md p-2 md:h-7">
-				<div class="absolute top-1 left-2 flex flex-row space-x-1 md:top-2 md:space-x-2">
-					<div class="bg-dracula-red h-2 w-2 rounded-full md:h-3 md:w-3"></div>
-					<div class="bg-dracula-yellow h-2 w-2 rounded-full md:h-3 md:w-3"></div>
-					<div class="bg-dracula-green h-2 w-2 rounded-full md:h-3 md:w-3"></div>
+
+		<div class="terminal-window">
+			<div class="terminal-header">
+				<div class="terminal-buttons">
+					<div class="terminal-button red"></div>
+					<div class="terminal-button yellow"></div>
+					<div class="terminal-button green"></div>
 				</div>
 			</div>
-			<code class="block px-2 text-base sm:mr-10 md:px-4 lg:mr-20 xl:mr-32">
-				<p class="text-dracula-light mb-1">$ whoami</p>
-				<p class="from-dracula-pink to-dracula bg-gradient-to-r bg-clip-text text-transparent">Christian</p>
-				<p class="text-dracula-light mb-1">$ groups</p>
-				<p class="from-dracula-pink to-dracula bg-gradient-to-r bg-clip-text text-transparent">
-					Full-Stack Software Engineer
-				</p>
-				<p
-					class="text-dracula-light after:animate-cursor-blink after:bg-dracula-light flex items-center gap-2 after:relative after:inline-block after:h-6 after:w-2"
-				>
-					$
-				</p>
+
+			<code class="terminal-code">
+				<p class="terminal-prompt">$ whoami</p>
+				<p class="terminal-output">Christian</p>
+				<p class="terminal-prompt">$ groups</p>
+				<p class="terminal-output">Full-Stack Software Engineer</p>
+				<p class="terminal-prompt cursor">$</p>
 			</code>
 		</div>
 	</Header>
 
 	<Body>
-		<main class="text-dracula-light flex-shrink-0 flex-grow basis-auto">
+		<main>
 			<About />
 			<Skills />
 			<Passions />
@@ -65,3 +51,188 @@ import headerImage from "../assets/images/header-01.jpg";
 
 	<Footer />
 </PageShell>
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	figure {
+		position: relative;
+		height: 16rem;
+		overflow: hidden;
+		border-top: 1px solid variables.$purple;
+		border-bottom: 1px solid variables.$purple;
+		background-image: linear-gradient(to bottom, variables.$cyan, transparent);
+
+		@media (min-width: variables.$small-width) {
+			height: 80%;
+		}
+	}
+
+	main {
+		color: variables.$foreground;
+		flex-shrink: 0;
+		flex-grow: 1;
+		flex-basis: auto;
+	}
+
+	.header-image {
+		height: 100%;
+		object-fit: cover;
+		object-position: top;
+		max-width: 100%;
+		mix-blend-mode: luminosity;
+		transform: translateX(1.5rem) translateY(1.5rem) scale(1.2);
+
+		@media (min-width: variables.$small-width) {
+			transform: none;
+		}
+	}
+
+	.terminal-window {
+		position: relative;
+		margin: -2.75rem auto 0;
+		width: 80%;
+		max-width: 640px;
+		border-radius: 0.375rem;
+		border: 1px solid variables.$selection;
+		background-color: rgba(variables.$background, 0.9);
+		box-shadow:
+			0 4px 6px -1px rgb(0 0 0 / 0.1),
+			0 2px 4px -2px rgb(0 0 0 / 0.1);
+		padding-bottom: 2.5rem;
+
+		@media (min-width: variables.$small-width) {
+			position: absolute;
+			right: 1rem;
+			bottom: 1rem;
+			width: auto;
+			margin-top: 0;
+		}
+
+		@media (min-width: variables.$large-width) {
+			right: 2rem;
+			bottom: 2rem;
+			padding-bottom: 4rem;
+		}
+
+		@media (min-width: variables.$extra-large-width) {
+			padding-bottom: 6rem;
+		}
+	}
+
+	.terminal-header {
+		position: relative;
+		margin-bottom: 0.5rem;
+		display: flex;
+		height: 1rem;
+		flex-direction: row;
+		justify-content: center;
+		border-top-left-radius: 0.375rem;
+		border-top-right-radius: 0.375rem;
+		padding: 0.5rem;
+		background-color: variables.$selection;
+
+		@media (min-width: variables.$medium-width) {
+			height: 1.75rem;
+		}
+	}
+
+	.terminal-buttons {
+		position: absolute;
+		top: 0.25rem;
+		left: 0.5rem;
+		display: flex;
+		flex-direction: row;
+
+		.terminal-button + .terminal-button {
+			margin-left: 0.25rem;
+		}
+
+		@media (min-width: variables.$medium-width) {
+			top: 0.5rem;
+			.terminal-button + .terminal-button {
+				margin-left: 0.5rem;
+			}
+		}
+	}
+
+	.terminal-button {
+		height: 0.5rem;
+		width: 0.5rem;
+		border-radius: 9999px;
+
+		&.red {
+			background-color: variables.$red;
+		}
+		&.yellow {
+			background-color: variables.$yellow;
+		}
+		&.green {
+			background-color: variables.$green;
+		}
+
+		@media (min-width: variables.$medium-width) {
+			height: 0.75rem;
+			width: 0.75rem;
+		}
+	}
+
+	.terminal-code {
+		display: block;
+		padding: 0 0.5rem;
+		font-size: 1rem;
+
+		@media (min-width: variables.$small-width) {
+			margin-right: 2.5rem;
+		}
+
+		@media (min-width: variables.$medium-width) {
+			padding: 0 1rem;
+		}
+
+		@media (min-width: variables.$large-width) {
+			margin-right: 5rem;
+		}
+
+		@media (min-width: variables.$extra-large-width) {
+			margin-right: 8rem;
+		}
+	}
+
+	.terminal-prompt {
+		color: variables.$foreground;
+		margin-bottom: 0.25rem;
+	}
+
+	.terminal-output {
+		background-image: linear-gradient(to right, variables.$pink, variables.$purple);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
+
+	.cursor {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+
+		&::after {
+			content: "";
+			position: relative;
+			display: inline-block;
+			height: 1.5rem;
+			width: 0.5rem;
+			background-color: variables.$foreground;
+			animation: cursor-blink 1.5s steps(2) infinite;
+		}
+	}
+
+	@keyframes cursor-blink {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+</style>

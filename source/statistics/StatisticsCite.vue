@@ -7,7 +7,19 @@ const { description } = defineProps<Properties>();
 </script>
 
 <template>
-	<cite :aria-label="description" class="text-dracula-green mt-2 text-lg font-bold not-italic">
+	<cite :aria-label="description">
 		<slot />
 	</cite>
 </template>
+
+<style lang="scss" scoped>
+@use "../styles/variables";
+
+cite {
+	color: variables.$green;
+	margin-top: 0.5rem;
+	font-size: 1.125rem;
+	font-weight: 700;
+	font-style: normal;
+}
+</style>
