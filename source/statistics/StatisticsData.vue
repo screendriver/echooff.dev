@@ -10,6 +10,10 @@ import GitHubRepositories from "./GitHubRepositories.vue";
 import GitHubStars from "./GitHubStars.vue";
 import StatisticsFigure from "./StatisticsFigure.vue";
 
+defineOptions({
+	inheritAttrs: false
+});
+
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- fine here
 const currentYear = import.meta.env.PROD ? new Date() : new Date(2022, 2, 23);
 const careerStartYear = 2001;
