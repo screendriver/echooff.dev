@@ -1,6 +1,7 @@
 ---
 when:
-    - event: manual
+    - event: push
+      branch: main
 
 steps:
     - name: publish-container-image
