@@ -11,6 +11,9 @@ export default defineConfig({
 	}),
 	integrations: [vue({ devtools: true })],
 	vite: {
+		css: {
+			devSourcemap: true
+		},
 		build: {
 			sourcemap: true
 		},
