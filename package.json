@@ -18,7 +18,7 @@
 		"@octokit/graphql": "9.0.2",
 		"@sindresorhus/is": "7.1.0",
 		"@vueuse/core": "14.0.0",
-		"astro": "5.15.2",
+		"astro": "5.15.3",
 		"astro-feather": "1.0.0",
 		"astro-seo-schema": "5.1.0",
 		"date-fns": "4.1.0",
