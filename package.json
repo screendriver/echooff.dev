@@ -70,6 +70,6 @@
 		"zx": "8.8.5"
 	},
 	"overrides": {
-		"@vue/devtools-kit": "8.0.3"
+		"@vue/devtools-kit": "8.0.5"
 	}
 }
