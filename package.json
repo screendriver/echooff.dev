@@ -37,7 +37,7 @@
 		"@enormora/eslint-config-typescript": "0.0.30",
 		"@enormora/eslint-config-vitest": "0.0.10",
 		"@enormora/eslint-config-vue-ts": "0.0.13",
-		"@fastify/cors": "11.1.0",
+		"@fastify/cors": "11.2.0",
 		"@fastify/formbody": "8.0.2",
 		"@jscpd/badge-reporter": "4.0.1",
 		"@jscpd/finder": "4.0.1",
