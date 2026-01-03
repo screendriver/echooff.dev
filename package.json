@@ -58,7 +58,7 @@
 		"jscpd": "4.0.5",
 		"prettier": "3.7.4",
 		"prettier-plugin-astro": "0.14.1",
-		"rust-just": "1.44.0",
+		"rust-just": "1.46.0",
 		"sass-embedded": "1.97.1",
 		"sharp": "0.34.5",
 		"sinon": "21.0.1",
