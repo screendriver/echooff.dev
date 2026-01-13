@@ -28,6 +28,11 @@
 			"groupName": "eslint packages"
 		},
 		{
+			"groupName": "jscpd dependencies",
+			"groupSlug": "jscpd-dependencies",
+			"matchPackageNames": ["@jscpd/*", "jscpd"]
+		},
+		{
 			"matchDepTypes": ["dependencies", "devDependencies"],
 			"matchUpdateTypes": ["minor", "patch"],
 			"automerge": true,
