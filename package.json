@@ -7,7 +7,7 @@
 	"author": "Christian Rackerseder <git@echooff.de>",
 	"license": "MIT",
 	"engines": {
-		"node": "24.12.0"
+		"node": "24.13.0"
 	},
 	"scripts": {},
 	"dependencies": {
@@ -44,7 +44,7 @@
 		"@types/common-tags": "1.8.4",
 		"@types/feather-icons": "4.29.4",
 		"@types/gsap": "1.20.2",
-		"@types/node": "24.10.7",
+		"@types/node": "24.10.8",
 		"@types/sinon": "21.0.0",
 		"@vue/tsconfig": "0.8.1",
 		"@vue/typescript-plugin": "3.2.2",
