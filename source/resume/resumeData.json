@@ -1,5 +1,16 @@
 [
 	{
+		"since": "2026-02-01",
+		"showOnlyYear": false,
+		"industry": "Cybersecurity",
+		"jobTitle": "Staff Software Engineer",
+		"jobDescription": "Web and Electron Engineer",
+		"company": {
+			"name": "Wire",
+			"url": "https://wire.com"
+		}
+	},
+	{
 		"since": "2024-09-01",
 		"showOnlyYear": false,
 		"industry": "E-Commerce",
