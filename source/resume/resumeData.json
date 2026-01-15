@@ -17,7 +17,7 @@
 		"jobTitle": "Principal Software Engineer",
 		"jobDescription": "Full-Stack TypeScript / JavaScript Engineer",
 		"company": {
-			"name": "Mister Spex SE",
+			"name": "Mister Spex",
 			"url": "https://www.misterspex.de"
 		}
 	},
@@ -28,7 +28,7 @@
 		"jobTitle": "Principal Software Engineer",
 		"jobDescription": "TypeScript / JavaScript Engineer",
 		"company": {
-			"name": "Cobrainer GmbH",
+			"name": "Cobrainer",
 			"url": "https://www.cobrainer.com"
 		}
 	},
@@ -39,7 +39,7 @@
 		"jobTitle": "Senior Software Engineer",
 		"jobDescription": "TypeScript / JavaScript Engineer",
 		"company": {
-			"name": "Cobrainer GmbH",
+			"name": "Cobrainer",
 			"url": "https://www.cobrainer.com"
 		}
 	},
@@ -50,7 +50,7 @@
 		"jobTitle": "Principal Software Engineer",
 		"jobDescription": "Full-Stack TypeScript / JavaScript Engineer",
 		"company": {
-			"name": "Mister Spex SE",
+			"name": "Mister Spex",
 			"url": "https://www.misterspex.de"
 		}
 	},
@@ -61,7 +61,7 @@
 		"jobTitle": "Lead Software Engineer",
 		"jobDescription": "Video streaming / video player. Full-Stack TypeScript / JavaScript",
 		"company": {
-			"name": "Joyn GmbH",
+			"name": "Joyn",
 			"url": "https://www.joyn.de"
 		}
 	},
@@ -72,7 +72,7 @@
 		"jobTitle": "Senior Software Engineer - Media Platform",
 		"jobDescription": "Video streaming / video player. Full-Stack TypeScript / JavaScript Engineer",
 		"company": {
-			"name": "Joyn GmbH",
+			"name": "Joyn",
 			"url": "https://www.joyn.de"
 		}
 	},
@@ -83,7 +83,7 @@
 		"jobTitle": "Senior Software Architect",
 		"jobDescription": "Full-Stack TypeScript / JavaScript Engineer",
 		"company": {
-			"name": "ProSiebenSat.1 Digital GmbH",
+			"name": "ProSiebenSat.1",
 			"url": "https://www.prosiebensat1.com"
 		}
 	},
@@ -94,7 +94,7 @@
 		"jobTitle": "Senior Software Engineer",
 		"jobDescription": "Full-Stack TypeScript / JavaScript Engineer",
 		"company": {
-			"name": "HolidayCheck AG",
+			"name": "HolidayCheck",
 			"url": "https://www.holidaycheck.de"
 		}
 	},
@@ -105,7 +105,7 @@
 		"jobTitle": "Senior Software Engineer",
 		"jobDescription": "Hybrid mobile apps with state of the art Web technologies like Cordova, ECMAScript 2015/2016/2017, Babel, React, Webpack, Mocha and Chai",
 		"company": {
-			"name": "mobileX AG",
+			"name": "mobileX",
 			"url": "https://www.mobilexag.de"
 		}
 	},
@@ -116,7 +116,7 @@
 		"jobTitle": "Senior Software Engineer",
 		"jobDescription": "Native Android App. Written in Java.",
 		"company": {
-			"name": "mobileX AG",
+			"name": "mobileX",
 			"url": "https://www.mobilexag.de"
 		}
 	},
@@ -127,7 +127,7 @@
 		"jobTitle": "Software Engineer",
 		"jobDescription": "Native Windows Mobile App. Written with .NET Compact Framework.",
 		"company": {
-			"name": "mobileX AG",
+			"name": "mobileX",
 			"url": "https://www.mobilexag.de"
 		}
 	},
@@ -138,7 +138,7 @@
 		"jobTitle": "Software Engineer",
 		"jobDescription": "Desktop Browser and mobile Browser (Pocket Internet Explorer) App. Written in JavaScript based on Prototype.js",
 		"company": {
-			"name": "mobileX AG",
+			"name": "mobileX",
 			"url": "https://www.mobilexag.de"
 		}
 	},
@@ -149,7 +149,7 @@
 		"jobTitle": "Web Developer",
 		"jobDescription": "Intranet Browser Application. Written in ASP.NET.",
 		"company": {
-			"name": "HVBinfo GmbH",
+			"name": "HVBinfo",
 			"url": "https://www.hypovereinsbank.de"
 		}
 	},
@@ -160,7 +160,7 @@
 		"jobTitle": "Administrator",
 		"jobDescription": "User-Help-Desk",
 		"company": {
-			"name": "HVBinfo GmbH",
+			"name": "HVBinfo",
 			"url": "https://www.hypovereinsbank.de"
 		}
 	}
