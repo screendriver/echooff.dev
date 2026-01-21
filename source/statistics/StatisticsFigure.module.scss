@@ -1,23 +1,6 @@
-<script setup lang="ts">
-type Properties = {
-	readonly description: string;
-};
-
-const { description } = defineProps<Properties>();
-</script>
-
-<template>
-	<div>
-		<p>{{ description }}</p>
-
-		<slot />
-	</div>
-</template>
-
-<style lang="scss" scoped>
 @use "../styles/variables";
 
-div {
+.div {
 	background-color: variables.$background;
 	display: flex;
 	height: 5rem;
@@ -32,7 +15,6 @@ div {
 	}
 }
 
-p {
+.p {
 	color: variables.$foreground;
 }
-</style>

@@ -2,7 +2,7 @@ import { baseConfig } from "@enormora/eslint-config-base";
 import { browserConfig } from "@enormora/eslint-config-browser";
 import { typescriptConfig } from "@enormora/eslint-config-typescript";
 import { nodeConfig, nodeConfigFileConfig } from "@enormora/eslint-config-node";
-import { vueConfig } from "@enormora/eslint-config-vue-ts";
+import { reactTsxConfig } from "@enormora/eslint-config-react-tsx";
 import { vitestConfig } from "@enormora/eslint-config-vitest";
 import globals from "globals";
 
@@ -12,7 +12,7 @@ export default [
 	},
 	{
 		...baseConfig,
-		files: ["**/*.{js,cjs,ts,mts,cts,vue}"],
+		files: ["**/*.{js,jsx,cjs,mjs,ts,mts,cts,tsx}"],
 		rules: {
 			...baseConfig.rules,
 
@@ -32,10 +32,10 @@ export default [
 	},
 	{
 		...typescriptConfig,
-		files: ["**/*.ts"]
+		files: ["**/*.{ts,tsx}"]
 	},
 	{
-		files: ["**/*.ts"],
+		files: ["**/*.{ts,tsx}"],
 		rules: {
 			"@typescript-eslint/no-magic-numbers": "off",
 			"@stylistic/indent-binary-ops": "off",
@@ -47,17 +47,20 @@ export default [
 		}
 	},
 	{
-		...vueConfig,
-		files: ["**/*.vue"]
+		...reactTsxConfig,
+		files: ["**/*.tsx"]
 	},
 	{
-		files: ["**/*.vue"],
+		files: ["**/*.tsx"],
 		rules: {
-			"vue/no-bare-strings-in-template": "off",
-			"no-useless-assignment": "off"
+			"jsx-quotes": ["error", "prefer-double"],
+
+			"react/react-in-jsx-scope": "off"
 		},
-		languageOptions: {
-			globals: globals.browser
+		settings: {
+			react: {
+				version: "detect"
+			}
 		}
 	},
 	{
@@ -83,7 +86,7 @@ export default [
 	},
 	{
 		...browserConfig,
-		files: ["source/**/*.ts"]
+		files: ["source/**/*.{ts,tsx}"]
 	},
 	{
 		...vitestConfig,
