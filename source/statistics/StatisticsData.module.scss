@@ -1,0 +1,8 @@
+@use "../styles/variables";
+
+.figure {
+	color: variables.$green;
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-top: 0.5rem;
+}

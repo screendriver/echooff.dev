@@ -1,0 +1,9 @@
+@use "../styles/variables";
+
+.cite {
+	color: variables.$green;
+	margin-top: 0.5rem;
+	font-size: 1.125rem;
+	font-weight: 700;
+	font-style: normal;
+}

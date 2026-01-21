@@ -18,7 +18,7 @@ lint-fix:
 	eslint --fix .
 
 @compile: sync
-	vue-tsc
+	tsc
 
 @develop $FORCE_COLOR="1":
 	tsx ./source/start-develop.ts
