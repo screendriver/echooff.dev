@@ -3,9 +3,7 @@
 	"extends": ["astro/tsconfigs/strictest"],
 	"compilerOptions": {
 		"noEmit": true,
-		"allowImportingTsExtensions": false,
-		"jsx": "react-jsx",
-		"jsxImportSource": "react"
+		"allowImportingTsExtensions": false
 	},
 	"include": [".astro/types.d.ts", "./astro.config.ts", "./vitest.config.ts", "source/**/*"]
 }

@@ -2,7 +2,6 @@ import { baseConfig } from "@enormora/eslint-config-base";
 import { browserConfig } from "@enormora/eslint-config-browser";
 import { typescriptConfig } from "@enormora/eslint-config-typescript";
 import { nodeConfig, nodeConfigFileConfig } from "@enormora/eslint-config-node";
-import { reactTsxConfig } from "@enormora/eslint-config-react-tsx";
 import { vitestConfig } from "@enormora/eslint-config-vitest";
 import globals from "globals";
 
@@ -12,7 +11,7 @@ export default [
 	},
 	{
 		...baseConfig,
-		files: ["**/*.{js,jsx,cjs,mjs,ts,mts,cts,tsx}"],
+		files: ["**/*.{js,cjs,mjs,ts,mts,cts}"],
 		rules: {
 			...baseConfig.rules,
 
@@ -32,10 +31,10 @@ export default [
 	},
 	{
 		...typescriptConfig,
-		files: ["**/*.{ts,tsx}"]
+		files: ["**/*.ts"]
 	},
 	{
-		files: ["**/*.{ts,tsx}"],
+		files: ["**/*.ts"],
 		rules: {
 			"@typescript-eslint/no-magic-numbers": "off",
 			"@stylistic/indent-binary-ops": "off",
@@ -44,23 +43,6 @@ export default [
 			"import/max-dependencies": "off",
 			"max-statements": "off",
 			"no-void": "off"
-		}
-	},
-	{
-		...reactTsxConfig,
-		files: ["**/*.tsx"]
-	},
-	{
-		files: ["**/*.tsx"],
-		rules: {
-			"jsx-quotes": ["error", "prefer-double"],
-
-			"react/react-in-jsx-scope": "off"
-		},
-		settings: {
-			react: {
-				version: "detect"
-			}
 		}
 	},
 	{
@@ -100,7 +82,7 @@ export default [
 		}
 	},
 	{
-		files: ["source/github-statistics/graphql-query.test.ts"],
+		files: ["source/statistics/graphql-query.test.ts"],
 		rules: {
 			"@vitest/expect-expect": "off"
 		}

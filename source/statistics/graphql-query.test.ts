@@ -3,9 +3,9 @@ import { fake } from "sinon";
 import { Factory } from "fishery";
 import { stripIndent } from "common-tags";
 import type { graphql as octokitGraphql, RequestParameters } from "@octokit/graphql/types";
-import { type FetchGitHubStatisticsOptions, fetchGitHubStatistics } from "./graphql-query.js";
+import { type ExecuteGraphQLQueryOptions, executeGraphQLQuery } from "./graphql-query.js";
 
-const fetchGitHubStatisticsOptionsFactory = Factory.define<FetchGitHubStatisticsOptions>(() => {
+const fetchGitHubStatisticsOptionsFactory = Factory.define<ExecuteGraphQLQueryOptions>(() => {
 	const graphql = fake.resolves(undefined) as unknown as octokitGraphql;
 	return {
 		graphql,
@@ -20,7 +20,7 @@ type TestFetchGitHubStatisticsInput = {
 	readonly expectedRequestParameters: unknown;
 };
 
-function testFetchGitHubStatistics(testInput: TestFetchGitHubStatisticsInput): TestFunction {
+function testExecuteGraphQLQuery(testInput: TestFetchGitHubStatisticsInput): TestFunction {
 	const { requestParameter, expectedRequestParameters } = testInput;
 
 	return async () => {
@@ -29,17 +29,17 @@ function testFetchGitHubStatistics(testInput: TestFetchGitHubStatisticsInput): T
 			graphql: graphql as unknown as octokitGraphql
 		});
 
-		await fetchGitHubStatistics(fetchGitHubStatisticsOptions);
+		await executeGraphQLQuery(fetchGitHubStatisticsOptions);
 
 		expect(graphql.callCount).toBe(1);
 		expect(graphql.args[0]?.[0]?.[requestParameter]).toStrictEqual(expectedRequestParameters);
 	};
 }
 
-describe("fetchGitHubStatistics()", () => {
+describe("executeGraphQLQuery()", () => {
 	it(
 		"uses the correct GraphQL query",
-		testFetchGitHubStatistics({
+		testExecuteGraphQLQuery({
 			requestParameter: "query",
 			expectedRequestParameters: stripIndent`query ($login: String!) {
             user(login: $login) {
@@ -56,7 +56,7 @@ describe("fetchGitHubStatistics()", () => {
 
 	it(
 		"uses the correct GitHub base URL and strips the trailing slash",
-		testFetchGitHubStatistics({
+		testExecuteGraphQLQuery({
 			requestParameter: "baseUrl",
 			expectedRequestParameters: "https://example.com"
 		})
@@ -64,7 +64,7 @@ describe("fetchGitHubStatistics()", () => {
 
 	it(
 		"uses the correct GitHub login",
-		testFetchGitHubStatistics({
+		testExecuteGraphQLQuery({
 			requestParameter: "login",
 			expectedRequestParameters: "username"
 		})
@@ -72,7 +72,7 @@ describe("fetchGitHubStatistics()", () => {
 
 	it(
 		"uses the correct GitHub API token",
-		testFetchGitHubStatistics({
+		testExecuteGraphQLQuery({
 			requestParameter: "headers",
 			expectedRequestParameters: {
 				authorization: "token my-token"

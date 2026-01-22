@@ -1,0 +1,18 @@
+---
+import type { Maybe } from "true-myth";
+import type { GitHubStatistics } from "./github-statistics-schema.js";
+import StatisticsFigure from "./StatisticsFigure.astro";
+import StatisticsCite from "./StatisticsCite.astro";
+
+interface Props {
+	readonly githubStatistics: Maybe<GitHubStatistics>;
+}
+
+const { githubStatistics } = Astro.props;
+---
+
+<StatisticsFigure description="GitHub Stars">
+	<StatisticsCite description="GitHub Stars">
+		{githubStatistics.get("user").get("starredRepositories").get("totalCount").unwrapOr(0)}
+	</StatisticsCite>
+</StatisticsFigure>
