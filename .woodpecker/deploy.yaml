@@ -2,10 +2,23 @@
 when:
     - event: push
       branch: main
+    - event: manual
     - event: cron
       cron: deploy
 
 steps:
+    - name: build
+      image: node:24.13.0
+      environment:
+          GITHUB_API_BASE_URL: https://api.github.com
+          GITHUB_TOKEN:
+              from_secret: github_api_token
+          GITHUB_LOGIN:
+              from_secret: github_login
+      commands:
+          - npm clean-install
+          - npx just build
+
     - name: publish-container-image
       image: woodpeckerci/plugin-docker-buildx:6.0.4
       settings:
