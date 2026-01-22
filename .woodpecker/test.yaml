@@ -10,6 +10,9 @@ steps:
 
     - name: test
       image: node:24.13.0
+      environment:
+          GITHUB_API_BASE_URL: https://api.github.com
+          GITHUB_TOKEN: fake_token_for_testing
+          GITHUB_LOGIN: fake_user
       commands:
           - npx just test
-          - npx just build
