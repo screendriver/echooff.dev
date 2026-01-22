@@ -1,0 +1,38 @@
+---
+import { of } from "true-myth/maybe";
+import { icons } from "feather-icons";
+import { fetchGitHubStatistics } from "./github-statistics.js";
+import YearsInBusiness from "./YearsInBusiness.astro";
+import GitHubRepositories from "./GitHubRepositories.astro";
+import GitHubStars from "./GitHubStars.astro";
+import StatisticsFigure from "./StatisticsFigure.astro";
+
+const gitHubStatistics = await fetchGitHubStatistics();
+
+const barChartIcon = icons["bar-chart"].toSvg();
+
+const currentYear = import.meta.env.PROD ? new Date() : new Date(2022, 2, 23);
+const careerStartYear = 2001;
+const yearsOfExperience = currentYear.getFullYear() - careerStartYear;
+---
+
+<YearsInBusiness yearsOfExperience={yearsOfExperience} />
+
+<GitHubRepositories githubStatistics={of(gitHubStatistics)} />
+
+<GitHubStars githubStatistics={of(gitHubStatistics)} />
+
+<StatisticsFigure description="Lines of Code">
+	<figure set:html={barChartIcon} />
+</StatisticsFigure>
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	figure {
+		color: variables.$green;
+		width: 1.5rem;
+		height: 1.5rem;
+		margin-top: 0.5rem;
+	}
+</style>

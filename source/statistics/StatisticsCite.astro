@@ -1,0 +1,23 @@
+---
+interface Props {
+	readonly description: string;
+}
+
+const { description } = Astro.props;
+---
+
+<cite aria-label={description}>
+	<slot />
+</cite>
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	cite {
+		color: variables.$green;
+		margin-top: 0.5rem;
+		font-size: 1.125rem;
+		font-weight: 700;
+		font-style: normal;
+	}
+</style>

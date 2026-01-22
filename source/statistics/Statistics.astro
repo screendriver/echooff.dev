@@ -1,6 +1,6 @@
 ---
-import { StatisticsData } from "./StatisticsData.js";
 import { icons } from "feather-icons";
+import StatisticsData from "./StatisticsData.astro";
 ---
 
 <section>
@@ -12,7 +12,7 @@ import { icons } from "feather-icons";
 	<hr />
 
 	<div>
-		<StatisticsData client:idle />
+		<StatisticsData />
 	</div>
 </section>
 

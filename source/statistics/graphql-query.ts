@@ -1,6 +1,6 @@
 import type { GraphQlResponse, graphql as octokitGraphql } from "@octokit/graphql/types";
 
-export type FetchGitHubStatisticsOptions = {
+export type ExecuteGraphQLQueryOptions = {
 	readonly graphql: octokitGraphql;
 	readonly gitHubBaseUrl: URL;
 	readonly gitHubLogin: string;
@@ -15,7 +15,7 @@ function stripTrailingSlash(url: string): string {
 	return url;
 }
 
-export async function fetchGitHubStatistics(options: FetchGitHubStatisticsOptions): GraphQlResponse<unknown> {
+export async function executeGraphQLQuery(options: ExecuteGraphQLQueryOptions): GraphQlResponse<unknown> {
 	const { graphql, gitHubBaseUrl, gitHubLogin, gitHubApiToken } = options;
 
 	return graphql({

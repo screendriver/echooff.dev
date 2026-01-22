@@ -1,0 +1,16 @@
+---
+import StatisticsFigure from "./StatisticsFigure.astro";
+import StatisticsCite from "./StatisticsCite.astro";
+
+interface Props {
+	readonly yearsOfExperience: number;
+}
+
+const { yearsOfExperience } = Astro.props;
+---
+
+<StatisticsFigure description="Experience">
+	<StatisticsCite description="Years of experience">
+		{yearsOfExperience} yrs
+	</StatisticsCite>
+</StatisticsFigure>
