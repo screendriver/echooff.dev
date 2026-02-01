@@ -82,7 +82,7 @@ describe("gitHubStatisticsSchema", () => {
 
 		expect(() => {
 			return parse(gitHubStatisticsSchema, gitHubStatistics);
-		}).toThrow("Invalid value: Expected >=0 but received -42");
+		}).toThrowError("Invalid value: Expected >=0 but received -42");
 	});
 
 	it('does not allow other types than number for "user.repositories.totalCount"', () => {
@@ -96,7 +96,7 @@ describe("gitHubStatisticsSchema", () => {
 
 		expect(() => {
 			return parse(gitHubStatisticsSchema, gitHubStatistics);
-		}).toThrow('Invalid type: Expected number but received "foo"');
+		}).toThrowError('Invalid type: Expected number but received "foo"');
 	});
 
 	it('allows 0 for "user.repositories.totalCount"', () => {
@@ -125,7 +125,7 @@ describe("gitHubStatisticsSchema", () => {
 
 		expect(() => {
 			return parse(gitHubStatisticsSchema, gitHubStatistics);
-		}).toThrow("Invalid value: Expected >=0 but received -42");
+		}).toThrowError("Invalid value: Expected >=0 but received -42");
 	});
 
 	it('does not allow other types than number for "user.starredRepositories.totalCount"', () => {
@@ -139,7 +139,7 @@ describe("gitHubStatisticsSchema", () => {
 
 		expect(() => {
 			return parse(gitHubStatisticsSchema, gitHubStatistics);
-		}).toThrow('Invalid type: Expected number but received "foo"');
+		}).toThrowError('Invalid type: Expected number but received "foo"');
 	});
 
 	it('allows 0 for "user.starredRepositories.totalCount"', () => {
