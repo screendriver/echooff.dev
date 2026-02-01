@@ -6,25 +6,25 @@ describe("gitHubBaseUrlSchema", () => {
 	it("does not allow booleans", () => {
 		expect(() => {
 			return parse(gitHubBaseUrlSchema, true);
-		}).toThrow("Invalid type: Expected string but received true");
+		}).toThrowError("Invalid type: Expected string but received true");
 	});
 
 	it("does not allow numbers", () => {
 		expect(() => {
 			return parse(gitHubBaseUrlSchema, 42);
-		}).toThrow("Invalid type: Expected string but received 42");
+		}).toThrowError("Invalid type: Expected string but received 42");
 	});
 
 	it("does not allow empty strings", () => {
 		expect(() => {
 			return parse(gitHubBaseUrlSchema, "");
-		}).toThrow('Invalid URL: Received ""');
+		}).toThrowError('Invalid URL: Received ""');
 	});
 
 	it("does not allow strings that are not an URL", () => {
 		expect(() => {
 			return parse(gitHubBaseUrlSchema, "foo");
-		}).toThrow('Invalid URL: Received "foo"');
+		}).toThrowError('Invalid URL: Received "foo"');
 	});
 
 	it("allows a string URL", () => {
@@ -38,19 +38,19 @@ describe("gitHubLoginSchema", () => {
 	it("does not allow booleans", () => {
 		expect(() => {
 			return parse(gitHubLoginSchema, true);
-		}).toThrow("Invalid type: Expected string but received true");
+		}).toThrowError("Invalid type: Expected string but received true");
 	});
 
 	it("does not allow numbers", () => {
 		expect(() => {
 			return parse(gitHubLoginSchema, 42);
-		}).toThrow("Invalid type: Expected string but received 42");
+		}).toThrowError("Invalid type: Expected string but received 42");
 	});
 
 	it("does not allow empty strings", () => {
 		expect(() => {
 			return parse(gitHubLoginSchema, "");
-		}).toThrow("Invalid length: Expected >=1 but received 0");
+		}).toThrowError("Invalid length: Expected >=1 but received 0");
 	});
 
 	it("allows non empty strings", () => {
@@ -64,19 +64,19 @@ describe("gitHubApiTokenSchema", () => {
 	it("does not allow booleans", () => {
 		expect(() => {
 			return parse(gitHubApiTokenSchema, true);
-		}).toThrow("Invalid type: Expected string but received true");
+		}).toThrowError("Invalid type: Expected string but received true");
 	});
 
 	it("does not allow numbers", () => {
 		expect(() => {
 			return parse(gitHubApiTokenSchema, 42);
-		}).toThrow("Invalid type: Expected string but received 42");
+		}).toThrowError("Invalid type: Expected string but received 42");
 	});
 
 	it("does not allow empty strings", () => {
 		expect(() => {
 			return parse(gitHubApiTokenSchema, "");
-		}).toThrow("Invalid length: Expected >=1 but received 0");
+		}).toThrowError("Invalid length: Expected >=1 but received 0");
 	});
 
 	it("allows non empty strings", () => {
