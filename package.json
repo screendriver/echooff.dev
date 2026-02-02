@@ -46,7 +46,7 @@
 		"common-tags": "1.8.2",
 		"concurrently": "9.2.1",
 		"eslint": "9.39.2",
-		"fastify": "5.7.2",
+		"fastify": "5.7.4",
 		"fishery": "2.4.0",
 		"get-port": "7.1.0",
 		"globals": "17.3.0",
