@@ -41,7 +41,7 @@
 		"@types/common-tags": "1.8.4",
 		"@types/feather-icons": "4.29.4",
 		"@types/gsap": "1.20.2",
-		"@types/node": "24.10.11",
+		"@types/node": "24.10.12",
 		"@types/sinon": "21.0.0",
 		"common-tags": "1.8.2",
 		"concurrently": "9.2.1",
