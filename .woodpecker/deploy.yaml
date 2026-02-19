@@ -9,10 +9,6 @@ when:
 steps:
     - name: build
       image: node:24.13.0
-      when:
-          - event: push
-            branch: main
-          - event: [cron, manual]
       environment:
           GITHUB_API_BASE_URL: https://api.github.com
           GITHUB_TOKEN:
@@ -25,10 +21,6 @@ steps:
 
     - name: publish-container-image
       image: woodpeckerci/plugin-docker-buildx:6.0.4
-      when:
-          - event: push
-            branch: main
-          - event: [cron, manual]
       settings:
           repo:
               from_secret: repository
