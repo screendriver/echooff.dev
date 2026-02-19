@@ -1,6 +1,7 @@
 ---
 when:
     - event: push
+      branch: main
     - event: cron
       cron: deploy
     - event: manual
