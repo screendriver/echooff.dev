@@ -4,7 +4,6 @@ when:
       branch: main
     - event: cron
       cron: deploy
-    - event: manual
 
 steps:
     - name: build
