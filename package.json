@@ -7,7 +7,7 @@
 	"author": "Christian Rackerseder <git@echooff.de>",
 	"license": "MIT",
 	"engines": {
-		"node": "24.13.1"
+		"node": "24.14.0"
 	},
 	"scripts": {},
 	"dependencies": {
@@ -41,7 +41,7 @@
 		"@types/common-tags": "1.8.4",
 		"@types/feather-icons": "4.29.4",
 		"@types/gsap": "1.20.2",
-		"@types/node": "24.10.13",
+		"@types/node": "24.10.14",
 		"@types/sinon": "21.0.0",
 		"common-tags": "1.8.2",
 		"concurrently": "9.2.1",
