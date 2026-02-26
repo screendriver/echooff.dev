@@ -7,7 +7,7 @@ when:
 
 steps:
     - name: build
-      image: node:24.13.1
+      image: node:24.14.0
       environment:
           GITHUB_API_BASE_URL: https://api.github.com
           GITHUB_TOKEN:
