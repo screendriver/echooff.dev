@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/node:24.14.0-alpine
+FROM public.ecr.aws/docker/library/node:25.7.0-alpine
 ENV NODE_ENV=production
 ENV HOST="0.0.0.0"
 WORKDIR /app
