@@ -8,6 +8,7 @@ import { sortBlogPostsByPublicationDateDescending } from "../../blog/blog-posts.
 const blogCollection = await getCollection("blog");
 const sortedBlogPosts = sortBlogPostsByPublicationDateDescending(blogCollection);
 const blogPostCount = sortedBlogPosts.length;
+const blogIndexUrl = new URL("/blog", Astro.site).toString();
 let blogPostCountLabel = `${blogPostCount} posts available`;
 
 if (blogPostCount === 1) {
@@ -16,6 +17,12 @@ if (blogPostCount === 1) {
 ---
 
 <BlogShell
+	canonicalUrl={blogIndexUrl}
+	description="Notes on web technologies, engineering decisions, and front-end architecture."
+	openGraphPublishedTime=""
+	openGraphType="website"
+	openGraphUrl={blogIndexUrl}
+	robots="noimageindex"
 	title="Christian Rackerseder — Blog"
 	pageTitle="Blog"
 	intro="Notes on web technologies, engineering decisions, and front-end architecture."

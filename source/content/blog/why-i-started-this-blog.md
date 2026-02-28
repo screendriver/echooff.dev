@@ -1,5 +1,6 @@
 ---
 title: "Why I started this Blog"
+description: "Why I finally decided to start writing on echooff.dev and what I want this blog to be."
 publishedAt: "2026-02-28T12:39:00+01:00"
 ---
 

@@ -7,10 +7,27 @@ import "@fontsource/jetbrains-mono/800.css";
 import "../styles/main.scss";
 
 export interface Props {
+	readonly canonicalUrl?: string;
+	readonly description?: string;
+	readonly openGraphPublishedTime?: string;
+	readonly openGraphType?: string;
+	readonly openGraphUrl?: string;
+	readonly robots?: string;
 	readonly title?: string;
 }
 
-const { title = "Christian Rackerseder — Full-Stack Software Engineer" } = Astro.props;
+const defaultDescription = "Full-Stack Software Engineer with a passion for the Jamstack and test driven development.";
+const defaultTitle = "Christian Rackerseder — Full-Stack Software Engineer";
+
+const {
+	canonicalUrl,
+	description = defaultDescription,
+	openGraphPublishedTime,
+	openGraphType = "website",
+	openGraphUrl = "https://www.echooff.dev",
+	robots = "noimageindex",
+	title = defaultTitle
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -20,10 +37,7 @@ const { title = "Christian Rackerseder — Full-Stack Software Engineer" } = Ast
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="theme-color" content="#bd93f9" />
-		<meta
-			name="description"
-			content="Full-Stack Software Engineer with a passion for the Jamstack and test driven development."
-		/>
+		<meta name="description" content={description} />
 		<meta
 			name="keywords"
 			content="Racki,TypeScript,JavaScript,Jamstack,TDD,HTML,CSS,Node.js,React,Astro,Vue.js,Vue"
@@ -32,14 +46,15 @@ const { title = "Christian Rackerseder — Full-Stack Software Engineer" } = Ast
 		<meta name="twitter:card" content="summary" />
 		<meta name="twitter:site" content="@CallistoShip" />
 		<meta name="twitter:creator" content="@CallistoShip" />
-		<meta property="og:title" content="Christian Rackerseder" />
-		<meta
-			property="og:description"
-			content="Full-Stack Software Engineer with a passion for the Jamstack and test driven development."
-		/>
-		<meta property="og:url" content="https://www.echooff.dev" />
-		<meta property="og:type" content="website" />
-		<meta name="robots" content="noimageindex" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={openGraphUrl} />
+		<meta property="og:type" content={openGraphType} />
+		{openGraphPublishedTime && <meta property="article:published_time" content={openGraphPublishedTime} />}
+		<meta name="robots" content={robots} />
+		{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
 		<link rel="shortcut icon" href="/favicon.png" />
 		{
 			import.meta.env.PROD && (

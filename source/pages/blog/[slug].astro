@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { Schema } from "astro-seo-schema";
 import { icons } from "feather-icons";
 import { getCollection, render } from "astro:content";
 import BlogShell from "../../blog/BlogShell.astro";
@@ -23,9 +24,44 @@ export async function getStaticPaths() {
 
 const { blogPost } = Astro.props;
 const { Content } = await render(blogPost);
+const blogPostUrl = new URL(`/blog/${blogPost.id}`, Astro.site).toString();
 ---
 
-<BlogShell title={`Christian Rackerseder — ${blogPost.data.title}`} pageTitle="Blog" showPageHeader={false}>
+<BlogShell
+	canonicalUrl={blogPostUrl}
+	description={blogPost.data.description}
+	openGraphPublishedTime={blogPost.data.publishedAt}
+	openGraphType="article"
+	openGraphUrl={blogPostUrl}
+	robots="noimageindex"
+	title={`Christian Rackerseder — ${blogPost.data.title}`}
+	pageTitle="Blog"
+	showPageHeader={false}
+>
+	<Fragment slot="search-engine-optimization-schema">
+		<Schema
+			item={{
+				"@context": "https://schema.org",
+				"@type": "BlogPosting",
+				author: {
+					"@type": "Person",
+					name: "Christian Rackerseder",
+					url: "https://www.echooff.dev"
+				},
+				datePublished: blogPost.data.publishedAt,
+				description: blogPost.data.description,
+				headline: blogPost.data.title,
+				mainEntityOfPage: blogPostUrl,
+				publisher: {
+					"@type": "Person",
+					name: "Christian Rackerseder",
+					url: "https://www.echooff.dev"
+				},
+				url: blogPostUrl
+			}}
+		/>
+	</Fragment>
+
 	<article class="blog-article">
 		<header class="blog-article-header">
 			<div class="blog-article-top-row">

@@ -6,19 +6,45 @@ import Footer from "../layouts/Footer.astro";
 import "../styles/blog.scss";
 
 export interface Props {
+	readonly canonicalUrl: string;
+	readonly description: string;
+	readonly openGraphPublishedTime: string;
+	readonly openGraphType: string;
+	readonly openGraphUrl: string;
+	readonly robots: string;
 	readonly showPageHeader?: boolean;
 	readonly intro?: string;
 	readonly pageTitle: string;
 	readonly terminalOutput?: string;
-	readonly title?: string;
+	readonly title: string;
 }
 
-const { intro, pageTitle, showPageHeader = true, terminalOutput, title } = Astro.props;
+const {
+	canonicalUrl,
+	description,
+	intro,
+	openGraphPublishedTime,
+	openGraphType,
+	openGraphUrl,
+	pageTitle,
+	robots,
+	showPageHeader = true,
+	terminalOutput,
+	title
+} = Astro.props;
 ---
 
 {
-	title ? (
-		<PageShell title={title}>
+	(
+		<PageShell
+			canonicalUrl={canonicalUrl}
+			description={description}
+			openGraphPublishedTime={openGraphPublishedTime}
+			openGraphType={openGraphType}
+			openGraphUrl={openGraphUrl}
+			robots={robots}
+			title={title}
+		>
 			<Header />
 
 			<Body>
@@ -43,28 +69,6 @@ const { intro, pageTitle, showPageHeader = true, terminalOutput, title } = Astro
 										</div>
 									</div>
 								</div>
-								{intro && <p class="blog-page-intro">{intro}</p>}
-							</header>
-						)}
-
-						<slot />
-					</section>
-				</main>
-			</Body>
-
-			<Footer />
-		</PageShell>
-	) : (
-		<PageShell>
-			<Header />
-
-			<Body>
-				<main class="blog-main">
-					<section class="blog-panel" aria-label="Blog content">
-						{showPageHeader && (
-							<header class="blog-page-header">
-								<p class="blog-page-kicker">$ ls /blog</p>
-								<h1>{pageTitle}</h1>
 								{intro && <p class="blog-page-intro">{intro}</p>}
 							</header>
 						)}

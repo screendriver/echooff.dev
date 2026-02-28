@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import { formatPublishedAtFallbackDateTime, sortBlogPostsByPublicationDateDescending } from "./blog-posts.js";
 
 function createBlogPostCollectionEntry(input: {
+	readonly description: string;
 	readonly id: string;
 	readonly title: string;
 	readonly publishedAt: string;
@@ -11,6 +12,7 @@ function createBlogPostCollectionEntry(input: {
 		id: input.id,
 		collection: "blog",
 		data: {
+			description: input.description,
 			title: input.title,
 			publishedAt: input.publishedAt
 		},
@@ -21,11 +23,13 @@ function createBlogPostCollectionEntry(input: {
 describe("sortBlogPostsByPublicationDateDescending()", () => {
 	it("sorts newer blog posts before older blog posts", () => {
 		const olderBlogPost = createBlogPostCollectionEntry({
+			description: "Older blog post description",
 			id: "older-blog-post",
 			title: "Older Blog Post",
 			publishedAt: "2026-02-01T10:00:00+01:00"
 		});
 		const newerBlogPost = createBlogPostCollectionEntry({
+			description: "Newer blog post description",
 			id: "newer-blog-post",
 			title: "Newer Blog Post",
 			publishedAt: "2026-02-28T10:00:00+01:00"
@@ -38,11 +42,13 @@ describe("sortBlogPostsByPublicationDateDescending()", () => {
 
 	it("uses the collection entry id as a deterministic tie breaker", () => {
 		const blogPostB = createBlogPostCollectionEntry({
+			description: "Zebra blog post description",
 			id: "zebra",
 			title: "Zebra",
 			publishedAt: "2026-02-28T10:00:00+01:00"
 		});
 		const blogPostA = createBlogPostCollectionEntry({
+			description: "Alpha blog post description",
 			id: "alpha",
 			title: "Alpha",
 			publishedAt: "2026-02-28T10:00:00+01:00"
