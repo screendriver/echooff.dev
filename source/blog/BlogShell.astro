@@ -19,6 +19,7 @@ export interface Props {
 	readonly intro?: string;
 	readonly pageTitle: string;
 	readonly terminalOutput?: string;
+	readonly titleActionHtml?: string;
 	readonly title: string;
 	readonly twitterCardType: string;
 }
@@ -37,6 +38,7 @@ const {
 	robots,
 	showPageHeader = true,
 	terminalOutput,
+	titleActionHtml,
 	title,
 	twitterCardType
 } = Astro.props;
@@ -65,7 +67,10 @@ const {
 						{showPageHeader && (
 							<header class="blog-page-header">
 								<div class="blog-page-title-row">
-									<h1>{pageTitle}</h1>
+									<div class="blog-page-heading-row">
+										<h1>{pageTitle}</h1>
+										{titleActionHtml && <Fragment set:html={titleActionHtml} />}
+									</div>
 
 									<div class="blog-command-line" aria-hidden="true">
 										<div class="blog-command-line-header">
