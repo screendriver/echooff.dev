@@ -20,7 +20,6 @@
 		"@sindresorhus/is": "7.2.0",
 		"arktype": "2.1.29",
 		"astro": "5.18.0",
-		"astro-feather": "1.0.0",
 		"astro-seo-schema": "5.2.0",
 		"date-fns": "4.1.0",
 		"feather-icons": "4.29.2",
