@@ -1,15 +1,26 @@
 ---
 import { icons } from "feather-icons";
+
+const currentPathname = Astro.url.pathname;
+const isBlogPage = currentPathname.startsWith("/blog");
+const isHomePage = currentPathname === "/";
 ---
 
 <nav>
-	<ul>
+	<ul class="site-links">
 		<li>
-			<Fragment
-				set:html={icons.code?.toSvg({
-					class: "navigation-icon"
-				})}
-			/>
+			<a href="/" aria-label="Home" aria-current={isHomePage ? "page" : undefined} class="home-link">
+				<Fragment
+					set:html={icons.code?.toSvg({
+						class: "navigation-icon"
+					})}
+				/>
+			</a>
+		</li>
+		<li>
+			<a href="/blog" aria-current={isBlogPage ? "page" : undefined} class="site-link">
+				Blog
+			</a>
 		</li>
 	</ul>
 
@@ -56,6 +67,7 @@ import { icons } from "feather-icons";
 
 	nav {
 		background-image: linear-gradient(to bottom, variables.$selection, variables.$background);
+		border-bottom: 1px solid variables.$purple;
 		color: variables.$foreground;
 		display: flex;
 		align-items: center;
@@ -67,6 +79,39 @@ import { icons } from "feather-icons";
 		display: flex;
 		align-items: center;
 		gap: 2rem;
+	}
+
+	.site-links a {
+		font-size: 0.95rem;
+		font-weight: 700;
+		letter-spacing: 0.03em;
+		text-transform: uppercase;
+	}
+
+	.home-link,
+	.site-link {
+		transition:
+			color 160ms ease-in-out,
+			opacity 160ms ease-in-out;
+	}
+
+	.home-link[aria-current="page"],
+	.site-link[aria-current="page"] {
+		color: variables.$purple;
+		opacity: 1;
+	}
+
+	.home-link:not([aria-current="page"]),
+	.site-link:not([aria-current="page"]) {
+		opacity: 0.8;
+	}
+
+	.home-link:hover,
+	.home-link:focus-visible,
+	.site-link:hover,
+	.site-link:focus-visible {
+		color: variables.$cyan;
+		opacity: 1;
 	}
 
 	.social-links {
