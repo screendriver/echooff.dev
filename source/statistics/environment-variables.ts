@@ -1,13 +1,17 @@
-import { pipe, string, url, transform, minLength } from "valibot";
+import {
+	gitHubApiTokenInputSchema,
+	gitHubBaseUrlInputSchema,
+	gitHubLoginInputSchema
+} from "./environment-variable-input-schema.js";
 
-export const gitHubBaseUrlSchema = pipe(
-	string(),
-	url(),
-	transform((urlString) => {
-		return new URL(urlString);
-	})
-);
+export function parseGitHubBaseUrl(gitHubBaseUrlInput: unknown): URL {
+	return new URL(gitHubBaseUrlInputSchema.assert(gitHubBaseUrlInput));
+}
 
-export const gitHubLoginSchema = pipe(string(), minLength(1));
+export function parseGitHubLogin(gitHubLoginInput: unknown): string {
+	return gitHubLoginInputSchema.assert(gitHubLoginInput);
+}
 
-export const gitHubApiTokenSchema = pipe(string(), minLength(1));
+export function parseGitHubApiToken(gitHubApiTokenInput: unknown): string {
+	return gitHubApiTokenInputSchema.assert(gitHubApiTokenInput);
+}

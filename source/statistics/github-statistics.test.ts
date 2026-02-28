@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { parse } from "valibot";
 import { Factory } from "fishery";
-import { type GitHubStatistics, gitHubStatisticsSchema } from "./github-statistics-schema.js";
+import { gitHubStatisticsResponseSchema } from "./github-statistics-response-schema.js";
+import { parseGitHubStatistics, type GitHubStatistics } from "./github-statistics.js";
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
 	return {
@@ -16,13 +16,13 @@ const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
 	};
 });
 
-describe("gitHubStatisticsSchema", () => {
+describe("gitHub statistics schema", () => {
 	it('does allow additional properties in addition to "user" object an strips them out', () => {
 		const gitHubStatistics = gitHubStatisticsFactory.build({
 			foo: "bar"
 		} as unknown as GitHubStatistics);
 
-		const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
+		const actual = gitHubStatisticsResponseSchema.assert(gitHubStatistics);
 		const expected = gitHubStatisticsFactory.build();
 
 		expect(actual).toStrictEqual(expected);
@@ -35,7 +35,7 @@ describe("gitHubStatisticsSchema", () => {
 			}
 		} as unknown as GitHubStatistics);
 
-		const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
+		const actual = gitHubStatisticsResponseSchema.assert(gitHubStatistics);
 		const expected = gitHubStatisticsFactory.build();
 
 		expect(actual).toStrictEqual(expected);
@@ -50,7 +50,7 @@ describe("gitHubStatisticsSchema", () => {
 			}
 		} as unknown as GitHubStatistics);
 
-		const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
+		const actual = gitHubStatisticsResponseSchema.assert(gitHubStatistics);
 		const expected = gitHubStatisticsFactory.build();
 
 		expect(actual).toStrictEqual(expected);
@@ -65,7 +65,7 @@ describe("gitHubStatisticsSchema", () => {
 			}
 		} as unknown as GitHubStatistics);
 
-		const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
+		const actual = gitHubStatisticsResponseSchema.assert(gitHubStatistics);
 		const expected = gitHubStatisticsFactory.build();
 
 		expect(actual).toStrictEqual(expected);
@@ -81,8 +81,8 @@ describe("gitHubStatisticsSchema", () => {
 		});
 
 		expect(() => {
-			return parse(gitHubStatisticsSchema, gitHubStatistics);
-		}).toThrowError("Invalid value: Expected >=0 but received -42");
+			return gitHubStatisticsResponseSchema.assert(gitHubStatistics);
+		}).toThrowError("user.repositories.totalCount must be non-negative (was -42)");
 	});
 
 	it('does not allow other types than number for "user.repositories.totalCount"', () => {
@@ -95,8 +95,8 @@ describe("gitHubStatisticsSchema", () => {
 		} as unknown as GitHubStatistics);
 
 		expect(() => {
-			return parse(gitHubStatisticsSchema, gitHubStatistics);
-		}).toThrowError('Invalid type: Expected number but received "foo"');
+			return gitHubStatisticsResponseSchema.assert(gitHubStatistics);
+		}).toThrowError("user.repositories.totalCount must be a number (was a string)");
 	});
 
 	it('allows 0 for "user.repositories.totalCount"', () => {
@@ -108,7 +108,7 @@ describe("gitHubStatisticsSchema", () => {
 			}
 		});
 
-		const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
+		const actual = parseGitHubStatistics(gitHubStatistics);
 		const expected = gitHubStatistics;
 
 		expect(actual).toStrictEqual(expected);
@@ -124,8 +124,8 @@ describe("gitHubStatisticsSchema", () => {
 		});
 
 		expect(() => {
-			return parse(gitHubStatisticsSchema, gitHubStatistics);
-		}).toThrowError("Invalid value: Expected >=0 but received -42");
+			return gitHubStatisticsResponseSchema.assert(gitHubStatistics);
+		}).toThrowError("user.starredRepositories.totalCount must be non-negative (was -42)");
 	});
 
 	it('does not allow other types than number for "user.starredRepositories.totalCount"', () => {
@@ -138,8 +138,8 @@ describe("gitHubStatisticsSchema", () => {
 		} as unknown as GitHubStatistics);
 
 		expect(() => {
-			return parse(gitHubStatisticsSchema, gitHubStatistics);
-		}).toThrowError('Invalid type: Expected number but received "foo"');
+			return gitHubStatisticsResponseSchema.assert(gitHubStatistics);
+		}).toThrowError("user.starredRepositories.totalCount must be a number (was a string)");
 	});
 
 	it('allows 0 for "user.starredRepositories.totalCount"', () => {
@@ -151,7 +151,7 @@ describe("gitHubStatisticsSchema", () => {
 			}
 		});
 
-		const actual = parse(gitHubStatisticsSchema, gitHubStatistics);
+		const actual = parseGitHubStatistics(gitHubStatistics);
 		const expected = gitHubStatistics;
 
 		expect(actual).toStrictEqual(expected);
