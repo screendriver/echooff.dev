@@ -1,0 +1,30 @@
+<script>
+	import is from "@sindresorhus/is";
+
+	let preferredBrowserLanguages = undefined;
+
+	if (navigator.languages.length > 0) {
+		preferredBrowserLanguages = navigator.languages;
+	}
+
+	const browserDateTimeFormatter = new Intl.DateTimeFormat(preferredBrowserLanguages, {
+		dateStyle: "medium",
+		timeStyle: "short"
+	});
+
+	for (const localizedDateTimeElement of document.querySelectorAll("[data-localized-date-time]")) {
+		const publishedAt = localizedDateTimeElement.getAttribute("datetime");
+
+		if (!is.string(publishedAt)) {
+			continue;
+		}
+
+		const publishedAtDate = new Date(publishedAt);
+
+		if (!is.validDate(publishedAtDate)) {
+			continue;
+		}
+
+		localizedDateTimeElement.textContent = browserDateTimeFormatter.format(publishedAtDate);
+	}
+</script>

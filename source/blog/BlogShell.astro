@@ -1,0 +1,96 @@
+---
+import PageShell from "../layouts/PageShell.astro";
+import Header from "../layouts/Header.astro";
+import Body from "../layouts/Body.astro";
+import Footer from "../layouts/Footer.astro";
+import "../styles/blog.scss";
+
+export interface Props {
+	readonly canonicalUrl: string;
+	readonly description: string;
+	readonly openGraphImageAlternativeText: string;
+	readonly openGraphImageUrl: string;
+	readonly openGraphPublishedTime: string;
+	readonly openGraphType: string;
+	readonly openGraphUrl: string;
+	readonly rssFeedUrl: string;
+	readonly robots: string;
+	readonly showPageHeader?: boolean;
+	readonly intro?: string;
+	readonly pageTitle: string;
+	readonly terminalOutput?: string;
+	readonly title: string;
+	readonly twitterCardType: string;
+}
+
+const {
+	canonicalUrl,
+	description,
+	intro,
+	openGraphImageAlternativeText,
+	openGraphImageUrl,
+	openGraphPublishedTime,
+	openGraphType,
+	openGraphUrl,
+	pageTitle,
+	rssFeedUrl,
+	robots,
+	showPageHeader = true,
+	terminalOutput,
+	title,
+	twitterCardType
+} = Astro.props;
+---
+
+{
+	(
+		<PageShell
+			canonicalUrl={canonicalUrl}
+			description={description}
+			openGraphImageAlternativeText={openGraphImageAlternativeText}
+			openGraphImageUrl={openGraphImageUrl}
+			openGraphPublishedTime={openGraphPublishedTime}
+			openGraphType={openGraphType}
+			openGraphUrl={openGraphUrl}
+			rssFeedUrl={rssFeedUrl}
+			robots={robots}
+			title={title}
+			twitterCardType={twitterCardType}
+		>
+			<Header />
+
+			<Body>
+				<main class="blog-main">
+					<section class="blog-panel" aria-label="Blog content">
+						{showPageHeader && (
+							<header class="blog-page-header">
+								<div class="blog-page-title-row">
+									<h1>{pageTitle}</h1>
+
+									<div class="blog-command-line" aria-hidden="true">
+										<div class="blog-command-line-header">
+											<div class="blog-command-line-buttons">
+												<div class="blog-command-line-button red" />
+												<div class="blog-command-line-button yellow" />
+												<div class="blog-command-line-button green" />
+											</div>
+										</div>
+										<div class="blog-command-line-code">
+											<p class="blog-page-kicker">$ ls /blog</p>
+											{terminalOutput && <p class="blog-command-line-output">{terminalOutput}</p>}
+										</div>
+									</div>
+								</div>
+								{intro && <p class="blog-page-intro">{intro}</p>}
+							</header>
+						)}
+
+						<slot />
+					</section>
+				</main>
+			</Body>
+
+			<Footer />
+		</PageShell>
+	)
+}

@@ -1,0 +1,66 @@
+---
+import { getCollection } from "astro:content";
+import BlogShell from "../../blog/BlogShell.astro";
+import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
+import LocalizedDateTimeScript from "../../blog/LocalizedDateTimeScript.astro";
+import { sortBlogPostsByPublicationDateDescending } from "../../blog/blog-posts.js";
+import {
+	createAbsoluteAssetUrl,
+	createBlogIndexAbsoluteUrl,
+	createBlogRssFeedAbsoluteUrl
+} from "../../blog/blog-site.js";
+import headerImage from "../../assets/images/header-01.jpg";
+
+const blogCollection = await getCollection("blog");
+const sortedBlogPosts = sortBlogPostsByPublicationDateDescending(blogCollection);
+const blogPostCount = sortedBlogPosts.length;
+const blogIndexUrl = createBlogIndexAbsoluteUrl(Astro.site);
+const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(Astro.site);
+const openGraphImageUrl = createAbsoluteAssetUrl(Astro.site, headerImage.src);
+const openGraphImageAlternativeText = "Echooff.dev header illustration";
+let blogPostCountLabel = `${blogPostCount} posts available`;
+
+if (blogPostCount === 1) {
+	blogPostCountLabel = "1 post available";
+}
+---
+
+<BlogShell
+	canonicalUrl={blogIndexUrl}
+	description="Notes on web technologies, engineering decisions, and front-end architecture."
+	openGraphImageAlternativeText={openGraphImageAlternativeText}
+	openGraphImageUrl={openGraphImageUrl}
+	openGraphPublishedTime=""
+	openGraphType="website"
+	openGraphUrl={blogIndexUrl}
+	rssFeedUrl={blogRssFeedUrl}
+	robots="index,follow,max-image-preview:large"
+	title="Christian Rackerseder — Blog"
+	twitterCardType="summary_large_image"
+	pageTitle="Blog"
+	intro="Notes on web technologies, engineering decisions, and front-end architecture."
+	terminalOutput={blogPostCountLabel}
+>
+	<div class="blog-index">
+		{
+			sortedBlogPosts.length > 0 ? (
+				<ul class="blog-index-list">
+					{sortedBlogPosts.map((blogPost) => (
+						<li>
+							<a class="blog-index-link" href={`/blog/${blogPost.id}`}>
+								<span class="blog-index-title">{blogPost.data.title}</span>
+								<span class="blog-meta">
+									Published <LocalizedDateTime publishedAt={blogPost.data.publishedAt} />
+								</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			) : (
+				<p class="blog-empty-state">No blog posts published yet.</p>
+			)
+		}
+	</div>
+
+	<LocalizedDateTimeScript />
+</BlogShell>

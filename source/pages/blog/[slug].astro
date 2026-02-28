@@ -1,0 +1,117 @@
+---
+import { Image } from "astro:assets";
+import { Schema } from "astro-seo-schema";
+import { icons } from "feather-icons";
+import { getCollection, render } from "astro:content";
+import BlogShell from "../../blog/BlogShell.astro";
+import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
+import LocalizedDateTimeScript from "../../blog/LocalizedDateTimeScript.astro";
+import { sortBlogPostsByPublicationDateDescending } from "../../blog/blog-posts.js";
+import {
+	createAbsoluteAssetUrl,
+	createBlogPostAbsoluteUrl,
+	createBlogRssFeedAbsoluteUrl,
+	getConfiguredSiteUrlOrThrow
+} from "../../blog/blog-site.js";
+import aboutImage from "../../assets/images/about.jpg";
+import headerImage from "../../assets/images/header-01.jpg";
+
+export async function getStaticPaths() {
+	const blogPosts = sortBlogPostsByPublicationDateDescending(await getCollection("blog"));
+
+	return blogPosts.map((blogPost) => ({
+		params: {
+			slug: blogPost.id
+		},
+		props: {
+			blogPost
+		}
+	}));
+}
+
+const { blogPost } = Astro.props;
+const { Content } = await render(blogPost);
+const configuredSiteUrl = getConfiguredSiteUrlOrThrow(Astro.site);
+const blogPostUrl = createBlogPostAbsoluteUrl(configuredSiteUrl, blogPost.id);
+const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(configuredSiteUrl);
+const openGraphImageUrl = createAbsoluteAssetUrl(configuredSiteUrl, headerImage.src);
+const openGraphImageAlternativeText = "Echooff.dev header illustration";
+const siteUrl = configuredSiteUrl.toString();
+---
+
+<BlogShell
+	canonicalUrl={blogPostUrl}
+	description={blogPost.data.description}
+	openGraphImageAlternativeText={openGraphImageAlternativeText}
+	openGraphImageUrl={openGraphImageUrl}
+	openGraphPublishedTime={blogPost.data.publishedAt}
+	openGraphType="article"
+	openGraphUrl={blogPostUrl}
+	rssFeedUrl={blogRssFeedUrl}
+	robots="index,follow,max-image-preview:large"
+	title={`Christian Rackerseder — ${blogPost.data.title}`}
+	twitterCardType="summary_large_image"
+	pageTitle="Blog"
+	showPageHeader={false}
+>
+	<Fragment slot="search-engine-optimization-schema">
+		<Schema
+			item={{
+				"@context": "https://schema.org",
+				"@type": "BlogPosting",
+				author: {
+					"@type": "Person",
+					name: "Christian Rackerseder",
+					url: siteUrl
+				},
+				datePublished: blogPost.data.publishedAt,
+				description: blogPost.data.description,
+				headline: blogPost.data.title,
+				image: openGraphImageUrl,
+				mainEntityOfPage: blogPostUrl,
+				publisher: {
+					"@type": "Person",
+					name: "Christian Rackerseder",
+					url: siteUrl
+				},
+				url: blogPostUrl
+			}}
+		/>
+	</Fragment>
+
+	<article class="blog-article">
+		<header class="blog-article-header">
+			<div class="blog-article-top-row">
+				<nav aria-label="Blog">
+					<p class="blog-back-link-wrapper">
+						<a class="blog-back-link" href="/blog">
+							<Fragment set:html={icons["arrow-left"]?.toSvg({ class: "blog-back-link-icon" })} />
+							<span>Back to Blog</span>
+						</a>
+					</p>
+				</nav>
+
+				<figure class="blog-article-avatar">
+					<Image
+						alt="Christian Rackerseder"
+						src={aboutImage}
+						width={88}
+						height={88}
+						quality={75}
+						class="blog-article-avatar-image"
+					/>
+				</figure>
+			</div>
+			<h1>{blogPost.data.title}</h1>
+			<p class="blog-meta">
+				Published <LocalizedDateTime publishedAt={blogPost.data.publishedAt} />
+			</p>
+		</header>
+
+		<section class="blog-prose" aria-label="Blog post content">
+			<Content />
+		</section>
+	</article>
+
+	<LocalizedDateTimeScript />
+</BlogShell>
