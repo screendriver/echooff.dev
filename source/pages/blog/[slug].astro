@@ -7,7 +7,14 @@ import BlogShell from "../../blog/BlogShell.astro";
 import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
 import LocalizedDateTimeScript from "../../blog/LocalizedDateTimeScript.astro";
 import { sortBlogPostsByPublicationDateDescending } from "../../blog/blog-posts.js";
+import {
+	createAbsoluteAssetUrl,
+	createBlogPostAbsoluteUrl,
+	createBlogRssFeedAbsoluteUrl,
+	getConfiguredSiteUrlOrThrow
+} from "../../blog/blog-site.js";
 import aboutImage from "../../assets/images/about.jpg";
+import headerImage from "../../assets/images/header-01.jpg";
 
 export async function getStaticPaths() {
 	const blogPosts = sortBlogPostsByPublicationDateDescending(await getCollection("blog"));
@@ -24,17 +31,26 @@ export async function getStaticPaths() {
 
 const { blogPost } = Astro.props;
 const { Content } = await render(blogPost);
-const blogPostUrl = new URL(`/blog/${blogPost.id}`, Astro.site).toString();
+const configuredSiteUrl = getConfiguredSiteUrlOrThrow(Astro.site);
+const blogPostUrl = createBlogPostAbsoluteUrl(configuredSiteUrl, blogPost.id);
+const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(configuredSiteUrl);
+const openGraphImageUrl = createAbsoluteAssetUrl(configuredSiteUrl, headerImage.src);
+const openGraphImageAlternativeText = "Echooff.dev header illustration";
+const siteUrl = configuredSiteUrl.toString();
 ---
 
 <BlogShell
 	canonicalUrl={blogPostUrl}
 	description={blogPost.data.description}
+	openGraphImageAlternativeText={openGraphImageAlternativeText}
+	openGraphImageUrl={openGraphImageUrl}
 	openGraphPublishedTime={blogPost.data.publishedAt}
 	openGraphType="article"
 	openGraphUrl={blogPostUrl}
-	robots="noimageindex"
+	rssFeedUrl={blogRssFeedUrl}
+	robots="index,follow,max-image-preview:large"
 	title={`Christian Rackerseder — ${blogPost.data.title}`}
+	twitterCardType="summary_large_image"
 	pageTitle="Blog"
 	showPageHeader={false}
 >
@@ -46,16 +62,17 @@ const blogPostUrl = new URL(`/blog/${blogPost.id}`, Astro.site).toString();
 				author: {
 					"@type": "Person",
 					name: "Christian Rackerseder",
-					url: "https://www.echooff.dev"
+					url: siteUrl
 				},
 				datePublished: blogPost.data.publishedAt,
 				description: blogPost.data.description,
 				headline: blogPost.data.title,
+				image: openGraphImageUrl,
 				mainEntityOfPage: blogPostUrl,
 				publisher: {
 					"@type": "Person",
 					name: "Christian Rackerseder",
-					url: "https://www.echooff.dev"
+					url: siteUrl
 				},
 				url: blogPostUrl
 			}}

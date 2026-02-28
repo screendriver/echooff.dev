@@ -4,11 +4,20 @@ import BlogShell from "../../blog/BlogShell.astro";
 import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
 import LocalizedDateTimeScript from "../../blog/LocalizedDateTimeScript.astro";
 import { sortBlogPostsByPublicationDateDescending } from "../../blog/blog-posts.js";
+import {
+	createAbsoluteAssetUrl,
+	createBlogIndexAbsoluteUrl,
+	createBlogRssFeedAbsoluteUrl
+} from "../../blog/blog-site.js";
+import headerImage from "../../assets/images/header-01.jpg";
 
 const blogCollection = await getCollection("blog");
 const sortedBlogPosts = sortBlogPostsByPublicationDateDescending(blogCollection);
 const blogPostCount = sortedBlogPosts.length;
-const blogIndexUrl = new URL("/blog", Astro.site).toString();
+const blogIndexUrl = createBlogIndexAbsoluteUrl(Astro.site);
+const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(Astro.site);
+const openGraphImageUrl = createAbsoluteAssetUrl(Astro.site, headerImage.src);
+const openGraphImageAlternativeText = "Echooff.dev header illustration";
 let blogPostCountLabel = `${blogPostCount} posts available`;
 
 if (blogPostCount === 1) {
@@ -19,11 +28,15 @@ if (blogPostCount === 1) {
 <BlogShell
 	canonicalUrl={blogIndexUrl}
 	description="Notes on web technologies, engineering decisions, and front-end architecture."
+	openGraphImageAlternativeText={openGraphImageAlternativeText}
+	openGraphImageUrl={openGraphImageUrl}
 	openGraphPublishedTime=""
 	openGraphType="website"
 	openGraphUrl={blogIndexUrl}
-	robots="noimageindex"
+	rssFeedUrl={blogRssFeedUrl}
+	robots="index,follow,max-image-preview:large"
 	title="Christian Rackerseder — Blog"
+	twitterCardType="summary_large_image"
 	pageTitle="Blog"
 	intro="Notes on web technologies, engineering decisions, and front-end architecture."
 	terminalOutput={blogPostCountLabel}

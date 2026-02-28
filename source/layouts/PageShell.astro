@@ -9,24 +9,33 @@ import "../styles/main.scss";
 export interface Props {
 	readonly canonicalUrl?: string;
 	readonly description?: string;
+	readonly openGraphImageAlternativeText?: string;
+	readonly openGraphImageUrl?: string;
 	readonly openGraphPublishedTime?: string;
 	readonly openGraphType?: string;
 	readonly openGraphUrl?: string;
+	readonly rssFeedUrl?: string;
 	readonly robots?: string;
 	readonly title?: string;
+	readonly twitterCardType?: string;
 }
 
 const defaultDescription = "Full-Stack Software Engineer with a passion for the Jamstack and test driven development.";
 const defaultTitle = "Christian Rackerseder — Full-Stack Software Engineer";
+const defaultOpenGraphUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : Astro.url.toString();
 
 const {
 	canonicalUrl,
 	description = defaultDescription,
+	openGraphImageAlternativeText,
+	openGraphImageUrl,
 	openGraphPublishedTime,
 	openGraphType = "website",
-	openGraphUrl = "https://www.echooff.dev",
+	openGraphUrl = defaultOpenGraphUrl,
+	rssFeedUrl,
 	robots = "noimageindex",
-	title = defaultTitle
+	title = defaultTitle,
+	twitterCardType = "summary"
 } = Astro.props;
 ---
 
@@ -43,18 +52,32 @@ const {
 			content="Racki,TypeScript,JavaScript,Jamstack,TDD,HTML,CSS,Node.js,React,Astro,Vue.js,Vue"
 		/>
 		<meta name="author" content="Christian Rackerseder" />
-		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:card" content={twitterCardType} />
 		<meta name="twitter:site" content="@CallistoShip" />
 		<meta name="twitter:creator" content="@CallistoShip" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
+		{openGraphImageUrl && <meta name="twitter:image" content={openGraphImageUrl} />}
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
+		{openGraphImageUrl && <meta property="og:image" content={openGraphImageUrl} />}
+		{openGraphImageAlternativeText && <meta property="og:image:alt" content={openGraphImageAlternativeText} />}
 		<meta property="og:url" content={openGraphUrl} />
 		<meta property="og:type" content={openGraphType} />
 		{openGraphPublishedTime && <meta property="article:published_time" content={openGraphPublishedTime} />}
 		<meta name="robots" content={robots} />
 		{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		{
+			rssFeedUrl && (
+				<link
+					rel="alternate"
+					type="application/rss+xml"
+					title="Christian Rackerseder — Blog RSS Feed"
+					href={rssFeedUrl}
+				/>
+			)
+		}
 		<link rel="shortcut icon" href="/favicon.png" />
 		{
 			import.meta.env.PROD && (

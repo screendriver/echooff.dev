@@ -8,29 +8,37 @@ import "../styles/blog.scss";
 export interface Props {
 	readonly canonicalUrl: string;
 	readonly description: string;
+	readonly openGraphImageAlternativeText: string;
+	readonly openGraphImageUrl: string;
 	readonly openGraphPublishedTime: string;
 	readonly openGraphType: string;
 	readonly openGraphUrl: string;
+	readonly rssFeedUrl: string;
 	readonly robots: string;
 	readonly showPageHeader?: boolean;
 	readonly intro?: string;
 	readonly pageTitle: string;
 	readonly terminalOutput?: string;
 	readonly title: string;
+	readonly twitterCardType: string;
 }
 
 const {
 	canonicalUrl,
 	description,
 	intro,
+	openGraphImageAlternativeText,
+	openGraphImageUrl,
 	openGraphPublishedTime,
 	openGraphType,
 	openGraphUrl,
 	pageTitle,
+	rssFeedUrl,
 	robots,
 	showPageHeader = true,
 	terminalOutput,
-	title
+	title,
+	twitterCardType
 } = Astro.props;
 ---
 
@@ -39,11 +47,15 @@ const {
 		<PageShell
 			canonicalUrl={canonicalUrl}
 			description={description}
+			openGraphImageAlternativeText={openGraphImageAlternativeText}
+			openGraphImageUrl={openGraphImageUrl}
 			openGraphPublishedTime={openGraphPublishedTime}
 			openGraphType={openGraphType}
 			openGraphUrl={openGraphUrl}
+			rssFeedUrl={rssFeedUrl}
 			robots={robots}
 			title={title}
+			twitterCardType={twitterCardType}
 		>
 			<Header />
 
