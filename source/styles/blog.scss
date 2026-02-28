@@ -33,6 +33,13 @@
 	gap: 0.75rem;
 }
 
+.blog-page-heading-row {
+	align-items: center;
+	display: flex;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+}
+
 .blog-command-line {
 	width: fit-content;
 	min-width: 12rem;
@@ -111,6 +118,27 @@
 
 .blog-index {
 	padding: 1.5rem 1.5rem 1.75rem;
+}
+
+.blog-rss-link {
+	align-items: center;
+	color: variables.$cyan;
+	display: inline-flex;
+	justify-content: center;
+	transition:
+		color 160ms ease-in-out,
+		transform 160ms ease-in-out;
+}
+
+.blog-rss-link:hover,
+.blog-rss-link:focus-visible {
+	color: variables.$cyan;
+	transform: translateY(-1px);
+}
+
+.blog-rss-link-icon {
+	height: 1.5rem;
+	width: 1.5rem;
 }
 
 .blog-index-list {
