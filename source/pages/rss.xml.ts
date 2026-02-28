@@ -11,7 +11,7 @@ export const GET: APIRoute = async (apiContext) => {
 
 	return rss({
 		title: "Christian Rackerseder — Blog",
-		description: "Notes on web technologies, engineering decisions, and front-end architecture.",
+		description: "Notes on web technologies, engineering tradeoffs, and front-end architecture.",
 		site: configuredSiteUrl,
 		items: createRssFeedItemsForBlogPosts(blogPosts, configuredSiteUrl)
 	});
