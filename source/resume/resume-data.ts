@@ -20,9 +20,13 @@ export type ResumesData = ResumeData[];
 
 function parseResumeEntry(resumeDataInput: ResumeDataInput): ResumeData {
 	return {
-		...resumeDataInput,
+		since: resumeDataInput.since,
+		showOnlyYear: resumeDataInput.showOnlyYear,
+		industry: resumeDataInput.industry,
+		jobTitle: resumeDataInput.jobTitle,
+		jobDescription: resumeDataInput.jobDescription,
 		company: {
-			...resumeDataInput.company,
+			name: resumeDataInput.company.name,
 			url: new URL(resumeDataInput.company.url)
 		}
 	};
