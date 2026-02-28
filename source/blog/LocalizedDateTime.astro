@@ -1,0 +1,15 @@
+---
+import { formatPublishedAtFallbackDateTime } from "./blog-posts.js";
+
+export interface Props {
+	readonly className?: string;
+	readonly publishedAt: string;
+}
+
+const { className, publishedAt } = Astro.props;
+const fallbackPublishedAtDateTime = formatPublishedAtFallbackDateTime(publishedAt);
+---
+
+<time class:list={["localized-date-time", className]} datetime={publishedAt} data-localized-date-time>
+	{fallbackPublishedAtDateTime}
+</time>
