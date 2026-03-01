@@ -33,4 +33,4 @@ process.on("SIGINT", () => {
 	void removeFiles();
 });
 
-await $`npx astro dev 2>&1`.pipe(process.stdout);
+await $`npx astro dev --force 2>&1`.pipe(process.stdout);

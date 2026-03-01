@@ -5,7 +5,7 @@ default:
 	@just --list
 
 sync:
-	astro sync
+	astro sync --force
 
 lint: sync
 	astro check --minimumFailingSeverity=hint
