@@ -10,6 +10,7 @@ export default {
 		{
 			files: "source/content/blog/*.md",
 			options: {
+				printWidth: 80,
 				tabWidth: 2,
 				useTabs: false
 			}

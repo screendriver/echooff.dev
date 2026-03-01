@@ -107,7 +107,12 @@ type Logger = {
   info: (message: string) => void;
 };
 
-async function registerUser(email: string, database: Database, mailer: Mailer, logger: Logger) {
+async function registerUser(
+  email: string,
+  database: Database,
+  mailer: Mailer,
+  logger: Logger
+) {
   const user = await database.save({ email });
 
   await mailer.sendWelcomeEmail(email);
@@ -166,7 +171,9 @@ import test from "node:test";
 test("emits a UserRegistered event", function () {
   const events = decideUserRegistration("test@example.com");
 
-  assert.deepEqual(events, [{ type: "UserRegistered", email: "test@example.com" }]);
+  assert.deepEqual(events, [
+    { type: "UserRegistered", email: "test@example.com" }
+  ]);
 });
 ```
 
