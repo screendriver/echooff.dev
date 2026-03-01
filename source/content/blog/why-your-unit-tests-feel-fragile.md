@@ -39,11 +39,12 @@ That is expensive.
 Consider a simple registration flow.
 
 ```ts
+import type { User } from "./user";
 import { database } from "./database";
 import { mailer } from "./mailer";
 import { logger } from "./logger";
 
-async function registerUser(email: string) {
+async function registerUser(email: string): Promise<User> {
   const user = await database.save({ email });
 
   await mailer.sendWelcomeEmail(email);
@@ -184,6 +185,8 @@ Side effects still exist.
 They just move to the boundary.
 
 ```ts
+import type { User } from "./user";
+
 async function handleUserRegistered(
   event: { type: "UserRegistered"; email: string },
   dependencies: {
@@ -191,7 +194,7 @@ async function handleUserRegistered(
     mailer: Mailer;
     logger: Logger;
   }
-) {
+): Promise<User> {
   const user = await dependencies.database.save({
     email: event.email
   });
