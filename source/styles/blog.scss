@@ -252,10 +252,13 @@
 
 .blog-prose h2,
 .blog-prose h3,
-.blog-prose h4 {
+.blog-prose h4,
+.blog-prose h5,
+.blog-prose h6 {
 	color: variables.$purple;
 	font-weight: 700;
 	margin-top: 2rem;
+	scroll-margin-top: 1.5rem;
 }
 
 .blog-prose h2 {
@@ -264,6 +267,39 @@
 
 .blog-prose h3 {
 	font-size: 1.25rem;
+}
+
+.blog-heading-anchor-link {
+	display: inline-flex;
+	margin-left: 0.45rem;
+	color: variables.$comment;
+	opacity: 0;
+	text-decoration: none;
+	transition:
+		opacity 120ms ease-out,
+		color 120ms ease-out;
+	vertical-align: middle;
+}
+
+.blog-heading-anchor-link::before {
+	content: "#";
+	font-size: 0.9em;
+	font-weight: 700;
+}
+
+.blog-prose h2:hover .blog-heading-anchor-link,
+.blog-prose h3:hover .blog-heading-anchor-link,
+.blog-prose h4:hover .blog-heading-anchor-link,
+.blog-prose h5:hover .blog-heading-anchor-link,
+.blog-prose h6:hover .blog-heading-anchor-link,
+.blog-heading-anchor-link:focus-visible,
+.blog-prose h2:target .blog-heading-anchor-link,
+.blog-prose h3:target .blog-heading-anchor-link,
+.blog-prose h4:target .blog-heading-anchor-link,
+.blog-prose h5:target .blog-heading-anchor-link,
+.blog-prose h6:target .blog-heading-anchor-link {
+	color: variables.$cyan;
+	opacity: 1;
 }
 
 .blog-prose p,
