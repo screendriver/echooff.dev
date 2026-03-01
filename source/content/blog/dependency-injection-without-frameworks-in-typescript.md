@@ -221,7 +221,7 @@ It is a boundary decision.
 
 ## Final thought
 
-In the previous post, we saw that fragile tests often signal blurred design.
+In the [previous post](/blog/why-your-unit-tests-feel-fragile), we saw that fragile tests often signal blurred design.
 
 Explicit composition clarifies that design.
 
