@@ -44,13 +44,13 @@ import { mailer } from "./mailer";
 import { logger } from "./logger";
 
 async function registerUser(email: string) {
-	const user = await database.save({ email });
+  const user = await database.save({ email });
 
-	await mailer.sendWelcomeEmail(email);
+  await mailer.sendWelcomeEmail(email);
 
-	logger.info("User registered");
+  logger.info("User registered");
 
-	return user;
+  return user;
 }
 ```
 
@@ -95,25 +95,25 @@ A common improvement is to inject dependencies explicitly.
 
 ```ts
 type Database = {
-	save: (user: { email: string }) => Promise<{ id: string; email: string }>;
+  save: (user: { email: string }) => Promise<{ id: string; email: string }>;
 };
 
 type Mailer = {
-	sendWelcomeEmail: (email: string) => Promise<void>;
+  sendWelcomeEmail: (email: string) => Promise<void>;
 };
 
 type Logger = {
-	info: (message: string) => void;
+  info: (message: string) => void;
 };
 
 async function registerUser(email: string, database: Database, mailer: Mailer, logger: Logger) {
-	const user = await database.save({ email });
+  const user = await database.save({ email });
 
-	await mailer.sendWelcomeEmail(email);
+  await mailer.sendWelcomeEmail(email);
 
-	logger.info("User registered");
+  logger.info("User registered");
 
-	return user;
+  return user;
 }
 ```
 
@@ -141,12 +141,12 @@ the execution.
 type DomainEvent = { type: "UserRegistered"; email: string };
 
 function decideUserRegistration(email: string): DomainEvent[] {
-	return [
-		{
-			type: "UserRegistered",
-			email
-		}
-	];
+  return [
+    {
+      type: "UserRegistered",
+      email
+    }
+  ];
 }
 ```
 
@@ -163,9 +163,9 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 test("emits a UserRegistered event", function () {
-	const events = decideUserRegistration("test@example.com");
+  const events = decideUserRegistration("test@example.com");
 
-	assert.deepEqual(events, [{ type: "UserRegistered", email: "test@example.com" }]);
+  assert.deepEqual(events, [{ type: "UserRegistered", email: "test@example.com" }]);
 });
 ```
 
@@ -185,22 +185,22 @@ They just move to the boundary.
 
 ```ts
 async function handleUserRegistered(
-	event: { type: "UserRegistered"; email: string },
-	dependencies: {
-		database: Database;
-		mailer: Mailer;
-		logger: Logger;
-	}
+  event: { type: "UserRegistered"; email: string },
+  dependencies: {
+    database: Database;
+    mailer: Mailer;
+    logger: Logger;
+  }
 ) {
-	const user = await dependencies.database.save({
-		email: event.email
-	});
+  const user = await dependencies.database.save({
+    email: event.email
+  });
 
-	await dependencies.mailer.sendWelcomeEmail(event.email);
+  await dependencies.mailer.sendWelcomeEmail(event.email);
 
-	dependencies.logger.info("User registered");
+  dependencies.logger.info("User registered");
 
-	return user;
+  return user;
 }
 ```
 

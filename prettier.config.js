@@ -6,6 +6,13 @@ export default {
 			options: {
 				parser: "astro"
 			}
+		},
+		{
+			files: "source/content/blog/*.md",
+			options: {
+				tabWidth: 2,
+				useTabs: false
+			}
 		}
 	],
 	printWidth: 120,
