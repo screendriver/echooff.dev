@@ -4,12 +4,12 @@ when:
 
 steps:
     - name: install
-      image: node:24.14.0
+      image: node:25.7.0
       commands:
           - npm clean-install
 
     - name: test
-      image: node:24.14.0
+      image: node:25.7.0
       environment:
           GITHUB_API_BASE_URL: https://api.github.com
           GITHUB_TOKEN: fake_token_for_testing
