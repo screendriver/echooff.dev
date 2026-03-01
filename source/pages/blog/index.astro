@@ -50,7 +50,7 @@ if (blogPostCount === 1) {
 				<ul class="blog-index-list">
 					{sortedBlogPosts.map((blogPost) => (
 						<li>
-							<a class="blog-index-link" href={`/blog/${blogPost.id}`}>
+							<a class="blog-index-link" href={`/blog/${blogPost.slug}`}>
 								<span class="blog-index-title">{blogPost.data.title}</span>
 								<span class="blog-meta">
 									Published <LocalizedDateTime publishedAt={blogPost.data.publishedAt} />

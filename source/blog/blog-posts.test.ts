@@ -1,24 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { CollectionEntry } from "astro:content";
 import { formatPublishedAtFallbackDateTime, sortBlogPostsByPublicationDateDescending } from "./blog-posts.js";
-
-function createBlogPostCollectionEntry(input: {
-	readonly description: string;
-	readonly id: string;
-	readonly title: string;
-	readonly publishedAt: string;
-}): CollectionEntry<"blog"> {
-	return {
-		id: input.id,
-		collection: "blog",
-		data: {
-			description: input.description,
-			title: input.title,
-			publishedAt: input.publishedAt
-		},
-		body: ""
-	};
-}
+import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.js";
 
 describe("sortBlogPostsByPublicationDateDescending()", () => {
 	it("sorts newer blog posts before older blog posts", () => {

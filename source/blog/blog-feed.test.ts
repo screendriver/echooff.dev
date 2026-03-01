@@ -1,26 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { CollectionEntry } from "astro:content";
 import { createRssFeedItemsForBlogPosts } from "./blog-feed.js";
-
-type BlogPostCollectionEntryInput = {
-	readonly description: string;
-	readonly id: string;
-	readonly title: string;
-	readonly publishedAt: string;
-};
-
-function createBlogPostCollectionEntry(input: BlogPostCollectionEntryInput): CollectionEntry<"blog"> {
-	return {
-		id: input.id,
-		collection: "blog",
-		data: {
-			description: input.description,
-			title: input.title,
-			publishedAt: input.publishedAt
-		},
-		body: ""
-	};
-}
+import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.js";
 
 describe("createRssFeedItemsForBlogPosts()", () => {
 	it("creates RSS feed items for blog posts", () => {
