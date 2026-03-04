@@ -10,7 +10,7 @@
 }
 
 .blog-panel {
-	width: min(100%, 52rem);
+	width: min(100%, 50rem);
 	border: 1px solid variables.$selection;
 	border-radius: 0.5rem;
 	background:
@@ -105,15 +105,16 @@
 
 .blog-page-header h1 {
 	color: variables.$foreground;
-	font-size: clamp(2rem, 4vw, 3rem);
+	font-size: clamp(1.75rem, 3vw, 2.35rem);
 	font-weight: 800;
 	letter-spacing: -0.03em;
+	line-height: 1.1;
 }
 
 .blog-page-intro {
 	color: variables.$comment;
 	margin-top: 1rem;
-	max-width: 40rem;
+	max-width: 36rem;
 }
 
 .blog-index {
@@ -153,8 +154,8 @@
 .blog-index-link {
 	display: flex;
 	flex-direction: column;
-	gap: 0.45rem;
-	padding: 1.15rem 0;
+	gap: 0.35rem;
+	padding: 1rem 0;
 }
 
 .blog-index-link:hover .blog-index-title,
@@ -164,8 +165,9 @@
 
 .blog-index-title {
 	color: variables.$foreground;
-	font-size: 1.35rem;
+	font-size: clamp(1.15rem, 2vw, 1.3rem);
 	font-weight: 700;
+	line-height: 1.25;
 	transition: color 160ms ease-in-out;
 }
 
@@ -210,7 +212,7 @@
 
 .blog-article-header {
 	border-bottom: 1px solid rgba(variables.$selection, 0.8);
-	margin-bottom: 1.5rem;
+	margin-bottom: 1.25rem;
 	padding-bottom: 1rem;
 }
 
@@ -236,18 +238,20 @@
 
 .blog-article-header h1 {
 	color: variables.$foreground;
-	font-size: clamp(2rem, 4vw, 2.75rem);
+	font-size: clamp(1.75rem, 3vw, 2.35rem);
 	font-weight: 800;
 	letter-spacing: -0.04em;
+	line-height: 1.1;
 	margin-bottom: 0.75rem;
 }
 
 .blog-prose {
 	color: variables.$foreground;
+	max-width: 42rem;
 }
 
 .blog-prose > * + * {
-	margin-top: 1rem;
+	margin-top: 0.85rem;
 }
 
 .blog-prose h2,
@@ -257,7 +261,7 @@
 .blog-prose h6 {
 	color: variables.$purple;
 	font-weight: 700;
-	margin-top: 2rem;
+	margin-top: 1.75rem;
 	scroll-margin-top: 1.5rem;
 }
 
@@ -306,7 +310,7 @@
 .blog-prose li,
 .blog-prose blockquote {
 	color: variables.$foreground;
-	line-height: 1.8;
+	line-height: 1.72;
 }
 
 .blog-prose ul,
