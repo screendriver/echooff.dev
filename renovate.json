@@ -13,9 +13,9 @@
 			"matchPackageNames": ["@astrojs/*", "astro", "astro-*", "*-astro"]
 		},
 		{
-			"groupName": "Fastify dependencies",
-			"groupSlug": "fastify-dependencies",
-			"matchPackageNames": ["@fastify/*", "fastify"]
+			"groupName": "Hono dependencies",
+			"groupSlug": "hono-dependencies",
+			"matchPackageNames": ["hono", "@hono/*"]
 		},
 		{
 			"matchFileNames": [".woodpecker/*.yaml"],
