@@ -32,4 +32,4 @@ lint-fix:
 @test-unit *options:
 	vitest {{options}}
 
-test: sync compile lint (test-unit "--run")
+test: sync compile (test-unit "--run") lint
