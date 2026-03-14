@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { Factory } from "fishery";
 import { gitHubStatisticsResponseSchema } from "./github-statistics-response-schema.js";
 import { parseGitHubStatistics, type GitHubStatistics } from "./github-statistics.js";
@@ -81,8 +81,8 @@ describe("gitHub statistics schema", () => {
 		});
 
 		expect(() => {
-			return gitHubStatisticsResponseSchema.assert(gitHubStatistics);
-		}).toThrowError("user.repositories.totalCount must be non-negative (was -42)");
+			gitHubStatisticsResponseSchema.assert(gitHubStatistics);
+		}).toThrow("user.repositories.totalCount must be non-negative (was -42)");
 	});
 
 	it('does not allow other types than number for "user.repositories.totalCount"', () => {
@@ -95,8 +95,8 @@ describe("gitHub statistics schema", () => {
 		} as unknown as GitHubStatistics);
 
 		expect(() => {
-			return gitHubStatisticsResponseSchema.assert(gitHubStatistics);
-		}).toThrowError("user.repositories.totalCount must be a number (was a string)");
+			gitHubStatisticsResponseSchema.assert(gitHubStatistics);
+		}).toThrow("user.repositories.totalCount must be a number (was a string)");
 	});
 
 	it('allows 0 for "user.repositories.totalCount"', () => {
@@ -124,8 +124,8 @@ describe("gitHub statistics schema", () => {
 		});
 
 		expect(() => {
-			return gitHubStatisticsResponseSchema.assert(gitHubStatistics);
-		}).toThrowError("user.starredRepositories.totalCount must be non-negative (was -42)");
+			gitHubStatisticsResponseSchema.assert(gitHubStatistics);
+		}).toThrow("user.starredRepositories.totalCount must be non-negative (was -42)");
 	});
 
 	it('does not allow other types than number for "user.starredRepositories.totalCount"', () => {
@@ -138,8 +138,8 @@ describe("gitHub statistics schema", () => {
 		} as unknown as GitHubStatistics);
 
 		expect(() => {
-			return gitHubStatisticsResponseSchema.assert(gitHubStatistics);
-		}).toThrowError("user.starredRepositories.totalCount must be a number (was a string)");
+			gitHubStatisticsResponseSchema.assert(gitHubStatistics);
+		}).toThrow("user.starredRepositories.totalCount must be a number (was a string)");
 	});
 
 	it('allows 0 for "user.starredRepositories.totalCount"', () => {

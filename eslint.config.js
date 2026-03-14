@@ -75,7 +75,7 @@ export default [
 		files: ["**/*.test.ts"],
 		rules: {
 			...vitestConfig.rules,
-
+			"@vitest/no-alias-methods": "off",
 			"@typescript-eslint/no-magic-numbers": "off",
 			"@typescript-eslint/no-shadow": "off",
 			"@typescript-eslint/no-unsafe-type-assertion": "off"

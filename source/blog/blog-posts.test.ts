@@ -54,7 +54,7 @@ describe("formatPublishedAtFallbackDateTime()", () => {
 	it("throws when the timestamp is invalid", () => {
 		expect(() => {
 			formatPublishedAtFallbackDateTime("not-a-date");
-		}).toThrowError('Published at "not-a-date" is not a valid ISO 8601 date-time');
+		}).toThrow('Published at "not-a-date" is not a valid ISO 8601 date-time');
 	});
 });
 
