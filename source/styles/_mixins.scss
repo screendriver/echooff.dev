@@ -41,3 +41,17 @@
 	margin-bottom: 0.75rem;
 	height: 3rem;
 }
+
+@mixin clipped-text {
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+@mixin clamp-to-lines($lineCount) {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: $lineCount;
+	line-clamp: $lineCount;
+	overflow: hidden;
+}

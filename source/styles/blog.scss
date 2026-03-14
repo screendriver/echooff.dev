@@ -1,4 +1,6 @@
+@use "sass:color";
 @use "./variables";
+@use "./mixins";
 
 .blog-main {
 	color: variables.$foreground;
@@ -96,9 +98,7 @@
 
 .blog-command-line-output {
 	background-image: linear-gradient(to right, variables.$pink, variables.$purple);
-	-webkit-background-clip: text;
-	background-clip: text;
-	color: transparent;
+	@include mixins.clipped-text;
 	margin-top: 0.35rem;
 	line-height: 1.4;
 }
@@ -172,15 +172,11 @@
 }
 
 .blog-index-description {
-	color: mix(variables.$foreground, variables.$comment, 72%);
+	color: color.mix(variables.$foreground, variables.$comment, $weight: 72%);
 	font-size: 0.94rem;
 	line-height: 1.55;
 	max-width: 40rem;
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2;
-	line-clamp: 2;
-	overflow: hidden;
+	@include mixins.clamp-to-lines(2);
 }
 
 .blog-meta {

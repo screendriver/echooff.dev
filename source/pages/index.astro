@@ -53,6 +53,7 @@ import headerImage from "../assets/images/header-01.jpg";
 </PageShell>
 
 <style lang="scss">
+	@use "../styles/mixins";
 	@use "../styles/variables";
 
 	figure {
@@ -206,9 +207,7 @@ import headerImage from "../assets/images/header-01.jpg";
 
 	.terminal-output {
 		background-image: linear-gradient(to right, variables.$pink, variables.$purple);
-		-webkit-background-clip: text;
-		background-clip: text;
-		color: transparent;
+		@include mixins.clipped-text;
 	}
 
 	.cursor {
