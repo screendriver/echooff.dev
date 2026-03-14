@@ -2,7 +2,6 @@
 import { Image } from "astro:assets";
 import PageShell from "../layouts/PageShell.astro";
 import Header from "../layouts/Header.astro";
-import Body from "../layouts/Body.astro";
 import Footer from "../layouts/Footer.astro";
 import About from "../about/About.astro";
 import Skills from "../skills/Skills.astro";
@@ -15,12 +14,14 @@ import headerImage from "../assets/images/header-01.jpg";
 
 <PageShell>
 	<Header>
+		<h1 class="visually-hidden">Christian Rackerseder, Full-Stack Software Engineer</h1>
+
 		<figure>
 			<Image src={headerImage} alt="Christian Rackerseder" quality={80} loading="eager" class="header-image" />
 		</figure>
 
-		<div class="terminal-window">
-			<div class="terminal-header">
+		<div class="terminal-window" aria-label="Introduction">
+			<div class="terminal-header" aria-hidden="true">
 				<div class="terminal-buttons">
 					<div class="terminal-button red"></div>
 					<div class="terminal-button yellow"></div>
@@ -38,16 +39,14 @@ import headerImage from "../assets/images/header-01.jpg";
 		</div>
 	</Header>
 
-	<Body>
-		<main>
-			<About />
-			<Skills />
-			<Passions />
-			<Statistics />
-			<Resume />
-			<Contact />
-		</main>
-	</Body>
+	<main>
+		<About />
+		<Skills />
+		<Passions />
+		<Statistics />
+		<Resume />
+		<Contact />
+	</main>
 
 	<Footer />
 </PageShell>
@@ -77,6 +76,7 @@ import headerImage from "../assets/images/header-01.jpg";
 	}
 
 	.header-image {
+		display: block;
 		height: 100%;
 		object-fit: cover;
 		object-position: top;

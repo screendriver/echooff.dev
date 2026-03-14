@@ -10,14 +10,14 @@ import VueIcon from "./icons/Vue.astro";
 ---
 
 <section>
-	<h3>
+	<h2>
 		Skills
 		<Fragment set:html={icons.award?.toSvg()} />
-	</h3>
+	</h2>
 
 	<hr />
 
-	<div>
+	<ul>
 		<Card
 			title="TypeScript"
 			description="is a typed superset of JavaScript that compiles to plain JavaScript."
@@ -71,7 +71,7 @@ import VueIcon from "./icons/Vue.astro";
 		>
 			<CSSIcon />
 		</Card>
-	</div>
+	</ul>
 </section>
 
 <style lang="scss">
@@ -87,7 +87,7 @@ import VueIcon from "./icons/Vue.astro";
 		}
 	}
 
-	h3 {
+	h2 {
 		@include mixins.heading;
 
 		:global(svg) {
@@ -99,7 +99,7 @@ import VueIcon from "./icons/Vue.astro";
 		@include mixins.divider;
 	}
 
-	div {
+	ul {
 		color: variables.$foreground;
 		margin: auto;
 		display: grid;
