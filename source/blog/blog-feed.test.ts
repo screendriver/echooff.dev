@@ -39,6 +39,6 @@ describe("createRssFeedItemsForBlogPosts()", () => {
 				],
 				new URL("https://www.echooff.dev")
 			);
-		}).toThrowError('Published at "not-a-date" is not a valid ISO 8601 date-time');
+		}).toThrow('Published at "not-a-date" is not a valid ISO 8601 date-time');
 	});
 });

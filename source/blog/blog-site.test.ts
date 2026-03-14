@@ -17,7 +17,7 @@ describe("getConfiguredSiteUrlOrThrow()", () => {
 	it("throws when Astro.site is not configured", () => {
 		expect(() => {
 			getConfiguredSiteUrlOrThrow(undefined);
-		}).toThrowError("Astro.site must be configured to create absolute blog URLs");
+		}).toThrow("Astro.site must be configured to create absolute blog URLs");
 	});
 });
 

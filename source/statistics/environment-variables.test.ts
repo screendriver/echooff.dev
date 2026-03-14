@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
 	gitHubApiTokenInputSchema,
 	gitHubBaseUrlInputSchema,
@@ -9,26 +9,26 @@ import { parseGitHubApiToken, parseGitHubBaseUrl, parseGitHubLogin } from "./env
 describe("gitHub base URL schema", () => {
 	it("does not allow booleans", () => {
 		expect(() => {
-			return gitHubBaseUrlInputSchema.assert(true);
-		}).toThrowError("must be a string (was boolean)");
+			gitHubBaseUrlInputSchema.assert(true);
+		}).toThrow("must be a string (was boolean)");
 	});
 
 	it("does not allow numbers", () => {
 		expect(() => {
-			return gitHubBaseUrlInputSchema.assert(42);
-		}).toThrowError("must be a string (was a number)");
+			gitHubBaseUrlInputSchema.assert(42);
+		}).toThrow("must be a string (was a number)");
 	});
 
 	it("does not allow empty strings", () => {
 		expect(() => {
-			return gitHubBaseUrlInputSchema.assert("");
-		}).toThrowError('must be a URL string (was "")');
+			gitHubBaseUrlInputSchema.assert("");
+		}).toThrow('must be a URL string (was "")');
 	});
 
 	it("does not allow strings that are not an URL", () => {
 		expect(() => {
-			return gitHubBaseUrlInputSchema.assert("foo");
-		}).toThrowError('must be a URL string (was "foo")');
+			gitHubBaseUrlInputSchema.assert("foo");
+		}).toThrow('must be a URL string (was "foo")');
 	});
 
 	it("allows a string URL", () => {
@@ -47,20 +47,20 @@ describe("gitHub base URL schema", () => {
 describe("gitHub login schema", () => {
 	it("does not allow booleans", () => {
 		expect(() => {
-			return gitHubLoginInputSchema.assert(true);
-		}).toThrowError("must be a string (was boolean)");
+			gitHubLoginInputSchema.assert(true);
+		}).toThrow("must be a string (was boolean)");
 	});
 
 	it("does not allow numbers", () => {
 		expect(() => {
-			return gitHubLoginInputSchema.assert(42);
-		}).toThrowError("must be a string (was a number)");
+			gitHubLoginInputSchema.assert(42);
+		}).toThrow("must be a string (was a number)");
 	});
 
 	it("does not allow empty strings", () => {
 		expect(() => {
-			return gitHubLoginInputSchema.assert("");
-		}).toThrowError("must be non-empty");
+			gitHubLoginInputSchema.assert("");
+		}).toThrow("must be non-empty");
 	});
 
 	it("allows non empty strings", () => {
@@ -77,20 +77,20 @@ describe("gitHub login schema", () => {
 describe("gitHub API token schema", () => {
 	it("does not allow booleans", () => {
 		expect(() => {
-			return gitHubApiTokenInputSchema.assert(true);
-		}).toThrowError("must be a string (was boolean)");
+			gitHubApiTokenInputSchema.assert(true);
+		}).toThrow("must be a string (was boolean)");
 	});
 
 	it("does not allow numbers", () => {
 		expect(() => {
-			return gitHubApiTokenInputSchema.assert(42);
-		}).toThrowError("must be a string (was a number)");
+			gitHubApiTokenInputSchema.assert(42);
+		}).toThrow("must be a string (was a number)");
 	});
 
 	it("does not allow empty strings", () => {
 		expect(() => {
-			return gitHubApiTokenInputSchema.assert("");
-		}).toThrowError("must be non-empty");
+			gitHubApiTokenInputSchema.assert("");
+		}).toThrow("must be non-empty");
 	});
 
 	it("allows non empty strings", () => {
