@@ -171,9 +171,21 @@
 	transition: color 160ms ease-in-out;
 }
 
+.blog-index-description {
+	color: mix(variables.$foreground, variables.$comment, 72%);
+	font-size: 0.94rem;
+	line-height: 1.55;
+	max-width: 40rem;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	overflow: hidden;
+}
+
 .blog-meta {
-	color: variables.$comment;
-	font-size: 0.9rem;
+	color: rgba(variables.$foreground, 0.46);
+	font-size: 0.82rem;
 }
 
 .blog-back-link-wrapper {

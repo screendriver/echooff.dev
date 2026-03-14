@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { formatPublishedAtFallbackDateTime, sortBlogPostsByPublicationDateDescending } from "./blog-posts.js";
+import {
+	createBlogIndexEntries,
+	formatPublishedAtFallbackDateTime,
+	sortBlogPostsByPublicationDateDescending
+} from "./blog-posts.js";
 import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.js";
 
 describe("sortBlogPostsByPublicationDateDescending()", () => {
@@ -51,5 +55,25 @@ describe("formatPublishedAtFallbackDateTime()", () => {
 		expect(() => {
 			formatPublishedAtFallbackDateTime("not-a-date");
 		}).toThrowError('Published at "not-a-date" is not a valid ISO 8601 date-time');
+	});
+});
+
+describe("createBlogIndexEntries()", () => {
+	it("returns the fields required for rendering the blog index including descriptions", () => {
+		const blogPost = createBlogPostCollectionEntry({
+			description: "Clear descriptions help readers choose what to open",
+			id: "blog-index-entry",
+			title: "Blog index entry",
+			publishedAt: "2026-03-14T07:22:00+01:00"
+		});
+
+		expect(createBlogIndexEntries([blogPost])).toStrictEqual([
+			{
+				description: "Clear descriptions help readers choose what to open",
+				publishedAt: "2026-03-14T07:22:00+01:00",
+				slug: "blog-index-entry",
+				title: "Blog index entry"
+			}
+		]);
 	});
 });

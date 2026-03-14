@@ -4,7 +4,7 @@ import { icons } from "feather-icons";
 import BlogShell from "../../blog/BlogShell.astro";
 import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
 import LocalizedDateTimeScript from "../../blog/LocalizedDateTimeScript.astro";
-import { sortBlogPostsByPublicationDateDescending } from "../../blog/blog-posts.js";
+import { createBlogIndexEntries, sortBlogPostsByPublicationDateDescending } from "../../blog/blog-posts.js";
 import {
 	createAbsoluteAssetUrl,
 	createBlogIndexAbsoluteUrl,
@@ -14,6 +14,7 @@ import headerImage from "../../assets/images/header-01.jpg";
 
 const blogCollection = await getCollection("blog");
 const sortedBlogPosts = sortBlogPostsByPublicationDateDescending(blogCollection);
+const blogIndexEntries = createBlogIndexEntries(sortedBlogPosts);
 const blogPostCount = sortedBlogPosts.length;
 const blogIndexUrl = createBlogIndexAbsoluteUrl(Astro.site);
 const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(Astro.site);
@@ -46,14 +47,15 @@ if (blogPostCount === 1) {
 >
 	<div class="blog-index">
 		{
-			sortedBlogPosts.length > 0 ? (
+			blogIndexEntries.length > 0 ? (
 				<ul class="blog-index-list">
-					{sortedBlogPosts.map((blogPost) => (
+					{blogIndexEntries.map((blogIndexEntry) => (
 						<li>
-							<a class="blog-index-link" href={`/blog/${blogPost.slug}`}>
-								<span class="blog-index-title">{blogPost.data.title}</span>
+							<a class="blog-index-link" href={`/blog/${blogIndexEntry.slug}`}>
+								<span class="blog-index-title">{blogIndexEntry.title}</span>
+								<span class="blog-index-description">{blogIndexEntry.description}</span>
 								<span class="blog-meta">
-									Published <LocalizedDateTime publishedAt={blogPost.data.publishedAt} />
+									Published <LocalizedDateTime publishedAt={blogIndexEntry.publishedAt} />
 								</span>
 							</a>
 						</li>

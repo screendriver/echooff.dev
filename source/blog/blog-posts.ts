@@ -1,6 +1,13 @@
 import is from "@sindresorhus/is";
 import type { CollectionEntry } from "astro:content";
 
+export type BlogIndexEntry = {
+	readonly description: string;
+	readonly publishedAt: string;
+	readonly slug: string;
+	readonly title: string;
+};
+
 export function sortBlogPostsByPublicationDateDescending(
 	blogPosts: readonly CollectionEntry<"blog">[]
 ): CollectionEntry<"blog">[] {
@@ -13,6 +20,17 @@ export function sortBlogPostsByPublicationDateDescending(
 		}
 
 		return firstBlogPost.id.localeCompare(secondBlogPost.id);
+	});
+}
+
+export function createBlogIndexEntries(blogPosts: readonly CollectionEntry<"blog">[]): readonly BlogIndexEntry[] {
+	return blogPosts.map((blogPost) => {
+		return {
+			description: blogPost.data.description,
+			publishedAt: blogPost.data.publishedAt,
+			slug: blogPost.slug,
+			title: blogPost.data.title
+		};
 	});
 }
 
