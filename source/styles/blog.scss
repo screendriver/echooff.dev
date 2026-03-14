@@ -158,17 +158,24 @@
 	padding: 1rem 0;
 }
 
-.blog-index-link:hover .blog-index-title,
-.blog-index-link:focus-visible .blog-index-title {
-	color: variables.$cyan;
-}
-
 .blog-index-title {
 	color: variables.$foreground;
 	font-size: clamp(1.15rem, 2vw, 1.3rem);
 	font-weight: 700;
 	line-height: 1.25;
-	transition: color 160ms ease-in-out;
+	text-decoration: underline;
+	text-decoration-color: transparent;
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.16em;
+	transition:
+		color 160ms ease-in-out,
+		text-decoration-color 160ms ease-in-out;
+}
+
+.blog-index-link:hover .blog-index-title,
+.blog-index-link:focus-visible .blog-index-title {
+	color: variables.$cyan;
+	text-decoration-color: rgba(variables.$cyan, 0.55);
 }
 
 .blog-index-description {
@@ -176,7 +183,13 @@
 	font-size: 0.94rem;
 	line-height: 1.55;
 	max-width: 40rem;
+	transition: color 160ms ease-in-out;
 	@include mixins.clamp-to-lines(2);
+}
+
+.blog-index-link:hover .blog-index-description,
+.blog-index-link:focus-visible .blog-index-description {
+	color: color.mix(variables.$foreground, variables.$comment, $weight: 80%);
 }
 
 .blog-meta {
