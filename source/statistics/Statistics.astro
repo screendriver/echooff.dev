@@ -4,16 +4,16 @@ import StatisticsData from "./StatisticsData.astro";
 ---
 
 <section>
-	<h3>
+	<h2>
 		Some Stats
 		<Fragment set:html={icons["bar-chart-2"]?.toSvg()} />
-	</h3>
+	</h2>
 
 	<hr />
 
-	<div>
+	<dl>
 		<StatisticsData />
-	</div>
+	</dl>
 </section>
 
 <style lang="scss">
@@ -29,7 +29,7 @@ import StatisticsData from "./StatisticsData.astro";
 		}
 	}
 
-	h3 {
+	h2 {
 		@include mixins.heading;
 
 		:global(svg) {
@@ -41,7 +41,7 @@ import StatisticsData from "./StatisticsData.astro";
 		@include mixins.divider;
 	}
 
-	div {
+	dl {
 		margin: auto;
 		display: grid;
 		max-width: variables.$large-width;

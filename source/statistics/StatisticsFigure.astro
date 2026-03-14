@@ -7,9 +7,11 @@ const { description } = Astro.props;
 ---
 
 <div>
-	<p>{description}</p>
+	<dt>{description}</dt>
 
-	<slot />
+	<dd>
+		<slot />
+	</dd>
 </div>
 
 <style lang="scss">
@@ -30,7 +32,11 @@ const { description } = Astro.props;
 		}
 	}
 
-	p {
+	dt {
 		color: variables.$foreground;
+	}
+
+	dd {
+		margin: 0;
 	}
 </style>

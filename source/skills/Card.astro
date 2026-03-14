@@ -9,7 +9,7 @@ export interface Props {
 const { link, title, description, style } = Astro.props;
 ---
 
-<article class={style}>
+<li class={style}>
 	<a href={link.toString()} title={title}>
 		<slot />
 
@@ -17,12 +17,12 @@ const { link, title, description, style } = Astro.props;
 
 		<p>{description}</p>
 	</a>
-</article>
+</li>
 
 <style lang="scss">
 	@use "../styles/variables";
 
-	article {
+	li {
 		display: flex;
 		justify-self: stretch;
 		border-radius: 1rem;

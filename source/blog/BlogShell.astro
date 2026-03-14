@@ -1,7 +1,6 @@
 ---
 import PageShell from "../layouts/PageShell.astro";
 import Header from "../layouts/Header.astro";
-import Body from "../layouts/Body.astro";
 import Footer from "../layouts/Footer.astro";
 import "../styles/blog.scss";
 
@@ -61,39 +60,37 @@ const {
 		>
 			<Header />
 
-			<Body>
-				<main class="blog-main">
-					<section class="blog-panel" aria-label="Blog content">
-						{showPageHeader && (
-							<header class="blog-page-header">
-								<div class="blog-page-title-row">
-									<div class="blog-page-heading-row">
-										<h1>{pageTitle}</h1>
-										{titleActionHtml && <Fragment set:html={titleActionHtml} />}
-									</div>
+			<main class="blog-main">
+				<section class="blog-panel" aria-label="Blog content">
+					{showPageHeader && (
+						<header class="blog-page-header">
+							<div class="blog-page-title-row">
+								<div class="blog-page-heading-row">
+									<h1>{pageTitle}</h1>
+									{titleActionHtml && <Fragment set:html={titleActionHtml} />}
+								</div>
 
-									<div class="blog-command-line" aria-hidden="true">
-										<div class="blog-command-line-header">
-											<div class="blog-command-line-buttons">
-												<div class="blog-command-line-button red" />
-												<div class="blog-command-line-button yellow" />
-												<div class="blog-command-line-button green" />
-											</div>
+								<div class="blog-command-line" aria-hidden="true">
+									<div class="blog-command-line-header">
+										<div class="blog-command-line-buttons">
+											<div class="blog-command-line-button red" />
+											<div class="blog-command-line-button yellow" />
+											<div class="blog-command-line-button green" />
 										</div>
-										<div class="blog-command-line-code">
-											<p class="blog-page-kicker">$ ls /blog</p>
-											{terminalOutput && <p class="blog-command-line-output">{terminalOutput}</p>}
-										</div>
+									</div>
+									<div class="blog-command-line-code">
+										<p class="blog-page-kicker">$ ls /blog</p>
+										{terminalOutput && <p class="blog-command-line-output">{terminalOutput}</p>}
 									</div>
 								</div>
-								{intro && <p class="blog-page-intro">{intro}</p>}
-							</header>
-						)}
+							</div>
+							{intro && <p class="blog-page-intro">{intro}</p>}
+						</header>
+					)}
 
-						<slot />
-					</section>
-				</main>
-			</Body>
+					<slot />
+				</section>
+			</main>
 
 			<Footer />
 		</PageShell>

@@ -1,3 +1,5 @@
+@use "./variables";
+
 *,
 :after,
 :before {
@@ -9,6 +11,13 @@ html {
 	height: 100%;
 	font-family: "JetBrains Mono", sans-serif;
 	line-height: 1.5;
+}
+
+body {
+	min-height: 100%;
+	background-color: variables.$background;
+	display: flex;
+	flex-direction: column;
 }
 
 a {
@@ -34,4 +43,16 @@ h6 {
 
 svg {
 	display: block;
+}
+
+.visually-hidden {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
 }

@@ -5,10 +5,10 @@ import aboutImage from "../assets/images/about.jpg";
 ---
 
 <section>
-	<h3>
+	<h2>
 		About
 		<Fragment set:html={icons.info?.toSvg()} />
-	</h3>
+	</h2>
 
 	<hr />
 
@@ -44,7 +44,7 @@ import aboutImage from "../assets/images/about.jpg";
 		}
 	}
 
-	h3 {
+	h2 {
 		@include mixins.heading;
 
 		:global(svg) {
