@@ -23,7 +23,7 @@ export function createRssFeedItemsForBlogPosts(
 		return {
 			title: blogPost.data.title,
 			description: blogPost.data.description,
-			link: createBlogPostAbsoluteUrl(configuredSiteUrl, blogPost.slug),
+			link: createBlogPostAbsoluteUrl(configuredSiteUrl, blogPost.id),
 			pubDate: publishedAtDate
 		};
 	});

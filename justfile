@@ -29,7 +29,7 @@ lint-fix:
 @preview:
 	astro preview
 
-@test-unit *options:
+@test-unit *options: sync
 	vitest {{options}}
 
 test: sync compile (test-unit "--run") lint

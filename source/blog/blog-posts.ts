@@ -28,7 +28,7 @@ export function createBlogIndexEntries(blogPosts: readonly CollectionEntry<"blog
 		return {
 			description: blogPost.data.description,
 			publishedAt: blogPost.data.publishedAt,
-			slug: blogPost.slug,
+			slug: blogPost.id,
 			title: blogPost.data.title
 		};
 	});
