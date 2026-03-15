@@ -21,7 +21,7 @@ export async function executeGraphQLQuery(options: ExecuteGraphQLQueryOptions): 
 	return graphql({
 		query: `query ($login: String!) {
             user(login: $login) {
-                repositories {
+                repositories(ownerAffiliations: OWNER, privacy: PUBLIC) {
                     totalCount
                 }
                 starredRepositories {

@@ -43,7 +43,7 @@ describe("executeGraphQLQuery()", () => {
 			requestParameter: "query",
 			expectedRequestParameters: stripIndent`query ($login: String!) {
             user(login: $login) {
-                repositories {
+                repositories(ownerAffiliations: OWNER, privacy: PUBLIC) {
                     totalCount
                 }
                 starredRepositories {
