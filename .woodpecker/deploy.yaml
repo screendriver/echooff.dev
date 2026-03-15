@@ -22,6 +22,7 @@ steps:
     - name: publish-container-image
       image: woodpeckerci/plugin-docker-buildx:6.0.4
       settings:
+          # Dockerfile expects the static site in ./target from the previous build step.
           repo:
               from_secret: repository
           registry:

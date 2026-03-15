@@ -1,0 +1,9 @@
+:4321 {
+	root * /srv
+	file_server
+
+	handle_errors {
+		rewrite * /404.html
+		file_server
+	}
+}

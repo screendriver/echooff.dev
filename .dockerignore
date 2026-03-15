@@ -1,0 +1,4 @@
+.astro
+.cache
+.git
+node_modules
