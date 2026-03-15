@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 
 	return blogPosts.map((blogPost) => ({
 		params: {
-			slug: blogPost.slug
+			slug: blogPost.id
 		},
 		props: {
 			blogPost
@@ -32,7 +32,7 @@ export async function getStaticPaths() {
 const { blogPost } = Astro.props;
 const { Content } = await render(blogPost);
 const configuredSiteUrl = getConfiguredSiteUrlOrThrow(Astro.site);
-const blogPostUrl = createBlogPostAbsoluteUrl(configuredSiteUrl, blogPost.slug);
+const blogPostUrl = createBlogPostAbsoluteUrl(configuredSiteUrl, blogPost.id);
 const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(configuredSiteUrl);
 const openGraphImageUrl = createAbsoluteAssetUrl(configuredSiteUrl, headerImage.src);
 const openGraphImageAlternativeText = "Echooff.dev header illustration";
