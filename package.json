@@ -19,7 +19,7 @@
 		"@octokit/graphql": "9.0.3",
 		"@sindresorhus/is": "7.2.0",
 		"arktype": "2.2.0",
-		"astro": "6.0.4",
+		"astro": "6.0.5",
 		"astro-seo-schema": "6.0.0",
 		"date-fns": "4.1.0",
 		"feather-icons": "4.29.2",
@@ -29,7 +29,7 @@
 		"true-myth": "9.3.1"
 	},
 	"devDependencies": {
-		"@astrojs/check": "0.9.7",
+		"@astrojs/check": "0.9.8",
 		"@enormora/eslint-config-base": "0.0.29",
 		"@enormora/eslint-config-browser": "0.0.17",
 		"@enormora/eslint-config-node": "0.0.25",
