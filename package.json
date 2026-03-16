@@ -56,7 +56,7 @@
 		"rust-just": "1.47.0",
 		"sass-embedded": "1.98.0",
 		"sharp": "0.34.5",
-		"sinon": "21.0.2",
+		"sinon": "21.0.3",
 		"tsx": "4.21.0",
 		"typescript": "5.9.3",
 		"vitest": "4.1.0",
