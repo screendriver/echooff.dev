@@ -19,7 +19,7 @@
 		"@octokit/graphql": "9.0.3",
 		"@sindresorhus/is": "7.2.0",
 		"arktype": "2.2.0",
-		"astro": "6.0.7",
+		"astro": "6.0.8",
 		"astro-seo-schema": "6.0.0",
 		"date-fns": "4.1.0",
 		"feather-icons": "4.29.2",
