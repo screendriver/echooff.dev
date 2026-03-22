@@ -47,7 +47,7 @@
 		"concurrently": "9.2.1",
 		"eslint": "9.39.4",
 		"fishery": "2.4.0",
-		"get-port": "7.1.0",
+		"get-port": "7.2.0",
 		"globals": "17.4.0",
 		"hono": "4.12.8",
 		"jscpd": "4.0.8",
