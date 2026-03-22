@@ -1,5 +1,12 @@
 :4321 {
 	root * /srv
+
+	@extensionlessDirectoryRequest {
+		file {path}/index.html
+		not path */
+	}
+
+	rewrite @extensionlessDirectoryRequest {path}/index.html
 	file_server
 
 	handle_errors {
