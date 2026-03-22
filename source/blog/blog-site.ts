@@ -10,6 +10,10 @@ export function getConfiguredSiteUrlOrThrow(configuredSiteUrl: URL | undefined):
 	return configuredSiteUrl;
 }
 
+export function createSiteHomeAbsoluteUrl(configuredSiteUrl: URL | undefined): string {
+	return createAbsoluteUrl(getConfiguredSiteUrlOrThrow(configuredSiteUrl), "/");
+}
+
 export function createBlogIndexAbsoluteUrl(configuredSiteUrl: URL | undefined): string {
 	return createAbsoluteUrl(getConfiguredSiteUrlOrThrow(configuredSiteUrl), "/blog");
 }

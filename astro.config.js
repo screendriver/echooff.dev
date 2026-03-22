@@ -7,6 +7,7 @@ export default defineConfig({
 	srcDir: "source",
 	output: "static",
 	outDir: "./target",
+	trailingSlash: "never",
 	integrations: [sitemap()],
 	vite: {
 		css: {

@@ -4,6 +4,7 @@ import {
 	createBlogIndexAbsoluteUrl,
 	createBlogPostAbsoluteUrl,
 	createBlogRssFeedAbsoluteUrl,
+	createSiteHomeAbsoluteUrl,
 	getConfiguredSiteUrlOrThrow
 } from "./blog-site.js";
 
@@ -24,6 +25,12 @@ describe("getConfiguredSiteUrlOrThrow()", () => {
 describe("createBlogIndexAbsoluteUrl()", () => {
 	it("creates the absolute blog index URL", () => {
 		expect(createBlogIndexAbsoluteUrl(new URL("https://www.echooff.dev"))).toBe("https://www.echooff.dev/blog");
+	});
+});
+
+describe("createSiteHomeAbsoluteUrl()", () => {
+	it("creates the absolute site home URL", () => {
+		expect(createSiteHomeAbsoluteUrl(new URL("https://www.echooff.dev"))).toBe("https://www.echooff.dev/");
 	});
 });
 
