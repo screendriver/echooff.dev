@@ -37,6 +37,12 @@
 			"matchUpdateTypes": ["minor", "patch"],
 			"automerge": true,
 			"automergeType": "branch"
+		},
+		{
+			"groupName": "Node.js",
+			"groupSlug": "nodejs",
+			"matchPackageNames": ["node"],
+			"automerge": false
 		}
 	]
 }
