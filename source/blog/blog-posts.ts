@@ -8,6 +8,8 @@ export type BlogIndexEntry = {
 	readonly title: string;
 };
 
+const siteOwnerName = "Christian Rackerseder";
+
 export function sortBlogPostsByPublicationDateDescending(
 	blogPosts: readonly CollectionEntry<"blog">[]
 ): CollectionEntry<"blog">[] {
@@ -32,6 +34,10 @@ export function createBlogIndexEntries(blogPosts: readonly CollectionEntry<"blog
 			title: blogPost.data.title
 		};
 	});
+}
+
+export function createBlogPostPageTitle(blogPostTitle: string): string {
+	return `${blogPostTitle} | ${siteOwnerName}`;
 }
 
 export function formatPublishedAtFallbackDateTime(publishedAt: string): string {

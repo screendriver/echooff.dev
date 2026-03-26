@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+	createBlogPostPageTitle,
 	createBlogIndexEntries,
 	formatPublishedAtFallbackDateTime,
 	sortBlogPostsByPublicationDateDescending
@@ -75,5 +76,13 @@ describe("createBlogIndexEntries()", () => {
 				title: "Blog index entry"
 			}
 		]);
+	});
+});
+
+describe("createBlogPostPageTitle()", () => {
+	it("places the blog post title before the site owner name", () => {
+		expect(createBlogPostPageTitle("Dependency injection without frameworks in TypeScript")).toBe(
+			"Dependency injection without frameworks in TypeScript | Christian Rackerseder"
+		);
 	});
 });

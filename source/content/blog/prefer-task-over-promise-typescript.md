@@ -1,6 +1,6 @@
 ---
 title: "Prefer Task over Promise in TypeScript"
-description: "Promises make asynchronous work easy to write, but they hide failure in an untyped rejection path. Task from true-myth makes asynchronous success and failure explicit in TypeScript."
+description: "Promises hide failure in an untyped rejection path. Task from true-myth makes asynchronous success and failure explicit in TypeScript."
 publishedAt: "2026-03-07T10:12:00+01:00"
 ---
 

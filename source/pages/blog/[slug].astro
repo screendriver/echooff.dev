@@ -6,7 +6,7 @@ import { getCollection, render } from "astro:content";
 import BlogShell from "../../blog/BlogShell.astro";
 import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
 import LocalizedDateTimeScript from "../../blog/LocalizedDateTimeScript.astro";
-import { sortBlogPostsByPublicationDateDescending } from "../../blog/blog-posts.js";
+import { createBlogPostPageTitle, sortBlogPostsByPublicationDateDescending } from "../../blog/blog-posts.js";
 import {
 	createAbsoluteAssetUrl,
 	createBlogPostAbsoluteUrl,
@@ -49,7 +49,7 @@ const siteUrl = configuredSiteUrl.toString();
 	openGraphUrl={blogPostUrl}
 	rssFeedUrl={blogRssFeedUrl}
 	robots="index,follow,max-image-preview:large"
-	title={`Christian Rackerseder | ${blogPost.data.title}`}
+	title={createBlogPostPageTitle(blogPost.data.title)}
 	twitterCardType="summary_large_image"
 	pageTitle="Blog"
 	showPageHeader={false}

@@ -1,6 +1,6 @@
 ---
 title: "High coverage is not enough: mutation testing in TypeScript with Stryker"
-description: "Code coverage shows what your tests execute. Mutation testing shows whether your tests would fail when the code is wrong. Here is why that difference matters, and where Stryker fits in a TypeScript codebase."
+description: "Code coverage shows what your tests execute. Mutation testing shows whether your tests fail when the code is wrong, and where Stryker fits."
 publishedAt: "2026-03-19T09:03:00+01:00"
 ---
 

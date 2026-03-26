@@ -1,7 +1,7 @@
 ---
 title: "Avoid truthy and falsy checks in TypeScript"
 publishedAt: "2026-03-14T07:22:00+01:00"
-description: "Truthy and falsy checks in TypeScript are concise, but they hide intent and can introduce bugs. Prefer explicit checks for the values you actually care about."
+description: "Truthy and falsy checks in TypeScript hide intent and can introduce bugs. Prefer explicit checks for the values you actually care about."
 ---
 
 `if (value)` and `if (!value)` are short and familiar.
