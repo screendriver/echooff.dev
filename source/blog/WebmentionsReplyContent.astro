@@ -1,0 +1,11 @@
+---
+import type { WebmentionReply } from "./webmentions.js";
+
+export interface Props {
+	readonly webmentionReply: WebmentionReply;
+}
+
+const { webmentionReply } = Astro.props;
+---
+
+{webmentionReply.content.isJust && <p class="blog-webmention-content">{webmentionReply.content.value}</p>}

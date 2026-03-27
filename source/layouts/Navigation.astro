@@ -24,7 +24,7 @@ const isHomePage = currentPathname === "/";
 
 	<ul class="social-links">
 		<li>
-			<a href="https://github.com/screendriver" title="GitHub">
+			<a href="https://github.com/screendriver" rel="me" title="GitHub" aria-label="GitHub">
 				<Fragment set:html={icons.github?.toSvg({ class: "navigation-icon" })} />
 			</a>
 		</li>

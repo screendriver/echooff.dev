@@ -5,6 +5,7 @@ import "@fontsource/jetbrains-mono/200.css";
 import "@fontsource/jetbrains-mono/700.css";
 import "@fontsource/jetbrains-mono/800.css";
 import "../styles/main.scss";
+import { createWebmentionEndpointUrl } from "../blog/blog-site.js";
 
 export interface Props {
 	readonly canonicalUrl?: string;
@@ -23,6 +24,7 @@ export interface Props {
 const defaultDescription = "Full-Stack Software Engineer with a passion for the Jamstack and test driven development.";
 const defaultTitle = "Christian Rackerseder | Full-Stack Software Engineer";
 const defaultOpenGraphUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : Astro.url.toString();
+const webmentionEndpointUrl = Astro.site ? createWebmentionEndpointUrl(Astro.site) : undefined;
 
 const {
 	canonicalUrl,
@@ -67,6 +69,7 @@ const {
 		{openGraphPublishedTime && <meta property="article:published_time" content={openGraphPublishedTime} />}
 		<meta name="robots" content={robots} />
 		{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+		{webmentionEndpointUrl && <link rel="webmention" href={webmentionEndpointUrl} />}
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		{
 			rssFeedUrl && (

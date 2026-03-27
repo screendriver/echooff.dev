@@ -1,0 +1,23 @@
+---
+import type { WebmentionReply } from "./webmentions.js";
+
+export interface Props {
+	readonly webmentionReply: WebmentionReply;
+}
+
+const { webmentionReply } = Astro.props;
+---
+
+{
+	webmentionReply.author.photoUrl.isJust && (
+		<img
+			class="blog-webmention-avatar"
+			src={webmentionReply.author.photoUrl.value}
+			alt=""
+			loading="lazy"
+			decoding="async"
+			width="56"
+			height="56"
+		/>
+	)
+}
