@@ -25,10 +25,10 @@ describe("createWebmentionApiRequestUrl()", () => {
 		expect(
 			createWebmentionApiRequestUrl({
 				targetUrl: "https://www.echooff.dev/blog/why-i-started-this-blog",
-				webmentionApiBaseUrl: new URL("https://webmention.io")
+				webmentionApiUrl: new URL("https://webmention.io/api/mentions.jf2")
 			})
 		).toBe(
-			"https://webmention.io/webmentions?per-page=100&target=https%3A%2F%2Fwww.echooff.dev%2Fblog%2Fwhy-i-started-this-blog"
+			"https://webmention.io/api/mentions.jf2?per-page=100&target=https%3A%2F%2Fwww.echooff.dev%2Fblog%2Fwhy-i-started-this-blog"
 		);
 	});
 });
@@ -170,7 +170,7 @@ describe("loadWebmentionsForTargetUrl()", () => {
 		);
 
 		expect(fetchImplementation).toHaveBeenCalledWith(
-			"https://webmention.io/webmentions?per-page=100&target=https%3A%2F%2Fwww.echooff.dev%2Fblog%2Fwhy-i-started-this-blog"
+			"https://webmention.io/api/mentions.jf2?per-page=100&target=https%3A%2F%2Fwww.echooff.dev%2Fblog%2Fwhy-i-started-this-blog"
 		);
 		expect(sectionModel.reactions.likeCount).toBe(1);
 	});

@@ -1,3 +1,3 @@
 import { type } from "arktype";
 
-export const webmentionApiBaseUrlInputSchema = type("string.url");
+export const webmentionApiUrlInputSchema = type("string.url");

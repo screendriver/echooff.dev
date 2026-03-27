@@ -1,7 +1,7 @@
 import is from "@sindresorhus/is";
 import { match } from "ts-pattern";
 import { Maybe } from "true-myth";
-import { parseWebmentionApiBaseUrl } from "./environment-variables.js";
+import { parseWebmentionApiUrl } from "./environment-variables.js";
 
 export type WebmentionAuthor = {
 	readonly name: string;
@@ -54,7 +54,7 @@ type WebmentionDependencies = {
 };
 type WebmentionApiRequestUrlInput = {
 	readonly targetUrl: string;
-	readonly webmentionApiBaseUrl: URL;
+	readonly webmentionApiUrl: URL;
 };
 
 const emptyWebmentionSectionModel = {
@@ -322,8 +322,8 @@ export function createEmptyWebmentionSectionModel(): WebmentionSectionModel {
 }
 
 export function createWebmentionApiRequestUrl(webmentionApiRequestUrlInput: WebmentionApiRequestUrlInput): string {
-	const { targetUrl, webmentionApiBaseUrl } = webmentionApiRequestUrlInput;
-	const apiRequestUrl = new URL("/webmentions", webmentionApiBaseUrl);
+	const { targetUrl, webmentionApiUrl } = webmentionApiRequestUrlInput;
+	const apiRequestUrl = new URL(webmentionApiUrl);
 
 	apiRequestUrl.searchParams.set("per-page", "100");
 	apiRequestUrl.searchParams.set("target", targetUrl);
@@ -368,13 +368,13 @@ export async function loadWebmentionsForTargetUrl(
 	dependencies: WebmentionDependencies,
 	targetUrl: string
 ): Promise<WebmentionSectionModel> {
-	const webmentionApiBaseUrl = parseWebmentionApiBaseUrl(
-		import.meta.env.WEBMENTION_API_BASE_URL ?? "https://webmention.io"
+	const webmentionApiUrl = parseWebmentionApiUrl(
+		import.meta.env.WEBMENTION_API_URL ?? "https://webmention.io/api/mentions.jf2"
 	);
 	const response = await dependencies.fetch(
 		createWebmentionApiRequestUrl({
 			targetUrl,
-			webmentionApiBaseUrl
+			webmentionApiUrl
 		})
 	);
 
