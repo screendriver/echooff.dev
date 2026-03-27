@@ -12,6 +12,9 @@ echo("Deterministic server listening on", listeningAddress);
 await writeFile(envFilePath, `GITHUB_API_BASE_URL=${listeningAddress}${os.EOL}`, { encoding: "utf8" });
 await appendFile(envFilePath, `GITHUB_LOGIN="foo"${os.EOL}`, { encoding: "utf8" });
 await appendFile(envFilePath, `GITHUB_TOKEN="foo"${os.EOL}`, { encoding: "utf8" });
+await appendFile(envFilePath, `WEBMENTION_API_BASE_URL="${listeningAddress}"${os.EOL}`, {
+	encoding: "utf8"
+});
 await appendFile(envFilePath, `CONTACT_FORM_URL="${listeningAddress}/contact-form"`, {
 	encoding: "utf-8"
 });

@@ -29,3 +29,9 @@ export function createBlogRssFeedAbsoluteUrl(configuredSiteUrl: URL | undefined)
 export function createAbsoluteAssetUrl(configuredSiteUrl: URL | undefined, assetPathname: string): string {
 	return createAbsoluteUrl(getConfiguredSiteUrlOrThrow(configuredSiteUrl), assetPathname);
 }
+
+export function createWebmentionEndpointUrl(configuredSiteUrl: URL | undefined): string {
+	const verifiedSiteUrl = getConfiguredSiteUrlOrThrow(configuredSiteUrl);
+
+	return `https://webmention.io/${verifiedSiteUrl.host}/webmention`;
+}

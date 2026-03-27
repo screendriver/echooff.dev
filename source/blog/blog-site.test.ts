@@ -4,6 +4,7 @@ import {
 	createBlogIndexAbsoluteUrl,
 	createBlogPostAbsoluteUrl,
 	createBlogRssFeedAbsoluteUrl,
+	createWebmentionEndpointUrl,
 	createSiteHomeAbsoluteUrl,
 	getConfiguredSiteUrlOrThrow
 } from "./blog-site.js";
@@ -54,6 +55,14 @@ describe("createAbsoluteAssetUrl()", () => {
 	it("creates the absolute URL for an asset pathname", () => {
 		expect(createAbsoluteAssetUrl(new URL("https://www.echooff.dev"), "/_astro/header.jpg")).toBe(
 			"https://www.echooff.dev/_astro/header.jpg"
+		);
+	});
+});
+
+describe("createWebmentionEndpointUrl()", () => {
+	it("creates the webmention.io endpoint URL for the configured site host", () => {
+		expect(createWebmentionEndpointUrl(new URL("https://www.echooff.dev"))).toBe(
+			"https://webmention.io/www.echooff.dev/webmention"
 		);
 	});
 });
