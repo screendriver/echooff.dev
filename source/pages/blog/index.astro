@@ -19,7 +19,7 @@ const blogPostCount = sortedBlogPosts.length;
 const blogIndexUrl = createBlogIndexAbsoluteUrl(Astro.site);
 const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(Astro.site);
 const openGraphImageUrl = createAbsoluteAssetUrl(Astro.site, headerImage.src);
-const openGraphImageAlternativeText = "Echooff.dev header illustration";
+const openGraphImageAlternativeText = "echooff.dev header illustration";
 const rssFeedLinkHtml = `<a class="blog-rss-link" href="${blogRssFeedUrl}" aria-label="Open RSS feed" title="RSS feed">${icons.rss.toSvg({ class: "blog-rss-link-icon" })}</a>`;
 let blogPostCountLabel = `${blogPostCount} posts available`;
 
