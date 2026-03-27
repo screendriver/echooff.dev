@@ -11,9 +11,7 @@ export interface Props {
 const { webmentionSectionModel } = Astro.props;
 ---
 
-{
-	webmentionSectionModel.replies.length === 0 && <p class="blog-empty-state">No public webmentions yet.</p>
-}
+{webmentionSectionModel.replies.length === 0 && <p class="blog-empty-state">No public webmentions yet.</p>}
 
 {
 	webmentionSectionModel.replies.length > 0 && (

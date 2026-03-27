@@ -1,6 +1,8 @@
 import type { Hono } from "hono";
 
-function createDeterministicWebmentionResponseBody(requestOrigin: string) {
+function createDeterministicWebmentionResponseBody(requestOrigin: string): {
+	readonly children: readonly unknown[];
+} {
 	return {
 		children: [
 			{
