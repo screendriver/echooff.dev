@@ -278,16 +278,6 @@
 	margin-bottom: 0.75rem;
 }
 
-.blog-permalink {
-	color: variables.$cyan;
-	display: inline-flex;
-	font-size: 0.82rem;
-	margin-top: 0.5rem;
-	text-decoration: underline;
-	text-decoration-color: rgba(variables.$cyan, 0.45);
-	text-underline-offset: 0.2rem;
-}
-
 .blog-prose {
 	color: variables.$foreground;
 	max-width: 42rem;
