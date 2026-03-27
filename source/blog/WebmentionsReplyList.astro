@@ -1,0 +1,45 @@
+---
+import WebmentionsAuthorPhoto from "./WebmentionsAuthorPhoto.astro";
+import WebmentionsPublishedAt from "./WebmentionsPublishedAt.astro";
+import WebmentionsReplyContent from "./WebmentionsReplyContent.astro";
+import type { WebmentionSectionModel } from "./webmentions.js";
+
+export interface Props {
+	readonly webmentionSectionModel: WebmentionSectionModel;
+}
+
+const { webmentionSectionModel } = Astro.props;
+---
+
+{
+	webmentionSectionModel.replies.length === 0 && <p class="blog-empty-state">No public webmentions yet.</p>
+}
+
+{
+	webmentionSectionModel.replies.length > 0 && (
+		<ul class="blog-webmention-list">
+			{webmentionSectionModel.replies.map((webmentionReply) => (
+				<li class="blog-webmention-card">
+					<div class="blog-webmention-card-header">
+						<WebmentionsAuthorPhoto webmentionReply={webmentionReply} />
+
+						<div class="blog-webmention-meta">
+							<p class="blog-webmention-author-row">
+								<a href={webmentionReply.author.websiteUrl.unwrapOr(webmentionReply.sourceUrl)}>
+									{webmentionReply.author.name}
+								</a>
+								<span class="blog-webmention-type">{webmentionReply.type}</span>
+							</p>
+							<p class="blog-meta">
+								<a href={webmentionReply.sourceUrl}>View source</a>
+								<WebmentionsPublishedAt webmentionReply={webmentionReply} />
+							</p>
+						</div>
+					</div>
+
+					<WebmentionsReplyContent webmentionReply={webmentionReply} />
+				</li>
+			))}
+		</ul>
+	)
+}

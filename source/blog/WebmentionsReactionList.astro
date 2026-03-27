@@ -1,0 +1,29 @@
+---
+import type { WebmentionSectionModel } from "./webmentions.js";
+
+export interface Props {
+	readonly webmentionSectionModel: WebmentionSectionModel;
+}
+
+const { webmentionSectionModel } = Astro.props;
+const totalReactionCount =
+	webmentionSectionModel.reactions.likeCount +
+	webmentionSectionModel.reactions.repostCount +
+	webmentionSectionModel.reactions.bookmarkCount;
+---
+
+{
+	totalReactionCount > 0 && (
+		<ul class="blog-webmention-reaction-list" aria-label="Webmention reactions">
+			{webmentionSectionModel.reactions.likeCount > 0 && (
+				<li>{webmentionSectionModel.reactions.likeCount} likes</li>
+			)}
+			{webmentionSectionModel.reactions.repostCount > 0 && (
+				<li>{webmentionSectionModel.reactions.repostCount} reposts</li>
+			)}
+			{webmentionSectionModel.reactions.bookmarkCount > 0 && (
+				<li>{webmentionSectionModel.reactions.bookmarkCount} bookmarks</li>
+			)}
+		</ul>
+	)
+}

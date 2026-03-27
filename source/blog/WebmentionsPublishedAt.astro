@@ -1,0 +1,21 @@
+---
+import { formatPublishedAtFallbackDateTime } from "./blog-posts.js";
+import type { WebmentionReply } from "./webmentions.js";
+
+export interface Props {
+	readonly webmentionReply: WebmentionReply;
+}
+
+const { webmentionReply } = Astro.props;
+---
+
+{
+	webmentionReply.visiblePublishedAt.isJust && (
+		<span class="blog-webmention-date">
+			{" · "}
+			<time datetime={webmentionReply.visiblePublishedAt.value}>
+				{formatPublishedAtFallbackDateTime(webmentionReply.visiblePublishedAt.value)}
+			</time>
+		</span>
+	)
+}

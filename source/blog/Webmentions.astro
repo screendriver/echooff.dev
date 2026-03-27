@@ -1,0 +1,20 @@
+---
+import WebmentionsReactionList from "./WebmentionsReactionList.astro";
+import WebmentionsReplyList from "./WebmentionsReplyList.astro";
+import type { WebmentionSectionModel } from "./webmentions.js";
+
+export interface Props {
+	readonly webmentionSectionModel: WebmentionSectionModel;
+}
+
+const { webmentionSectionModel } = Astro.props;
+---
+
+<section class="blog-webmentions" aria-labelledby="webmentions">
+	<div class="blog-webmentions-header">
+		<h2 id="webmentions">Webmentions</h2>
+	</div>
+
+	<WebmentionsReactionList webmentionSectionModel={webmentionSectionModel} />
+	<WebmentionsReplyList webmentionSectionModel={webmentionSectionModel} />
+</section>
