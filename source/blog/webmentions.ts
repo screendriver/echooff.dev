@@ -65,6 +65,7 @@ const emptyWebmentionSectionModel = {
 	},
 	replies: []
 } as const satisfies WebmentionSectionModel;
+const maximumDisplayedWebmentionContentLength = 280;
 
 function readRecord(value: unknown): Maybe<Record<string, unknown>> {
 	if (!is.plainObject(value)) {
@@ -104,6 +105,18 @@ function normalizeWhitespace(textContent: string): Maybe<string> {
 	}
 
 	return Maybe.just(normalizedTextContent);
+}
+
+function truncateTextContent(textContent: string): string {
+	if (textContent.length <= maximumDisplayedWebmentionContentLength) {
+		return textContent;
+	}
+
+	return `${textContent.slice(0, maximumDisplayedWebmentionContentLength - 1).trimEnd()}…`;
+}
+
+function normalizeAndTruncateTextContent(textContent: string): Maybe<string> {
+	return normalizeWhitespace(textContent).map(truncateTextContent);
 }
 
 function isValidDateTimeString(value: string): boolean {
@@ -176,14 +189,23 @@ function readWebmentionContent(webmentionEntry: WebmentionApiEntry): Maybe<strin
 	const { content } = webmentionEntry;
 
 	if (is.string(content)) {
-		return normalizeWhitespace(content);
+		return normalizeAndTruncateTextContent(content);
 	}
 
-	return readRecord(content)
+	const contentRecord = readRecord(content);
+	const summarizedContent = contentRecord.andThen((recordValue) => {
+		return readString(recordValue, "summary");
+	});
+
+	if (summarizedContent.isJust) {
+		return normalizeAndTruncateTextContent(summarizedContent.value);
+	}
+
+	return contentRecord
 		.andThen((recordValue) => {
 			return readString(recordValue, "text");
 		})
-		.andThen(normalizeWhitespace);
+		.andThen(normalizeAndTruncateTextContent);
 }
 
 function validateDateTimeString(value: string): Maybe<string> {

@@ -143,6 +143,41 @@ describe("parseWebmentionApiResponse()", () => {
 			}
 		]);
 	});
+
+	it("prefers summarized content over the full text content", () => {
+		const sectionModel = parseWebmentionApiResponse({
+			children: [
+				{
+					content: {
+						summary: "Short summary",
+						text: "This is the longer body that should not be preferred."
+					},
+					url: "https://remote.example/post/1",
+					"wm-property": "mention-of"
+				}
+			]
+		});
+
+		expect(sectionModel.replies[0]?.content).toStrictEqual(Maybe.just("Short summary"));
+	});
+
+	it("truncates long rendered content", () => {
+		const sectionModel = parseWebmentionApiResponse({
+			children: [
+				{
+					content: {
+						text: "A".repeat(400)
+					},
+					url: "https://remote.example/post/1",
+					"wm-property": "mention-of"
+				}
+			]
+		});
+		const renderedContent = sectionModel.replies[0]?.content.unwrapOr("");
+
+		expect(renderedContent).toHaveLength(280);
+		expect((renderedContent ?? "").endsWith("…")).toBe(true);
+	});
 });
 
 describe("loadWebmentionsForTargetUrl()", () => {
