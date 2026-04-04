@@ -83,7 +83,7 @@ export function isDiscountEligible(total: number): boolean {
 And imagine tests like this:
 
 ```typescript
-import { test } from "node:test";
+import test from "node:test";
 import assert from "node:assert/strict";
 
 import { isDiscountEligible } from "./is-discount-eligible.js";
@@ -122,7 +122,7 @@ That surviving mutant tells us something important: the test suite never specifi
 A better test suite would make the business rule explicit:
 
 ```typescript
-import { test } from "node:test";
+import test from "node:test";
 import assert from "node:assert/strict";
 
 import { isDiscountEligible } from "./isDiscountEligible";
