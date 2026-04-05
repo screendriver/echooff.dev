@@ -307,21 +307,12 @@
 }
 
 .blog-heading-anchor-link {
-	display: inline-flex;
-	margin-left: 0.45rem;
 	color: variables.$comment;
 	opacity: 0;
 	text-decoration: none;
 	transition:
 		opacity 120ms ease-out,
 		color 120ms ease-out;
-	vertical-align: middle;
-}
-
-.blog-heading-anchor-link::before {
-	content: "#";
-	font-size: 0.9em;
-	font-weight: 700;
 }
 
 .blog-prose h2:hover .blog-heading-anchor-link,

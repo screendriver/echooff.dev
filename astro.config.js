@@ -2,6 +2,7 @@ import { defineConfig } from "astro/config";
 import { rehypeHeadingIds } from "@astrojs/markdown-remark";
 import sitemap from "@astrojs/sitemap";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import { buildHeadingAnchorLinkContent } from "./source/blog/heading-anchor-link-content.js";
 
 export default defineConfig({
 	srcDir: "source",
@@ -27,6 +28,7 @@ export default defineConfig({
 				rehypeAutolinkHeadings,
 				{
 					behavior: "append",
+					content: buildHeadingAnchorLinkContent,
 					properties: {
 						ariaLabel: "Copy link to this section",
 						className: ["blog-heading-anchor-link"],
