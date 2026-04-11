@@ -280,7 +280,7 @@
 
 .blog-prose {
 	color: variables.$foreground;
-	max-width: 42rem;
+	max-width: 100%;
 }
 
 .blog-prose > * + * {
@@ -366,6 +366,13 @@
 
 .blog-prose em {
 	color: variables.$pink;
+}
+
+.blog-prose img {
+	display: block;
+	height: auto;
+	max-width: 100%;
+	width: 100%;
 }
 
 .blog-prose blockquote {
