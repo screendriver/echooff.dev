@@ -1,7 +1,0 @@
-{
-	"output": "./target/copy-paste-detection",
-	"minLines": 3,
-	"reporters": ["html", "console", "badge"],
-	"absolute": true,
-	"gitignore": true
-}

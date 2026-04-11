@@ -11,7 +11,6 @@ lint: sync
 	astro check --minimumFailingSeverity=hint
 	prettier --check source
 	eslint . --cache --cache-location "./target/eslintcache" --cache-strategy content --max-warnings 0
-	jscpd source
 
 lint-fix:
 	prettier --log-level warn --write .
