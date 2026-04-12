@@ -18,6 +18,7 @@ export default [
 			"@cspell/spellchecker": "off",
 			"@stylistic/quotes": ["error", "double", { avoidEscape: true }],
 			"@stylistic/no-tabs": "off",
+			"import/no-unused-modules": "off",
 			"@stylistic/indent": [
 				"error",
 				"tab",

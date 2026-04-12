@@ -139,7 +139,9 @@ export async function readBlogPostMarkdownDocuments(): Promise<BlogPostMarkdownD
 		.map((directoryEntry) => {
 			return directoryEntry.name;
 		})
-		.toSorted();
+		.toSorted((leftMarkdownFileName, rightMarkdownFileName) => {
+			return leftMarkdownFileName.localeCompare(rightMarkdownFileName);
+		});
 
 	return Promise.all(
 		markdownFileNames.map(async (markdownFileName) => {
