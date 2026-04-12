@@ -47,7 +47,7 @@
 		"eslint": "9.39.4",
 		"fishery": "2.4.0",
 		"get-port": "7.2.0",
-		"globals": "17.4.0",
+		"globals": "17.5.0",
 		"hono": "4.12.12",
 		"prettier": "3.8.2",
 		"prettier-plugin-astro": "0.14.1",
