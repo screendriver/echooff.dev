@@ -7,7 +7,7 @@
 	"author": "Christian Rackerseder <git@echooff.de>",
 	"license": "MIT",
 	"engines": {
-		"node": "24.14.1"
+		"node": "24.15.0"
 	},
 	"scripts": {},
 	"dependencies": {
