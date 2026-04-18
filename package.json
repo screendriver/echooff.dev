@@ -44,7 +44,7 @@
 		"@types/sinon": "21.0.1",
 		"common-tags": "1.8.2",
 		"concurrently": "9.2.1",
-		"eslint": "10.2.0",
+		"eslint": "10.2.1",
 		"fishery": "2.4.0",
 		"get-port": "7.2.0",
 		"globals": "17.5.0",
