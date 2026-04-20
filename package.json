@@ -51,7 +51,7 @@
 		"hono": "4.12.14",
 		"prettier": "3.8.3",
 		"prettier-plugin-astro": "0.14.1",
-		"rust-just": "1.49.0",
+		"rust-just": "1.50.0",
 		"sass-embedded": "1.99.0",
 		"sharp": "0.34.5",
 		"sinon": "21.1.2",
