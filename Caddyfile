@@ -4,6 +4,12 @@
 	@rootIndexHtmlRequest path /index.html
 	redir @rootIndexHtmlRequest / permanent
 
+	@trailingSlashRequest path_regexp trailingSlashRequest ^(.+)/$
+	redir @trailingSlashRequest {re.trailingSlashRequest.1} permanent
+
+	@nestedIndexHtmlRequest path_regexp nestedIndexHtmlRequest ^/(.+)/index\.html$
+	redir @nestedIndexHtmlRequest /{re.nestedIndexHtmlRequest.1} permanent
+
 	@htmlFileRequest {
 		path_regexp htmlFileRequest ^(.+)\.html$
 		not path /404.html
