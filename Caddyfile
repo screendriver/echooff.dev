@@ -1,6 +1,12 @@
 :4321 {
 	root * /srv
 
+	@rootIndexHtmlRequest path /index.html
+	redir @rootIndexHtmlRequest / permanent
+
+	@nestedIndexHtmlRequest path_regexp nestedIndexHtmlRequest ^/(.+)/index\.html$
+	redir @nestedIndexHtmlRequest /{re.nestedIndexHtmlRequest.1} permanent
+
 	@extensionlessDirectoryRequest {
 		file {path}/index.html
 		not path */
