@@ -13,6 +13,7 @@ export const GET: APIRoute = async (apiContext) => {
 		title: "Christian Rackerseder | Blog",
 		description: "Notes on web technologies, engineering tradeoffs, and front-end architecture.",
 		site: configuredSiteUrl,
+		trailingSlash: false,
 		items: createRssFeedItemsForBlogPosts(blogPosts, configuredSiteUrl)
 	});
 };

@@ -9,6 +9,9 @@ export default defineConfig({
 	output: "static",
 	outDir: "./target",
 	trailingSlash: "never",
+	build: {
+		format: "file"
+	},
 	integrations: [sitemap()],
 	vite: {
 		css: {

@@ -4,15 +4,19 @@
 	@rootIndexHtmlRequest path /index.html
 	redir @rootIndexHtmlRequest / permanent
 
-	@nestedIndexHtmlRequest path_regexp nestedIndexHtmlRequest ^/(.+)/index\.html$
-	redir @nestedIndexHtmlRequest /{re.nestedIndexHtmlRequest.1} permanent
+	@htmlFileRequest {
+		path_regexp htmlFileRequest ^(.+)\.html$
+		not path /404.html
+	}
+	redir @htmlFileRequest {re.htmlFileRequest.1} permanent
 
-	@extensionlessDirectoryRequest {
-		file {path}/index.html
+	@extensionlessHtmlRequest {
+		file {path}.html
 		not path */
+		not path /404
 	}
 
-	rewrite @extensionlessDirectoryRequest {path}/index.html
+	rewrite @extensionlessHtmlRequest {path}.html
 	file_server
 
 	handle_errors {
