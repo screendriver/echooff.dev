@@ -93,6 +93,11 @@ const {
 				/>
 			)
 		}
+		{
+			import.meta.env.PROD && (
+				<script is:inline defer={true} data-site-id="8b1ea0efa11c" src="https://pulse.82r.de/api/script.js" />
+			)
+		}
 		<slot name="search-engine-optimization-schema" />
 		<title>{title}</title>
 	</head>
