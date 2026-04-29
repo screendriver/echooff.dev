@@ -1,6 +1,6 @@
 ---
-title: Why your unit tests feel fragile
-description: Unit tests do not feel fragile because testing is hard. They feel fragile because our design mixes business logic and side effects.
+title: "Why your unit tests feel fragile"
+description: "Unit tests do not feel fragile because testing is hard. They feel fragile because our design mixes business logic and side effects."
 publishedAt: "2026-03-01T09:58:00+01:00"
 topic: "Testing"
 ---

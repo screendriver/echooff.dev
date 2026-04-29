@@ -1,6 +1,6 @@
 ---
-title: Stop using barrel exports in JavaScript
-description: Barrel exports in JavaScript reduce tree shaking effectiveness, hide dependencies and make code harder to maintain. Learn why you should avoid them.
+title: "Stop using barrel exports in JavaScript"
+description: "Barrel exports in JavaScript reduce tree shaking effectiveness, hide dependencies and make code harder to maintain. Learn why you should avoid them."
 publishedAt: "2026-04-25T09:32:00+02:00"
 topic: "Architecture"
 ---
