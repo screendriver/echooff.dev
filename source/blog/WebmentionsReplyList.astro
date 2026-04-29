@@ -15,20 +15,20 @@ const { webmentionSectionModel } = Astro.props;
 
 {
 	webmentionSectionModel.replies.length > 0 && (
-		<ul class="blog-webmention-list">
+		<ul class="webmention-reply-list">
 			{webmentionSectionModel.replies.map((webmentionReply) => (
-				<li class="blog-webmention-card">
-					<div class="blog-webmention-card-header">
+				<li class="webmention-reply-card">
+					<div class="webmention-reply-card-header">
 						<WebmentionsAuthorPhoto webmentionReply={webmentionReply} />
 
-						<div class="blog-webmention-meta">
-							<p class="blog-webmention-author-row">
+						<div class="webmention-reply-metadata">
+							<p class="webmention-reply-author-row">
 								<a href={webmentionReply.author.websiteUrl.unwrapOr(webmentionReply.sourceUrl)}>
 									{webmentionReply.author.name}
 								</a>
-								<span class="blog-webmention-type">{webmentionReply.type}</span>
+								<span class="webmention-reply-type">{webmentionReply.type}</span>
 							</p>
-							<p class="blog-meta">
+							<p class="webmention-reply-source">
 								<a href={webmentionReply.sourceUrl}>View source</a>
 								<WebmentionsPublishedAt webmentionReply={webmentionReply} />
 							</p>
@@ -41,3 +41,57 @@ const { webmentionSectionModel } = Astro.props;
 		</ul>
 	)
 }
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	.webmention-reply-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		margin-top: 1.25rem;
+	}
+
+	.webmention-reply-card {
+		border: 1px solid rgba(variables.$selection, 0.85);
+		border-radius: 0.5rem;
+		background-color: rgba(variables.$background, 0.45);
+		padding: 1rem;
+	}
+
+	.webmention-reply-card-header {
+		display: flex;
+		gap: 0.85rem;
+	}
+
+	.webmention-reply-metadata {
+		min-width: 0;
+	}
+
+	.webmention-reply-author-row {
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		line-height: 1.5;
+	}
+
+	.webmention-reply-author-row a {
+		color: variables.$foreground;
+		font-weight: 700;
+	}
+
+	.webmention-reply-type {
+		border: 1px solid rgba(variables.$selection, 0.9);
+		border-radius: 9999px;
+		color: variables.$pink;
+		font-size: 0.75rem;
+		padding: 0.05rem 0.45rem;
+		text-transform: capitalize;
+	}
+
+	.webmention-reply-source {
+		color: rgba(variables.$foreground, 0.46);
+		font-size: 0.82rem;
+	}
+</style>

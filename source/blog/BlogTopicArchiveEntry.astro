@@ -2,20 +2,20 @@
 export interface Props {
 	readonly description: string;
 	readonly href: string;
+	readonly postCount: number;
 	readonly title: string;
 }
 
-const { description, href, title } = Astro.props;
+const { description, href, postCount, title } = Astro.props;
+const postCountLabel = postCount === 1 ? "1 post" : `${postCount} posts`;
 ---
 
-<article class="blog-index-entry">
-	<a class="blog-index-entry-link" href={href}>
-		<h2 class="blog-index-entry-title">{title}</h2>
-		<p class="blog-index-entry-description">{description}</p>
+<article>
+	<a class="topic-archive-link" href={href}>
+		<h2 class="topic-archive-title">{title}</h2>
+		<p class="topic-archive-description">{description}</p>
+		<footer class="topic-archive-post-count">{postCountLabel}</footer>
 	</a>
-	<footer class="blog-index-entry-metadata">
-		<slot name="footer" />
-	</footer>
 </article>
 
 <style lang="scss">
@@ -23,18 +23,17 @@ const { description, href, title } = Astro.props;
 	@use "../styles/mixins";
 	@use "sass:color";
 
-	.blog-index-entry,
-	.blog-index-entry-link {
+	.topic-archive-link {
+		border: 1px solid rgba(variables.$selection, 0.85);
+		border-radius: 0.5rem;
+		background-color: rgba(variables.$background, 0.4);
 		display: flex;
 		flex-direction: column;
 		gap: 0.35rem;
+		padding: 1rem;
 	}
 
-	.blog-index-entry {
-		padding: 1rem 0;
-	}
-
-	.blog-index-entry-title {
+	.topic-archive-title {
 		color: variables.$foreground;
 		font-size: clamp(1.15rem, 2vw, 1.3rem);
 		font-weight: 700;
@@ -48,13 +47,13 @@ const { description, href, title } = Astro.props;
 			text-decoration-color 160ms ease-in-out;
 	}
 
-	.blog-index-entry-link:hover .blog-index-entry-title,
-	.blog-index-entry-link:focus-visible .blog-index-entry-title {
+	.topic-archive-link:hover .topic-archive-title,
+	.topic-archive-link:focus-visible .topic-archive-title {
 		color: variables.$cyan;
 		text-decoration-color: rgba(variables.$cyan, 0.55);
 	}
 
-	.blog-index-entry-description {
+	.topic-archive-description {
 		color: color.mix(variables.$foreground, variables.$comment, $weight: 72%);
 		font-size: 0.94rem;
 		line-height: 1.55;
@@ -63,12 +62,7 @@ const { description, href, title } = Astro.props;
 		@include mixins.clamp-to-lines(2);
 	}
 
-	.blog-index-entry-link:hover .blog-index-entry-description,
-	.blog-index-entry-link:focus-visible .blog-index-entry-description {
-		color: color.mix(variables.$foreground, variables.$comment, $weight: 80%);
-	}
-
-	.blog-index-entry-metadata {
+	.topic-archive-post-count {
 		color: rgba(variables.$foreground, 0.46);
 		font-size: 0.82rem;
 	}

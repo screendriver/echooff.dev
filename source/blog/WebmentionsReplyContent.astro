@@ -8,4 +8,14 @@ export interface Props {
 const { webmentionReply } = Astro.props;
 ---
 
-{webmentionReply.content.isJust && <p class="blog-webmention-content">{webmentionReply.content.value}</p>}
+{webmentionReply.content.isJust && <p class="webmention-reply-content">{webmentionReply.content.value}</p>}
+
+<style lang="scss">
+	@use "../styles/variables";
+	@use "sass:color";
+
+	.webmention-reply-content {
+		color: color.mix(variables.$foreground, variables.$comment, $weight: 82%);
+		margin-top: 0.9rem;
+	}
+</style>

@@ -19,7 +19,6 @@ export interface Props {
 	readonly pageTitle: string;
 	readonly terminalCommand?: string;
 	readonly terminalOutput?: string;
-	readonly titleActionHtml?: string;
 	readonly title: string;
 	readonly twitterCardType: string;
 }
@@ -39,7 +38,6 @@ const {
 	showPageHeader = true,
 	terminalCommand = "$ ls /blog",
 	terminalOutput,
-	titleActionHtml,
 	title,
 	twitterCardType
 } = Astro.props;
@@ -62,31 +60,33 @@ const {
 		>
 			<Header />
 
-			<main class="blog-main">
-				<section class="blog-panel" aria-label="Blog content">
+			<main class="blog-shell-main">
+				<section class="blog-shell-panel" aria-label="Blog content">
 					{showPageHeader && (
-						<header class="blog-page-header">
-							<div class="blog-page-title-row">
-								<div class="blog-page-heading-row">
+						<header class="blog-shell-page-header">
+							<div class="blog-shell-page-title-row">
+								<div class="blog-shell-page-heading-row">
 									<h1>{pageTitle}</h1>
-									{titleActionHtml && <Fragment set:html={titleActionHtml} />}
+									<slot name="title-action" />
 								</div>
 
-								<div class="blog-command-line" aria-hidden="true">
-									<div class="blog-command-line-header">
-										<div class="blog-command-line-buttons">
-											<div class="blog-command-line-button red" />
-											<div class="blog-command-line-button yellow" />
-											<div class="blog-command-line-button green" />
+								<div class="blog-shell-command-line" aria-hidden="true">
+									<div class="blog-shell-command-line-header">
+										<div class="blog-shell-command-line-buttons">
+											<div class="blog-shell-command-line-button red" />
+											<div class="blog-shell-command-line-button yellow" />
+											<div class="blog-shell-command-line-button green" />
 										</div>
 									</div>
-									<div class="blog-command-line-code">
-										<p class="blog-page-kicker">{terminalCommand}</p>
-										{terminalOutput && <p class="blog-command-line-output">{terminalOutput}</p>}
+									<div class="blog-shell-command-line-code">
+										<p class="blog-shell-page-kicker">{terminalCommand}</p>
+										{terminalOutput && (
+											<p class="blog-shell-command-line-output">{terminalOutput}</p>
+										)}
 									</div>
 								</div>
 							</div>
-							{intro && <p class="blog-page-intro">{intro}</p>}
+							{intro && <p class="blog-shell-page-intro">{intro}</p>}
 						</header>
 					)}
 
@@ -98,3 +98,149 @@ const {
 		</PageShell>
 	)
 }
+
+<style lang="scss">
+	@use "../styles/variables";
+	@use "../styles/mixins";
+
+	.blog-shell-main {
+		color: variables.$foreground;
+		flex-shrink: 0;
+		flex-grow: 1;
+		display: flex;
+		justify-content: center;
+		padding: 2rem 0.5rem 3rem;
+	}
+
+	.blog-shell-panel {
+		width: min(100%, 50rem);
+		border: 1px solid variables.$selection;
+		border-radius: 0.5rem;
+		background:
+			linear-gradient(180deg, rgba(variables.$selection, 0.65), rgba(variables.$background, 0.98)),
+			variables.$background;
+		box-shadow:
+			0 1.5rem 3rem rgba(variables.$background, 0.5),
+			inset 0 1px 0 rgba(variables.$foreground, 0.04);
+		overflow: hidden;
+	}
+
+	.blog-shell-page-header {
+		border-bottom: 1px solid variables.$selection;
+		padding: 1.5rem 1.5rem 2rem;
+	}
+
+	.blog-shell-page-title-row {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.blog-shell-page-heading-row {
+		align-items: center;
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+
+	.blog-shell-command-line {
+		width: fit-content;
+		min-width: 12rem;
+		border: 1px solid rgba(variables.$selection, 0.9);
+		border-radius: 0.375rem;
+		background-color: rgba(variables.$background, 0.9);
+		box-shadow:
+			0 0.5rem 1rem rgba(variables.$background, 0.25),
+			inset 0 1px 0 rgba(variables.$foreground, 0.03);
+		overflow: hidden;
+	}
+
+	.blog-shell-command-line-header {
+		position: relative;
+		height: 1rem;
+		background-color: variables.$selection;
+	}
+
+	.blog-shell-command-line-buttons {
+		position: absolute;
+		top: 0.2rem;
+		left: 0.4rem;
+		display: flex;
+		gap: 0.25rem;
+	}
+
+	.blog-shell-command-line-button {
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 9999px;
+	}
+
+	.blog-shell-command-line-button.red {
+		background-color: variables.$red;
+	}
+
+	.blog-shell-command-line-button.yellow {
+		background-color: variables.$yellow;
+	}
+
+	.blog-shell-command-line-button.green {
+		background-color: variables.$green;
+	}
+
+	.blog-shell-command-line-code {
+		padding: 0.65rem 0.85rem 0.75rem;
+	}
+
+	.blog-shell-page-kicker {
+		color: variables.$foreground;
+		font-size: 0.9rem;
+		line-height: 1.4;
+	}
+
+	.blog-shell-command-line-output {
+		background-image: linear-gradient(to right, variables.$pink, variables.$purple);
+		@include mixins.clipped-text;
+		margin-top: 0.35rem;
+		line-height: 1.4;
+	}
+
+	h1 {
+		color: variables.$foreground;
+		font-size: clamp(1.75rem, 3vw, 2.35rem);
+		font-weight: 800;
+		letter-spacing: -0.03em;
+		line-height: 1.1;
+	}
+
+	.blog-shell-page-intro {
+		color: variables.$comment;
+		margin-top: 1rem;
+		max-width: 36rem;
+	}
+
+	@media (min-width: variables.$small-width) {
+		.blog-shell-page-title-row {
+			align-items: start;
+			column-gap: 1.5rem;
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto;
+		}
+
+		h1 {
+			padding-right: 0;
+		}
+
+		.blog-shell-command-line {
+			margin-top: 0.25rem;
+		}
+
+		.blog-shell-main {
+			padding: 3rem 1.5rem 4rem;
+		}
+
+		.blog-shell-page-header {
+			padding-left: 2rem;
+			padding-right: 2rem;
+		}
+	}
+</style>

@@ -14,7 +14,7 @@ const totalReactionCount =
 
 {
 	totalReactionCount > 0 && (
-		<ul class="blog-webmention-reaction-list" aria-label="Webmention reactions">
+		<ul class="webmention-reaction-list" aria-label="Webmention reactions">
 			{webmentionSectionModel.reactions.likeCount > 0 && (
 				<li>{webmentionSectionModel.reactions.likeCount} likes</li>
 			)}
@@ -27,3 +27,23 @@ const totalReactionCount =
 		</ul>
 	)
 }
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	.webmention-reaction-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.65rem;
+		margin-top: 1rem;
+	}
+
+	.webmention-reaction-list li {
+		border: 1px solid rgba(variables.$selection, 0.9);
+		border-radius: 9999px;
+		background-color: rgba(variables.$selection, 0.45);
+		color: variables.$yellow;
+		font-size: 0.82rem;
+		padding: 0.35rem 0.7rem;
+	}
+</style>

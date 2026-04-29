@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BlogShell from "../../../blog/BlogShell.astro";
+import BlogTopicArchiveEntry from "../../../blog/BlogTopicArchiveEntry.astro";
 import { createBlogPostTopicArchiveEntries } from "../../../blog/blog-post-topics.js";
 import {
 	createAbsoluteAssetUrl,
@@ -50,17 +51,12 @@ if (topicCount === 1) {
 				<ul class="blog-topic-archive-list">
 					{topicArchiveEntries.map((topicArchiveEntry) => (
 						<li>
-							<article>
-								<a class="blog-topic-archive-link" href={`/blog/topics/${topicArchiveEntry.slug}`}>
-									<h2 class="blog-index-title">{topicArchiveEntry.label}</h2>
-									<p class="blog-index-description">{topicArchiveEntry.description}</p>
-									<footer class="blog-meta">
-										{topicArchiveEntry.postCount === 1
-											? "1 post"
-											: `${topicArchiveEntry.postCount} posts`}
-									</footer>
-								</a>
-							</article>
+							<BlogTopicArchiveEntry
+								description={topicArchiveEntry.description}
+								href={`/blog/topics/${topicArchiveEntry.slug}`}
+								postCount={topicArchiveEntry.postCount}
+								title={topicArchiveEntry.label}
+							/>
 						</li>
 					))}
 				</ul>

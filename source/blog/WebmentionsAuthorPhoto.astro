@@ -11,7 +11,7 @@ const { webmentionReply } = Astro.props;
 {
 	webmentionReply.author.photoUrl.isJust && (
 		<img
-			class="blog-webmention-avatar"
+			class="webmention-author-photo"
 			src={webmentionReply.author.photoUrl.value}
 			alt=""
 			loading="lazy"
@@ -21,3 +21,16 @@ const { webmentionReply } = Astro.props;
 		/>
 	)
 }
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	.webmention-author-photo {
+		border: 2px solid rgba(variables.$selection, 0.9);
+		border-radius: 9999px;
+		flex-shrink: 0;
+		height: 3.5rem;
+		object-fit: cover;
+		width: 3.5rem;
+	}
+</style>

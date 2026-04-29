@@ -1,0 +1,38 @@
+---
+import { icons } from "feather-icons";
+
+export interface Props {
+	readonly rssFeedUrl: string;
+}
+
+const { rssFeedUrl } = Astro.props;
+---
+
+<a class="rss-feed-link" href={rssFeedUrl} aria-label="Open RSS feed" title="RSS feed">
+	<Fragment set:html={icons.rss.toSvg({ class: "rss-feed-icon" })} />
+</a>
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	.rss-feed-link {
+		align-items: center;
+		color: variables.$cyan;
+		display: inline-flex;
+		justify-content: center;
+		transition:
+			color 160ms ease-in-out,
+			transform 160ms ease-in-out;
+	}
+
+	.rss-feed-link:hover,
+	.rss-feed-link:focus-visible {
+		color: variables.$cyan;
+		transform: translateY(-1px);
+	}
+
+	.rss-feed-icon {
+		height: 1.5rem;
+		width: 1.5rem;
+	}
+</style>

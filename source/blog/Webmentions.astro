@@ -10,11 +10,26 @@ export interface Props {
 const { webmentionSectionModel } = Astro.props;
 ---
 
-<section class="blog-webmentions" aria-labelledby="webmentions">
-	<div class="blog-webmentions-header">
+<section class="webmentions-section" aria-labelledby="webmentions">
+	<div class="webmentions-header">
 		<h2 id="webmentions">Webmentions</h2>
 	</div>
 
 	<WebmentionsReactionList webmentionSectionModel={webmentionSectionModel} />
 	<WebmentionsReplyList webmentionSectionModel={webmentionSectionModel} />
 </section>
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	.webmentions-section {
+		border-top: 1px solid rgba(variables.$selection, 0.8);
+		margin-top: 2rem;
+		padding-top: 1.5rem;
+	}
+
+	.webmentions-header h2 {
+		color: variables.$foreground;
+		font-size: 1.4rem;
+	}
+</style>

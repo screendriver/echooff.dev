@@ -11,7 +11,7 @@ const { webmentionReply } = Astro.props;
 
 {
 	webmentionReply.visiblePublishedAt.isJust && (
-		<span class="blog-webmention-date">
+		<span>
 			{" · "}
 			<time datetime={webmentionReply.visiblePublishedAt.value}>
 				{formatPublishedAtFallbackDateTime(webmentionReply.visiblePublishedAt.value)}
