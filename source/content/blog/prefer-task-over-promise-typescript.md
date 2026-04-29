@@ -2,6 +2,7 @@
 title: "Prefer Task over Promise in TypeScript"
 description: "Promises hide failure in an untyped rejection path. Task from true-myth makes asynchronous success and failure explicit in TypeScript."
 publishedAt: "2026-03-07T10:12:00+01:00"
+topic: "TypeScript"
 ---
 
 In previous posts I wrote about [avoiding `null`](/blog/avoid-null-typescript) and about [using `Result`](/blog/avoid-throwing-for-expected-failures-typescript).

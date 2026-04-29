@@ -2,6 +2,7 @@
 title: "Why I do not use enums in TypeScript"
 description: "Enums add runtime behavior, work against modern TypeScript workflows, and have simpler alternatives like string literal unions and const objects."
 publishedAt: "2026-03-22T17:49:00+01:00"
+topic: "TypeScript"
 ---
 
 TypeScript has a feature that still looks attractive in many codebases: [enum](https://www.typescriptlang.org/docs/handbook/enums.html)

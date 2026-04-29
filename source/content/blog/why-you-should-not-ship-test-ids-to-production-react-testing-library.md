@@ -2,6 +2,7 @@
 title: "Why you should not ship test IDs to production"
 description: "React Testing Library works best with semantic queries like role and label. Shipping data-testid to production hides accessibility problems and turns test-only markup into an accidental contract."
 publishedAt: "2026-04-04T08:22:00+02:00"
+topic: "Testing"
 ---
 
 ## The API is already telling you what to do

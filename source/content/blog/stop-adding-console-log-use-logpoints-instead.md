@@ -2,6 +2,7 @@
 title: "Stop adding console.log: use logpoints instead"
 description: "Logpoints let you inspect runtime behavior without changing your code, polluting commits, or pausing execution."
 publishedAt: "2026-04-11T08:53:00+02:00"
+topic: "Debugging"
 ---
 
 ## Stop editing code just to print values

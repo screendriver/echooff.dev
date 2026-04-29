@@ -2,6 +2,7 @@
 title: "Why git bisect is one of Git's most underrated features"
 description: "git bisect helps you find the commit that introduced a regression, but large squash merges remove the history that makes it truly effective."
 publishedAt: "2026-03-27T16:46:00+01:00"
+topic: "Git"
 ---
 
 Most teams know `git bisect` exists.

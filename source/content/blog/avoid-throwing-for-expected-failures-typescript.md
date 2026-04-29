@@ -2,6 +2,7 @@
 title: "Avoid throwing for expected failures in TypeScript"
 description: "Use Result in TypeScript for expected failures, Maybe for absence, and reserve exceptions for truly exceptional situations."
 publishedAt: "2026-03-07T08:21:00+01:00"
+topic: "TypeScript"
 ---
 
 In a [previous article](/blog/avoid-null-typescript) I wrote about avoiding `null` whenever possible and using types like `Maybe` instead.

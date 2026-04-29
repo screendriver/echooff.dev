@@ -2,6 +2,7 @@
 title: 'The Billion-Dollar Mistake: Avoid "null" in TypeScript'
 description: "Why null still causes bugs in TypeScript - and how Maybe types make absence explicit."
 publishedAt: "2026-03-04T08:04:00+01:00"
+topic: "TypeScript"
 ---
 
 If you have written JavaScript long enough, you have probably seen this error:

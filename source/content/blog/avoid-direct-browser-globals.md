@@ -2,6 +2,7 @@
 title: "Why you should not access browser globals directly"
 description: "Direct access to window, document, navigator and globalThis couples your code to the runtime, makes side effects harder to isolate, and leads to brittle tests."
 publishedAt: "2026-04-18T11:30:00+02:00"
+topic: "Architecture"
 ---
 
 Browser globals like `window`, `document`, `navigator`, `location`, `history`, `localStorage` or even `globalThis` often look harmless.

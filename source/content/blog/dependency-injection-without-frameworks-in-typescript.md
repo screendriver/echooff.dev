@@ -2,6 +2,7 @@
 title: "Dependency injection without frameworks in TypeScript"
 description: "Explicit dependencies improve clarity and testability. You do not need a framework to achieve that."
 publishedAt: "2026-03-01T13:13:00+01:00"
+topic: "Architecture"
 ---
 
 In the previous post, we explored [why unit tests feel fragile](/blog/why-your-unit-tests-feel-fragile).

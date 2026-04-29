@@ -2,6 +2,7 @@
 title: "Git LFS is useful, but it is not a free storage upgrade"
 description: "Git LFS solves a real problem for large binary files, but it also adds workflow and operational complexity that teams should adopt intentionally."
 publishedAt: "2026-03-29T12:38:00+02:00"
+topic: "Git"
 ---
 
 Git is excellent at tracking text.

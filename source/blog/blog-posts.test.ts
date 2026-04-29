@@ -73,7 +73,9 @@ describe("createBlogIndexEntries()", () => {
 				description: "Clear descriptions help readers choose what to open",
 				publishedAt: "2026-03-14T07:22:00+01:00",
 				slug: "blog-index-entry",
-				title: "Blog index entry"
+				title: "Blog index entry",
+				topic: "TypeScript",
+				topicSlug: "typescript"
 			}
 		]);
 	});

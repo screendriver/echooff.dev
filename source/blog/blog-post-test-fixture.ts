@@ -1,10 +1,12 @@
 import type { CollectionEntry } from "astro:content";
+import type { BlogPostTopic } from "./blog-post-topics.js";
 
 export type BlogPostCollectionEntryInput = {
 	readonly description: string;
 	readonly id: string;
 	readonly title: string;
 	readonly publishedAt: string;
+	readonly topic?: BlogPostTopic;
 };
 
 export function createBlogPostCollectionEntry(input: BlogPostCollectionEntryInput): CollectionEntry<"blog"> {
@@ -14,7 +16,8 @@ export function createBlogPostCollectionEntry(input: BlogPostCollectionEntryInpu
 		data: {
 			description: input.description,
 			title: input.title,
-			publishedAt: input.publishedAt
+			publishedAt: input.publishedAt,
+			topic: input.topic ?? "TypeScript"
 		},
 		body: ""
 	};

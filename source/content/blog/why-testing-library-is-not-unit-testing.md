@@ -2,6 +2,7 @@
 title: "Why Testing Library is not unit testing"
 description: "Testing Library is useful, but rendering components and testing them through the DOM is integration testing, not unit testing."
 publishedAt: "2026-04-05T16:32:00+02:00"
+topic: "Testing"
 ---
 
 A lot of frontend teams talk about "unit tests" when they really mean something else.

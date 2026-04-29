@@ -1,11 +1,14 @@
 import is from "@sindresorhus/is";
 import type { CollectionEntry } from "astro:content";
+import { getBlogPostTopicDetails } from "./blog-post-topics.js";
 
 export type BlogIndexEntry = {
 	readonly description: string;
 	readonly publishedAt: string;
 	readonly slug: string;
 	readonly title: string;
+	readonly topic: string;
+	readonly topicSlug: string;
 };
 
 const siteOwnerName = "Christian Rackerseder";
@@ -27,11 +30,15 @@ export function sortBlogPostsByPublicationDateDescending(
 
 export function createBlogIndexEntries(blogPosts: readonly CollectionEntry<"blog">[]): readonly BlogIndexEntry[] {
 	return blogPosts.map((blogPost) => {
+		const topicDetails = getBlogPostTopicDetails(blogPost.data.topic);
+
 		return {
 			description: blogPost.data.description,
 			publishedAt: blogPost.data.publishedAt,
 			slug: blogPost.id,
-			title: blogPost.data.title
+			title: blogPost.data.title,
+			topic: topicDetails.label,
+			topicSlug: topicDetails.slug
 		};
 	});
 }
