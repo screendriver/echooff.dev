@@ -18,7 +18,7 @@ export default defineConfig({
 			devSourcemap: true
 		},
 		build: {
-			sourcemap: true
+			sourcemap: false
 		},
 		esbuild: {
 			legalComments: "none"
