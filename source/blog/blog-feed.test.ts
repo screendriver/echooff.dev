@@ -10,7 +10,8 @@ describe("createRssFeedItemsForBlogPosts()", () => {
 					description: "Why I started writing on echooff.dev",
 					id: "why-i-started-this-blog",
 					title: "Why I started this Blog",
-					publishedAt: "2026-02-28T12:39:00+01:00"
+					publishedAt: "2026-02-28T12:39:00+01:00",
+					topic: "Writing"
 				})
 			],
 			new URL("https://www.echooff.dev")
@@ -34,7 +35,8 @@ describe("createRssFeedItemsForBlogPosts()", () => {
 						description: "Broken blog post",
 						id: "broken",
 						title: "Broken",
-						publishedAt: "not-a-date"
+						publishedAt: "not-a-date",
+						topic: "Writing"
 					})
 				],
 				new URL("https://www.echooff.dev")

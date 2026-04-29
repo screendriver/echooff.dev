@@ -6,7 +6,7 @@ export type BlogPostCollectionEntryInput = {
 	readonly id: string;
 	readonly title: string;
 	readonly publishedAt: string;
-	readonly topic?: BlogPostTopic;
+	readonly topic: BlogPostTopic;
 };
 
 export function createBlogPostCollectionEntry(input: BlogPostCollectionEntryInput): CollectionEntry<"blog"> {
@@ -17,7 +17,7 @@ export function createBlogPostCollectionEntry(input: BlogPostCollectionEntryInpu
 			description: input.description,
 			title: input.title,
 			publishedAt: input.publishedAt,
-			topic: input.topic ?? "TypeScript"
+			topic: input.topic
 		},
 		body: ""
 	};

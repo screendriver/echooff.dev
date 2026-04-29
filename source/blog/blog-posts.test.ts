@@ -13,13 +13,15 @@ describe("sortBlogPostsByPublicationDateDescending()", () => {
 			description: "Older blog post description",
 			id: "older-blog-post",
 			title: "Older Blog Post",
-			publishedAt: "2026-02-01T10:00:00+01:00"
+			publishedAt: "2026-02-01T10:00:00+01:00",
+			topic: "Writing"
 		});
 		const newerBlogPost = createBlogPostCollectionEntry({
 			description: "Newer blog post description",
 			id: "newer-blog-post",
 			title: "Newer Blog Post",
-			publishedAt: "2026-02-28T10:00:00+01:00"
+			publishedAt: "2026-02-28T10:00:00+01:00",
+			topic: "Writing"
 		});
 
 		const sortedBlogPosts = sortBlogPostsByPublicationDateDescending([olderBlogPost, newerBlogPost]);
@@ -32,13 +34,15 @@ describe("sortBlogPostsByPublicationDateDescending()", () => {
 			description: "Zebra blog post description",
 			id: "zebra",
 			title: "Zebra",
-			publishedAt: "2026-02-28T10:00:00+01:00"
+			publishedAt: "2026-02-28T10:00:00+01:00",
+			topic: "Writing"
 		});
 		const blogPostA = createBlogPostCollectionEntry({
 			description: "Alpha blog post description",
 			id: "alpha",
 			title: "Alpha",
-			publishedAt: "2026-02-28T10:00:00+01:00"
+			publishedAt: "2026-02-28T10:00:00+01:00",
+			topic: "Writing"
 		});
 
 		const sortedBlogPosts = sortBlogPostsByPublicationDateDescending([blogPostB, blogPostA]);
@@ -65,7 +69,8 @@ describe("createBlogIndexEntries()", () => {
 			description: "Clear descriptions help readers choose what to open",
 			id: "blog-index-entry",
 			title: "Blog index entry",
-			publishedAt: "2026-03-14T07:22:00+01:00"
+			publishedAt: "2026-03-14T07:22:00+01:00",
+			topic: "TypeScript"
 		});
 
 		expect(createBlogIndexEntries([blogPost])).toStrictEqual([
