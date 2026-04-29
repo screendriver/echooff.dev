@@ -1,4 +1,12 @@
-<nav class="blog-archive-navigation" aria-label="Blog">
+---
+export interface Props {
+	readonly label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<nav class="blog-archive-navigation" aria-label={label}>
 	<slot />
 </nav>
 
