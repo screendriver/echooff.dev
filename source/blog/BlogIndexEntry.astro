@@ -1,0 +1,75 @@
+---
+export interface Props {
+	readonly description: string;
+	readonly href: string;
+	readonly title: string;
+}
+
+const { description, href, title } = Astro.props;
+---
+
+<article class="article">
+	<a class="link" href={href}>
+		<h2 class="title">{title}</h2>
+		<p class="description">{description}</p>
+	</a>
+	<footer class="meta">
+		<slot name="footer" />
+	</footer>
+</article>
+
+<style lang="scss">
+	@use "../styles/variables";
+	@use "../styles/mixins";
+	@use "sass:color";
+
+	.article,
+	.link {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+	}
+
+	.article {
+		padding: 1rem 0;
+	}
+
+	.title {
+		color: variables.$foreground;
+		font-size: clamp(1.15rem, 2vw, 1.3rem);
+		font-weight: 700;
+		line-height: 1.25;
+		text-decoration: underline;
+		text-decoration-color: transparent;
+		text-decoration-thickness: 0.08em;
+		text-underline-offset: 0.16em;
+		transition:
+			color 160ms ease-in-out,
+			text-decoration-color 160ms ease-in-out;
+	}
+
+	.link:hover .title,
+	.link:focus-visible .title {
+		color: variables.$cyan;
+		text-decoration-color: rgba(variables.$cyan, 0.55);
+	}
+
+	.description {
+		color: color.mix(variables.$foreground, variables.$comment, $weight: 72%);
+		font-size: 0.94rem;
+		line-height: 1.55;
+		max-width: 40rem;
+		transition: color 160ms ease-in-out;
+		@include mixins.clamp-to-lines(2);
+	}
+
+	.link:hover .description,
+	.link:focus-visible .description {
+		color: color.mix(variables.$foreground, variables.$comment, $weight: 80%);
+	}
+
+	.meta {
+		color: rgba(variables.$foreground, 0.46);
+		font-size: 0.82rem;
+	}
+</style>

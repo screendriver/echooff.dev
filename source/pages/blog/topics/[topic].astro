@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import BlogIndexEntry from "../../../blog/BlogIndexEntry.astro";
 import BlogShell from "../../../blog/BlogShell.astro";
 import LocalizedDateTime from "../../../blog/LocalizedDateTime.astro";
 import LocalizedDateTimeScript from "../../../blog/LocalizedDateTimeScript.astro";
@@ -66,15 +67,15 @@ const postCountLabel =
 				<ul class="blog-index-list">
 					{blogIndexEntries.map((blogIndexEntry) => (
 						<li>
-							<article class="blog-index-article">
-								<a class="blog-index-link" href={`/blog/${blogIndexEntry.slug}`}>
-									<h2 class="blog-index-title">{blogIndexEntry.title}</h2>
-									<p class="blog-index-description">{blogIndexEntry.description}</p>
-									<footer class="blog-meta">
-										Published <LocalizedDateTime publishedAt={blogIndexEntry.publishedAt} />
-									</footer>
-								</a>
-							</article>
+							<BlogIndexEntry
+								description={blogIndexEntry.description}
+								href={`/blog/${blogIndexEntry.slug}`}
+								title={blogIndexEntry.title}
+							>
+								<Fragment slot="footer">
+									Published <LocalizedDateTime publishedAt={blogIndexEntry.publishedAt} />
+								</Fragment>
+							</BlogIndexEntry>
 						</li>
 					))}
 				</ul>
