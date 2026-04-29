@@ -354,36 +354,40 @@ export function createWebmentionApiRequestUrl(webmentionApiRequestUrlInput: Webm
 }
 
 export function parseWebmentionApiResponse(webmentionApiResponse: unknown): WebmentionSectionModel {
-	return readWebmentionEntries(webmentionApiResponse).reduce<WebmentionSectionModel>(
-		(sectionModel, webmentionEntry) => {
-			const parsedWebmentionEntry = parseWebmentionEntry(webmentionEntry);
+	const accumulatedWebmentionSectionModel = readWebmentionEntries(
+		webmentionApiResponse
+	).reduce<WebmentionSectionModel>((sectionModel, webmentionEntry) => {
+		const parsedWebmentionEntry = parseWebmentionEntry(webmentionEntry);
 
-			return match(parsedWebmentionEntry)
-				.with({ kind: "ignore" }, () => {
-					return sectionModel;
-				})
-				.with({ kind: "reaction" }, (reactionWebmentionEntry) => {
-					return {
-						...sectionModel,
-						reactions: {
-							...sectionModel.reactions,
-							[reactionWebmentionEntry.reactionCountName]:
-								sectionModel.reactions[reactionWebmentionEntry.reactionCountName] + 1
-						}
-					};
-				})
-				.with({ kind: "reply" }, (replyWebmentionEntry) => {
-					return {
-						...sectionModel,
-						replies: [...sectionModel.replies, replyWebmentionEntry.reply].toSorted(
-							compareWebmentionRepliesByVisiblePublishedAtDescending
-						)
-					};
-				})
-				.exhaustive();
-		},
-		createEmptyWebmentionSectionModel()
-	);
+		return match(parsedWebmentionEntry)
+			.with({ kind: "ignore" }, () => {
+				return sectionModel;
+			})
+			.with({ kind: "reaction" }, (reactionWebmentionEntry) => {
+				return {
+					...sectionModel,
+					reactions: {
+						...sectionModel.reactions,
+						[reactionWebmentionEntry.reactionCountName]:
+							sectionModel.reactions[reactionWebmentionEntry.reactionCountName] + 1
+					}
+				};
+			})
+			.with({ kind: "reply" }, (replyWebmentionEntry) => {
+				return {
+					...sectionModel,
+					replies: [...sectionModel.replies, replyWebmentionEntry.reply]
+				};
+			})
+			.exhaustive();
+	}, createEmptyWebmentionSectionModel());
+
+	return {
+		...accumulatedWebmentionSectionModel,
+		replies: accumulatedWebmentionSectionModel.replies.toSorted(
+			compareWebmentionRepliesByVisiblePublishedAtDescending
+		)
+	};
 }
 
 export async function loadWebmentionsForTargetUrl(
