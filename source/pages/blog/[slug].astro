@@ -1,9 +1,12 @@
 ---
 import { Image } from "astro:assets";
 import { Schema } from "astro-seo-schema";
-import { icons } from "feather-icons";
 import { getCollection, render } from "astro:content";
+import BlogBackLink from "../../blog/BlogBackLink.astro";
+import BlogMetadata from "../../blog/BlogMetadata.astro";
+import BlogPostContent from "../../blog/BlogPostContent.astro";
 import BlogShell from "../../blog/BlogShell.astro";
+import BlogTopicLink from "../../blog/BlogTopicLink.astro";
 import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
 import LocalizedDateTimeScript from "../../blog/LocalizedDateTimeScript.astro";
 import Webmentions from "../../blog/Webmentions.astro";
@@ -100,12 +103,7 @@ try {
 		<header class="blog-post-article-header">
 			<div class="blog-post-article-top-row">
 				<nav aria-label="Blog">
-					<p class="blog-back-link-wrapper">
-						<a class="blog-back-link" href="/blog">
-							<Fragment set:html={icons["arrow-left"]?.toSvg({ class: "blog-back-link-icon" })} />
-							<span>Back to Blog</span>
-						</a>
-					</p>
+					<BlogBackLink href="/blog" includeIcon>Back to Blog</BlogBackLink>
 				</nav>
 
 				<figure class="blog-post-article-avatar h-card">
@@ -123,19 +121,19 @@ try {
 				</figure>
 			</div>
 			<h1 class="p-name">{blogPost.data.title}</h1>
-			<p class="blog-meta">
+			<BlogMetadata>
 				Published{" "}
 				<time class="dt-published" datetime={blogPost.data.publishedAt}>
 					<LocalizedDateTime publishedAt={blogPost.data.publishedAt} />
 				</time>{" "}
-				in <a class="blog-topic-link" href={`/blog/topics/${topicDetails.slug}`}>{topicDetails.label}</a>
-			</p>
+				in <BlogTopicLink href={`/blog/topics/${topicDetails.slug}`}>{topicDetails.label}</BlogTopicLink>
+			</BlogMetadata>
 			<a class="u-url blog-post-screen-reader-only" href={blogPostUrl}> Permalink </a>
 		</header>
 
-		<section class="blog-prose e-content" aria-label="Blog post content">
+		<BlogPostContent>
 			<Content />
-		</section>
+		</BlogPostContent>
 
 		<Webmentions webmentionSectionModel={webmentionSectionModel} />
 	</article>

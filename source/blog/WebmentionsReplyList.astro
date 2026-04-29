@@ -1,4 +1,5 @@
 ---
+import BlogEmptyState from "./BlogEmptyState.astro";
 import WebmentionsAuthorPhoto from "./WebmentionsAuthorPhoto.astro";
 import WebmentionsPublishedAt from "./WebmentionsPublishedAt.astro";
 import WebmentionsReplyContent from "./WebmentionsReplyContent.astro";
@@ -11,7 +12,7 @@ export interface Props {
 const { webmentionSectionModel } = Astro.props;
 ---
 
-{webmentionSectionModel.replies.length === 0 && <p class="blog-empty-state">No public webmentions yet.</p>}
+{webmentionSectionModel.replies.length === 0 && <BlogEmptyState>No public webmentions yet.</BlogEmptyState>}
 
 {
 	webmentionSectionModel.replies.length > 0 && (

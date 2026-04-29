@@ -1,5 +1,10 @@
 ---
 import { getCollection } from "astro:content";
+import BlogArchiveList from "../../../blog/BlogArchiveList.astro";
+import BlogArchiveNavigation from "../../../blog/BlogArchiveNavigation.astro";
+import BlogArchiveSection from "../../../blog/BlogArchiveSection.astro";
+import BlogBackLink from "../../../blog/BlogBackLink.astro";
+import BlogEmptyState from "../../../blog/BlogEmptyState.astro";
 import BlogIndexEntry from "../../../blog/BlogIndexEntry.astro";
 import BlogShell from "../../../blog/BlogShell.astro";
 import { createBlogPostTopicArchiveEntries } from "../../../blog/blog-post-topics.js";
@@ -41,14 +46,14 @@ if (topicCount === 1) {
 	terminalCommand="$ ls /blog/topics"
 	terminalOutput={topicCountLabel}
 >
-	<section class="blog-index" aria-label="Blog topics">
-		<nav class="blog-topic-navigation" aria-label="Blog">
-			<a class="blog-back-link" href="/blog">Back to Blog</a>
-		</nav>
+	<BlogArchiveSection label="Blog topics">
+		<BlogArchiveNavigation>
+			<BlogBackLink href="/blog">Back to Blog</BlogBackLink>
+		</BlogArchiveNavigation>
 
 		{
 			topicArchiveEntries.length > 0 ? (
-				<ul class="blog-index-list">
+				<BlogArchiveList>
 					{topicArchiveEntries.map((topicArchiveEntry) => (
 						<li>
 							<BlogIndexEntry
@@ -64,10 +69,10 @@ if (topicCount === 1) {
 							</BlogIndexEntry>
 						</li>
 					))}
-				</ul>
+				</BlogArchiveList>
 			) : (
-				<p class="blog-empty-state">No blog topics available yet.</p>
+				<BlogEmptyState>No blog topics available yet.</BlogEmptyState>
 			)
 		}
-	</section>
+	</BlogArchiveSection>
 </BlogShell>

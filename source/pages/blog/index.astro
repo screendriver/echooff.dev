@@ -1,8 +1,13 @@
 ---
 import { getCollection } from "astro:content";
+import BlogArchiveList from "../../blog/BlogArchiveList.astro";
+import BlogArchiveNavigation from "../../blog/BlogArchiveNavigation.astro";
+import BlogArchiveSection from "../../blog/BlogArchiveSection.astro";
+import BlogEmptyState from "../../blog/BlogEmptyState.astro";
 import BlogIndexEntry from "../../blog/BlogIndexEntry.astro";
 import BlogRssFeedLink from "../../blog/BlogRssFeedLink.astro";
 import BlogShell from "../../blog/BlogShell.astro";
+import BlogTopicLink from "../../blog/BlogTopicLink.astro";
 import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
 import LocalizedDateTimeScript from "../../blog/LocalizedDateTimeScript.astro";
 import { createBlogIndexEntries, sortBlogPostsByPublicationDateDescending } from "../../blog/blog-posts.js";
@@ -47,14 +52,14 @@ if (blogPostCount === 1) {
 >
 	<BlogRssFeedLink slot="title-action" rssFeedUrl={blogRssFeedUrl} />
 
-	<section class="blog-index" aria-label="Blog posts">
-		<nav class="blog-topic-navigation" aria-label="Blog topic archive">
-			<a class="blog-topic-navigation-link" href="/blog/topics">Browse posts by topic</a>
-		</nav>
+	<BlogArchiveSection label="Blog posts">
+		<BlogArchiveNavigation>
+			<BlogTopicLink href="/blog/topics">Browse posts by topic</BlogTopicLink>
+		</BlogArchiveNavigation>
 
 		{
 			blogIndexEntries.length > 0 ? (
-				<ul class="blog-index-list">
+				<BlogArchiveList>
 					{blogIndexEntries.map((blogIndexEntry) => (
 						<li>
 							<BlogIndexEntry
@@ -64,19 +69,19 @@ if (blogPostCount === 1) {
 							>
 								<Fragment slot="footer">
 									Published <LocalizedDateTime publishedAt={blogIndexEntry.publishedAt} /> in{" "}
-									<a class="blog-topic-link" href={createBlogTopicPath(blogIndexEntry.topicSlug)}>
+									<BlogTopicLink href={createBlogTopicPath(blogIndexEntry.topicSlug)}>
 										{blogIndexEntry.topic}
-									</a>
+									</BlogTopicLink>
 								</Fragment>
 							</BlogIndexEntry>
 						</li>
 					))}
-				</ul>
+				</BlogArchiveList>
 			) : (
-				<p class="blog-empty-state">No blog posts published yet.</p>
+				<BlogEmptyState>No blog posts published yet.</BlogEmptyState>
 			)
 		}
-	</section>
+	</BlogArchiveSection>
 
 	<LocalizedDateTimeScript />
 </BlogShell>

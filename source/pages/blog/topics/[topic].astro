@@ -1,5 +1,10 @@
 ---
 import { getCollection } from "astro:content";
+import BlogArchiveList from "../../../blog/BlogArchiveList.astro";
+import BlogArchiveNavigation from "../../../blog/BlogArchiveNavigation.astro";
+import BlogArchiveSection from "../../../blog/BlogArchiveSection.astro";
+import BlogBackLink from "../../../blog/BlogBackLink.astro";
+import BlogEmptyState from "../../../blog/BlogEmptyState.astro";
 import BlogIndexEntry from "../../../blog/BlogIndexEntry.astro";
 import BlogShell from "../../../blog/BlogShell.astro";
 import LocalizedDateTime from "../../../blog/LocalizedDateTime.astro";
@@ -57,14 +62,14 @@ const postCountLabel =
 	terminalCommand={`$ ls /blog/topics/${topicArchiveEntry.slug}`}
 	terminalOutput={postCountLabel}
 >
-	<section class="blog-index" aria-label={`Blog posts in ${topicArchiveEntry.label}`}>
-		<nav class="blog-topic-navigation" aria-label="Blog topics">
-			<a class="blog-back-link" href="/blog/topics">Back to Blog Topics</a>
-		</nav>
+	<BlogArchiveSection label={`Blog posts in ${topicArchiveEntry.label}`}>
+		<BlogArchiveNavigation>
+			<BlogBackLink href="/blog/topics">Back to Blog Topics</BlogBackLink>
+		</BlogArchiveNavigation>
 
 		{
 			blogIndexEntries.length > 0 ? (
-				<ul class="blog-index-list">
+				<BlogArchiveList>
 					{blogIndexEntries.map((blogIndexEntry) => (
 						<li>
 							<BlogIndexEntry
@@ -78,12 +83,12 @@ const postCountLabel =
 							</BlogIndexEntry>
 						</li>
 					))}
-				</ul>
+				</BlogArchiveList>
 			) : (
-				<p class="blog-empty-state">No blog posts published for this topic yet.</p>
+				<BlogEmptyState>No blog posts published for this topic yet.</BlogEmptyState>
 			)
 		}
-	</section>
+	</BlogArchiveSection>
 
 	<LocalizedDateTimeScript />
 </BlogShell>

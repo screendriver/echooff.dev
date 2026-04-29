@@ -1,0 +1,28 @@
+---
+export interface Props {
+	readonly href: string;
+}
+
+const { href } = Astro.props;
+---
+
+<a class="blog-topic-link" href={href}>
+	<slot />
+</a>
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	.blog-topic-link {
+		color: variables.$cyan;
+		text-decoration: underline;
+		text-decoration-color: rgba(variables.$cyan, 0.5);
+		text-underline-offset: 0.2rem;
+	}
+
+	.blog-topic-link:hover,
+	.blog-topic-link:focus-visible {
+		color: variables.$pink;
+		text-decoration-color: rgba(variables.$pink, 0.55);
+	}
+</style>

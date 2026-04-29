@@ -1,0 +1,16 @@
+<ul class="blog-archive-list">
+	<slot />
+</ul>
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	.blog-archive-list {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.blog-archive-list :global(li + li) {
+		border-top: 1px solid rgba(variables.$selection, 0.8);
+	}
+</style>

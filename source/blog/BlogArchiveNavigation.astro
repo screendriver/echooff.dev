@@ -1,0 +1,13 @@
+<nav class="blog-archive-navigation" aria-label="Blog">
+	<slot />
+</nav>
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	.blog-archive-navigation {
+		border-bottom: 1px solid rgba(variables.$selection, 0.8);
+		margin-bottom: 0.5rem;
+		padding-bottom: 1rem;
+	}
+</style>

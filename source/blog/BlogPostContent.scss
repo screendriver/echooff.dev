@@ -1,0 +1,133 @@
+@use "../styles/variables";
+
+.blog-prose {
+	color: variables.$foreground;
+	max-width: 100%;
+}
+
+.blog-prose > * + * {
+	margin-top: 0.85rem;
+}
+
+.blog-prose h2,
+.blog-prose h3,
+.blog-prose h4,
+.blog-prose h5,
+.blog-prose h6 {
+	color: variables.$purple;
+	font-weight: 700;
+	margin-top: 1.75rem;
+	scroll-margin-top: 1.5rem;
+}
+
+.blog-prose h2 {
+	font-size: 1.5rem;
+}
+
+.blog-prose h3 {
+	font-size: 1.25rem;
+}
+
+.blog-heading-anchor-link {
+	color: variables.$comment;
+	opacity: 0;
+	text-decoration: none;
+	transition:
+		opacity 120ms ease-out,
+		color 120ms ease-out;
+}
+
+.blog-prose h2:hover .blog-heading-anchor-link,
+.blog-prose h3:hover .blog-heading-anchor-link,
+.blog-prose h4:hover .blog-heading-anchor-link,
+.blog-prose h5:hover .blog-heading-anchor-link,
+.blog-prose h6:hover .blog-heading-anchor-link,
+.blog-heading-anchor-link:focus-visible,
+.blog-prose h2:target .blog-heading-anchor-link,
+.blog-prose h3:target .blog-heading-anchor-link,
+.blog-prose h4:target .blog-heading-anchor-link,
+.blog-prose h5:target .blog-heading-anchor-link,
+.blog-prose h6:target .blog-heading-anchor-link {
+	color: variables.$cyan;
+	opacity: 1;
+}
+
+.blog-prose p,
+.blog-prose li,
+.blog-prose blockquote {
+	color: variables.$foreground;
+	line-height: 1.72;
+}
+
+.blog-prose ul,
+.blog-prose ol {
+	list-style-position: outside;
+	margin-left: 1.5rem;
+	padding-left: 0.25rem;
+}
+
+.blog-prose ul {
+	list-style-type: square;
+}
+
+.blog-prose ol {
+	list-style-type: decimal;
+}
+
+.blog-prose a {
+	color: variables.$cyan;
+	text-decoration: underline;
+	text-decoration-color: rgba(variables.$cyan, 0.5);
+	text-underline-offset: 0.2rem;
+}
+
+.blog-prose strong {
+	color: variables.$yellow;
+	font-weight: 700;
+}
+
+.blog-prose em {
+	color: variables.$pink;
+}
+
+.blog-prose img {
+	display: block;
+	height: auto;
+	max-width: 100%;
+	width: 100%;
+}
+
+.blog-prose blockquote {
+	border-left: 3px solid variables.$purple;
+	color: variables.$comment;
+	padding-left: 1rem;
+}
+
+.blog-prose :not(pre) > code {
+	border: 1px solid rgba(variables.$selection, 0.9);
+	border-radius: 0.25rem;
+	background-color: rgba(variables.$selection, 0.55);
+	color: variables.$yellow;
+	padding: 0.15rem 0.35rem;
+}
+
+.blog-prose pre {
+	border: 1px solid rgba(variables.$selection, 0.9);
+	border-radius: 0.5rem;
+	margin: 1.5rem 0;
+	overflow-x: auto;
+	padding: 1rem;
+}
+
+.blog-prose pre code {
+	display: block;
+	font-size: 0.95rem;
+	min-width: max-content;
+	white-space: pre;
+}
+
+.blog-prose hr {
+	border: 0;
+	border-top: 1px solid rgba(variables.$selection, 0.8);
+	margin: 2rem 0;
+}
