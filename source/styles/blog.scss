@@ -26,13 +26,6 @@
 	text-decoration-color: rgba(variables.$pink, 0.55);
 }
 
-.blog-topic-archive-list {
-	display: grid;
-	gap: 1rem;
-	grid-template-columns: 1fr;
-	margin-top: 1rem;
-}
-
 .blog-index-list {
 	display: flex;
 	flex-direction: column;
