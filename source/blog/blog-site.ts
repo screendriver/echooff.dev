@@ -24,8 +24,12 @@ export function createBlogTopicIndexAbsoluteUrl(configuredSiteUrl: URL | undefin
 	return createAbsoluteUrl(getConfiguredSiteUrlOrThrow(configuredSiteUrl), "/blog/topics");
 }
 
+export function createBlogTopicPath(topicSlug: string): string {
+	return `/blog/topics/${topicSlug}`;
+}
+
 export function createBlogTopicAbsoluteUrl(configuredSiteUrl: URL | undefined, topicSlug: string): string {
-	return createAbsoluteUrl(getConfiguredSiteUrlOrThrow(configuredSiteUrl), `/blog/topics/${topicSlug}`);
+	return createAbsoluteUrl(getConfiguredSiteUrlOrThrow(configuredSiteUrl), createBlogTopicPath(topicSlug));
 }
 
 export function createBlogPostAbsoluteUrl(configuredSiteUrl: URL | undefined, blogPostSlug: string): string {

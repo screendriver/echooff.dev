@@ -8,7 +8,8 @@ import { createBlogIndexEntries, sortBlogPostsByPublicationDateDescending } from
 import {
 	createAbsoluteAssetUrl,
 	createBlogIndexAbsoluteUrl,
-	createBlogRssFeedAbsoluteUrl
+	createBlogRssFeedAbsoluteUrl,
+	createBlogTopicPath
 } from "../../blog/blog-site.js";
 import headerImage from "../../assets/images/header-01.jpg";
 
@@ -55,15 +56,17 @@ if (blogPostCount === 1) {
 				<ul class="blog-index-list">
 					{blogIndexEntries.map((blogIndexEntry) => (
 						<li>
-							<article>
+							<article class="blog-index-article">
 								<a class="blog-index-link" href={`/blog/${blogIndexEntry.slug}`}>
 									<h2 class="blog-index-title">{blogIndexEntry.title}</h2>
 									<p class="blog-index-description">{blogIndexEntry.description}</p>
-									<footer class="blog-meta">
-										Published <LocalizedDateTime publishedAt={blogIndexEntry.publishedAt} /> in{" "}
-										<span class="blog-topic-label">{blogIndexEntry.topic}</span>
-									</footer>
 								</a>
+								<footer class="blog-meta">
+									Published <LocalizedDateTime publishedAt={blogIndexEntry.publishedAt} /> in{" "}
+									<a class="blog-topic-link" href={createBlogTopicPath(blogIndexEntry.topicSlug)}>
+										{blogIndexEntry.topic}
+									</a>
+								</footer>
 							</article>
 						</li>
 					))}

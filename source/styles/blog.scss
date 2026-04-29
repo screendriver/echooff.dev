@@ -143,10 +143,6 @@
 	text-decoration-color: rgba(variables.$pink, 0.55);
 }
 
-.blog-topic-label {
-	color: variables.$cyan;
-}
-
 .blog-topic-archive-list {
 	display: grid;
 	gap: 1rem;
@@ -200,10 +196,14 @@
 	border-top: 1px solid rgba(variables.$selection, 0.8);
 }
 
+.blog-index-article,
 .blog-index-link {
 	display: flex;
 	flex-direction: column;
 	gap: 0.35rem;
+}
+
+.blog-index-article {
 	padding: 1rem 0;
 }
 

@@ -6,6 +6,7 @@ import {
 	createBlogRssFeedAbsoluteUrl,
 	createBlogTopicAbsoluteUrl,
 	createBlogTopicIndexAbsoluteUrl,
+	createBlogTopicPath,
 	createWebmentionEndpointUrl,
 	createSiteHomeAbsoluteUrl,
 	getConfiguredSiteUrlOrThrow
@@ -50,6 +51,12 @@ describe("createBlogTopicIndexAbsoluteUrl()", () => {
 		expect(createBlogTopicIndexAbsoluteUrl(new URL("https://www.echooff.dev"))).toBe(
 			"https://www.echooff.dev/blog/topics"
 		);
+	});
+});
+
+describe("createBlogTopicPath()", () => {
+	it("creates the root-relative path for a blog topic archive", () => {
+		expect(createBlogTopicPath("architecture")).toBe("/blog/topics/architecture");
 	});
 });
 
