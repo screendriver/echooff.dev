@@ -7,6 +7,7 @@ import BlogShell from "../../blog/BlogShell.astro";
 import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
 import LocalizedDateTimeScript from "../../blog/LocalizedDateTimeScript.astro";
 import Webmentions from "../../blog/Webmentions.astro";
+import { getBlogPostTopicDetails } from "../../blog/blog-post-topics.js";
 import { createBlogPostPageTitle, sortBlogPostsByPublicationDateDescending } from "../../blog/blog-posts.js";
 import {
 	createAbsoluteAssetUrl,
@@ -38,6 +39,7 @@ const blogPostUrl = createBlogPostAbsoluteUrl(configuredSiteUrl, blogPost.id);
 const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(configuredSiteUrl);
 const openGraphImageUrl = createAbsoluteAssetUrl(configuredSiteUrl, headerImage.src);
 const openGraphImageAlternativeText = "echooff.dev header illustration";
+const topicDetails = getBlogPostTopicDetails(blogPost.data.topic);
 const siteUrl = configuredSiteUrl.toString();
 let webmentionSectionModel = createEmptyWebmentionSectionModel();
 
@@ -82,6 +84,7 @@ try {
 				description: blogPost.data.description,
 				headline: blogPost.data.title,
 				image: openGraphImageUrl,
+				articleSection: topicDetails.label,
 				mainEntityOfPage: blogPostUrl,
 				publisher: {
 					"@type": "Person",
@@ -124,7 +127,8 @@ try {
 				Published{" "}
 				<time class="dt-published" datetime={blogPost.data.publishedAt}>
 					<LocalizedDateTime publishedAt={blogPost.data.publishedAt} />
-				</time>
+				</time>{" "}
+				in <a class="blog-topic-link" href={`/blog/topics/${topicDetails.slug}`}>{topicDetails.label}</a>
 			</p>
 			<a class="u-url blog-screen-reader-only" href={blogPostUrl}> Permalink </a>
 		</header>

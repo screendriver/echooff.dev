@@ -4,6 +4,8 @@ import {
 	createBlogIndexAbsoluteUrl,
 	createBlogPostAbsoluteUrl,
 	createBlogRssFeedAbsoluteUrl,
+	createBlogTopicAbsoluteUrl,
+	createBlogTopicIndexAbsoluteUrl,
 	createWebmentionEndpointUrl,
 	createSiteHomeAbsoluteUrl,
 	getConfiguredSiteUrlOrThrow
@@ -39,6 +41,22 @@ describe("createBlogPostAbsoluteUrl()", () => {
 	it("creates the absolute URL for a blog post", () => {
 		expect(createBlogPostAbsoluteUrl(new URL("https://www.echooff.dev"), "why-i-started-this-blog")).toBe(
 			"https://www.echooff.dev/blog/why-i-started-this-blog"
+		);
+	});
+});
+
+describe("createBlogTopicIndexAbsoluteUrl()", () => {
+	it("creates the absolute URL for the blog topic index", () => {
+		expect(createBlogTopicIndexAbsoluteUrl(new URL("https://www.echooff.dev"))).toBe(
+			"https://www.echooff.dev/blog/topics"
+		);
+	});
+});
+
+describe("createBlogTopicAbsoluteUrl()", () => {
+	it("creates the absolute URL for a blog topic archive", () => {
+		expect(createBlogTopicAbsoluteUrl(new URL("https://www.echooff.dev"), "typescript")).toBe(
+			"https://www.echooff.dev/blog/topics/typescript"
 		);
 	});
 });

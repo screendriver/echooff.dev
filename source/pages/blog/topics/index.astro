@@ -1,0 +1,72 @@
+---
+import { getCollection } from "astro:content";
+import BlogShell from "../../../blog/BlogShell.astro";
+import { createBlogPostTopicArchiveEntries } from "../../../blog/blog-post-topics.js";
+import {
+	createAbsoluteAssetUrl,
+	createBlogRssFeedAbsoluteUrl,
+	createBlogTopicIndexAbsoluteUrl
+} from "../../../blog/blog-site.js";
+import headerImage from "../../../assets/images/header-01.jpg";
+
+const blogCollection = await getCollection("blog");
+const topicArchiveEntries = createBlogPostTopicArchiveEntries(blogCollection);
+const blogTopicIndexUrl = createBlogTopicIndexAbsoluteUrl(Astro.site);
+const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(Astro.site);
+const openGraphImageUrl = createAbsoluteAssetUrl(Astro.site, headerImage.src);
+const openGraphImageAlternativeText = "echooff.dev header illustration";
+const topicCount = topicArchiveEntries.length;
+let topicCountLabel = `${topicCount} topics available`;
+
+if (topicCount === 1) {
+	topicCountLabel = "1 topic available";
+}
+---
+
+<BlogShell
+	canonicalUrl={blogTopicIndexUrl}
+	description="Browse echooff.dev blog posts by curated software engineering topic."
+	openGraphImageAlternativeText={openGraphImageAlternativeText}
+	openGraphImageUrl={openGraphImageUrl}
+	openGraphPublishedTime=""
+	openGraphType="website"
+	openGraphUrl={blogTopicIndexUrl}
+	rssFeedUrl={blogRssFeedUrl}
+	robots="index,follow,max-image-preview:large"
+	title="Blog Topics | Christian Rackerseder"
+	twitterCardType="summary_large_image"
+	pageTitle="Blog Topics"
+	intro="Curated topic archives for software engineering posts."
+	terminalCommand="$ ls /blog/topics"
+	terminalOutput={topicCountLabel}
+>
+	<section class="blog-index" aria-label="Blog topics">
+		<nav class="blog-topic-navigation" aria-label="Blog">
+			<a class="blog-back-link" href="/blog">Back to Blog</a>
+		</nav>
+
+		{
+			topicArchiveEntries.length > 0 ? (
+				<ul class="blog-topic-archive-list">
+					{topicArchiveEntries.map((topicArchiveEntry) => (
+						<li>
+							<article>
+								<a class="blog-topic-archive-link" href={`/blog/topics/${topicArchiveEntry.slug}`}>
+									<h2 class="blog-index-title">{topicArchiveEntry.label}</h2>
+									<p class="blog-index-description">{topicArchiveEntry.description}</p>
+									<footer class="blog-meta">
+										{topicArchiveEntry.postCount === 1
+											? "1 post"
+											: `${topicArchiveEntry.postCount} posts`}
+									</footer>
+								</a>
+							</article>
+						</li>
+					))}
+				</ul>
+			) : (
+				<p class="blog-empty-state">No blog topics available yet.</p>
+			)
+		}
+	</section>
+</BlogShell>

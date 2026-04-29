@@ -1,0 +1,88 @@
+---
+import { getCollection } from "astro:content";
+import BlogShell from "../../../blog/BlogShell.astro";
+import LocalizedDateTime from "../../../blog/LocalizedDateTime.astro";
+import LocalizedDateTimeScript from "../../../blog/LocalizedDateTimeScript.astro";
+import { createBlogIndexEntries, sortBlogPostsByPublicationDateDescending } from "../../../blog/blog-posts.js";
+import { createBlogPostTopicArchiveEntries, groupBlogPostsByTopic } from "../../../blog/blog-post-topics.js";
+import {
+	createAbsoluteAssetUrl,
+	createBlogRssFeedAbsoluteUrl,
+	createBlogTopicAbsoluteUrl
+} from "../../../blog/blog-site.js";
+import headerImage from "../../../assets/images/header-01.jpg";
+
+export async function getStaticPaths() {
+	const blogPosts = await getCollection("blog");
+	const topicArchiveEntries = createBlogPostTopicArchiveEntries(blogPosts);
+	const blogPostsByTopic = groupBlogPostsByTopic(blogPosts);
+
+	return topicArchiveEntries.map((topicArchiveEntry) => ({
+		params: {
+			topic: topicArchiveEntry.slug
+		},
+		props: {
+			blogPosts: sortBlogPostsByPublicationDateDescending(blogPostsByTopic.get(topicArchiveEntry.label) ?? []),
+			topicArchiveEntry
+		}
+	}));
+}
+
+const { blogPosts, topicArchiveEntry } = Astro.props;
+const blogIndexEntries = createBlogIndexEntries(blogPosts);
+const topicArchiveUrl = createBlogTopicAbsoluteUrl(Astro.site, topicArchiveEntry.slug);
+const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(Astro.site);
+const openGraphImageUrl = createAbsoluteAssetUrl(Astro.site, headerImage.src);
+const openGraphImageAlternativeText = "echooff.dev header illustration";
+const pageTitle = `${topicArchiveEntry.label} Posts`;
+const postCountLabel =
+	topicArchiveEntry.postCount === 1 ? "1 post available" : `${topicArchiveEntry.postCount} posts available`;
+---
+
+<BlogShell
+	canonicalUrl={topicArchiveUrl}
+	description={topicArchiveEntry.description}
+	openGraphImageAlternativeText={openGraphImageAlternativeText}
+	openGraphImageUrl={openGraphImageUrl}
+	openGraphPublishedTime=""
+	openGraphType="website"
+	openGraphUrl={topicArchiveUrl}
+	rssFeedUrl={blogRssFeedUrl}
+	robots="index,follow,max-image-preview:large"
+	title={`${pageTitle} | Christian Rackerseder`}
+	twitterCardType="summary_large_image"
+	pageTitle={pageTitle}
+	intro={topicArchiveEntry.description}
+	terminalCommand={`$ ls /blog/topics/${topicArchiveEntry.slug}`}
+	terminalOutput={postCountLabel}
+>
+	<section class="blog-index" aria-label={`Blog posts in ${topicArchiveEntry.label}`}>
+		<nav class="blog-topic-navigation" aria-label="Blog topics">
+			<a class="blog-back-link" href="/blog/topics">Back to Blog Topics</a>
+		</nav>
+
+		{
+			blogIndexEntries.length > 0 ? (
+				<ul class="blog-index-list">
+					{blogIndexEntries.map((blogIndexEntry) => (
+						<li>
+							<article>
+								<a class="blog-index-link" href={`/blog/${blogIndexEntry.slug}`}>
+									<h2 class="blog-index-title">{blogIndexEntry.title}</h2>
+									<p class="blog-index-description">{blogIndexEntry.description}</p>
+									<footer class="blog-meta">
+										Published <LocalizedDateTime publishedAt={blogIndexEntry.publishedAt} />
+									</footer>
+								</a>
+							</article>
+						</li>
+					))}
+				</ul>
+			) : (
+				<p class="blog-empty-state">No blog posts published for this topic yet.</p>
+			)
+		}
+	</section>
+
+	<LocalizedDateTimeScript />
+</BlogShell>

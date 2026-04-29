@@ -17,6 +17,7 @@ export interface Props {
 	readonly showPageHeader?: boolean;
 	readonly intro?: string;
 	readonly pageTitle: string;
+	readonly terminalCommand?: string;
 	readonly terminalOutput?: string;
 	readonly titleActionHtml?: string;
 	readonly title: string;
@@ -36,6 +37,7 @@ const {
 	rssFeedUrl,
 	robots,
 	showPageHeader = true,
+	terminalCommand = "$ ls /blog",
 	terminalOutput,
 	titleActionHtml,
 	title,
@@ -79,7 +81,7 @@ const {
 										</div>
 									</div>
 									<div class="blog-command-line-code">
-										<p class="blog-page-kicker">$ ls /blog</p>
+										<p class="blog-page-kicker">{terminalCommand}</p>
 										{terminalOutput && <p class="blog-command-line-output">{terminalOutput}</p>}
 									</div>
 								</div>

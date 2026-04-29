@@ -45,19 +45,26 @@ if (blogPostCount === 1) {
 	intro="Notes on web technologies, engineering tradeoffs, and front-end architecture."
 	terminalOutput={blogPostCountLabel}
 >
-	<div class="blog-index">
+	<section class="blog-index" aria-label="Blog posts">
+		<nav class="blog-topic-navigation" aria-label="Blog topic archive">
+			<a class="blog-topic-navigation-link" href="/blog/topics">Browse posts by topic</a>
+		</nav>
+
 		{
 			blogIndexEntries.length > 0 ? (
 				<ul class="blog-index-list">
 					{blogIndexEntries.map((blogIndexEntry) => (
 						<li>
-							<a class="blog-index-link" href={`/blog/${blogIndexEntry.slug}`}>
-								<span class="blog-index-title">{blogIndexEntry.title}</span>
-								<span class="blog-index-description">{blogIndexEntry.description}</span>
-								<span class="blog-meta">
-									Published <LocalizedDateTime publishedAt={blogIndexEntry.publishedAt} />
-								</span>
-							</a>
+							<article>
+								<a class="blog-index-link" href={`/blog/${blogIndexEntry.slug}`}>
+									<h2 class="blog-index-title">{blogIndexEntry.title}</h2>
+									<p class="blog-index-description">{blogIndexEntry.description}</p>
+									<footer class="blog-meta">
+										Published <LocalizedDateTime publishedAt={blogIndexEntry.publishedAt} /> in{" "}
+										<span class="blog-topic-label">{blogIndexEntry.topic}</span>
+									</footer>
+								</a>
+							</article>
 						</li>
 					))}
 				</ul>
@@ -65,7 +72,7 @@ if (blogPostCount === 1) {
 				<p class="blog-empty-state">No blog posts published yet.</p>
 			)
 		}
-	</div>
+	</section>
 
 	<LocalizedDateTimeScript />
 </BlogShell>

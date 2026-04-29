@@ -121,6 +121,55 @@
 	padding: 1.5rem 1.5rem 1.75rem;
 }
 
+.blog-topic-navigation {
+	border-bottom: 1px solid rgba(variables.$selection, 0.8);
+	margin-bottom: 0.5rem;
+	padding-bottom: 1rem;
+}
+
+.blog-topic-navigation-link,
+.blog-topic-link {
+	color: variables.$cyan;
+	text-decoration: underline;
+	text-decoration-color: rgba(variables.$cyan, 0.5);
+	text-underline-offset: 0.2rem;
+}
+
+.blog-topic-navigation-link:hover,
+.blog-topic-navigation-link:focus-visible,
+.blog-topic-link:hover,
+.blog-topic-link:focus-visible {
+	color: variables.$pink;
+	text-decoration-color: rgba(variables.$pink, 0.55);
+}
+
+.blog-topic-label {
+	color: variables.$cyan;
+}
+
+.blog-topic-archive-list {
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: 1fr;
+	margin-top: 1rem;
+}
+
+.blog-topic-archive-link {
+	border: 1px solid rgba(variables.$selection, 0.85);
+	border-radius: 0.5rem;
+	background-color: rgba(variables.$background, 0.4);
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	padding: 1rem;
+}
+
+.blog-topic-archive-link:hover .blog-index-title,
+.blog-topic-archive-link:focus-visible .blog-index-title {
+	color: variables.$cyan;
+	text-decoration-color: rgba(variables.$cyan, 0.55);
+}
+
 .blog-rss-link {
 	align-items: center;
 	color: variables.$cyan;

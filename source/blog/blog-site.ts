@@ -1,9 +1,11 @@
+import is from "@sindresorhus/is";
+
 function createAbsoluteUrl(configuredSiteUrl: URL, pathname: string): string {
 	return new URL(pathname, configuredSiteUrl).toString();
 }
 
 export function getConfiguredSiteUrlOrThrow(configuredSiteUrl: URL | undefined): URL {
-	if (configuredSiteUrl === undefined) {
+	if (is.undefined(configuredSiteUrl)) {
 		throw new TypeError("Astro.site must be configured to create absolute blog URLs");
 	}
 
@@ -16,6 +18,14 @@ export function createSiteHomeAbsoluteUrl(configuredSiteUrl: URL | undefined): s
 
 export function createBlogIndexAbsoluteUrl(configuredSiteUrl: URL | undefined): string {
 	return createAbsoluteUrl(getConfiguredSiteUrlOrThrow(configuredSiteUrl), "/blog");
+}
+
+export function createBlogTopicIndexAbsoluteUrl(configuredSiteUrl: URL | undefined): string {
+	return createAbsoluteUrl(getConfiguredSiteUrlOrThrow(configuredSiteUrl), "/blog/topics");
+}
+
+export function createBlogTopicAbsoluteUrl(configuredSiteUrl: URL | undefined, topicSlug: string): string {
+	return createAbsoluteUrl(getConfiguredSiteUrlOrThrow(configuredSiteUrl), `/blog/topics/${topicSlug}`);
 }
 
 export function createBlogPostAbsoluteUrl(configuredSiteUrl: URL | undefined, blogPostSlug: string): string {
