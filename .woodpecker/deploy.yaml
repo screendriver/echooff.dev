@@ -20,7 +20,7 @@ steps:
           - npx just build
 
     - name: publish-container-image
-      image: woodpeckerci/plugin-docker-buildx:6.0.4
+      image: woodpeckerci/plugin-docker-buildx:6.1.0
       settings:
           # Dockerfile expects the static site in ./target from the previous build step.
           repo:
