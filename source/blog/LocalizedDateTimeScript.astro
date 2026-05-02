@@ -16,15 +16,18 @@
 		const publishedAt = localizedDateTimeElement.getAttribute("datetime");
 
 		if (!is.string(publishedAt)) {
+			localizedDateTimeElement.classList.remove("localized-date-time-pending");
 			continue;
 		}
 
 		const publishedAtDate = new Date(publishedAt);
 
 		if (!is.validDate(publishedAtDate)) {
+			localizedDateTimeElement.classList.remove("localized-date-time-pending");
 			continue;
 		}
 
 		localizedDateTimeElement.textContent = browserDateTimeFormatter.format(publishedAtDate);
+		localizedDateTimeElement.classList.remove("localized-date-time-pending");
 	}
 </script>

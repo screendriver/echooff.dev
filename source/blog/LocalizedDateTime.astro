@@ -10,6 +10,24 @@ const { className, publishedAt } = Astro.props;
 const fallbackPublishedAtDateTime = formatPublishedAtFallbackDateTime(publishedAt);
 ---
 
-<time class:list={["localized-date-time", className]} datetime={publishedAt} data-localized-date-time>
+<time
+	class:list={["localized-date-time", "localized-date-time-pending", className]}
+	datetime={publishedAt}
+	data-localized-date-time
+>
 	{fallbackPublishedAtDateTime}
 </time>
+
+<noscript>
+	<style>
+		.localized-date-time-pending {
+			visibility: visible;
+		}
+	</style>
+</noscript>
+
+<style>
+	.localized-date-time-pending {
+		visibility: hidden;
+	}
+</style>
