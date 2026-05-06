@@ -6,6 +6,7 @@ import "@fontsource/jetbrains-mono/700.css";
 import "@fontsource/jetbrains-mono/800.css";
 import "../styles/main.scss";
 import { createWebmentionEndpointUrl } from "../blog/blog-site.js";
+import { resolveOpenGraphUrl } from "./open-graph-url.js";
 
 export interface Props {
 	readonly canonicalUrl?: string;
@@ -33,12 +34,18 @@ const {
 	openGraphImageUrl,
 	openGraphPublishedTime,
 	openGraphType = "website",
-	openGraphUrl = defaultOpenGraphUrl,
+	openGraphUrl,
 	rssFeedUrl,
 	robots = "noimageindex",
 	title = defaultTitle,
 	twitterCardType = "summary"
 } = Astro.props;
+
+const resolvedOpenGraphUrl = resolveOpenGraphUrl({
+	canonicalUrl,
+	defaultOpenGraphUrl,
+	openGraphUrl
+});
 ---
 
 <!doctype html>
@@ -64,7 +71,7 @@ const {
 		<meta property="og:description" content={description} />
 		{openGraphImageUrl && <meta property="og:image" content={openGraphImageUrl} />}
 		{openGraphImageAlternativeText && <meta property="og:image:alt" content={openGraphImageAlternativeText} />}
-		<meta property="og:url" content={openGraphUrl} />
+		<meta property="og:url" content={resolvedOpenGraphUrl} />
 		<meta property="og:type" content={openGraphType} />
 		{openGraphPublishedTime && <meta property="article:published_time" content={openGraphPublishedTime} />}
 		<meta name="robots" content={robots} />
