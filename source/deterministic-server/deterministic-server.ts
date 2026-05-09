@@ -5,6 +5,7 @@ import { serve } from "@hono/node-server";
 import { serveStatic } from "@hono/node-server/serve-static";
 import { registerContactFormRoute } from "./contact-form-route.js";
 import { registerGraphQlRoute } from "./graphql-route.js";
+import { registerHackerNewsRoute } from "./hacker-news-route.js";
 import { registerWebmentionRoute } from "./webmention-route.js";
 
 export function createDeterministicServerApplication(): Hono {
@@ -23,6 +24,7 @@ export function createDeterministicServerApplication(): Hono {
 	);
 	registerGraphQlRoute(application);
 	registerContactFormRoute(application);
+	registerHackerNewsRoute(application);
 	registerWebmentionRoute(application);
 
 	return application;

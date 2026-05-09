@@ -15,6 +15,9 @@ await appendFile(envFilePath, `GITHUB_TOKEN="foo"${os.EOL}`, { encoding: "utf8" 
 await appendFile(envFilePath, `WEBMENTION_API_URL="${listeningAddress}/webmentions"${os.EOL}`, {
 	encoding: "utf8"
 });
+await appendFile(envFilePath, `HACKER_NEWS_API_URL="${listeningAddress}/hacker-news"${os.EOL}`, {
+	encoding: "utf8"
+});
 await appendFile(envFilePath, `CONTACT_FORM_URL="${listeningAddress}/contact-form"`, {
 	encoding: "utf-8"
 });
