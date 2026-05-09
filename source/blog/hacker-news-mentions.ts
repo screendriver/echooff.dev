@@ -29,14 +29,6 @@ const emptyHackerNewsSectionModel = {
 	mentions: []
 } as const satisfies HackerNewsSectionModel;
 
-function readRecord(value: unknown): Maybe<Record<string, unknown>> {
-	if (!is.plainObject(value)) {
-		return Maybe.nothing();
-	}
-
-	return Maybe.just(value);
-}
-
 function readString(objectValue: Record<string, unknown>, propertyName: string): Maybe<string> {
 	const propertyValue = objectValue[propertyName];
 
@@ -141,10 +133,37 @@ function readDiscussionUrl(hackerNewsApiHit: HackerNewsApiHit): Maybe<string> {
 	return Maybe.just(`https://news.ycombinator.com/item?id=${itemId.value}`);
 }
 
+function readComparableSubmittedUrl(hackerNewsApiHit: HackerNewsApiHit): Maybe<string> {
+	return readValidAbsoluteUrl(hackerNewsApiHit, "url").andThen(normalizeComparableUrl);
+}
+
+function readCompleteMentionFields(hackerNewsApiHit: HackerNewsApiHit): {
+	readonly commentCount: number;
+	readonly discussionUrl: string;
+	readonly pointCount: number;
+	readonly storyTitle: string;
+} | null {
+	const discussionUrl = readDiscussionUrl(hackerNewsApiHit);
+	const storyTitle = readStoryTitle(hackerNewsApiHit);
+	const pointCount = readNumber(hackerNewsApiHit, "points");
+	const commentCount = readNumber(hackerNewsApiHit, "num_comments");
+
+	if (discussionUrl.isNothing || storyTitle.isNothing || pointCount.isNothing || commentCount.isNothing) {
+		return null;
+	}
+
+	return {
+		commentCount: commentCount.value,
+		discussionUrl: discussionUrl.value,
+		pointCount: pointCount.value,
+		storyTitle: storyTitle.value
+	};
+}
+
 function readMentionFromApiHit(targetUrl: string, hackerNewsApiHit: HackerNewsApiHit): Maybe<HackerNewsMention> {
 	const targetComparableUrl = normalizeComparableUrl(targetUrl);
 	const submittedUrl = readValidAbsoluteUrl(hackerNewsApiHit, "url");
-	const submittedComparableUrl = submittedUrl.andThen(normalizeComparableUrl);
+	const submittedComparableUrl = readComparableSubmittedUrl(hackerNewsApiHit);
 
 	if (targetComparableUrl.isNothing || submittedComparableUrl.isNothing) {
 		return Maybe.nothing();
@@ -154,20 +173,17 @@ function readMentionFromApiHit(targetUrl: string, hackerNewsApiHit: HackerNewsAp
 		return Maybe.nothing();
 	}
 
-	const discussionUrl = readDiscussionUrl(hackerNewsApiHit);
-	const storyTitle = readStoryTitle(hackerNewsApiHit);
-	const pointCount = readNumber(hackerNewsApiHit, "points");
-	const commentCount = readNumber(hackerNewsApiHit, "num_comments");
+	const completeMentionFields = readCompleteMentionFields(hackerNewsApiHit);
 
-	if (discussionUrl.isNothing || storyTitle.isNothing || pointCount.isNothing || commentCount.isNothing) {
+	if (completeMentionFields === null) {
 		return Maybe.nothing();
 	}
 
 	return Maybe.just({
-		commentCount: commentCount.value,
-		discussionUrl: discussionUrl.value,
-		pointCount: pointCount.value,
-		storyTitle: storyTitle.value,
+		commentCount: completeMentionFields.commentCount,
+		discussionUrl: completeMentionFields.discussionUrl,
+		pointCount: completeMentionFields.pointCount,
+		storyTitle: completeMentionFields.storyTitle,
 		submittedUrl,
 		visiblePublishedAt: readString(hackerNewsApiHit, "created_at").andThen(validateDateTimeString)
 	});
@@ -179,9 +195,7 @@ export function createEmptyHackerNewsSectionModel(): HackerNewsSectionModel {
 	};
 }
 
-export function createHackerNewsApiRequestUrl(
-	hackerNewsApiRequestUrlInput: HackerNewsApiRequestUrlInput
-): string {
+export function createHackerNewsApiRequestUrl(hackerNewsApiRequestUrlInput: HackerNewsApiRequestUrlInput): string {
 	const { hackerNewsApiUrl, targetUrl } = hackerNewsApiRequestUrlInput;
 	const apiRequestUrl = new URL(hackerNewsApiUrl);
 
@@ -192,10 +206,7 @@ export function createHackerNewsApiRequestUrl(
 	return apiRequestUrl.toString();
 }
 
-export function parseHackerNewsApiResponse(
-	targetUrl: string,
-	hackerNewsApiResponse: unknown
-): HackerNewsSectionModel {
+export function parseHackerNewsApiResponse(targetUrl: string, hackerNewsApiResponse: unknown): HackerNewsSectionModel {
 	const parsedMentions = readHackerNewsApiHits(hackerNewsApiResponse)
 		.flatMap((hackerNewsApiHit) => {
 			return readMentionFromApiHit(targetUrl, hackerNewsApiHit).match({

@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-	hackerNewsApiUrlInputSchema,
-	webmentionApiUrlInputSchema
-} from "./environment-variable-input-schema.js";
+import { hackerNewsApiUrlInputSchema, webmentionApiUrlInputSchema } from "./environment-variable-input-schema.js";
 import { parseHackerNewsApiUrl, parseWebmentionApiUrl } from "./environment-variables.js";
 
 describe("hacker news API URL schema", () => {
@@ -31,9 +28,7 @@ describe("hacker news API URL schema", () => {
 	});
 
 	it("allows a string URL", () => {
-		const hackerNewsApiUrl = hackerNewsApiUrlInputSchema.assert(
-			"https://hn.algolia.com/api/v1/search_by_date"
-		);
+		const hackerNewsApiUrl = hackerNewsApiUrlInputSchema.assert("https://hn.algolia.com/api/v1/search_by_date");
 
 		expect(hackerNewsApiUrl).toBe("https://hn.algolia.com/api/v1/search_by_date");
 	});

@@ -24,7 +24,7 @@ describe("hacker news response schema", () => {
 			hackerNewsApiResponseSchema.assert({
 				hits: [
 					{
-						objectID: 44000001
+						objectID: 44_000_001
 					}
 				]
 			});

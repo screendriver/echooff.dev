@@ -4,9 +4,7 @@ type DeterministicHackerNewsResponseBody = {
 	readonly hits: readonly unknown[];
 };
 
-function createDeterministicHackerNewsResponseBody(
-	targetUrl: string
-): DeterministicHackerNewsResponseBody {
+function createDeterministicHackerNewsResponseBody(targetUrl: string): DeterministicHackerNewsResponseBody {
 	return {
 		hits: [
 			{

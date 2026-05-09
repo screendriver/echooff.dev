@@ -24,27 +24,23 @@ const { hackerNewsSectionModel } = Astro.props;
 						<span>{hackerNewsMention.pointCount} points</span>
 						<span> · </span>
 						<span>{hackerNewsMention.commentCount} comments</span>
-						{
-							hackerNewsMention.visiblePublishedAt.isJust && (
-								<span>
-									{" · "}
-									<time datetime={hackerNewsMention.visiblePublishedAt.value}>
-										{formatPublishedAtFallbackDateTime(hackerNewsMention.visiblePublishedAt.value)}
-									</time>
-								</span>
-							)
-						}
+						{hackerNewsMention.visiblePublishedAt.isJust && (
+							<span>
+								{" · "}
+								<time datetime={hackerNewsMention.visiblePublishedAt.value}>
+									{formatPublishedAtFallbackDateTime(hackerNewsMention.visiblePublishedAt.value)}
+								</time>
+							</span>
+						)}
 					</p>
 					<p>
 						<a href={hackerNewsMention.discussionUrl}>View discussion</a>
-						{
-							hackerNewsMention.submittedUrl.isJust && (
-								<>
-									{" · "}
-									<a href={hackerNewsMention.submittedUrl.value}>View submitted URL</a>
-								</>
-							)
-						}
+						{hackerNewsMention.submittedUrl.isJust && (
+							<>
+								{" · "}
+								<a href={hackerNewsMention.submittedUrl.value}>View submitted URL</a>
+							</>
+						)}
 					</p>
 				</li>
 			))}
