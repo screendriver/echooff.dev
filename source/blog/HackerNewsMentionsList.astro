@@ -1,5 +1,7 @@
 ---
 import BlogEmptyState from "./BlogEmptyState.astro";
+import CommentIcon from "./CommentIcon.astro";
+import ScoreIcon from "./ScoreIcon.astro";
 import { formatPublishedAtFallbackDateTime } from "./blog-posts.js";
 import type { HackerNewsSectionModel } from "./hacker-news-mentions.js";
 
@@ -17,31 +19,46 @@ const { hackerNewsSectionModel } = Astro.props;
 		<ul>
 			{hackerNewsSectionModel.mentions.map((hackerNewsMention) => (
 				<li>
-					<p>
-						<a href={hackerNewsMention.discussionUrl}>{hackerNewsMention.storyTitle}</a>
-					</p>
-					<p>
-						<span>{hackerNewsMention.pointCount} points</span>
-						<span> · </span>
-						<span>{hackerNewsMention.commentCount} comments</span>
-						{hackerNewsMention.visiblePublishedAt.isJust && (
-							<span>
-								{" · "}
-								<time datetime={hackerNewsMention.visiblePublishedAt.value}>
-									{formatPublishedAtFallbackDateTime(hackerNewsMention.visiblePublishedAt.value)}
-								</time>
-							</span>
-						)}
-					</p>
-					<p>
-						<a href={hackerNewsMention.discussionUrl}>View discussion</a>
-						{hackerNewsMention.submittedUrl.isJust && (
-							<>
-								{" · "}
-								<a href={hackerNewsMention.submittedUrl.value}>View submitted URL</a>
-							</>
-						)}
-					</p>
+					<article>
+						<header>
+							<h3>
+								<a href={hackerNewsMention.discussionUrl}>{hackerNewsMention.storyTitle}</a>
+							</h3>
+							<dl class="mention-metadata-list">
+								<dt class="screen-reader-only">Score</dt>
+								<dd class="meta-pill">
+									<ScoreIcon />
+									<span>{hackerNewsMention.pointCount} points</span>
+								</dd>
+								<dt class="screen-reader-only">Comments</dt>
+								<dd class="meta-pill">
+									<CommentIcon />
+									<span>{hackerNewsMention.commentCount} comments</span>
+								</dd>
+								{hackerNewsMention.visiblePublishedAt.isJust && (
+									<>
+										<dt class="meta-date-label">Published</dt>
+										<dd class="meta-date-value">
+											<time datetime={hackerNewsMention.visiblePublishedAt.value}>
+												{formatPublishedAtFallbackDateTime(
+													hackerNewsMention.visiblePublishedAt.value
+												)}
+											</time>
+										</dd>
+									</>
+								)}
+							</dl>
+						</header>
+						<footer>
+							<a href={hackerNewsMention.discussionUrl}>View discussion</a>
+							{hackerNewsMention.submittedUrl.isJust && (
+								<>
+									{" · "}
+									<a href={hackerNewsMention.submittedUrl.value}>View submitted URL</a>
+								</>
+							)}
+						</footer>
+					</article>
 				</li>
 			))}
 		</ul>
@@ -65,15 +82,57 @@ const { hackerNewsSectionModel } = Astro.props;
 		padding: 1rem;
 	}
 
-	li p:first-child a {
+	h3 a {
 		color: variables.$foreground;
 		font-weight: 700;
 	}
 
-	li p:nth-child(2),
-	li p:nth-child(3) {
+	.mention-metadata-list,
+	footer {
 		color: rgba(variables.$foreground, 0.46);
 		font-size: 0.82rem;
 		margin-top: 0.4rem;
+	}
+
+	.mention-metadata-list {
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.screen-reader-only {
+		border: 0 !important;
+		clip: rect(0 0 0 0) !important;
+		clip-path: inset(50%) !important;
+		height: 1px !important;
+		margin: -1px !important;
+		overflow: hidden !important;
+		padding: 0 !important;
+		position: absolute !important;
+		white-space: nowrap !important;
+		width: 1px !important;
+	}
+
+	.meta-pill {
+		align-items: center;
+		background-color: rgba(variables.$selection, 0.4);
+		border: 1px solid rgba(variables.$selection, 0.9);
+		border-radius: 9999px;
+		color: variables.$yellow;
+		display: inline-flex;
+		gap: 0.35rem;
+		padding: 0.15rem 0.45rem;
+		margin: 0;
+	}
+
+	.meta-date-label,
+	.meta-date-value {
+		display: inline;
+		margin: 0;
+	}
+
+	.meta-date-label::after {
+		content: ": ";
 	}
 </style>
