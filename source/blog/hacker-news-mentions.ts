@@ -1,5 +1,6 @@
 import is from "@sindresorhus/is";
 import { Maybe } from "true-myth";
+import { parseHackerNewsApiUrl } from "./environment-variables.js";
 import { hackerNewsApiResponseSchema } from "./hacker-news-response-schema.js";
 
 export type HackerNewsMention = {
@@ -170,18 +171,6 @@ function readMentionFromApiHit(targetUrl: string, hackerNewsApiHit: HackerNewsAp
 		submittedUrl,
 		visiblePublishedAt: readString(hackerNewsApiHit, "created_at").andThen(validateDateTimeString)
 	});
-}
-
-function parseHackerNewsApiUrl(hackerNewsApiUrlInput: unknown): URL {
-	if (!is.string(hackerNewsApiUrlInput)) {
-		throw new Error("Hacker News API URL must be a string.");
-	}
-
-	try {
-		return new URL(hackerNewsApiUrlInput);
-	} catch {
-		throw new Error("Hacker News API URL must be a valid absolute URL.");
-	}
 }
 
 export function createEmptyHackerNewsSectionModel(): HackerNewsSectionModel {
