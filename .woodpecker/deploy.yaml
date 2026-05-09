@@ -17,6 +17,8 @@ steps:
               from_secret: github_login
           WEBMENTION_API_URL:
               from_secret: webmention_api_url
+          HACKER_NEWS_API_URL:
+              from_secret: hacker_news_api_url
       commands:
           - npm clean-install
           - npx just build
