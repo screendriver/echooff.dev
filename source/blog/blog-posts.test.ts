@@ -52,8 +52,8 @@ describe("sortBlogPostsByPublicationDateDescending()", () => {
 });
 
 describe("formatPublishedAtFallbackDateTime()", () => {
-	it("returns a deterministic readable fallback timestamp", () => {
-		expect(formatPublishedAtFallbackDateTime("2026-02-28T14:30:00+01:00")).toBe("2026-02-28 14:30+01:00");
+	it("returns a deterministic readable fallback date", () => {
+		expect(formatPublishedAtFallbackDateTime("2026-02-28T14:30:00+01:00")).toBe("2026-02-28");
 	});
 
 	it("throws when the timestamp is invalid", () => {

@@ -54,5 +54,5 @@ export function formatPublishedAtFallbackDateTime(publishedAt: string): string {
 		throw new TypeError(`Published at "${publishedAt}" is not a valid ISO 8601 date-time`);
 	}
 
-	return publishedAt.replace("T", " ").replace(/:\d{2}(?:\.\d+)?(?=[+-]\d{2}:\d{2}|Z$)/u, "");
+	return publishedAt.slice(0, 10);
 }

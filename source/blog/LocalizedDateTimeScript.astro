@@ -8,8 +8,7 @@
 	}
 
 	const browserDateTimeFormatter = new Intl.DateTimeFormat(preferredBrowserLanguages, {
-		dateStyle: "medium",
-		timeStyle: "short"
+		dateStyle: "medium"
 	});
 
 	for (const localizedDateTimeElement of document.querySelectorAll("[data-localized-date-time]")) {

@@ -123,9 +123,7 @@ try {
 			<h1 class="p-name">{blogPost.data.title}</h1>
 			<BlogMetadata>
 				Published{" "}
-				<time class="dt-published" datetime={blogPost.data.publishedAt}>
-					<LocalizedDateTime publishedAt={blogPost.data.publishedAt} />
-				</time>{" "}
+				<LocalizedDateTime className="dt-published" publishedAt={blogPost.data.publishedAt} />{" "}
 				in <BlogTopicLink href={`/blog/topics/${topicDetails.slug}`}>{topicDetails.label}</BlogTopicLink>
 			</BlogMetadata>
 			<a class="u-url blog-post-screen-reader-only" href={blogPostUrl}> Permalink </a>
