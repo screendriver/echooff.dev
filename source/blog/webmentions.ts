@@ -1,8 +1,8 @@
 import is from "@sindresorhus/is";
-import { type } from "arktype";
 import { match } from "ts-pattern";
 import { Maybe } from "true-myth";
 import { parseWebmentionApiUrl } from "./environment-variables.js";
+import { webmentionApiResponseSchema } from "./webmention-response-schema.js";
 
 export type WebmentionAuthor = {
 	readonly name: string;
@@ -67,22 +67,6 @@ const emptyWebmentionSectionModel = {
 	replies: []
 } as const satisfies WebmentionSectionModel;
 const maximumDisplayedWebmentionContentLength = 280;
-const webmentionApiEntrySchema = type({
-	"author?": {
-		"name?": "string",
-		"photo?": "string",
-		"url?": "string"
-	},
-	"content?": "unknown",
-	"published?": "string",
-	"url?": "string",
-	"wm-private?": "boolean",
-	"wm-property?": "string",
-	"wm-received?": "string"
-}).onDeepUndeclaredKey("delete");
-const webmentionApiResponseSchema = type({
-	"children?": webmentionApiEntrySchema.array()
-}).onDeepUndeclaredKey("delete");
 
 function readRecord(value: unknown): Maybe<Record<string, unknown>> {
 	if (!is.plainObject(value)) {

@@ -1,6 +1,6 @@
 import is from "@sindresorhus/is";
-import { type } from "arktype";
 import { Maybe } from "true-myth";
+import { hackerNewsApiResponseSchema } from "./hacker-news-response-schema.js";
 
 export type HackerNewsMention = {
 	readonly commentCount: number;
@@ -27,18 +27,6 @@ type HackerNewsApiRequestUrlInput = {
 const emptyHackerNewsSectionModel = {
 	mentions: []
 } as const satisfies HackerNewsSectionModel;
-const hackerNewsApiHitSchema = type({
-	"created_at?": "string",
-	"num_comments?": "number",
-	"objectID?": "string",
-	"points?": "number",
-	"story_title?": "string",
-	"title?": "string",
-	"url?": "string"
-}).onDeepUndeclaredKey("delete");
-const hackerNewsApiResponseSchema = type({
-	"hits?": hackerNewsApiHitSchema.array()
-}).onDeepUndeclaredKey("delete");
 
 function readRecord(value: unknown): Maybe<Record<string, unknown>> {
 	if (!is.plainObject(value)) {
