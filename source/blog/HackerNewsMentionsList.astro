@@ -51,12 +51,6 @@ const { hackerNewsSectionModel } = Astro.props;
 						</header>
 						<footer>
 							<a href={hackerNewsMention.discussionUrl}>View discussion</a>
-							{hackerNewsMention.submittedUrl.isJust && (
-								<>
-									{" · "}
-									<a href={hackerNewsMention.submittedUrl.value}>View submitted URL</a>
-								</>
-							)}
 						</footer>
 					</article>
 				</li>
