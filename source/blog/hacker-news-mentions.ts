@@ -1,4 +1,5 @@
 import is from "@sindresorhus/is";
+import { type } from "arktype";
 import { Maybe } from "true-myth";
 
 export type HackerNewsMention = {
@@ -26,6 +27,18 @@ type HackerNewsApiRequestUrlInput = {
 const emptyHackerNewsSectionModel = {
 	mentions: []
 } as const satisfies HackerNewsSectionModel;
+const hackerNewsApiHitSchema = type({
+	"created_at?": "string",
+	"num_comments?": "number",
+	"objectID?": "string",
+	"points?": "number",
+	"story_title?": "string",
+	"title?": "string",
+	"url?": "string"
+}).onDeepUndeclaredKey("delete");
+const hackerNewsApiResponseSchema = type({
+	"hits?": hackerNewsApiHitSchema.array()
+}).onDeepUndeclaredKey("delete");
 
 function readRecord(value: unknown): Maybe<Record<string, unknown>> {
 	if (!is.plainObject(value)) {
@@ -84,29 +97,18 @@ function validateDateTimeString(value: string): Maybe<string> {
 }
 
 function readHackerNewsApiHits(hackerNewsApiResponse: unknown): readonly HackerNewsApiHit[] {
-	const hackerNewsApiResponseRecord = readRecord(hackerNewsApiResponse);
-
-	if (hackerNewsApiResponseRecord.isNothing) {
+	if (!hackerNewsApiResponseSchema.allows(hackerNewsApiResponse)) {
 		return [];
 	}
 
-	const { hits } = hackerNewsApiResponseRecord.value;
+	const { hits } = hackerNewsApiResponseSchema.assert(hackerNewsApiResponse);
 
-	if (!is.array(hits)) {
+	if (hits === undefined) {
 		return [];
 	}
 
 	return hits.flatMap((hackerNewsApiHit) => {
-		const hackerNewsApiHitRecord = readRecord(hackerNewsApiHit);
-
-		return hackerNewsApiHitRecord.match({
-			Just: (recordValue) => {
-				return [recordValue];
-			},
-			Nothing: () => {
-				return [];
-			}
-		});
+		return [hackerNewsApiHit];
 	});
 }
 

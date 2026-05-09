@@ -1,4 +1,5 @@
 import is from "@sindresorhus/is";
+import { type } from "arktype";
 import { match } from "ts-pattern";
 import { Maybe } from "true-myth";
 import { parseWebmentionApiUrl } from "./environment-variables.js";
@@ -66,6 +67,22 @@ const emptyWebmentionSectionModel = {
 	replies: []
 } as const satisfies WebmentionSectionModel;
 const maximumDisplayedWebmentionContentLength = 280;
+const webmentionApiEntrySchema = type({
+	"author?": {
+		"name?": "string",
+		"photo?": "string",
+		"url?": "string"
+	},
+	"content?": "unknown",
+	"published?": "string",
+	"url?": "string",
+	"wm-private?": "boolean",
+	"wm-property?": "string",
+	"wm-received?": "string"
+}).onDeepUndeclaredKey("delete");
+const webmentionApiResponseSchema = type({
+	"children?": webmentionApiEntrySchema.array()
+}).onDeepUndeclaredKey("delete");
 
 function readRecord(value: unknown): Maybe<Record<string, unknown>> {
 	if (!is.plainObject(value)) {
@@ -140,30 +157,16 @@ function createWebmentionReply(webmentionReplyInput: WebmentionReplyInput): Webm
 }
 
 function readWebmentionEntries(webmentionApiResponse: unknown): readonly WebmentionApiEntry[] {
-	const webmentionApiResponseRecord = readRecord(webmentionApiResponse);
-
-	if (webmentionApiResponseRecord.isNothing) {
+	if (!webmentionApiResponseSchema.allows(webmentionApiResponse)) {
 		return [];
 	}
 
-	const { children } = webmentionApiResponseRecord.value;
-
-	if (!is.array(children)) {
+	const { children } = webmentionApiResponseSchema.assert(webmentionApiResponse);
+	if (children === undefined) {
 		return [];
 	}
 
-	return children.flatMap((webmentionEntry) => {
-		const webmentionEntryRecord = readRecord(webmentionEntry);
-
-		return webmentionEntryRecord.match({
-			Just: (recordValue) => {
-				return [recordValue];
-			},
-			Nothing: () => {
-				return [];
-			}
-		});
-	});
+	return children;
 }
 
 function readWebmentionAuthor(webmentionEntry: WebmentionApiEntry, sourceUrl: string): WebmentionAuthor {
