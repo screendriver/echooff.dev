@@ -95,4 +95,15 @@ const { webmentionSectionModel } = Astro.props;
 		color: rgba(variables.$foreground, 0.46);
 		font-size: 0.82rem;
 	}
+
+	.webmention-reply-source a {
+		color: rgba(variables.$cyan, 0.95);
+		text-decoration: none;
+	}
+
+	.webmention-reply-source a:hover,
+	.webmention-reply-source a:focus-visible {
+		text-decoration: underline;
+		text-underline-offset: 0.15em;
+	}
 </style>

@@ -2,6 +2,7 @@ import is from "@sindresorhus/is";
 import { match } from "ts-pattern";
 import { Maybe } from "true-myth";
 import { parseWebmentionApiUrl } from "./environment-variables.js";
+import { webmentionApiResponseSchema } from "./webmention-response-schema.js";
 
 export type WebmentionAuthor = {
 	readonly name: string;
@@ -140,30 +141,16 @@ function createWebmentionReply(webmentionReplyInput: WebmentionReplyInput): Webm
 }
 
 function readWebmentionEntries(webmentionApiResponse: unknown): readonly WebmentionApiEntry[] {
-	const webmentionApiResponseRecord = readRecord(webmentionApiResponse);
-
-	if (webmentionApiResponseRecord.isNothing) {
+	if (!webmentionApiResponseSchema.allows(webmentionApiResponse)) {
 		return [];
 	}
 
-	const { children } = webmentionApiResponseRecord.value;
-
-	if (!is.array(children)) {
+	const { children } = webmentionApiResponseSchema.assert(webmentionApiResponse);
+	if (children === undefined) {
 		return [];
 	}
 
-	return children.flatMap((webmentionEntry) => {
-		const webmentionEntryRecord = readRecord(webmentionEntry);
-
-		return webmentionEntryRecord.match({
-			Just: (recordValue) => {
-				return [recordValue];
-			},
-			Nothing: () => {
-				return [];
-			}
-		});
-	});
+	return children;
 }
 
 function readWebmentionAuthor(webmentionEntry: WebmentionApiEntry, sourceUrl: string): WebmentionAuthor {

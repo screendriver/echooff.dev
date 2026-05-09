@@ -1,0 +1,43 @@
+---
+import HackerNewsMentionsList from "./HackerNewsMentionsList.astro";
+import HackerNewsIcon from "./HackerNewsIcon.astro";
+import type { HackerNewsSectionModel } from "./hacker-news-mentions.js";
+
+export interface Props {
+	readonly hackerNewsSectionModel: HackerNewsSectionModel;
+}
+
+const { hackerNewsSectionModel } = Astro.props;
+---
+
+<section class="hacker-news-section" aria-labelledby="hacker-news-mentions">
+	<h2 id="hacker-news-mentions">
+		<HackerNewsIcon />
+		<span>Hacker News Mentions</span>
+	</h2>
+
+	<HackerNewsMentionsList hackerNewsSectionModel={hackerNewsSectionModel} />
+</section>
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	.hacker-news-section {
+		border-top: 1px solid rgba(variables.$selection, 0.8);
+		margin-top: 2rem;
+		padding-top: 1.5rem;
+	}
+
+	.hacker-news-section h2 {
+		align-items: center;
+		color: variables.$foreground;
+		display: flex;
+		flex-wrap: nowrap;
+		font-size: 1.4rem;
+		gap: 0.55rem;
+	}
+
+	.hacker-news-section h2 span {
+		display: inline;
+	}
+</style>
