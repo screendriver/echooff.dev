@@ -8,6 +8,11 @@
 	},
 	"packageRules": [
 		{
+			"matchManagers": ["woodpecker"],
+			"matchPackageNames": ["node"],
+			"enabled": false
+		},
+		{
 			"groupName": "Astro dependencies",
 			"groupSlug": "astro-dependencies",
 			"matchPackageNames": ["@astrojs/*", "astro", "astro-*", "*-astro"]
@@ -38,6 +43,15 @@
 			"groupSlug": "nodejs",
 			"matchPackageNames": ["node"],
 			"automerge": false
+		}
+	],
+	"regexManagers": [
+		{
+			"fileMatch": ["^\\.woodpecker\\/deploy\\.yaml$", "^\\.woodpecker\\/test\\.yaml$"],
+			"matchStrings": ["image:\\s*node:(?<currentValue>\\d+\\.\\d+\\.\\d+)"],
+			"depNameTemplate": "node",
+			"datasourceTemplate": "node",
+			"versioningTemplate": "node"
 		}
 	]
 }
