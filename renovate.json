@@ -45,9 +45,10 @@
 			"automerge": false
 		}
 	],
-	"regexManagers": [
+	"customManagers": [
 		{
-			"fileMatch": ["^\\.woodpecker\\/deploy\\.yaml$", "^\\.woodpecker\\/test\\.yaml$"],
+			"customType": "regex",
+			"managerFilePatterns": ["/^\\.woodpecker\\/deploy\\.yaml$/", "/^\\.woodpecker\\/test\\.yaml$/"],
 			"matchStrings": ["image:\\s*node:(?<currentValue>\\d+\\.\\d+\\.\\d+)"],
 			"depNameTemplate": "node",
 			"datasourceTemplate": "node",
