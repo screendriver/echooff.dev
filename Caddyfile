@@ -1,6 +1,9 @@
 :4321 {
 	root * /srv
 
+	@rssFeedRequest path /rss.xml
+	header @rssFeedRequest X-Robots-Tag "noindex, follow"
+
 	@rootIndexHtmlRequest path /index.html
 	redir @rootIndexHtmlRequest / permanent
 
