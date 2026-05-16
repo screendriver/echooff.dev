@@ -7,7 +7,7 @@ type ResumeCompany = {
 	readonly url: URL;
 };
 
-type ResumeData = {
+export type ResumeData = {
 	readonly since: ResumeDataInput["since"];
 	readonly showOnlyYear: ResumeDataInput["showOnlyYear"];
 	readonly industry: ResumeDataInput["industry"];
