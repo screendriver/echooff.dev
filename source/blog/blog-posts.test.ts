@@ -70,9 +70,7 @@ describe("createBlogPostReadingTimeLabel()", () => {
 	});
 
 	it("returns a one-minute label for short blog posts", () => {
-		expect(createBlogPostReadingTimeLabel("Dependency injection keeps side effects explicit.")).toBe(
-			"1 min read"
-		);
+		expect(createBlogPostReadingTimeLabel("Dependency injection keeps side effects explicit.")).toBe("1 min read");
 	});
 
 	it("returns a multi-minute label for longer blog posts", () => {

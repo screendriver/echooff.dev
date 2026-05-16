@@ -34,14 +34,16 @@ import headerImage from "../../assets/images/header-01.jpg";
 export async function getStaticPaths() {
 	const blogPosts = sortBlogPostsByPublicationDateDescending(await getCollection("blog"));
 
-	return blogPosts.map((blogPost) => ({
-		params: {
-			slug: blogPost.id
-		},
-		props: {
-			blogPost
-		}
-	}));
+	return blogPosts.map((blogPost) => {
+		return {
+			params: {
+				slug: blogPost.id
+			},
+			props: {
+				blogPost
+			}
+		};
+	});
 }
 
 const { blogPost } = Astro.props;
@@ -93,6 +95,7 @@ try {
 	title={createBlogPostPageTitle(blogPost.data.title)}
 	twitterCardType="summary_large_image"
 	pageTitle="Blog"
+	showReadingProgressIndicator={true}
 	showPageHeader={false}
 >
 	<Fragment slot="search-engine-optimization-schema">

@@ -1,4 +1,5 @@
 ---
+import BlogReadingProgressIndicator from "./BlogReadingProgressIndicator.astro";
 import PageShell from "../layouts/PageShell.astro";
 import Header from "../layouts/Header.astro";
 import Footer from "../layouts/Footer.astro";
@@ -13,6 +14,7 @@ export interface Props {
 	readonly openGraphUrl: string;
 	readonly rssFeedUrl: string;
 	readonly robots: string;
+	readonly showReadingProgressIndicator?: boolean;
 	readonly showPageHeader?: boolean;
 	readonly intro?: string;
 	readonly pageTitle: string;
@@ -34,6 +36,7 @@ const {
 	pageTitle,
 	rssFeedUrl,
 	robots,
+	showReadingProgressIndicator = false,
 	showPageHeader = true,
 	terminalCommand = "$ ls /blog",
 	terminalOutput,
@@ -57,6 +60,7 @@ const {
 			title={title}
 			twitterCardType={twitterCardType}
 		>
+			{showReadingProgressIndicator && <BlogReadingProgressIndicator />}
 			<Header />
 
 			<main class="blog-shell-main">
