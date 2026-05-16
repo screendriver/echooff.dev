@@ -1,5 +1,6 @@
 import is from "@sindresorhus/is";
 import type { CollectionEntry } from "astro:content";
+import readingTime from "reading-time";
 import { getBlogPostTopicDetails } from "./blog-post-topics.js";
 
 export type BlogIndexEntry = {
@@ -45,6 +46,10 @@ export function createBlogIndexEntries(blogPosts: readonly CollectionEntry<"blog
 
 export function createBlogPostPageTitle(blogPostTitle: string): string {
 	return `${blogPostTitle} | ${siteOwnerName}`;
+}
+
+export function createBlogPostReadingTimeLabel(markdownDocumentBody: string): string {
+	return readingTime(markdownDocumentBody).text;
 }
 
 export function formatPublishedAtFallbackDateTime(publishedAt: string): string {

@@ -12,7 +12,11 @@ import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
 import LocalizedDateTimeScript from "../../blog/LocalizedDateTimeScript.astro";
 import Webmentions from "../../blog/Webmentions.astro";
 import { getBlogPostTopicDetails } from "../../blog/blog-post-topics.js";
-import { createBlogPostPageTitle, sortBlogPostsByPublicationDateDescending } from "../../blog/blog-posts.js";
+import {
+	createBlogPostPageTitle,
+	createBlogPostReadingTimeLabel,
+	sortBlogPostsByPublicationDateDescending
+} from "../../blog/blog-posts.js";
 import {
 	createAbsoluteAssetUrl,
 	createBlogPostAbsoluteUrl,
@@ -48,6 +52,7 @@ const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(configuredSiteUrl);
 const openGraphImageUrl = createAbsoluteAssetUrl(configuredSiteUrl, headerImage.src);
 const openGraphImageAlternativeText = "echooff.dev header illustration";
 const topicDetails = getBlogPostTopicDetails(blogPost.data.topic);
+const blogPostReadingTimeLabel = createBlogPostReadingTimeLabel(blogPost.body ?? "");
 const siteUrl = configuredSiteUrl.toString();
 let webmentionSectionModel = createEmptyWebmentionSectionModel();
 let hackerNewsSectionModel = createEmptyHackerNewsSectionModel();
@@ -142,6 +147,10 @@ try {
 				Published{" "}
 				<LocalizedDateTime className="dt-published" publishedAt={blogPost.data.publishedAt} />{" "}
 				in <BlogTopicLink href={`/blog/topics/${topicDetails.slug}`}>{topicDetails.label}</BlogTopicLink>
+				<span class="blog-post-article-metadata-separator" aria-hidden="true">
+					{" "}·{" "}
+				</span>
+				<span class="blog-post-article-reading-time">{blogPostReadingTimeLabel}</span>
 			</BlogMetadata>
 			<a class="u-url blog-post-screen-reader-only" href={blogPostUrl}> Permalink </a>
 		</header>
@@ -200,6 +209,15 @@ try {
 		clip: rect(0, 0, 0, 0);
 		white-space: nowrap;
 		border: 0;
+	}
+
+	.blog-post-article-metadata-separator {
+		color: rgba(variables.$foreground, 0.3);
+	}
+
+	.blog-post-article-reading-time {
+		letter-spacing: -0.01em;
+		white-space: nowrap;
 	}
 
 	h1 {

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
 	createBlogPostPageTitle,
+	createBlogPostReadingTimeLabel,
 	createBlogIndexEntries,
 	formatPublishedAtFallbackDateTime,
 	sortBlogPostsByPublicationDateDescending
@@ -63,9 +64,40 @@ describe("formatPublishedAtFallbackDateTime()", () => {
 	});
 });
 
+describe("createBlogPostReadingTimeLabel()", () => {
+	it("returns the reading-time package label for empty content", () => {
+		expect(createBlogPostReadingTimeLabel("")).toBe("0 min read");
+	});
+
+	it("returns a one-minute label for short blog posts", () => {
+		expect(createBlogPostReadingTimeLabel("Dependency injection keeps side effects explicit.")).toBe(
+			"1 min read"
+		);
+	});
+
+	it("returns a multi-minute label for longer blog posts", () => {
+		expect(createBlogPostReadingTimeLabel("word ".repeat(400))).toBe("2 min read");
+	});
+
+	it("handles markdown syntax and code fences deterministically", () => {
+		const markdownDocument = [
+			"# Reading Time",
+			"",
+			"```ts",
+			"const articleLength = 120;",
+			"```",
+			"",
+			"word ".repeat(120)
+		].join("\n");
+
+		expect(createBlogPostReadingTimeLabel(markdownDocument)).toBe("1 min read");
+	});
+});
+
 describe("createBlogIndexEntries()", () => {
 	it("returns the fields required for rendering the blog index including descriptions", () => {
 		const blogPost = createBlogPostCollectionEntry({
+			body: "word ".repeat(120),
 			description: "Clear descriptions help readers choose what to open",
 			id: "blog-index-entry",
 			title: "Blog index entry",

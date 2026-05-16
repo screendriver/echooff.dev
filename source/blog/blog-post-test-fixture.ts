@@ -2,6 +2,7 @@ import type { CollectionEntry } from "astro:content";
 import type { BlogPostTopic } from "./blog-post-topics.js";
 
 export type BlogPostCollectionEntryInput = {
+	readonly body?: string;
 	readonly description: string;
 	readonly id: string;
 	readonly title: string;
@@ -19,7 +20,7 @@ export function createBlogPostCollectionEntry(input: BlogPostCollectionEntryInpu
 			publishedAt: input.publishedAt,
 			topic: input.topic
 		},
-		body: ""
+		body: input.body ?? ""
 	};
 
 	return blogPostCollectionEntry;
