@@ -22,29 +22,37 @@ const siteHomeUrl = createSiteHomeAbsoluteUrl(Astro.site);
 
 <PageShell canonicalUrl={siteHomeUrl} title="Christian Rackerseder | Full-Stack Software Engineer">
 	<Header>
-		<h1 class="visually-hidden">Christian Rackerseder, Full-Stack Software Engineer</h1>
+		<section class="home-hero">
+			<h1 class="visually-hidden">Christian Rackerseder, Full-Stack Software Engineer</h1>
 
-		<figure>
-			<Image src={headerImage} alt="Christian Rackerseder" quality={80} loading="eager" class="header-image" />
-		</figure>
+			<figure>
+				<Image
+					src={headerImage}
+					alt="Christian Rackerseder"
+					quality={80}
+					loading="eager"
+					class="header-image"
+				/>
+			</figure>
 
-		<div class="terminal-window" aria-label="Introduction">
-			<div class="terminal-header" aria-hidden="true">
-				<div class="terminal-buttons">
-					<div class="terminal-button red"></div>
-					<div class="terminal-button yellow"></div>
-					<div class="terminal-button green"></div>
+			<div class="terminal-window" aria-label="Introduction">
+				<div class="terminal-header" aria-hidden="true">
+					<div class="terminal-buttons">
+						<div class="terminal-button red"></div>
+						<div class="terminal-button yellow"></div>
+						<div class="terminal-button green"></div>
+					</div>
 				</div>
-			</div>
 
-			<code class="terminal-code">
-				<p class="terminal-prompt">$ whoami</p>
-				<p class="terminal-output">Racki</p>
-				<p class="terminal-prompt">$ groups</p>
-				<p class="terminal-output">Full-Stack Software Engineer</p>
-				<p class="terminal-prompt cursor">$</p>
-			</code>
-		</div>
+				<code class="terminal-code">
+					<p class="terminal-prompt">$ whoami</p>
+					<p class="terminal-output">Racki</p>
+					<p class="terminal-prompt">$ groups</p>
+					<p class="terminal-output">Full-Stack Software Engineer</p>
+					<p class="terminal-prompt cursor">$</p>
+				</code>
+			</div>
+		</section>
 	</Header>
 
 	<main>
@@ -63,6 +71,11 @@ const siteHomeUrl = createSiteHomeAbsoluteUrl(Astro.site);
 <style lang="scss">
 	@use "../styles/mixins";
 	@use "../styles/variables";
+
+	.home-hero {
+		background-color: variables.$selection;
+		position: relative;
+	}
 
 	figure {
 		position: relative;
