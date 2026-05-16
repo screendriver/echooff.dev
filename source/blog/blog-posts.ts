@@ -44,6 +44,13 @@ export function createBlogIndexEntries(blogPosts: readonly CollectionEntry<"blog
 	});
 }
 
+export function createLatestBlogIndexEntries(
+	blogPosts: readonly CollectionEntry<"blog">[],
+	maximumEntryCount: number
+): readonly BlogIndexEntry[] {
+	return createBlogIndexEntries(sortBlogPostsByPublicationDateDescending(blogPosts)).slice(0, maximumEntryCount);
+}
+
 export function createBlogPostPageTitle(blogPostTitle: string): string {
 	return `${blogPostTitle} | ${siteOwnerName}`;
 }

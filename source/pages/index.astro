@@ -1,17 +1,22 @@
 ---
+import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import PageShell from "../layouts/PageShell.astro";
 import Header from "../layouts/Header.astro";
 import Footer from "../layouts/Footer.astro";
 import About from "../about/About.astro";
+import HomePageLatestWritingSection from "../blog/HomePageLatestWritingSection.astro";
 import Skills from "../skills/Skills.astro";
 import Passions from "../passions/Passions.astro";
 import Statistics from "../statistics/Statistics.astro";
 import Resume from "../resume/Resume.astro";
 import Contact from "../contact/Contact.astro";
+import { createLatestBlogIndexEntries } from "../blog/blog-posts.js";
 import { createSiteHomeAbsoluteUrl } from "../blog/blog-site.js";
 import headerImage from "../assets/images/header-01.jpg";
 
+const blogCollection = await getCollection("blog");
+const latestBlogIndexEntries = createLatestBlogIndexEntries(blogCollection, 1);
 const siteHomeUrl = createSiteHomeAbsoluteUrl(Astro.site);
 ---
 
@@ -45,6 +50,7 @@ const siteHomeUrl = createSiteHomeAbsoluteUrl(Astro.site);
 	<main>
 		<About />
 		<Skills />
+		<HomePageLatestWritingSection blogIndexEntries={latestBlogIndexEntries} />
 		<Passions />
 		<Statistics />
 		<Resume />

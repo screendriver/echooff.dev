@@ -1,0 +1,156 @@
+---
+import { icons } from "feather-icons";
+import BlogEmptyState from "./BlogEmptyState.astro";
+import LocalizedDateTimeScript from "./LocalizedDateTimeScript.astro";
+import type { BlogIndexEntry as BlogIndexEntryDetails } from "./blog-posts.js";
+import BlogTopicLink from "./BlogTopicLink.astro";
+import LocalizedDateTime from "./LocalizedDateTime.astro";
+import { createBlogTopicPath } from "./blog-site.js";
+
+export interface Props {
+	readonly blogIndexEntries: readonly BlogIndexEntryDetails[];
+}
+
+const { blogIndexEntries } = Astro.props;
+const featuredBlogIndexEntry = blogIndexEntries[0];
+---
+
+<section aria-labelledby="latest-writing-title" class="latest-writing-section">
+	<header class="latest-writing-header">
+		<h2 id="latest-writing-title">
+			<span>Latest writing</span>
+			<Fragment set:html={icons.edit?.toSvg()} />
+		</h2>
+		<hr />
+	</header>
+
+	<div class="latest-writing-content">
+		{
+			featuredBlogIndexEntry ? (
+				<article class="featured-blog-post">
+					<a class="featured-blog-post-link" href={`/blog/${featuredBlogIndexEntry.slug}`}>
+						<h3>{featuredBlogIndexEntry.title}</h3>
+						<p>{featuredBlogIndexEntry.description}</p>
+					</a>
+
+					<footer class="featured-blog-post-metadata">
+						Published <LocalizedDateTime publishedAt={featuredBlogIndexEntry.publishedAt} /> in{" "}
+						<BlogTopicLink href={createBlogTopicPath(featuredBlogIndexEntry.topicSlug)}>
+							{featuredBlogIndexEntry.topic}
+						</BlogTopicLink>
+					</footer>
+				</article>
+			) : (
+				<BlogEmptyState>No blog posts published yet.</BlogEmptyState>
+			)
+		}
+
+		<a class="all-posts-link" href="/blog">Browse the blog</a>
+	</div>
+</section>
+
+<LocalizedDateTimeScript />
+
+<style lang="scss">
+	@use "../styles/mixins";
+	@use "../styles/variables";
+	@use "sass:color";
+
+	.latest-writing-section {
+		background-color: variables.$selection;
+		padding: 1rem;
+
+		@media (min-width: variables.$large-width) {
+			padding: 2rem 2.5rem;
+		}
+	}
+
+	.latest-writing-content {
+		margin: auto;
+		max-width: 38rem;
+	}
+
+	.latest-writing-header {
+		margin-bottom: 0.85rem;
+	}
+
+	h2 {
+		align-items: center;
+		color: variables.$cyan;
+		display: flex;
+		justify-content: center;
+		font-size: 1.5rem;
+		font-weight: 800;
+		gap: 0.5rem;
+		line-height: 1.1;
+		margin: 0.5rem 0;
+
+		@media (min-width: variables.$large-width) {
+			font-size: 2.25rem;
+		}
+	}
+
+	h2 :global(svg) {
+		@include mixins.heading-icon;
+		flex-shrink: 0;
+	}
+
+	hr {
+		@include mixins.divider;
+	}
+
+	.featured-blog-post {
+		background-color: variables.$background;
+		border-radius: 0.75rem;
+		padding: 1.25rem;
+
+		@media (min-width: variables.$large-width) {
+			padding: 1.25rem;
+		}
+	}
+
+	.featured-blog-post-link {
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+	}
+
+	.featured-blog-post-link:hover h3,
+	.featured-blog-post-link:focus-visible h3 {
+		color: variables.$cyan;
+	}
+
+	h3 {
+		color: variables.$foreground;
+		font-size: clamp(1.25rem, 2vw, 1.6rem);
+		font-weight: 700;
+		line-height: 1.15;
+		transition: color 160ms ease-in-out;
+	}
+
+	.featured-blog-post p {
+		color: color.mix(variables.$foreground, variables.$comment, $weight: 80%);
+		line-height: 1.55;
+	}
+
+	.featured-blog-post-metadata {
+		color: rgba(variables.$foreground, 0.58);
+		font-size: 0.95rem;
+		margin-top: 0.85rem;
+	}
+
+	.all-posts-link {
+		color: variables.$cyan;
+		display: flex;
+		justify-content: center;
+		margin-top: 0.75rem;
+		font-size: 0.95rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.all-posts-link:hover,
+	.all-posts-link:focus-visible {
+		color: variables.$pink;
+	}
+</style>
