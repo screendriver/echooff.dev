@@ -37,10 +37,11 @@ import aboutImage from "../assets/images/about.jpg";
 	@use "../styles/mixins";
 
 	section {
+		background-color: variables.$selection;
 		padding: 1rem;
 
 		@media (min-width: variables.$large-width) {
-			padding: 2.5rem;
+			padding: 2rem 2.5rem;
 		}
 	}
 
@@ -61,13 +62,21 @@ import aboutImage from "../assets/images/about.jpg";
 		flex-direction: column;
 		align-items: center;
 		text-align: justify;
+		gap: 0;
 
 		@media (min-width: variables.$small-width) {
 			padding: 1rem;
 		}
 
 		@media (min-width: variables.$large-width) {
-			padding: 1.75rem;
+			display: grid;
+			grid-template-columns: minmax(0, 38rem) auto;
+			column-gap: 1.75rem;
+			align-items: center;
+			justify-content: center;
+			max-width: variables.$large-width;
+			margin: auto;
+			padding: 0.75rem 1.75rem 1.25rem;
 		}
 
 		@media (min-width: variables.$extra-large-width) {
@@ -80,27 +89,35 @@ import aboutImage from "../assets/images/about.jpg";
 		margin: auto;
 
 		@media (min-width: variables.$large-width) {
-			width: 75%;
+			text-align: left;
+			width: 100%;
 		}
 	}
 
 	strong {
-		margin-top: 2rem;
-		margin-bottom: 2rem;
+		margin-top: 1.25rem;
+		margin-bottom: 1.25rem;
 		display: block;
 		text-align: center;
 		text-transform: uppercase;
+
+		@media (min-width: variables.$large-width) {
+			text-align: left;
+		}
 	}
 
 	figure {
-		margin-top: 3rem;
-		margin-bottom: 2.5rem;
+		margin-top: 1.75rem;
+		margin-bottom: 1.5rem;
 
 		@media (min-width: variables.$medium-width) {
 			margin-bottom: 0.75rem;
 		}
 
 		@media (min-width: variables.$large-width) {
+			grid-column: 2;
+			grid-row: 1 / span 3;
+			margin-top: 0;
 			margin-bottom: 0;
 		}
 	}
@@ -112,5 +129,10 @@ import aboutImage from "../assets/images/about.jpg";
 		border-radius: 9999px;
 		border-width: 4px;
 		border-style: solid;
+
+		@media (min-width: variables.$large-width) {
+			height: 9rem;
+			width: 9rem;
+		}
 	}
 </style>
