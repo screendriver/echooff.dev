@@ -1,12 +1,13 @@
 ---
 export interface Props {
 	readonly href: string;
+	readonly label?: string;
 }
 
-const { href } = Astro.props;
+const { href, label } = Astro.props;
 ---
 
-<a class="blog-topic-link" href={href}>
+<a aria-label={label} class="blog-topic-link" href={href}>
 	<slot />
 </a>
 

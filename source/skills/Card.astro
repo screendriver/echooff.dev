@@ -9,7 +9,7 @@ export interface Props {
 const { link, title, description, style } = Astro.props;
 ---
 
-<li class={style}>
+<li class:list={[style]}>
 	<a href={link.toString()} title={title}>
 		<slot />
 

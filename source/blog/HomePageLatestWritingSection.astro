@@ -35,7 +35,10 @@ const featuredBlogIndexEntry = blogIndexEntries[0];
 
 					<footer class="featured-blog-post-metadata">
 						Published <LocalizedDateTime publishedAt={featuredBlogIndexEntry.publishedAt} /> in{" "}
-						<BlogTopicLink href={createBlogTopicPath(featuredBlogIndexEntry.topicSlug)}>
+						<BlogTopicLink
+							href={createBlogTopicPath(featuredBlogIndexEntry.topicSlug)}
+							label={featuredBlogIndexEntry.topic}
+						>
 							{featuredBlogIndexEntry.topic}
 						</BlogTopicLink>
 					</footer>

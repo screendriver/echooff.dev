@@ -36,7 +36,7 @@ const { hackerNewsSectionModel } = Astro.props;
 									<span>{hackerNewsMention.commentCount} comments</span>
 								</dd>
 								{hackerNewsMention.visiblePublishedAt.isJust && (
-									<>
+									<Fragment>
 										<dt class="meta-date-label">Published</dt>
 										<dd class="meta-date-value">
 											<time datetime={hackerNewsMention.visiblePublishedAt.value}>
@@ -45,7 +45,7 @@ const { hackerNewsSectionModel } = Astro.props;
 												)}
 											</time>
 										</dd>
-									</>
+									</Fragment>
 								)}
 							</dl>
 						</header>

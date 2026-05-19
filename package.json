@@ -32,6 +32,7 @@
 	},
 	"devDependencies": {
 		"@astrojs/check": "0.9.9",
+		"@enormora/eslint-config-astro-ts": "0.0.2",
 		"@enormora/eslint-config-base": "0.0.31",
 		"@enormora/eslint-config-browser": "0.0.18",
 		"@enormora/eslint-config-node": "0.0.26",

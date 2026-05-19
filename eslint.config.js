@@ -1,4 +1,5 @@
 import { baseConfig } from "@enormora/eslint-config-base";
+import { astroConfig as astroTypeScriptConfig } from "@enormora/eslint-config-astro-ts";
 import { browserConfig } from "@enormora/eslint-config-browser";
 import { typescriptConfig } from "@enormora/eslint-config-typescript";
 import { nodeConfig, nodeConfigFileConfig } from "@enormora/eslint-config-node";
@@ -44,6 +45,14 @@ export default [
 			"import/max-dependencies": "off",
 			"max-statements": "off",
 			"no-void": "off"
+		}
+	},
+	...astroTypeScriptConfig,
+	{
+		files: ["**/*.astro"],
+		rules: {
+			"astro/no-set-html-directive": "off",
+			"astro/no-unsafe-inline-scripts": "off"
 		}
 	},
 	{
