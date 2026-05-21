@@ -6,6 +6,7 @@ import { getBlogPostTopicDetails } from "./blog-post-topics.ts";
 export type BlogIndexEntry = {
 	readonly description: string;
 	readonly publishedAt: string;
+	readonly readingTimeLabel: string;
 	readonly slug: string;
 	readonly title: string;
 	readonly topic: string;
@@ -29,6 +30,10 @@ export function sortBlogPostsByPublicationDateDescending(
 	});
 }
 
+export function createBlogPostReadingTimeLabel(markdownDocumentBody: string): string {
+	return readingTime(markdownDocumentBody).text;
+}
+
 export function createBlogIndexEntries(blogPosts: readonly CollectionEntry<"blog">[]): readonly BlogIndexEntry[] {
 	return blogPosts.map((blogPost) => {
 		const topicDetails = getBlogPostTopicDetails(blogPost.data.topic);
@@ -36,6 +41,7 @@ export function createBlogIndexEntries(blogPosts: readonly CollectionEntry<"blog
 		return {
 			description: blogPost.data.description,
 			publishedAt: blogPost.data.publishedAt,
+			readingTimeLabel: createBlogPostReadingTimeLabel(blogPost.body ?? ""),
 			slug: blogPost.id,
 			title: blogPost.data.title,
 			topic: topicDetails.label,
@@ -53,10 +59,6 @@ export function createLatestBlogIndexEntries(
 
 export function createBlogPostPageTitle(blogPostTitle: string): string {
 	return `${blogPostTitle} | ${siteOwnerName}`;
-}
-
-export function createBlogPostReadingTimeLabel(markdownDocumentBody: string): string {
-	return readingTime(markdownDocumentBody).text;
 }
 
 export function formatPublishedAtFallbackDateTime(publishedAt: string): string {

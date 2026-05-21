@@ -72,6 +72,8 @@ if (blogPostCount === 1) {
 									<BlogTopicLink href={createBlogTopicPath(blogIndexEntry.topicSlug)}>
 										{blogIndexEntry.topic}
 									</BlogTopicLink>
+									{" · "}
+									<span>{blogIndexEntry.readingTimeLabel}</span>
 								</Fragment>
 							</BlogIndexEntry>
 						</li>

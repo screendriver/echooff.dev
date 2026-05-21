@@ -108,6 +108,7 @@ describe("createBlogIndexEntries()", () => {
 			{
 				description: "Clear descriptions help readers choose what to open",
 				publishedAt: "2026-03-14T07:22:00+01:00",
+				readingTimeLabel: "1 min read",
 				slug: "blog-index-entry",
 				title: "Blog index entry",
 				topic: "TypeScript",
@@ -145,6 +146,7 @@ describe("createLatestBlogIndexEntries()", () => {
 			{
 				description: "Newest blog post description",
 				publishedAt: "2026-03-01T10:00:00+01:00",
+				readingTimeLabel: "0 min read",
 				slug: "newest-blog-post",
 				title: "Newest Blog Post",
 				topic: "Architecture",
@@ -153,6 +155,7 @@ describe("createLatestBlogIndexEntries()", () => {
 			{
 				description: "Middle blog post description",
 				publishedAt: "2026-02-01T10:00:00+01:00",
+				readingTimeLabel: "0 min read",
 				slug: "middle-blog-post",
 				title: "Middle Blog Post",
 				topic: "TypeScript",
@@ -174,6 +177,7 @@ describe("createLatestBlogIndexEntries()", () => {
 			{
 				description: "Only blog post description",
 				publishedAt: "2026-04-01T10:00:00+01:00",
+				readingTimeLabel: "0 min read",
 				slug: "only-blog-post",
 				title: "Only Blog Post",
 				topic: "Writing",
