@@ -103,6 +103,7 @@ const {
 }
 
 <style lang="scss">
+	@use "sass:color";
 	@use "../styles/variables";
 	@use "../styles/mixins";
 
@@ -119,9 +120,7 @@ const {
 		width: min(100%, 50rem);
 		border: 1px solid variables.$selection;
 		border-radius: 0.5rem;
-		background:
-			linear-gradient(180deg, rgba(variables.$selection, 0.65), rgba(variables.$background, 0.98)),
-			variables.$background;
+		background-color: color.mix(variables.$selection, variables.$background, $weight: 32%);
 		box-shadow:
 			0 1.5rem 3rem rgba(variables.$background, 0.5),
 			inset 0 1px 0 rgba(variables.$foreground, 0.04);
@@ -129,6 +128,9 @@ const {
 	}
 
 	.blog-shell-page-header {
+		background:
+			linear-gradient(180deg, rgba(variables.$selection, 0.38), rgba(variables.$background, 0.98)),
+			variables.$background;
 		border-bottom: 1px solid variables.$selection;
 		padding: 1.5rem 1.5rem 2rem;
 	}
