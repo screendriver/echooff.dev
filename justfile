@@ -20,7 +20,7 @@ lint-fix:
 	tsc
 
 @develop $FORCE_COLOR="1":
-	tsx ./source/start-develop.ts
+	node ./source/start-develop.ts
 
 @build:
 	astro build

@@ -3,8 +3,8 @@ import {
 	gitHubApiTokenInputSchema,
 	gitHubBaseUrlInputSchema,
 	gitHubLoginInputSchema
-} from "./environment-variable-input-schema.js";
-import { parseGitHubApiToken, parseGitHubBaseUrl, parseGitHubLogin } from "./environment-variables.js";
+} from "./environment-variable-input-schema.ts";
+import { parseGitHubApiToken, parseGitHubBaseUrl, parseGitHubLogin } from "./environment-variables.ts";
 
 describe("gitHub base URL schema", () => {
 	it("does not allow booleans", () => {

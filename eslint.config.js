@@ -44,6 +44,17 @@ export default [
 			"functional/prefer-immutable-types": "off",
 			"import/max-dependencies": "off",
 			"max-statements": "off",
+			"no-restricted-imports": [
+				"error",
+				{
+					patterns: [
+						{
+							group: ["./*.js", "./**/*.js", "../*.js", "../**/*.js"],
+							message: "Use .ts extensions for local TypeScript imports."
+						}
+					]
+				}
+			],
 			"no-void": "off"
 		}
 	},

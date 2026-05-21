@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { hackerNewsApiUrlInputSchema, webmentionApiUrlInputSchema } from "./environment-variable-input-schema.js";
-import { parseHackerNewsApiUrl, parseWebmentionApiUrl } from "./environment-variables.js";
+import { hackerNewsApiUrlInputSchema, webmentionApiUrlInputSchema } from "./environment-variable-input-schema.ts";
+import { parseHackerNewsApiUrl, parseWebmentionApiUrl } from "./environment-variables.ts";
 
 describe("hacker news API URL schema", () => {
 	it("does not allow booleans", () => {

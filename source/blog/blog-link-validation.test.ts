@@ -3,7 +3,7 @@ import {
 	readBlogPostMarkdownDocuments,
 	validateInternalBlogPostLinks,
 	type BlogPostMarkdownDocument
-} from "./blog-link-validation.js";
+} from "./blog-link-validation.ts";
 
 describe("validateInternalBlogPostLinks()", () => {
 	it("accepts the current blog post links", async () => {

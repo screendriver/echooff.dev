@@ -1,5 +1,5 @@
 import { assert, describe, expect, it } from "vitest";
-import { parseResumeData } from "./resume-data.js";
+import { parseResumeData } from "./resume-data.ts";
 
 describe("resume data parsing", () => {
 	it("returns parsed resume data and strips undeclared keys", () => {

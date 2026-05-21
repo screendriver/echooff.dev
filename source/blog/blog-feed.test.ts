@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createRssFeedItemsForBlogPosts } from "./blog-feed.js";
-import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.js";
+import { createRssFeedItemsForBlogPosts } from "./blog-feed.ts";
+import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.ts";
 
 describe("createRssFeedItemsForBlogPosts()", () => {
 	it("creates RSS feed items for blog posts", () => {

@@ -5,7 +5,7 @@ import {
 	createHackerNewsApiRequestUrl,
 	loadHackerNewsMentionsForTargetUrl,
 	parseHackerNewsApiResponse
-} from "./hacker-news-mentions.js";
+} from "./hacker-news-mentions.ts";
 
 describe("createEmptyHackerNewsSectionModel()", () => {
 	it("creates an empty section model", () => {

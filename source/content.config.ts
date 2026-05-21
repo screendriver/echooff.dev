@@ -1,7 +1,7 @@
 import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
-import { blogPostTopics } from "./blog/blog-post-topics.js";
+import { blogPostTopics } from "./blog/blog-post-topics.ts";
 
 const blogContentDirectoryPath = "./source/content/blog";
 

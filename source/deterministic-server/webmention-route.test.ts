@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createDeterministicServerApplication } from "./deterministic-server.js";
+import { createDeterministicServerApplication } from "./deterministic-server.ts";
 
 describe("webmention route", () => {
 	it("returns a deterministic mentions payload", async () => {

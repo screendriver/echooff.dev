@@ -6,8 +6,8 @@ import {
 	getBlogPostTopicDetails,
 	getBlogPostTopicDetailsBySlug,
 	groupBlogPostsByTopic
-} from "./blog-post-topics.js";
-import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.js";
+} from "./blog-post-topics.ts";
+import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.ts";
 
 describe("getBlogPostTopicDetails()", () => {
 	it("returns the stable display label and URL slug for a topic", () => {

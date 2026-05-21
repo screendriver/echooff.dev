@@ -1,7 +1,7 @@
 import { graphql } from "@octokit/graphql";
-import { parseGitHubApiToken, parseGitHubBaseUrl, parseGitHubLogin } from "./environment-variables.js";
-import { gitHubStatisticsResponseSchema } from "./github-statistics-response-schema.js";
-import { executeGraphQLQuery } from "./graphql-query.js";
+import { parseGitHubApiToken, parseGitHubBaseUrl, parseGitHubLogin } from "./environment-variables.ts";
+import { gitHubStatisticsResponseSchema } from "./github-statistics-response-schema.ts";
+import { executeGraphQLQuery } from "./graphql-query.ts";
 
 export type GitHubStatistics = {
 	user: {

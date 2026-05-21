@@ -1,8 +1,8 @@
 import is from "@sindresorhus/is";
 import { match } from "ts-pattern";
 import { Maybe } from "true-myth";
-import { parseWebmentionApiUrl } from "./environment-variables.js";
-import { webmentionApiResponseSchema } from "./webmention-response-schema.js";
+import { parseWebmentionApiUrl } from "./environment-variables.ts";
+import { webmentionApiResponseSchema } from "./webmention-response-schema.ts";
 
 export type WebmentionAuthor = {
 	readonly name: string;

@@ -1,7 +1,7 @@
 import is from "@sindresorhus/is";
 import { Maybe } from "true-myth";
-import { parseHackerNewsApiUrl } from "./environment-variables.js";
-import { hackerNewsApiResponseSchema } from "./hacker-news-response-schema.js";
+import { parseHackerNewsApiUrl } from "./environment-variables.ts";
+import { hackerNewsApiResponseSchema } from "./hacker-news-response-schema.ts";
 
 export type HackerNewsMention = {
 	readonly commentCount: number;

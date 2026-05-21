@@ -1,5 +1,5 @@
 import type { Hono } from "hono";
-import { validateGraphQlRequest } from "./request-validation.js";
+import { validateGraphQlRequest } from "./request-validation.ts";
 
 const graphQlResponseBody = {
 	data: {

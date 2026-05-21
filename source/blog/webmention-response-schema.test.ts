@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { webmentionApiResponseSchema } from "./webmention-response-schema.js";
+import { webmentionApiResponseSchema } from "./webmention-response-schema.ts";
 
 describe("webmention response schema", () => {
 	it("accepts a valid payload", () => {

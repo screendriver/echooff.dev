@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { hackerNewsApiResponseSchema } from "./hacker-news-response-schema.js";
+import { hackerNewsApiResponseSchema } from "./hacker-news-response-schema.ts";
 
 describe("hacker news response schema", () => {
 	it("accepts a valid payload", () => {

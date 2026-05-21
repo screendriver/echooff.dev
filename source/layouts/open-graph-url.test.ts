@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveOpenGraphUrl } from "./open-graph-url.js";
+import { resolveOpenGraphUrl } from "./open-graph-url.ts";
 
 describe("resolveOpenGraphUrl()", () => {
 	it("returns openGraphUrl when it is provided", () => {

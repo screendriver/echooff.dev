@@ -1,7 +1,7 @@
 import is from "@sindresorhus/is";
 import type { CollectionEntry } from "astro:content";
 import readingTime from "reading-time";
-import { getBlogPostTopicDetails } from "./blog-post-topics.js";
+import { getBlogPostTopicDetails } from "./blog-post-topics.ts";
 
 export type BlogIndexEntry = {
 	readonly description: string;

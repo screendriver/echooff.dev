@@ -1,6 +1,6 @@
 import is from "@sindresorhus/is";
 import type { CollectionEntry } from "astro:content";
-import { createBlogPostAbsoluteUrl } from "./blog-site.js";
+import { createBlogPostAbsoluteUrl } from "./blog-site.ts";
 
 export type RssFeedItem = {
 	readonly title: string;
