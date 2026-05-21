@@ -5,7 +5,7 @@ import {
 	createWebmentionApiRequestUrl,
 	loadWebmentionsForTargetUrl,
 	parseWebmentionApiResponse
-} from "./webmentions.js";
+} from "./webmentions.ts";
 
 describe("createEmptyWebmentionSectionModel()", () => {
 	it("creates an empty section model", () => {

@@ -6,8 +6,8 @@ import {
 	createBlogIndexEntries,
 	formatPublishedAtFallbackDateTime,
 	sortBlogPostsByPublicationDateDescending
-} from "./blog-posts.js";
-import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.js";
+} from "./blog-posts.ts";
+import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.ts";
 
 describe("sortBlogPostsByPublicationDateDescending()", () => {
 	it("sorts newer blog posts before older blog posts", () => {

@@ -3,10 +3,10 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { serve } from "@hono/node-server";
 import { serveStatic } from "@hono/node-server/serve-static";
-import { registerContactFormRoute } from "./contact-form-route.js";
-import { registerGraphQlRoute } from "./graphql-route.js";
-import { registerHackerNewsRoute } from "./hacker-news-route.js";
-import { registerWebmentionRoute } from "./webmention-route.js";
+import { registerContactFormRoute } from "./contact-form-route.ts";
+import { registerGraphQlRoute } from "./graphql-route.ts";
+import { registerHackerNewsRoute } from "./hacker-news-route.ts";
+import { registerWebmentionRoute } from "./webmention-route.ts";
 
 export function createDeterministicServerApplication(): Hono {
 	const application = new Hono();

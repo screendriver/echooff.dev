@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { Hono } from "hono";
-import { registerGraphQlRoute } from "./graphql-route.js";
+import { registerGraphQlRoute } from "./graphql-route.ts";
 
 function createGraphQlTestApplication(): Hono {
 	const application = new Hono();

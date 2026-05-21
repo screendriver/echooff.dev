@@ -10,7 +10,7 @@ import {
 	createWebmentionEndpointUrl,
 	createSiteHomeAbsoluteUrl,
 	getConfiguredSiteUrlOrThrow
-} from "./blog-site.js";
+} from "./blog-site.ts";
 
 describe("getConfiguredSiteUrlOrThrow()", () => {
 	it("returns the configured site URL", () => {

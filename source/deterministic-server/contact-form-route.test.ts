@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { Hono } from "hono";
-import { registerContactFormRoute } from "./contact-form-route.js";
+import { registerContactFormRoute } from "./contact-form-route.ts";
 
 function createContactFormTestApplication(): Hono {
 	const application = new Hono();

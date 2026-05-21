@@ -1,4 +1,4 @@
-import { hackerNewsApiUrlInputSchema, webmentionApiUrlInputSchema } from "./environment-variable-input-schema.js";
+import { hackerNewsApiUrlInputSchema, webmentionApiUrlInputSchema } from "./environment-variable-input-schema.ts";
 
 export function parseHackerNewsApiUrl(hackerNewsApiUrlInput: unknown): URL {
 	return new URL(hackerNewsApiUrlInputSchema.assert(hackerNewsApiUrlInput));

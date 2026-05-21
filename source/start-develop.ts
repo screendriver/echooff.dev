@@ -1,7 +1,7 @@
 import os from "node:os";
 import { writeFile, appendFile, rm } from "node:fs/promises";
 import { $, echo } from "zx";
-import { startDeterministicServer } from "./deterministic-server/deterministic-server.js";
+import { startDeterministicServer } from "./deterministic-server/deterministic-server.ts";
 
 const envFilePath = "./.env";
 

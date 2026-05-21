@@ -2,7 +2,7 @@ import {
 	gitHubApiTokenInputSchema,
 	gitHubBaseUrlInputSchema,
 	gitHubLoginInputSchema
-} from "./environment-variable-input-schema.js";
+} from "./environment-variable-input-schema.ts";
 
 export function parseGitHubBaseUrl(gitHubBaseUrlInput: unknown): URL {
 	return new URL(gitHubBaseUrlInputSchema.assert(gitHubBaseUrlInput));

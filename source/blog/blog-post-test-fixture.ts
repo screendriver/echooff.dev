@@ -1,5 +1,5 @@
 import type { CollectionEntry } from "astro:content";
-import type { BlogPostTopic } from "./blog-post-topics.js";
+import type { BlogPostTopic } from "./blog-post-topics.ts";
 
 export type BlogPostCollectionEntryInput = {
 	readonly body?: string;

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { Factory } from "fishery";
-import { gitHubStatisticsResponseSchema } from "./github-statistics-response-schema.js";
-import { parseGitHubStatistics, type GitHubStatistics } from "./github-statistics.js";
+import { gitHubStatisticsResponseSchema } from "./github-statistics-response-schema.ts";
+import { parseGitHubStatistics, type GitHubStatistics } from "./github-statistics.ts";
 
 const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
 	return {

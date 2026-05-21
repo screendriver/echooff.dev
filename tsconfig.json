@@ -2,8 +2,9 @@
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"extends": ["astro/tsconfigs/strictest"],
 	"compilerOptions": {
+		"erasableSyntaxOnly": true,
 		"noEmit": true,
-		"allowImportingTsExtensions": false
+		"allowImportingTsExtensions": true
 	},
 	"include": [".astro/types.d.ts", "./astro.config.ts", "./vitest.config.ts", "source/**/*"]
 }

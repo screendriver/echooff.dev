@@ -1,9 +1,9 @@
 import type { APIRoute } from "astro";
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
-import { createRssFeedItemsForBlogPosts } from "../blog/blog-feed.js";
-import { sortBlogPostsByPublicationDateDescending } from "../blog/blog-posts.js";
-import { getConfiguredSiteUrlOrThrow } from "../blog/blog-site.js";
+import { createRssFeedItemsForBlogPosts } from "../blog/blog-feed.ts";
+import { sortBlogPostsByPublicationDateDescending } from "../blog/blog-posts.ts";
+import { getConfiguredSiteUrlOrThrow } from "../blog/blog-site.ts";
 
 export const GET: APIRoute = async (apiContext) => {
 	const configuredSiteUrl = getConfiguredSiteUrlOrThrow(apiContext.site);

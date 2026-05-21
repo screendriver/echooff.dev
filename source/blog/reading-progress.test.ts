@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { calculateReadingProgressPercentage, initializeReadingProgressIndicator } from "./reading-progress.js";
+import { calculateReadingProgressPercentage, initializeReadingProgressIndicator } from "./reading-progress.ts";
 
 function failWhenListenerWasNotRegistered(): void {
 	throw new Error("Expected the reading progress listener to be registered before invocation");

@@ -1,6 +1,6 @@
 import { describe, it, expect, assert } from "vitest";
 import { isErr, isOk } from "true-myth/result";
-import { formatSinceDate } from "./date.js";
+import { formatSinceDate } from "./date.ts";
 
 type TestFormatSinceDateErrorInput = {
 	readonly since: string;

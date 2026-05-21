@@ -1,6 +1,6 @@
 import { Result } from "true-myth";
 import { type } from "arktype";
-import { resumeDataInputSchema, type ResumeDataInput } from "./resume-data-input-schema.js";
+import { resumeDataInputSchema, type ResumeDataInput } from "./resume-data-input-schema.ts";
 
 type ResumeCompany = {
 	readonly name: string;

@@ -3,7 +3,7 @@ import { fake } from "sinon";
 import { Factory } from "fishery";
 import { stripIndent } from "common-tags";
 import type { graphql as octokitGraphql, RequestParameters } from "@octokit/graphql/types";
-import { type ExecuteGraphQLQueryOptions, executeGraphQLQuery } from "./graphql-query.js";
+import { type ExecuteGraphQLQueryOptions, executeGraphQLQuery } from "./graphql-query.ts";
 
 const fetchGitHubStatisticsOptionsFactory = Factory.define<ExecuteGraphQLQueryOptions>(() => {
 	const graphql = fake.resolves(undefined) as unknown as octokitGraphql;

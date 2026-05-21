@@ -1,5 +1,5 @@
 import type { Hono } from "hono";
-import { validateContactFormRequest } from "./request-validation.js";
+import { validateContactFormRequest } from "./request-validation.ts";
 
 export function registerContactFormRoute(application: Hono): void {
 	application.post("/contact-form", async (context) => {
