@@ -48,6 +48,14 @@
 	color: transparent;
 }
 
+@mixin blog-shell-page-header-surface($horizontalPadding) {
+	background:
+		linear-gradient(180deg, rgba(variables.$selection, 0.38), rgba(variables.$background, 0.98)),
+		variables.$background;
+	border-bottom: 1px solid variables.$selection;
+	padding: 1.5rem $horizontalPadding 2rem;
+}
+
 @mixin clamp-to-lines($lineCount) {
 	display: -webkit-box;
 	-webkit-box-orient: vertical;

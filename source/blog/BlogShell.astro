@@ -128,11 +128,7 @@ const {
 	}
 
 	.blog-shell-page-header {
-		background:
-			linear-gradient(180deg, rgba(variables.$selection, 0.38), rgba(variables.$background, 0.98)),
-			variables.$background;
-		border-bottom: 1px solid variables.$selection;
-		padding: 1.5rem 1.5rem 2rem;
+		@include mixins.blog-shell-page-header-surface(1.5rem);
 	}
 
 	.blog-shell-page-title-row {
@@ -244,8 +240,7 @@ const {
 		}
 
 		.blog-shell-page-header {
-			padding-left: 2rem;
-			padding-right: 2rem;
+			@include mixins.blog-shell-page-header-surface(2rem);
 		}
 	}
 </style>

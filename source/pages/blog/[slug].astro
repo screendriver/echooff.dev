@@ -126,7 +126,7 @@ try {
 
 	<article class="blog-post-article h-entry">
 		<header class="blog-post-article-header">
-			<div class="blog-post-article-top-row">
+			<section class="blog-post-article-top-row" aria-label="Article navigation and author">
 				<nav aria-label="Blog">
 					<BlogBackLink href="/blog" includeIcon>Back to Blog</BlogBackLink>
 				</nav>
@@ -144,7 +144,7 @@ try {
 					</a>
 					<span class="blog-post-screen-reader-only p-name">Christian Rackerseder</span>
 				</figure>
-			</div>
+			</section>
 			<h1 class="p-name">{blogPost.data.title}</h1>
 			<BlogMetadata>
 				Published{" "}
@@ -158,12 +158,14 @@ try {
 			<a class="u-url blog-post-screen-reader-only" href={blogPostUrl}> Permalink </a>
 		</header>
 
-		<BlogPostContent>
-			<Content />
-		</BlogPostContent>
+		<section class="blog-post-article-body" aria-label="Article content">
+			<BlogPostContent>
+				<Content />
+			</BlogPostContent>
 
-		<Webmentions webmentionSectionModel={webmentionSectionModel} />
-		<HackerNewsMentions hackerNewsSectionModel={hackerNewsSectionModel} />
+			<Webmentions webmentionSectionModel={webmentionSectionModel} />
+			<HackerNewsMentions hackerNewsSectionModel={hackerNewsSectionModel} />
+		</section>
 	</article>
 
 	<LocalizedDateTimeScript />
@@ -171,15 +173,19 @@ try {
 
 <style lang="scss">
 	@use "../../styles/variables";
+	@use "../../styles/mixins";
 
 	.blog-post-article {
-		padding: 1.5rem;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.blog-post-article-header {
-		border-bottom: 1px solid rgba(variables.$selection, 0.8);
-		margin-bottom: 1.25rem;
-		padding-bottom: 1rem;
+		@include mixins.blog-shell-page-header-surface(1.5rem);
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		padding-bottom: 1.25rem;
 	}
 
 	.blog-post-article-top-row {
@@ -187,7 +193,6 @@ try {
 		display: flex;
 		gap: 1rem;
 		justify-content: space-between;
-		margin-bottom: 1rem;
 	}
 
 	.blog-post-article-avatar {
@@ -229,11 +234,19 @@ try {
 		font-weight: 800;
 		letter-spacing: -0.04em;
 		line-height: 1.1;
-		margin-bottom: 0.75rem;
+	}
+
+	.blog-post-article-body {
+		padding: 1rem 1.5rem 1.5rem;
 	}
 
 	@media (min-width: variables.$small-width) {
-		.blog-post-article {
+		.blog-post-article-header {
+			@include mixins.blog-shell-page-header-surface(2rem);
+			padding-bottom: 1.25rem;
+		}
+
+		.blog-post-article-body {
 			padding-left: 2rem;
 			padding-right: 2rem;
 		}
