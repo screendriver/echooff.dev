@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { isErr } from "true-myth/result";
 import BlogArchiveList from "../../blog/BlogArchiveList.astro";
 import BlogArchiveNavigation from "../../blog/BlogArchiveNavigation.astro";
 import BlogArchiveSection from "../../blog/BlogArchiveSection.astro";
@@ -38,7 +39,7 @@ const blogPaginationModelResult = createBlogPaginationModel({
 	totalPostCount: blogPostCount
 });
 
-if (blogPaginationModelResult.isErr) {
+if (isErr(blogPaginationModelResult)) {
 	throw blogPaginationModelResult.error;
 }
 

@@ -1,5 +1,5 @@
 import is from "@sindresorhus/is";
-import { err, ok, type Result } from "true-myth/result";
+import { err, isErr, ok, type Result } from "true-myth/result";
 
 function createAbsoluteUrl(configuredSiteUrl: URL, pathname: string): string {
 	return new URL(pathname, configuredSiteUrl).toString();
@@ -41,7 +41,7 @@ export function createBlogIndexPageAbsoluteUrl(
 ): Result<string, RangeError> {
 	const blogIndexPagePathResult = createBlogIndexPagePath(blogIndexPageNumber);
 
-	if (blogIndexPagePathResult.isErr) {
+	if (isErr(blogIndexPagePathResult)) {
 		return err(blogIndexPagePathResult.error);
 	}
 

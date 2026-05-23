@@ -1,5 +1,5 @@
 import is from "@sindresorhus/is";
-import { err, ok, type Result } from "true-myth/result";
+import { err, isErr, ok, type Result } from "true-myth/result";
 import { createBlogIndexPagePath } from "./blog-site.ts";
 
 export const blogArchivePageSize = 20;
@@ -51,7 +51,7 @@ function createPageLinks(currentPage: number, lastPage: number): Result<readonly
 	for (let pageNumber = 1; pageNumber <= lastPage; pageNumber += 1) {
 		const pageHrefResult = createBlogIndexPagePath(pageNumber);
 
-		if (pageHrefResult.isErr) {
+		if (isErr(pageHrefResult)) {
 			return err(pageHrefResult.error);
 		}
 
@@ -89,13 +89,13 @@ function createPaginationWindow(
 ): Result<{ nextPageHref: string | undefined; previousPageHref: string | undefined }, RangeError> {
 	const previousPageHrefResult = createOptionalPageHref(currentPage > 1 ? currentPage - 1 : undefined);
 
-	if (previousPageHrefResult.isErr) {
+	if (isErr(previousPageHrefResult)) {
 		return err(previousPageHrefResult.error);
 	}
 
 	const nextPageHrefResult = createOptionalPageHref(currentPage < lastPage ? currentPage + 1 : undefined);
 
-	if (nextPageHrefResult.isErr) {
+	if (isErr(nextPageHrefResult)) {
 		return err(nextPageHrefResult.error);
 	}
 
@@ -110,7 +110,7 @@ export function createBlogPaginationModel(
 ): Result<BlogPaginationModel, RangeError> {
 	const validatedInputResult = validateInput(input);
 
-	if (validatedInputResult.isErr) {
+	if (isErr(validatedInputResult)) {
 		return err(validatedInputResult.error);
 	}
 
@@ -123,13 +123,13 @@ export function createBlogPaginationModel(
 
 	const pageLinksResult = createPageLinks(currentPage, lastPage);
 
-	if (pageLinksResult.isErr) {
+	if (isErr(pageLinksResult)) {
 		return err(pageLinksResult.error);
 	}
 
 	const paginationWindowResult = createPaginationWindow(currentPage, lastPage);
 
-	if (paginationWindowResult.isErr) {
+	if (isErr(paginationWindowResult)) {
 		return err(paginationWindowResult.error);
 	}
 

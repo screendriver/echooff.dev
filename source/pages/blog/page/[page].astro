@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths, Page } from "astro";
 import { getCollection, type CollectionEntry } from "astro:content";
+import { isErr } from "true-myth/result";
 import BlogArchiveList from "../../../blog/BlogArchiveList.astro";
 import BlogArchiveNavigation from "../../../blog/BlogArchiveNavigation.astro";
 import BlogArchiveSection from "../../../blog/BlogArchiveSection.astro";
@@ -40,7 +41,7 @@ export const getStaticPaths: GetStaticPaths = async (staticPathOptions) => {
 const { page }: Props = Astro.props;
 const paginatedBlogIndexAbsoluteUrlResult = createBlogIndexPageAbsoluteUrl(Astro.site, page.currentPage);
 
-if (paginatedBlogIndexAbsoluteUrlResult.isErr) {
+if (isErr(paginatedBlogIndexAbsoluteUrlResult)) {
 	throw paginatedBlogIndexAbsoluteUrlResult.error;
 }
 
@@ -55,7 +56,7 @@ const blogPaginationModelResult = createBlogPaginationModel({
 	totalPostCount: page.total
 });
 
-if (blogPaginationModelResult.isErr) {
+if (isErr(blogPaginationModelResult)) {
 	throw blogPaginationModelResult.error;
 }
 
