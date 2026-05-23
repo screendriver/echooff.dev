@@ -6,6 +6,7 @@ import { describe, expect, it } from "vitest";
 const repositoryRootDirectoryPath = fileURLToPath(new URL("../../", import.meta.url));
 const astroGeneratedDataStorePath = join(repositoryRootDirectoryPath, "node_modules/.astro/data-store.json");
 const blogContentDirectoryPath = join(repositoryRootDirectoryPath, "source/content/blog");
+const blogPostIdentifiersReservedForRoutes = ["page"];
 
 async function readExpectedBlogPostIdentifiersFromMarkdownFiles(): Promise<string[]> {
 	const blogDirectoryEntries = await readdir(blogContentDirectoryPath, { withFileTypes: true });
@@ -37,6 +38,14 @@ describe("blog content collection", () => {
 
 		for (const expectedBlogPostIdentifier of expectedBlogPostIdentifiers) {
 			expect(astroGeneratedDataStoreDocument).toContain(`"${expectedBlogPostIdentifier}"`);
+		}
+	});
+
+	it("does not use blog post identifiers reserved for blog routes", async () => {
+		const blogPostIdentifiers = await readExpectedBlogPostIdentifiersFromMarkdownFiles();
+
+		for (const blogPostIdentifierReservedForRoute of blogPostIdentifiersReservedForRoutes) {
+			expect(blogPostIdentifiers).not.toContain(blogPostIdentifierReservedForRoute);
 		}
 	});
 });

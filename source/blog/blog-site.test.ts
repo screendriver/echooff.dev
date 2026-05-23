@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
+import { err, ok } from "true-myth/result";
 import {
 	createAbsoluteAssetUrl,
 	createBlogIndexAbsoluteUrl,
+	createBlogIndexPageAbsoluteUrl,
+	createBlogIndexPagePath,
 	createBlogPostAbsoluteUrl,
 	createBlogRssFeedAbsoluteUrl,
 	createBlogTopicAbsoluteUrl,
@@ -29,6 +32,46 @@ describe("getConfiguredSiteUrlOrThrow()", () => {
 describe("createBlogIndexAbsoluteUrl()", () => {
 	it("creates the absolute blog index URL", () => {
 		expect(createBlogIndexAbsoluteUrl(new URL("https://www.echooff.dev"))).toBe("https://www.echooff.dev/blog");
+	});
+});
+
+describe("createBlogIndexPagePath()", () => {
+	it("returns the root-relative blog index path for the first page", () => {
+		expect(createBlogIndexPagePath(1)).toStrictEqual(ok("/blog"));
+	});
+
+	it("returns the root-relative paginated blog index path for later pages", () => {
+		expect(createBlogIndexPagePath(2)).toStrictEqual(ok("/blog/page/2"));
+	});
+
+	it("returns a Result Err when the page number is not a positive integer", () => {
+		expect(createBlogIndexPagePath(0)).toStrictEqual(
+			err(new RangeError('Blog index page number must be a positive integer, received "0"'))
+		);
+
+		expect(createBlogIndexPagePath(1.5)).toStrictEqual(
+			err(new RangeError('Blog index page number must be a positive integer, received "1.5"'))
+		);
+	});
+});
+
+describe("createBlogIndexPageAbsoluteUrl()", () => {
+	it("creates the absolute URL for the first blog index page", () => {
+		expect(createBlogIndexPageAbsoluteUrl(new URL("https://www.echooff.dev"), 1)).toStrictEqual(
+			ok("https://www.echooff.dev/blog")
+		);
+	});
+
+	it("creates the absolute URL for later blog index pages", () => {
+		expect(createBlogIndexPageAbsoluteUrl(new URL("https://www.echooff.dev"), 3)).toStrictEqual(
+			ok("https://www.echooff.dev/blog/page/3")
+		);
+	});
+
+	it("propagates invalid blog index page numbers as a Result Err", () => {
+		expect(createBlogIndexPageAbsoluteUrl(new URL("https://www.echooff.dev"), 0)).toStrictEqual(
+			err(new RangeError('Blog index page number must be a positive integer, received "0"'))
+		);
 	});
 });
 

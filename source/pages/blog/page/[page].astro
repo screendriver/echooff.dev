@@ -1,0 +1,126 @@
+---
+import type { GetStaticPaths, Page } from "astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import BlogArchiveList from "../../../blog/BlogArchiveList.astro";
+import BlogArchiveNavigation from "../../../blog/BlogArchiveNavigation.astro";
+import BlogArchiveSection from "../../../blog/BlogArchiveSection.astro";
+import BlogEmptyState from "../../../blog/BlogEmptyState.astro";
+import BlogIndexEntry from "../../../blog/BlogIndexEntry.astro";
+import BlogPaginationNavigation from "../../../blog/BlogPaginationNavigation.astro";
+import BlogRssFeedLink from "../../../blog/BlogRssFeedLink.astro";
+import BlogShell from "../../../blog/BlogShell.astro";
+import BlogTopicLink from "../../../blog/BlogTopicLink.astro";
+import LocalizedDateTime from "../../../blog/LocalizedDateTime.astro";
+import LocalizedDateTimeScript from "../../../blog/LocalizedDateTimeScript.astro";
+import { createPaginatedBlogArchiveMetadata } from "../../../blog/blog-archive-metadata.js";
+import { createBlogPaginationModel } from "../../../blog/blog-pagination.js";
+import { createBlogIndexEntries, sortBlogPostsByPublicationDateDescending } from "../../../blog/blog-posts.js";
+import {
+	createAbsoluteAssetUrl,
+	createBlogIndexPageAbsoluteUrl,
+	createBlogRssFeedAbsoluteUrl,
+	createBlogTopicPath
+} from "../../../blog/blog-site.js";
+import headerImage from "../../../assets/images/header-01.jpg";
+
+interface Props {
+	readonly page: Page<CollectionEntry<"blog">>;
+}
+
+export const getStaticPaths: GetStaticPaths = async (staticPathOptions) => {
+	const { paginate } = staticPathOptions;
+	const sortedBlogPosts = sortBlogPostsByPublicationDateDescending(await getCollection("blog"));
+	const paginatedBlogArchivePaths = paginate(sortedBlogPosts, { pageSize: 20 });
+
+	return paginatedBlogArchivePaths.filter((paginatedBlogArchivePath) => {
+		return paginatedBlogArchivePath.params.page !== "1";
+	});
+};
+
+const { page }: Props = Astro.props;
+const paginatedBlogIndexAbsoluteUrlResult = createBlogIndexPageAbsoluteUrl(Astro.site, page.currentPage);
+
+if (paginatedBlogIndexAbsoluteUrlResult.isErr) {
+	throw paginatedBlogIndexAbsoluteUrlResult.error;
+}
+
+const blogIndexEntries = createBlogIndexEntries(page.data);
+const blogIndexUrl = paginatedBlogIndexAbsoluteUrlResult.value;
+const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(Astro.site);
+const openGraphImageUrl = createAbsoluteAssetUrl(Astro.site, headerImage.src);
+const openGraphImageAlternativeText = "echooff.dev header illustration";
+const blogPaginationModelResult = createBlogPaginationModel({
+	currentPage: page.currentPage,
+	pageSize: page.size,
+	totalPostCount: page.total
+});
+
+if (blogPaginationModelResult.isErr) {
+	throw blogPaginationModelResult.error;
+}
+
+const blogPaginationModel = blogPaginationModelResult.value;
+const blogArchiveMetadata = createPaginatedBlogArchiveMetadata({
+	currentPage: page.currentPage,
+	lastPage: page.lastPage,
+	pageSize: page.size,
+	totalPostCount: page.total
+});
+---
+
+<BlogShell
+	canonicalUrl={blogIndexUrl}
+	description={blogArchiveMetadata.description}
+	openGraphImageAlternativeText={openGraphImageAlternativeText}
+	openGraphImageUrl={openGraphImageUrl}
+	openGraphPublishedTime=""
+	openGraphType="website"
+	openGraphUrl={blogIndexUrl}
+	rssFeedUrl={blogRssFeedUrl}
+	robots="index,follow,max-image-preview:large"
+	title={blogArchiveMetadata.title}
+	twitterCardType="summary_large_image"
+	pageTitle={blogArchiveMetadata.pageTitle}
+	intro={blogArchiveMetadata.intro}
+	terminalOutput={blogArchiveMetadata.terminalOutput}
+>
+	<BlogRssFeedLink slot="title-action" rssFeedUrl={blogRssFeedUrl} />
+
+	<BlogArchiveSection label={`Blog posts page ${page.currentPage}`}>
+		<BlogArchiveNavigation label="Blog topic archive">
+			<BlogTopicLink href="/blog/topics">Browse posts by topic</BlogTopicLink>
+		</BlogArchiveNavigation>
+
+		{
+			blogIndexEntries.length > 0 ? (
+				<Fragment>
+					<BlogArchiveList>
+						{blogIndexEntries.map((blogIndexEntry) => (
+							<li>
+								<BlogIndexEntry
+									description={blogIndexEntry.description}
+									href={`/blog/${blogIndexEntry.slug}`}
+									title={blogIndexEntry.title}
+								>
+									<Fragment slot="footer">
+										Published <LocalizedDateTime publishedAt={blogIndexEntry.publishedAt} /> in{" "}
+										<BlogTopicLink href={createBlogTopicPath(blogIndexEntry.topicSlug)}>
+											{blogIndexEntry.topic}
+										</BlogTopicLink>
+										{" · "}
+										<span>{blogIndexEntry.readingTimeLabel}</span>
+									</Fragment>
+								</BlogIndexEntry>
+							</li>
+						))}
+					</BlogArchiveList>
+					<BlogPaginationNavigation paginationModel={blogPaginationModel} />
+				</Fragment>
+			) : (
+				<BlogEmptyState>No blog posts published yet.</BlogEmptyState>
+			)
+		}
+	</BlogArchiveSection>
+
+	<LocalizedDateTimeScript />
+</BlogShell>
