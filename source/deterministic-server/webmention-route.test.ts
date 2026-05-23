@@ -56,7 +56,7 @@ describe("webmention route", () => {
 		const response = await application.request("/webmention-avatar.svg");
 		const body = await response.text();
 
-		expect(response.headers.get("content-type")).toBe("image/svg+xml");
+		expect(response.headers.get("content-type")).toBe("image/svg+xml; charset=utf-8");
 		expect(body).toContain("<svg");
 		expect(body).toContain("#8BE9FD");
 	});
