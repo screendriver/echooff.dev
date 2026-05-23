@@ -7,53 +7,58 @@ function failWhenListenerWasNotRegistered(): void {
 
 describe("calculateReadingProgressPercentage()", () => {
 	it("returns zero percent at the top of the page", () => {
-		expect(
-			calculateReadingProgressPercentage({
-				documentScrollHeight: 2400,
-				verticalScrollOffset: 0,
-				viewportHeight: 800
-			})
-		).toBe(0);
+		const actualProgressPercentage = calculateReadingProgressPercentage({
+			documentScrollHeight: 2400,
+			verticalScrollOffset: 0,
+			viewportHeight: 800
+		});
+		const expectedProgressPercentage = 0;
+
+		expect(actualProgressPercentage).toBe(expectedProgressPercentage);
 	});
 
 	it("returns one hundred percent at the bottom of the page", () => {
-		expect(
-			calculateReadingProgressPercentage({
-				documentScrollHeight: 2400,
-				verticalScrollOffset: 1600,
-				viewportHeight: 800
-			})
-		).toBe(100);
+		const actualProgressPercentage = calculateReadingProgressPercentage({
+			documentScrollHeight: 2400,
+			verticalScrollOffset: 1600,
+			viewportHeight: 800
+		});
+		const expectedProgressPercentage = 100;
+
+		expect(actualProgressPercentage).toBe(expectedProgressPercentage);
 	});
 
 	it("clamps values below zero percent", () => {
-		expect(
-			calculateReadingProgressPercentage({
-				documentScrollHeight: 2400,
-				verticalScrollOffset: -200,
-				viewportHeight: 800
-			})
-		).toBe(0);
+		const actualProgressPercentage = calculateReadingProgressPercentage({
+			documentScrollHeight: 2400,
+			verticalScrollOffset: -200,
+			viewportHeight: 800
+		});
+		const expectedProgressPercentage = 0;
+
+		expect(actualProgressPercentage).toBe(expectedProgressPercentage);
 	});
 
 	it("clamps values above one hundred percent", () => {
-		expect(
-			calculateReadingProgressPercentage({
-				documentScrollHeight: 2400,
-				verticalScrollOffset: 3200,
-				viewportHeight: 800
-			})
-		).toBe(100);
+		const actualProgressPercentage = calculateReadingProgressPercentage({
+			documentScrollHeight: 2400,
+			verticalScrollOffset: 3200,
+			viewportHeight: 800
+		});
+		const expectedProgressPercentage = 100;
+
+		expect(actualProgressPercentage).toBe(expectedProgressPercentage);
 	});
 
 	it("returns one hundred percent for pages without scrollable distance", () => {
-		expect(
-			calculateReadingProgressPercentage({
-				documentScrollHeight: 800,
-				verticalScrollOffset: 0,
-				viewportHeight: 800
-			})
-		).toBe(100);
+		const actualProgressPercentage = calculateReadingProgressPercentage({
+			documentScrollHeight: 800,
+			verticalScrollOffset: 0,
+			viewportHeight: 800
+		});
+		const expectedProgressPercentage = 100;
+
+		expect(actualProgressPercentage).toBe(expectedProgressPercentage);
 	});
 });
 
@@ -91,16 +96,25 @@ describe("initializeReadingProgressIndicator()", () => {
 		verticalScrollOffset = 1200;
 		registeredResizeListener();
 
-		expect(recordedProgressPercentages).toStrictEqual([0, 25, 75]);
+		const actualProgressPercentages = recordedProgressPercentages;
+		const expectedProgressPercentages = [0, 25, 75];
+
+		expect(actualProgressPercentages).toStrictEqual(expectedProgressPercentages);
 	});
 
 	it("registers one scroll listener and one resize listener", () => {
 		let recordedProgressWriteCount = 0;
 		const registerScrollListener = vi.fn<(listener: () => void) => void>((listener) => {
-			expect(listener).toStrictEqual(expect.any(Function));
+			const actualListenerType = typeof listener;
+			const expectedListenerType = "function";
+
+			expect(actualListenerType).toBe(expectedListenerType);
 		});
 		const registerResizeListener = vi.fn<(listener: () => void) => void>((listener) => {
-			expect(listener).toStrictEqual(expect.any(Function));
+			const actualListenerType = typeof listener;
+			const expectedListenerType = "function";
+
+			expect(actualListenerType).toBe(expectedListenerType);
 		});
 
 		initializeReadingProgressIndicator({
@@ -120,8 +134,15 @@ describe("initializeReadingProgressIndicator()", () => {
 			}
 		});
 
-		expect(recordedProgressWriteCount).toBe(1);
-		expect(registerScrollListener).toHaveBeenCalledOnce();
-		expect(registerResizeListener).toHaveBeenCalledOnce();
+		const actualProgressWriteCount = recordedProgressWriteCount;
+		const expectedProgressWriteCount = 1;
+
+		expect(actualProgressWriteCount).toBe(expectedProgressWriteCount);
+
+		const actualRegisterScrollListener = registerScrollListener;
+		const actualRegisterResizeListener = registerResizeListener;
+
+		expect(actualRegisterScrollListener).toHaveBeenCalledOnce();
+		expect(actualRegisterResizeListener).toHaveBeenCalledOnce();
 	});
 });

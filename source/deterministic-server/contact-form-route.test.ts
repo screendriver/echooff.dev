@@ -23,8 +23,10 @@ describe("contact form route", () => {
 				message: "hello"
 			}).toString()
 		});
+		const actualResponseBody: unknown = await response.json();
+		const expectedResponseBody = {};
 
-		await expect(response.json()).resolves.toStrictEqual({});
+		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
 	});
 
 	it("rejects requests when the content type is incorrect", async () => {
@@ -37,10 +39,14 @@ describe("contact form route", () => {
 			},
 			body: JSON.stringify({})
 		});
-
-		expect(response.status).toBe(400);
-		await expect(response.json()).resolves.toStrictEqual({
+		const actualResponseStatus = response.status;
+		const actualResponseBody: unknown = await response.json();
+		const expectedResponseStatus = 400;
+		const expectedResponseBody = {
 			error: "The content-type header must be application/x-www-form-urlencoded."
-		});
+		};
+
+		expect(actualResponseStatus).toBe(expectedResponseStatus);
+		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
 	});
 });

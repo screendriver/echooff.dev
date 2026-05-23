@@ -6,6 +6,7 @@ type TestFormatSinceDateErrorInput = {
 	readonly since: string;
 	readonly onlyYear: boolean;
 	readonly expectedErrorMessage: string;
+	readonly expectedErrorType: typeof RangeError;
 };
 
 type TestFormatSinceDateOkInput = {
@@ -16,17 +17,42 @@ type TestFormatSinceDateOkInput = {
 
 describe("formatSinceDate()", () => {
 	it.each<TestFormatSinceDateErrorInput>([
-		{ since: "", onlyYear: true, expectedErrorMessage: 'Since "" is not a valid date' },
-		{ since: "", onlyYear: false, expectedErrorMessage: 'Since "" is not a valid date' },
-		{ since: "foo", onlyYear: true, expectedErrorMessage: 'Since "foo" is not a valid date' },
-		{ since: "foo", onlyYear: false, expectedErrorMessage: 'Since "foo" is not a valid date' }
+		{
+			since: "",
+			onlyYear: true,
+			expectedErrorMessage: 'Since "" is not a valid date',
+			expectedErrorType: RangeError
+		},
+		{
+			since: "",
+			onlyYear: false,
+			expectedErrorMessage: 'Since "" is not a valid date',
+			expectedErrorType: RangeError
+		},
+		{
+			since: "foo",
+			onlyYear: true,
+			expectedErrorMessage: 'Since "foo" is not a valid date',
+			expectedErrorType: RangeError
+		},
+		{
+			since: "foo",
+			onlyYear: false,
+			expectedErrorMessage: 'Since "foo" is not a valid date',
+			expectedErrorType: RangeError
+		}
 	])("returns a Result Err when 'since' is equals $since and 'onlyYear' is $onlyYear", (input) => {
-		const { since, onlyYear, expectedErrorMessage } = input;
-		const formattedDateResult = formatSinceDate(since, onlyYear);
+		const { since, onlyYear, expectedErrorMessage, expectedErrorType } = input;
+		const actualFormattedDateResult = formatSinceDate(since, onlyYear);
 
-		assert(isErr(formattedDateResult));
+		assert(isErr(actualFormattedDateResult));
 
-		expect(formattedDateResult.error).toBe(expectedErrorMessage);
+		const actualError = actualFormattedDateResult.error;
+		const actualErrorMessage = actualError.message;
+		const actualErrorType = actualError;
+
+		expect(actualErrorMessage).toBe(expectedErrorMessage);
+		expect(actualErrorType).toBeInstanceOf(expectedErrorType);
 	});
 
 	it.each<TestFormatSinceDateOkInput>([
@@ -34,10 +60,12 @@ describe("formatSinceDate()", () => {
 		{ since: "2022-01-01", onlyYear: false, expectedFormatResult: "January 2022" }
 	])("returns a Result Ok when 'onlyYear' is $onlyYear", (input) => {
 		const { since, onlyYear, expectedFormatResult } = input;
-		const formattedDateResult = formatSinceDate(since, onlyYear);
+		const actualFormattedDateResult = formatSinceDate(since, onlyYear);
 
-		assert(isOk(formattedDateResult));
+		assert(isOk(actualFormattedDateResult));
 
-		expect(formattedDateResult.value).toBe(expectedFormatResult);
+		const actualFormatResult = actualFormattedDateResult.value;
+
+		expect(actualFormatResult).toBe(expectedFormatResult);
 	});
 });

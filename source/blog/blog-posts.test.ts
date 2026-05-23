@@ -26,9 +26,10 @@ describe("sortBlogPostsByPublicationDateDescending()", () => {
 			topic: "Writing"
 		});
 
-		const sortedBlogPosts = sortBlogPostsByPublicationDateDescending([olderBlogPost, newerBlogPost]);
+		const actualSortedBlogPosts = sortBlogPostsByPublicationDateDescending([olderBlogPost, newerBlogPost]);
+		const expectedSortedBlogPosts = [newerBlogPost, olderBlogPost];
 
-		expect(sortedBlogPosts).toStrictEqual([newerBlogPost, olderBlogPost]);
+		expect(actualSortedBlogPosts).toStrictEqual(expectedSortedBlogPosts);
 	});
 
 	it("uses the collection entry id as a deterministic tie breaker", () => {
@@ -47,35 +48,53 @@ describe("sortBlogPostsByPublicationDateDescending()", () => {
 			topic: "Writing"
 		});
 
-		const sortedBlogPosts = sortBlogPostsByPublicationDateDescending([blogPostB, blogPostA]);
+		const actualSortedBlogPosts = sortBlogPostsByPublicationDateDescending([blogPostB, blogPostA]);
+		const expectedSortedBlogPosts = [blogPostA, blogPostB];
 
-		expect(sortedBlogPosts).toStrictEqual([blogPostA, blogPostB]);
+		expect(actualSortedBlogPosts).toStrictEqual(expectedSortedBlogPosts);
 	});
 });
 
 describe("formatPublishedAtFallbackDateTime()", () => {
 	it("returns a deterministic readable fallback date", () => {
-		expect(formatPublishedAtFallbackDateTime("2026-02-28T14:30:00+01:00")).toBe("2026-02-28");
+		const actualFallbackDateTime = formatPublishedAtFallbackDateTime("2026-02-28T14:30:00+01:00");
+		const expectedFallbackDateTime = "2026-02-28";
+
+		expect(actualFallbackDateTime).toBe(expectedFallbackDateTime);
 	});
 
 	it("throws when the timestamp is invalid", () => {
-		expect(() => {
+		const actualFormatOperation = (): void => {
 			formatPublishedAtFallbackDateTime("not-a-date");
-		}).toThrow('Published at "not-a-date" is not a valid ISO 8601 date-time');
+		};
+		const expectedErrorMessage = 'Published at "not-a-date" is not a valid ISO 8601 date-time';
+
+		expect(actualFormatOperation).toThrow(expectedErrorMessage);
 	});
 });
 
 describe("createBlogPostReadingTimeLabel()", () => {
 	it("returns the reading-time package label for empty content", () => {
-		expect(createBlogPostReadingTimeLabel("")).toBe("0 min read");
+		const actualReadingTimeLabel = createBlogPostReadingTimeLabel("");
+		const expectedReadingTimeLabel = "0 min read";
+
+		expect(actualReadingTimeLabel).toBe(expectedReadingTimeLabel);
 	});
 
 	it("returns a one-minute label for short blog posts", () => {
-		expect(createBlogPostReadingTimeLabel("Dependency injection keeps side effects explicit.")).toBe("1 min read");
+		const actualReadingTimeLabel = createBlogPostReadingTimeLabel(
+			"Dependency injection keeps side effects explicit."
+		);
+		const expectedReadingTimeLabel = "1 min read";
+
+		expect(actualReadingTimeLabel).toBe(expectedReadingTimeLabel);
 	});
 
 	it("returns a multi-minute label for longer blog posts", () => {
-		expect(createBlogPostReadingTimeLabel("word ".repeat(400))).toBe("2 min read");
+		const actualReadingTimeLabel = createBlogPostReadingTimeLabel("word ".repeat(400));
+		const expectedReadingTimeLabel = "2 min read";
+
+		expect(actualReadingTimeLabel).toBe(expectedReadingTimeLabel);
 	});
 
 	it("handles markdown syntax and code fences deterministically", () => {
@@ -89,7 +108,10 @@ describe("createBlogPostReadingTimeLabel()", () => {
 			"word ".repeat(120)
 		].join("\n");
 
-		expect(createBlogPostReadingTimeLabel(markdownDocument)).toBe("1 min read");
+		const actualReadingTimeLabel = createBlogPostReadingTimeLabel(markdownDocument);
+		const expectedReadingTimeLabel = "1 min read";
+
+		expect(actualReadingTimeLabel).toBe(expectedReadingTimeLabel);
 	});
 });
 
@@ -104,7 +126,8 @@ describe("createBlogIndexEntries()", () => {
 			topic: "TypeScript"
 		});
 
-		expect(createBlogIndexEntries([blogPost])).toStrictEqual([
+		const actualBlogIndexEntries = createBlogIndexEntries([blogPost]);
+		const expectedBlogIndexEntries = [
 			{
 				description: "Clear descriptions help readers choose what to open",
 				publishedAt: "2026-03-14T07:22:00+01:00",
@@ -114,7 +137,9 @@ describe("createBlogIndexEntries()", () => {
 				topic: "TypeScript",
 				topicSlug: "typescript"
 			}
-		]);
+		];
+
+		expect(actualBlogIndexEntries).toStrictEqual(expectedBlogIndexEntries);
 	});
 });
 
@@ -142,7 +167,11 @@ describe("createLatestBlogIndexEntries()", () => {
 			topic: "Architecture"
 		});
 
-		expect(createLatestBlogIndexEntries([oldestBlogPost, newestBlogPost, middleBlogPost], 2)).toStrictEqual([
+		const actualLatestBlogIndexEntries = createLatestBlogIndexEntries(
+			[oldestBlogPost, newestBlogPost, middleBlogPost],
+			2
+		);
+		const expectedLatestBlogIndexEntries = [
 			{
 				description: "Newest blog post description",
 				publishedAt: "2026-03-01T10:00:00+01:00",
@@ -161,7 +190,9 @@ describe("createLatestBlogIndexEntries()", () => {
 				topic: "TypeScript",
 				topicSlug: "typescript"
 			}
-		]);
+		];
+
+		expect(actualLatestBlogIndexEntries).toStrictEqual(expectedLatestBlogIndexEntries);
 	});
 
 	it("returns all available entries when fewer posts exist than the requested maximum", () => {
@@ -173,7 +204,8 @@ describe("createLatestBlogIndexEntries()", () => {
 			topic: "Writing"
 		});
 
-		expect(createLatestBlogIndexEntries([onlyBlogPost], 3)).toStrictEqual([
+		const actualLatestBlogIndexEntries = createLatestBlogIndexEntries([onlyBlogPost], 3);
+		const expectedLatestBlogIndexEntries = [
 			{
 				description: "Only blog post description",
 				publishedAt: "2026-04-01T10:00:00+01:00",
@@ -183,14 +215,17 @@ describe("createLatestBlogIndexEntries()", () => {
 				topic: "Writing",
 				topicSlug: "writing"
 			}
-		]);
+		];
+
+		expect(actualLatestBlogIndexEntries).toStrictEqual(expectedLatestBlogIndexEntries);
 	});
 });
 
 describe("createBlogPostPageTitle()", () => {
 	it("places the blog post title before the site owner name", () => {
-		expect(createBlogPostPageTitle("Dependency injection without frameworks in TypeScript")).toBe(
-			"Dependency injection without frameworks in TypeScript | Christian Rackerseder"
-		);
+		const actualPageTitle = createBlogPostPageTitle("Dependency injection without frameworks in TypeScript");
+		const expectedPageTitle = "Dependency injection without frameworks in TypeScript | Christian Rackerseder";
+
+		expect(actualPageTitle).toBe(expectedPageTitle);
 	});
 });

@@ -1,24 +1,6 @@
-type FailedRequestValidationResult = {
-	readonly isValid: false;
-	readonly errorMessage: string;
-};
+import { err, isErr, ok, type Result } from "true-myth/result";
 
-type SuccessfulRequestValidationResult = {
-	readonly isValid: true;
-};
-
-type RequestValidationResult = FailedRequestValidationResult | SuccessfulRequestValidationResult;
-
-function createSuccessfulValidationResult(): RequestValidationResult {
-	return { isValid: true };
-}
-
-function createFailedValidationResult(errorMessage: string): RequestValidationResult {
-	return {
-		isValid: false,
-		errorMessage
-	};
-}
+export type RequestValidationResult = Result<void, TypeError>;
 
 function readHeaderValue(request: Request, headerName: string): string | null {
 	return request.headers.get(headerName);
@@ -32,20 +14,20 @@ function validateRequiredHeaderValue(
 	const actualHeaderValue = readHeaderValue(request, headerName);
 
 	if (actualHeaderValue !== expectedHeaderValue) {
-		return createFailedValidationResult(`The ${headerName} header must be ${expectedHeaderValue}.`);
+		return err(new TypeError(`The ${headerName} header must be ${expectedHeaderValue}.`));
 	}
 
-	return createSuccessfulValidationResult();
+	return ok(undefined);
 }
 
 function validatePresentHeader(request: Request, headerName: string): RequestValidationResult {
 	const headerValue = readHeaderValue(request, headerName);
 
 	if (headerValue === null || headerValue.length === 0) {
-		return createFailedValidationResult(`The ${headerName} header is required.`);
+		return err(new TypeError(`The ${headerName} header is required.`));
 	}
 
-	return createSuccessfulValidationResult();
+	return ok(undefined);
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -54,14 +36,14 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function validateGraphQlRequestBody(requestBody: unknown): RequestValidationResult {
 	if (!isRecord(requestBody)) {
-		return createFailedValidationResult("The request body must contain a query string.");
+		return err(new TypeError("The request body must contain a query string."));
 	}
 
 	if (typeof requestBody.query !== "string") {
-		return createFailedValidationResult("The request body must contain a query string.");
+		return err(new TypeError("The request body must contain a query string."));
 	}
 
-	return createSuccessfulValidationResult();
+	return ok(undefined);
 }
 
 async function parseJsonRequestBody(request: Request): Promise<unknown> {
@@ -79,19 +61,19 @@ export async function validateGraphQlRequest(request: Request): Promise<RequestV
 		"application/vnd.github.v3+json"
 	);
 
-	if (!acceptHeaderValidationResult.isValid) {
+	if (isErr(acceptHeaderValidationResult)) {
 		return acceptHeaderValidationResult;
 	}
 
 	const authorizationHeaderValidationResult = validatePresentHeader(request, "authorization");
 
-	if (!authorizationHeaderValidationResult.isValid) {
+	if (isErr(authorizationHeaderValidationResult)) {
 		return authorizationHeaderValidationResult;
 	}
 
 	const userAgentHeaderValidationResult = validatePresentHeader(request, "user-agent");
 
-	if (!userAgentHeaderValidationResult.isValid) {
+	if (isErr(userAgentHeaderValidationResult)) {
 		return userAgentHeaderValidationResult;
 	}
 
@@ -107,15 +89,15 @@ export async function validateContactFormRequest(request: Request): Promise<Requ
 		"application/x-www-form-urlencoded"
 	);
 
-	if (!contentTypeHeaderValidationResult.isValid) {
+	if (isErr(contentTypeHeaderValidationResult)) {
 		return contentTypeHeaderValidationResult;
 	}
 
 	try {
 		await request.formData();
 	} catch {
-		return createFailedValidationResult("The request body must be form encoded.");
+		return err(new TypeError("The request body must be form encoded."));
 	}
 
-	return createSuccessfulValidationResult();
+	return ok(undefined);
 }

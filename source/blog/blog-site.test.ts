@@ -18,119 +18,157 @@ import {
 describe("getConfiguredSiteUrlOrThrow()", () => {
 	it("returns the configured site URL", () => {
 		const configuredSiteUrl = new URL("https://www.echooff.dev");
+		const actualConfiguredSiteUrl = getConfiguredSiteUrlOrThrow(configuredSiteUrl);
+		const expectedConfiguredSiteUrl = configuredSiteUrl;
 
-		expect(getConfiguredSiteUrlOrThrow(configuredSiteUrl)).toStrictEqual(configuredSiteUrl);
+		expect(actualConfiguredSiteUrl).toStrictEqual(expectedConfiguredSiteUrl);
 	});
 
 	it("throws when Astro.site is not configured", () => {
-		expect(() => {
+		const actualOperation = (): void => {
 			getConfiguredSiteUrlOrThrow(undefined);
-		}).toThrow("Astro.site must be configured to create absolute blog URLs");
+		};
+		const expectedErrorMessage = "Astro.site must be configured to create absolute blog URLs";
+
+		expect(actualOperation).toThrow(expectedErrorMessage);
 	});
 });
 
 describe("createBlogIndexAbsoluteUrl()", () => {
 	it("creates the absolute blog index URL", () => {
-		expect(createBlogIndexAbsoluteUrl(new URL("https://www.echooff.dev"))).toBe("https://www.echooff.dev/blog");
+		const actualBlogIndexAbsoluteUrl = createBlogIndexAbsoluteUrl(new URL("https://www.echooff.dev"));
+		const expectedBlogIndexAbsoluteUrl = "https://www.echooff.dev/blog";
+
+		expect(actualBlogIndexAbsoluteUrl).toBe(expectedBlogIndexAbsoluteUrl);
 	});
 });
 
 describe("createBlogIndexPagePath()", () => {
 	it("returns the root-relative blog index path for the first page", () => {
-		expect(createBlogIndexPagePath(1)).toStrictEqual(ok("/blog"));
+		const actualBlogIndexPagePath = createBlogIndexPagePath(1);
+		const expectedBlogIndexPagePath = ok("/blog");
+
+		expect(actualBlogIndexPagePath).toStrictEqual(expectedBlogIndexPagePath);
 	});
 
 	it("returns the root-relative paginated blog index path for later pages", () => {
-		expect(createBlogIndexPagePath(2)).toStrictEqual(ok("/blog/page/2"));
+		const actualBlogIndexPagePath = createBlogIndexPagePath(2);
+		const expectedBlogIndexPagePath = ok("/blog/page/2");
+
+		expect(actualBlogIndexPagePath).toStrictEqual(expectedBlogIndexPagePath);
 	});
 
 	it("returns a Result Err when the page number is not a positive integer", () => {
-		expect(createBlogIndexPagePath(0)).toStrictEqual(
-			err(new RangeError('Blog index page number must be a positive integer, received "0"'))
+		const actualZeroPagePath = createBlogIndexPagePath(0);
+		const expectedZeroPagePath = err(
+			new RangeError('Blog index page number must be a positive integer, received "0"')
+		);
+		const actualFractionalPagePath = createBlogIndexPagePath(1.5);
+		const expectedFractionalPagePath = err(
+			new RangeError('Blog index page number must be a positive integer, received "1.5"')
 		);
 
-		expect(createBlogIndexPagePath(1.5)).toStrictEqual(
-			err(new RangeError('Blog index page number must be a positive integer, received "1.5"'))
-		);
+		expect(actualZeroPagePath).toStrictEqual(expectedZeroPagePath);
+		expect(actualFractionalPagePath).toStrictEqual(expectedFractionalPagePath);
 	});
 });
 
 describe("createBlogIndexPageAbsoluteUrl()", () => {
 	it("creates the absolute URL for the first blog index page", () => {
-		expect(createBlogIndexPageAbsoluteUrl(new URL("https://www.echooff.dev"), 1)).toStrictEqual(
-			ok("https://www.echooff.dev/blog")
-		);
+		const actualBlogIndexPageAbsoluteUrl = createBlogIndexPageAbsoluteUrl(new URL("https://www.echooff.dev"), 1);
+		const expectedBlogIndexPageAbsoluteUrl = ok("https://www.echooff.dev/blog");
+
+		expect(actualBlogIndexPageAbsoluteUrl).toStrictEqual(expectedBlogIndexPageAbsoluteUrl);
 	});
 
 	it("creates the absolute URL for later blog index pages", () => {
-		expect(createBlogIndexPageAbsoluteUrl(new URL("https://www.echooff.dev"), 3)).toStrictEqual(
-			ok("https://www.echooff.dev/blog/page/3")
-		);
+		const actualBlogIndexPageAbsoluteUrl = createBlogIndexPageAbsoluteUrl(new URL("https://www.echooff.dev"), 3);
+		const expectedBlogIndexPageAbsoluteUrl = ok("https://www.echooff.dev/blog/page/3");
+
+		expect(actualBlogIndexPageAbsoluteUrl).toStrictEqual(expectedBlogIndexPageAbsoluteUrl);
 	});
 
 	it("propagates invalid blog index page numbers as a Result Err", () => {
-		expect(createBlogIndexPageAbsoluteUrl(new URL("https://www.echooff.dev"), 0)).toStrictEqual(
-			err(new RangeError('Blog index page number must be a positive integer, received "0"'))
+		const actualBlogIndexPageAbsoluteUrl = createBlogIndexPageAbsoluteUrl(new URL("https://www.echooff.dev"), 0);
+		const expectedBlogIndexPageAbsoluteUrl = err(
+			new RangeError('Blog index page number must be a positive integer, received "0"')
 		);
+
+		expect(actualBlogIndexPageAbsoluteUrl).toStrictEqual(expectedBlogIndexPageAbsoluteUrl);
 	});
 });
 
 describe("createSiteHomeAbsoluteUrl()", () => {
 	it("creates the absolute site home URL", () => {
-		expect(createSiteHomeAbsoluteUrl(new URL("https://www.echooff.dev"))).toBe("https://www.echooff.dev/");
+		const actualSiteHomeAbsoluteUrl = createSiteHomeAbsoluteUrl(new URL("https://www.echooff.dev"));
+		const expectedSiteHomeAbsoluteUrl = "https://www.echooff.dev/";
+
+		expect(actualSiteHomeAbsoluteUrl).toBe(expectedSiteHomeAbsoluteUrl);
 	});
 });
 
 describe("createBlogPostAbsoluteUrl()", () => {
 	it("creates the absolute URL for a blog post", () => {
-		expect(createBlogPostAbsoluteUrl(new URL("https://www.echooff.dev"), "why-i-started-this-blog")).toBe(
-			"https://www.echooff.dev/blog/why-i-started-this-blog"
+		const actualBlogPostAbsoluteUrl = createBlogPostAbsoluteUrl(
+			new URL("https://www.echooff.dev"),
+			"why-i-started-this-blog"
 		);
+		const expectedBlogPostAbsoluteUrl = "https://www.echooff.dev/blog/why-i-started-this-blog";
+
+		expect(actualBlogPostAbsoluteUrl).toBe(expectedBlogPostAbsoluteUrl);
 	});
 });
 
 describe("createBlogTopicIndexAbsoluteUrl()", () => {
 	it("creates the absolute URL for the blog topic index", () => {
-		expect(createBlogTopicIndexAbsoluteUrl(new URL("https://www.echooff.dev"))).toBe(
-			"https://www.echooff.dev/blog/topics"
-		);
+		const actualBlogTopicIndexAbsoluteUrl = createBlogTopicIndexAbsoluteUrl(new URL("https://www.echooff.dev"));
+		const expectedBlogTopicIndexAbsoluteUrl = "https://www.echooff.dev/blog/topics";
+
+		expect(actualBlogTopicIndexAbsoluteUrl).toBe(expectedBlogTopicIndexAbsoluteUrl);
 	});
 });
 
 describe("createBlogTopicPath()", () => {
 	it("creates the root-relative path for a blog topic archive", () => {
-		expect(createBlogTopicPath("architecture")).toBe("/blog/topics/architecture");
+		const actualBlogTopicPath = createBlogTopicPath("architecture");
+		const expectedBlogTopicPath = "/blog/topics/architecture";
+
+		expect(actualBlogTopicPath).toBe(expectedBlogTopicPath);
 	});
 });
 
 describe("createBlogTopicAbsoluteUrl()", () => {
 	it("creates the absolute URL for a blog topic archive", () => {
-		expect(createBlogTopicAbsoluteUrl(new URL("https://www.echooff.dev"), "typescript")).toBe(
-			"https://www.echooff.dev/blog/topics/typescript"
-		);
+		const actualBlogTopicAbsoluteUrl = createBlogTopicAbsoluteUrl(new URL("https://www.echooff.dev"), "typescript");
+		const expectedBlogTopicAbsoluteUrl = "https://www.echooff.dev/blog/topics/typescript";
+
+		expect(actualBlogTopicAbsoluteUrl).toBe(expectedBlogTopicAbsoluteUrl);
 	});
 });
 
 describe("createBlogRssFeedAbsoluteUrl()", () => {
 	it("creates the absolute URL for the RSS feed", () => {
-		expect(createBlogRssFeedAbsoluteUrl(new URL("https://www.echooff.dev"))).toBe(
-			"https://www.echooff.dev/rss.xml"
-		);
+		const actualBlogRssFeedAbsoluteUrl = createBlogRssFeedAbsoluteUrl(new URL("https://www.echooff.dev"));
+		const expectedBlogRssFeedAbsoluteUrl = "https://www.echooff.dev/rss.xml";
+
+		expect(actualBlogRssFeedAbsoluteUrl).toBe(expectedBlogRssFeedAbsoluteUrl);
 	});
 });
 
 describe("createAbsoluteAssetUrl()", () => {
 	it("creates the absolute URL for an asset pathname", () => {
-		expect(createAbsoluteAssetUrl(new URL("https://www.echooff.dev"), "/_astro/header.jpg")).toBe(
-			"https://www.echooff.dev/_astro/header.jpg"
-		);
+		const actualAbsoluteAssetUrl = createAbsoluteAssetUrl(new URL("https://www.echooff.dev"), "/_astro/header.jpg");
+		const expectedAbsoluteAssetUrl = "https://www.echooff.dev/_astro/header.jpg";
+
+		expect(actualAbsoluteAssetUrl).toBe(expectedAbsoluteAssetUrl);
 	});
 });
 
 describe("createWebmentionEndpointUrl()", () => {
 	it("creates the webmention.io endpoint URL for the configured site host", () => {
-		expect(createWebmentionEndpointUrl(new URL("https://www.echooff.dev"))).toBe(
-			"https://webmention.io/www.echooff.dev/webmention"
-		);
+		const actualWebmentionEndpointUrl = createWebmentionEndpointUrl(new URL("https://www.echooff.dev"));
+		const expectedWebmentionEndpointUrl = "https://webmention.io/www.echooff.dev/webmention";
+
+		expect(actualWebmentionEndpointUrl).toBe(expectedWebmentionEndpointUrl);
 	});
 });

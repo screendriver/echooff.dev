@@ -1,4 +1,4 @@
-import { Result } from "true-myth";
+import { err, ok, type Result } from "true-myth/result";
 import { type } from "arktype";
 import { resumeDataInputSchema, type ResumeDataInput } from "./resume-data-input-schema.ts";
 
@@ -32,12 +32,12 @@ function parseResumeEntry(resumeDataInput: ResumeDataInput): ResumeData {
 	};
 }
 
-export function parseResumeData(resumeData: unknown): Result<ResumesData, string> {
+export function parseResumeData(resumeData: unknown): Result<ResumesData, TypeError> {
 	const parseResult = resumeDataInputSchema(resumeData);
 
 	if (parseResult instanceof type.errors) {
-		return Result.err(parseResult.summary);
+		return err(new TypeError(parseResult.summary));
 	}
 
-	return Result.ok(parseResult.map(parseResumeEntry));
+	return ok(parseResult.map(parseResumeEntry));
 }

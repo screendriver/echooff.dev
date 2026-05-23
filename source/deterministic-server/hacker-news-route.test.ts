@@ -8,8 +8,8 @@ describe("hacker news route", () => {
 		const response = await application.request(
 			"/hacker-news?query=https://www.echooff.dev/blog/why-i-started-this-blog"
 		);
-		const actual: unknown = await response.json();
-		const expected = {
+		const actualResponseBody: unknown = await response.json();
+		const expectedResponseBody = {
 			hits: [
 				{
 					created_at: "2026-04-02T10:00:00.000Z",
@@ -22,6 +22,6 @@ describe("hacker news route", () => {
 			]
 		};
 
-		expect(actual).toStrictEqual(expected);
+		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
 	});
 });

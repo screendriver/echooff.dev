@@ -9,33 +9,36 @@ import {
 
 describe("createEmptyWebmentionSectionModel()", () => {
 	it("creates an empty section model", () => {
-		expect(createEmptyWebmentionSectionModel()).toStrictEqual({
+		const actualSectionModel = createEmptyWebmentionSectionModel();
+		const expectedSectionModel = {
 			reactions: {
 				bookmarkCount: 0,
 				likeCount: 0,
 				repostCount: 0
 			},
 			replies: []
-		});
+		};
+
+		expect(actualSectionModel).toStrictEqual(expectedSectionModel);
 	});
 });
 
 describe("createWebmentionApiRequestUrl()", () => {
 	it("creates the API request URL for a target URL", () => {
-		expect(
-			createWebmentionApiRequestUrl({
-				targetUrl: "https://www.echooff.dev/blog/why-i-started-this-blog",
-				webmentionApiUrl: new URL("https://webmention.io/api/mentions.jf2")
-			})
-		).toBe(
-			"https://webmention.io/api/mentions.jf2?per-page=100&target=https%3A%2F%2Fwww.echooff.dev%2Fblog%2Fwhy-i-started-this-blog"
-		);
+		const actualRequestUrl = createWebmentionApiRequestUrl({
+			targetUrl: "https://www.echooff.dev/blog/why-i-started-this-blog",
+			webmentionApiUrl: new URL("https://webmention.io/api/mentions.jf2")
+		});
+		const expectedRequestUrl =
+			"https://webmention.io/api/mentions.jf2?per-page=100&target=https%3A%2F%2Fwww.echooff.dev%2Fblog%2Fwhy-i-started-this-blog";
+
+		expect(actualRequestUrl).toBe(expectedRequestUrl);
 	});
 });
 
 describe("parseWebmentionApiResponse()", () => {
 	it("groups public reactions and replies while filtering invalid entries", () => {
-		const sectionModel = parseWebmentionApiResponse({
+		const actualSectionModel = parseWebmentionApiResponse({
 			children: [
 				{
 					author: {
@@ -85,7 +88,7 @@ describe("parseWebmentionApiResponse()", () => {
 			]
 		});
 
-		expect(sectionModel).toStrictEqual({
+		const expectedSectionModel = {
 			reactions: {
 				bookmarkCount: 1,
 				likeCount: 1,
@@ -115,11 +118,13 @@ describe("parseWebmentionApiResponse()", () => {
 					visiblePublishedAt: Maybe.just("2026-03-24T10:00:00+00:00")
 				}
 			]
-		});
+		};
+
+		expect(actualSectionModel).toStrictEqual(expectedSectionModel);
 	});
 
 	it("falls back to the received date and source hostname when the payload omits them", () => {
-		const sectionModel = parseWebmentionApiResponse({
+		const actualSectionModel = parseWebmentionApiResponse({
 			children: [
 				{
 					"wm-received": "2026-03-26T09:45:00+00:00",
@@ -129,7 +134,8 @@ describe("parseWebmentionApiResponse()", () => {
 			]
 		});
 
-		expect(sectionModel.replies).toStrictEqual([
+		const actualReplies = actualSectionModel.replies;
+		const expectedReplies = [
 			{
 				author: {
 					name: "remote.example",
@@ -141,11 +147,13 @@ describe("parseWebmentionApiResponse()", () => {
 				type: "mention",
 				visiblePublishedAt: Maybe.just("2026-03-26T09:45:00+00:00")
 			}
-		]);
+		];
+
+		expect(actualReplies).toStrictEqual(expectedReplies);
 	});
 
 	it("prefers summarized content over the full text content", () => {
-		const sectionModel = parseWebmentionApiResponse({
+		const actualSectionModel = parseWebmentionApiResponse({
 			children: [
 				{
 					content: {
@@ -158,11 +166,14 @@ describe("parseWebmentionApiResponse()", () => {
 			]
 		});
 
-		expect(sectionModel.replies[0]?.content).toStrictEqual(Maybe.just("Short summary"));
+		const actualContent = actualSectionModel.replies[0]?.content;
+		const expectedContent = Maybe.just("Short summary");
+
+		expect(actualContent).toStrictEqual(expectedContent);
 	});
 
 	it("truncates long rendered content", () => {
-		const sectionModel = parseWebmentionApiResponse({
+		const actualSectionModel = parseWebmentionApiResponse({
 			children: [
 				{
 					content: {
@@ -173,10 +184,14 @@ describe("parseWebmentionApiResponse()", () => {
 				}
 			]
 		});
-		const renderedContent = sectionModel.replies[0]?.content.unwrapOr("");
+		const actualRenderedContent = actualSectionModel.replies[0]?.content.unwrapOr("") ?? "";
+		const actualRenderedContentLength = actualRenderedContent.length;
+		const expectedRenderedContentLength = 280;
+		const actualEndsWithEllipsis = actualRenderedContent.endsWith("…");
+		const expectedEndsWithEllipsis = true;
 
-		expect(renderedContent).toHaveLength(280);
-		expect((renderedContent ?? "").endsWith("…")).toBe(true);
+		expect(actualRenderedContentLength).toBe(expectedRenderedContentLength);
+		expect(actualEndsWithEllipsis).toBe(expectedEndsWithEllipsis);
 	});
 });
 
@@ -204,10 +219,15 @@ describe("loadWebmentionsForTargetUrl()", () => {
 			"https://www.echooff.dev/blog/why-i-started-this-blog"
 		);
 
-		expect(fetchImplementation).toHaveBeenCalledWith(
-			"https://webmention.io/api/mentions.jf2?per-page=100&target=https%3A%2F%2Fwww.echooff.dev%2Fblog%2Fwhy-i-started-this-blog"
-		);
-		expect(sectionModel.reactions.likeCount).toBe(1);
+		const expectedFetchCall =
+			"https://webmention.io/api/mentions.jf2?per-page=100&target=https%3A%2F%2Fwww.echooff.dev%2Fblog%2Fwhy-i-started-this-blog";
+		const actualLikeCount = sectionModel.reactions.likeCount;
+		const expectedLikeCount = 1;
+
+		const actualFetchImplementation = fetchImplementation;
+
+		expect(actualFetchImplementation).toHaveBeenCalledWith(expectedFetchCall);
+		expect(actualLikeCount).toBe(expectedLikeCount);
 	});
 
 	it("throws when the API request fails", async () => {
@@ -219,13 +239,16 @@ describe("loadWebmentionsForTargetUrl()", () => {
 			status: 503
 		} as Response);
 
-		await expect(async () => {
+		const actualLoadOperation = async (): Promise<Awaited<ReturnType<typeof loadWebmentionsForTargetUrl>>> => {
 			return loadWebmentionsForTargetUrl(
 				{
 					fetch: fetchImplementation
 				},
 				"https://www.echooff.dev/blog/why-i-started-this-blog"
 			);
-		}).rejects.toThrow("Webmention API request failed with status 503");
+		};
+		const expectedErrorMessage = "Webmention API request failed with status 503";
+
+		await expect(actualLoadOperation).rejects.toThrow(expectedErrorMessage);
 	});
 });

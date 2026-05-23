@@ -30,9 +30,12 @@ function testExecuteGraphQLQuery(testInput: TestFetchGitHubStatisticsInput): Tes
 		});
 
 		await executeGraphQLQuery(fetchGitHubStatisticsOptions);
+		const actualGraphqlCallCount = graphql.callCount;
+		const expectedGraphqlCallCount = 1;
+		const actualRequestParameters = graphql.args[0]?.[0]?.[requestParameter];
 
-		expect(graphql.callCount).toBe(1);
-		expect(graphql.args[0]?.[0]?.[requestParameter]).toStrictEqual(expectedRequestParameters);
+		expect(actualGraphqlCallCount).toBe(expectedGraphqlCallCount);
+		expect(actualRequestParameters).toStrictEqual(expectedRequestParameters);
 	};
 }
 

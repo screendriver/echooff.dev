@@ -4,78 +4,108 @@ import { parseHackerNewsApiUrl, parseWebmentionApiUrl } from "./environment-vari
 
 describe("hacker news API URL schema", () => {
 	it("does not allow booleans", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			hackerNewsApiUrlInputSchema.assert(true);
-		}).toThrow("must be a string (was boolean)");
+		};
+		const expectedErrorMessage = "must be a string (was boolean)";
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("does not allow numbers", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			hackerNewsApiUrlInputSchema.assert(42);
-		}).toThrow("must be a string (was a number)");
+		};
+		const expectedErrorMessage = "must be a string (was a number)";
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("does not allow empty strings", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			hackerNewsApiUrlInputSchema.assert("");
-		}).toThrow('must be a URL string (was "")');
+		};
+		const expectedErrorMessage = 'must be a URL string (was "")';
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("does not allow strings that are not a URL", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			hackerNewsApiUrlInputSchema.assert("foo");
-		}).toThrow('must be a URL string (was "foo")');
+		};
+		const expectedErrorMessage = 'must be a URL string (was "foo")';
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("allows a string URL", () => {
-		const hackerNewsApiUrl = hackerNewsApiUrlInputSchema.assert("https://hn.algolia.com/api/v1/search_by_date");
+		const actualHackerNewsApiUrl = hackerNewsApiUrlInputSchema.assert(
+			"https://hn.algolia.com/api/v1/search_by_date"
+		);
+		const expectedHackerNewsApiUrl = "https://hn.algolia.com/api/v1/search_by_date";
 
-		expect(hackerNewsApiUrl).toBe("https://hn.algolia.com/api/v1/search_by_date");
+		expect(actualHackerNewsApiUrl).toBe(expectedHackerNewsApiUrl);
 	});
 
 	it("parses a string URL into a URL instance", () => {
 		const hackerNewsApiUrl = parseHackerNewsApiUrl("https://hn.algolia.com/api/v1/search_by_date");
+		const actualHackerNewsApiUrl = hackerNewsApiUrl.toString();
+		const expectedHackerNewsApiUrl = new URL("https://hn.algolia.com/api/v1/search_by_date").toString();
 
-		expect(hackerNewsApiUrl.toString()).toStrictEqual(
-			new URL("https://hn.algolia.com/api/v1/search_by_date").toString()
-		);
+		expect(actualHackerNewsApiUrl).toStrictEqual(expectedHackerNewsApiUrl);
 	});
 });
 
 describe("webmention API URL schema", () => {
 	it("does not allow booleans", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			webmentionApiUrlInputSchema.assert(true);
-		}).toThrow("must be a string (was boolean)");
+		};
+		const expectedErrorMessage = "must be a string (was boolean)";
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("does not allow numbers", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			webmentionApiUrlInputSchema.assert(42);
-		}).toThrow("must be a string (was a number)");
+		};
+		const expectedErrorMessage = "must be a string (was a number)";
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("does not allow empty strings", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			webmentionApiUrlInputSchema.assert("");
-		}).toThrow('must be a URL string (was "")');
+		};
+		const expectedErrorMessage = 'must be a URL string (was "")';
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("does not allow strings that are not a URL", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			webmentionApiUrlInputSchema.assert("foo");
-		}).toThrow('must be a URL string (was "foo")');
+		};
+		const expectedErrorMessage = 'must be a URL string (was "foo")';
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("allows a string URL", () => {
-		const webmentionApiUrl = webmentionApiUrlInputSchema.assert("https://webmention.io/api/mentions.jf2");
+		const actualWebmentionApiUrl = webmentionApiUrlInputSchema.assert("https://webmention.io/api/mentions.jf2");
+		const expectedWebmentionApiUrl = "https://webmention.io/api/mentions.jf2";
 
-		expect(webmentionApiUrl).toBe("https://webmention.io/api/mentions.jf2");
+		expect(actualWebmentionApiUrl).toBe(expectedWebmentionApiUrl);
 	});
 
 	it("parses a string URL into a URL instance", () => {
 		const webmentionApiUrl = parseWebmentionApiUrl("https://webmention.io/api/mentions.jf2");
+		const actualWebmentionApiUrl = webmentionApiUrl.toString();
+		const expectedWebmentionApiUrl = new URL("https://webmention.io/api/mentions.jf2").toString();
 
-		expect(webmentionApiUrl.toString()).toStrictEqual(new URL("https://webmention.io/api/mentions.jf2").toString());
+		expect(actualWebmentionApiUrl).toStrictEqual(expectedWebmentionApiUrl);
 	});
 });

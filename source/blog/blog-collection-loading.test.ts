@@ -29,23 +29,28 @@ async function readAstroGeneratedDataStoreDocument(): Promise<string> {
 
 describe("blog content collection", () => {
 	it("loads every blog markdown file into Astro's generated data store", async () => {
-		const [astroGeneratedDataStoreDocument, expectedBlogPostIdentifiers] = await Promise.all([
+		const [actualAstroGeneratedDataStoreDocument, expectedBlogPostIdentifiers] = await Promise.all([
 			readAstroGeneratedDataStoreDocument(),
 			readExpectedBlogPostIdentifiersFromMarkdownFiles()
 		]);
+		const expectedBlogCollectionMarker = '"blog"';
 
-		expect(astroGeneratedDataStoreDocument).toContain('"blog"');
+		expect(actualAstroGeneratedDataStoreDocument).toContain(expectedBlogCollectionMarker);
 
 		for (const expectedBlogPostIdentifier of expectedBlogPostIdentifiers) {
-			expect(astroGeneratedDataStoreDocument).toContain(`"${expectedBlogPostIdentifier}"`);
+			const expectedBlogPostIdentifierMarker = `"${expectedBlogPostIdentifier}"`;
+
+			expect(actualAstroGeneratedDataStoreDocument).toContain(expectedBlogPostIdentifierMarker);
 		}
 	});
 
 	it("does not use blog post identifiers reserved for blog routes", async () => {
-		const blogPostIdentifiers = await readExpectedBlogPostIdentifiersFromMarkdownFiles();
+		const actualBlogPostIdentifiers = await readExpectedBlogPostIdentifiersFromMarkdownFiles();
 
 		for (const blogPostIdentifierReservedForRoute of blogPostIdentifiersReservedForRoutes) {
-			expect(blogPostIdentifiers).not.toContain(blogPostIdentifierReservedForRoute);
+			const expectedReservedBlogPostIdentifier = blogPostIdentifierReservedForRoute;
+
+			expect(actualBlogPostIdentifiers).not.toContain(expectedReservedBlogPostIdentifier);
 		}
 	});
 });

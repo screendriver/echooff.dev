@@ -80,7 +80,10 @@ function findUnquotedFrontmatterStringProperties(
 describe("blog frontmatter style", () => {
 	it("uses quoted strings for reader-facing blog post metadata", async () => {
 		const blogPostFrontmatterDocuments = await readBlogPostFrontmatterDocuments();
+		const actualUnquotedFrontmatterStringProperties =
+			findUnquotedFrontmatterStringProperties(blogPostFrontmatterDocuments);
+		const expectedUnquotedFrontmatterStringProperties: readonly UnquotedFrontmatterStringProperty[] = [];
 
-		expect(findUnquotedFrontmatterStringProperties(blogPostFrontmatterDocuments)).toStrictEqual([]);
+		expect(actualUnquotedFrontmatterStringProperties).toStrictEqual(expectedUnquotedFrontmatterStringProperties);
 	});
 });

@@ -27,8 +27,8 @@ describe("graphql route", () => {
 			})
 		});
 
-		const actual: unknown = await response.json();
-		const expected = {
+		const actualResponseBody: unknown = await response.json();
+		const expectedResponseBody = {
 			data: {
 				user: {
 					starredRepositories: { totalCount: 101 },
@@ -36,13 +36,23 @@ describe("graphql route", () => {
 				}
 			}
 		};
+		const actualRateLimitHeader = response.headers.get("x-ratelimit-limit");
+		const expectedRateLimitHeader = "5000";
+		const actualRemainingHeader = response.headers.get("x-ratelimit-remaining");
+		const expectedRemainingHeader = "4987";
+		const actualResetHeader = response.headers.get("x-ratelimit-reset");
+		const expectedResetHeader = "1635919119";
+		const actualResourceHeader = response.headers.get("x-ratelimit-resource");
+		const expectedResourceHeader = "graphql";
+		const actualUsedHeader = response.headers.get("x-ratelimit-used");
+		const expectedUsedHeader = "13";
 
-		expect(actual).toStrictEqual(expected);
-		expect(response.headers.get("x-ratelimit-limit")).toBe("5000");
-		expect(response.headers.get("x-ratelimit-remaining")).toBe("4987");
-		expect(response.headers.get("x-ratelimit-reset")).toBe("1635919119");
-		expect(response.headers.get("x-ratelimit-resource")).toBe("graphql");
-		expect(response.headers.get("x-ratelimit-used")).toBe("13");
+		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
+		expect(actualRateLimitHeader).toBe(expectedRateLimitHeader);
+		expect(actualRemainingHeader).toBe(expectedRemainingHeader);
+		expect(actualResetHeader).toBe(expectedResetHeader);
+		expect(actualResourceHeader).toBe(expectedResourceHeader);
+		expect(actualUsedHeader).toBe(expectedUsedHeader);
 	});
 
 	it("rejects requests when the accept header is missing", async () => {
@@ -59,11 +69,15 @@ describe("graphql route", () => {
 				query: "{}"
 			})
 		});
-
-		expect(response.status).toBe(400);
-		await expect(response.json()).resolves.toStrictEqual({
+		const actualResponseStatus = response.status;
+		const actualResponseBody: unknown = await response.json();
+		const expectedResponseStatus = 400;
+		const expectedResponseBody = {
 			error: "The accept header must be application/vnd.github.v3+json."
-		});
+		};
+
+		expect(actualResponseStatus).toBe(expectedResponseStatus);
+		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
 	});
 
 	it("rejects requests when the query body field is missing", async () => {
@@ -79,10 +93,14 @@ describe("graphql route", () => {
 			},
 			body: JSON.stringify({})
 		});
-
-		expect(response.status).toBe(400);
-		await expect(response.json()).resolves.toStrictEqual({
+		const actualResponseStatus = response.status;
+		const actualResponseBody: unknown = await response.json();
+		const expectedResponseStatus = 400;
+		const expectedResponseBody = {
 			error: "The request body must contain a query string."
-		});
+		};
+
+		expect(actualResponseStatus).toBe(expectedResponseStatus);
+		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
 	});
 });

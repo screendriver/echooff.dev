@@ -20,12 +20,14 @@ describe("webmention response schema", () => {
 				}
 			]
 		});
+		const actualAuthorName = validatedPayload.children?.[0]?.author?.name;
+		const expectedAuthorName = "Jane Doe";
 
-		expect(validatedPayload.children?.[0]?.author?.name).toBe("Jane Doe");
+		expect(actualAuthorName).toBe(expectedAuthorName);
 	});
 
 	it("rejects an invalid payload", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			webmentionApiResponseSchema.assert({
 				children: [
 					{
@@ -35,6 +37,9 @@ describe("webmention response schema", () => {
 					}
 				]
 			});
-		}).toThrow("children[0].author.name must be a string");
+		};
+		const expectedErrorMessage = "children[0].author.name must be a string";
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 });

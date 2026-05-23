@@ -4,7 +4,7 @@ import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.ts";
 
 describe("createRssFeedItemsForBlogPosts()", () => {
 	it("creates RSS feed items for blog posts", () => {
-		const rssFeedItems = createRssFeedItemsForBlogPosts(
+		const actualRssFeedItems = createRssFeedItemsForBlogPosts(
 			[
 				createBlogPostCollectionEntry({
 					description: "Why I started writing on echooff.dev",
@@ -16,19 +16,20 @@ describe("createRssFeedItemsForBlogPosts()", () => {
 			],
 			new URL("https://www.echooff.dev")
 		);
-
-		expect(rssFeedItems).toStrictEqual([
+		const expectedRssFeedItems = [
 			{
 				title: "Why I started this Blog",
 				description: "Why I started writing on echooff.dev",
 				link: "https://www.echooff.dev/blog/why-i-started-this-blog",
 				pubDate: new Date("2026-02-28T12:39:00+01:00")
 			}
-		]);
+		];
+
+		expect(actualRssFeedItems).toStrictEqual(expectedRssFeedItems);
 	});
 
 	it("throws when a blog post publication timestamp is invalid", () => {
-		expect(() => {
+		const actualCreateFeedOperation = (): void => {
 			createRssFeedItemsForBlogPosts(
 				[
 					createBlogPostCollectionEntry({
@@ -41,6 +42,9 @@ describe("createRssFeedItemsForBlogPosts()", () => {
 				],
 				new URL("https://www.echooff.dev")
 			);
-		}).toThrow('Published at "not-a-date" is not a valid ISO 8601 date-time');
+		};
+		const expectedErrorMessage = 'Published at "not-a-date" is not a valid ISO 8601 date-time';
+
+		expect(actualCreateFeedOperation).toThrow(expectedErrorMessage);
 	});
 });

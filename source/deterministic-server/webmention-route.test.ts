@@ -8,8 +8,8 @@ describe("webmention route", () => {
 		const response = await application.request(
 			"/webmentions?target=https://www.echooff.dev/blog/why-i-started-this-blog"
 		);
-		const actual: unknown = await response.json();
-		const expected = {
+		const actualResponseBody: unknown = await response.json();
+		const expectedResponseBody = {
 			children: [
 				{
 					author: {
@@ -47,17 +47,21 @@ describe("webmention route", () => {
 			]
 		};
 
-		expect(actual).toStrictEqual(expected);
+		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
 	});
 
 	it("returns a deterministic avatar asset", async () => {
 		const application = createDeterministicServerApplication();
 
 		const response = await application.request("/webmention-avatar.svg");
-		const body = await response.text();
+		const actualResponseBody = await response.text();
+		const actualContentType = response.headers.get("content-type");
+		const expectedContentType = "image/svg+xml; charset=utf-8";
+		const expectedSvgMarker = "<svg";
+		const expectedAccentColor = "#8BE9FD";
 
-		expect(response.headers.get("content-type")).toBe("image/svg+xml; charset=utf-8");
-		expect(body).toContain("<svg");
-		expect(body).toContain("#8BE9FD");
+		expect(actualContentType).toBe(expectedContentType);
+		expect(actualResponseBody).toContain(expectedSvgMarker);
+		expect(actualResponseBody).toContain(expectedAccentColor);
 	});
 });

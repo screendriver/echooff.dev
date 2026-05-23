@@ -11,26 +11,33 @@ import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.ts";
 
 describe("getBlogPostTopicDetails()", () => {
 	it("returns the stable display label and URL slug for a topic", () => {
-		expect(getBlogPostTopicDetails("TypeScript")).toMatchObject({
+		const actualTopicDetails = getBlogPostTopicDetails("TypeScript");
+		const expectedTopicDetails = {
 			label: "TypeScript",
 			slug: "typescript"
-		});
+		};
+
+		expect(actualTopicDetails).toMatchObject(expectedTopicDetails);
 	});
 });
 
 describe("getBlogPostTopicDetailsBySlug()", () => {
 	it("returns a topic details Maybe for a known topic slug", () => {
-		expect(getBlogPostTopicDetailsBySlug("typescript")).toStrictEqual(
-			Maybe.just({
-				description: "TypeScript patterns that make intent, failures, and domain rules explicit.",
-				label: "TypeScript",
-				slug: "typescript"
-			})
-		);
+		const actualTopicDetails = getBlogPostTopicDetailsBySlug("typescript");
+		const expectedTopicDetails = Maybe.just({
+			description: "TypeScript patterns that make intent, failures, and domain rules explicit.",
+			label: "TypeScript",
+			slug: "typescript"
+		});
+
+		expect(actualTopicDetails).toStrictEqual(expectedTopicDetails);
 	});
 
 	it("returns Nothing for an unknown topic slug", () => {
-		expect(getBlogPostTopicDetailsBySlug("unknown")).toStrictEqual(Maybe.nothing());
+		const actualTopicDetails = getBlogPostTopicDetailsBySlug("unknown");
+		const expectedTopicDetails = Maybe.nothing();
+
+		expect(actualTopicDetails).toStrictEqual(expectedTopicDetails);
 	});
 });
 
@@ -52,9 +59,13 @@ describe("groupBlogPostsByTopic()", () => {
 		});
 
 		const blogPostsByTopic = groupBlogPostsByTopic([typeScriptBlogPost, testingBlogPost]);
+		const actualTypeScriptBlogPosts = blogPostsByTopic.get("TypeScript");
+		const expectedTypeScriptBlogPosts = [typeScriptBlogPost];
+		const actualTestingBlogPosts = blogPostsByTopic.get("Testing");
+		const expectedTestingBlogPosts = [testingBlogPost];
 
-		expect(blogPostsByTopic.get("TypeScript")).toStrictEqual([typeScriptBlogPost]);
-		expect(blogPostsByTopic.get("Testing")).toStrictEqual([testingBlogPost]);
+		expect(actualTypeScriptBlogPosts).toStrictEqual(expectedTypeScriptBlogPosts);
+		expect(actualTestingBlogPosts).toStrictEqual(expectedTestingBlogPosts);
 	});
 });
 
@@ -75,7 +86,8 @@ describe("createBlogPostTopicArchiveEntries()", () => {
 			topic: "Architecture"
 		});
 
-		expect(createBlogPostTopicArchiveEntries([testingBlogPost, architectureBlogPost])).toMatchObject([
+		const actualTopicArchiveEntries = createBlogPostTopicArchiveEntries([testingBlogPost, architectureBlogPost]);
+		const expectedTopicArchiveEntries = [
 			{
 				label: "Architecture",
 				postCount: 1,
@@ -86,7 +98,9 @@ describe("createBlogPostTopicArchiveEntries()", () => {
 				postCount: 1,
 				slug: "testing"
 			}
-		]);
+		];
+
+		expect(actualTopicArchiveEntries).toMatchObject(expectedTopicArchiveEntries);
 	});
 });
 
@@ -100,18 +114,24 @@ describe("createBlogPostTopicArchiveEntryForSlug()", () => {
 			topic: "TypeScript"
 		});
 
-		expect(createBlogPostTopicArchiveEntryForSlug([blogPost], "typescript")).toStrictEqual(
-			Maybe.just({
-				description: "TypeScript patterns that make intent, failures, and domain rules explicit.",
-				label: "TypeScript",
-				postCount: 1,
-				slug: "typescript"
-			})
-		);
+		const actualTopicArchiveEntry = createBlogPostTopicArchiveEntryForSlug([blogPost], "typescript");
+		const expectedTopicArchiveEntry = Maybe.just({
+			description: "TypeScript patterns that make intent, failures, and domain rules explicit.",
+			label: "TypeScript",
+			postCount: 1,
+			slug: "typescript"
+		});
+
+		expect(actualTopicArchiveEntry).toStrictEqual(expectedTopicArchiveEntry);
 	});
 
 	it("returns Nothing for an unknown or empty topic slug", () => {
-		expect(createBlogPostTopicArchiveEntryForSlug([], "typescript")).toStrictEqual(Maybe.nothing());
-		expect(createBlogPostTopicArchiveEntryForSlug([], "unknown")).toStrictEqual(Maybe.nothing());
+		const actualKnownTopicResult = createBlogPostTopicArchiveEntryForSlug([], "typescript");
+		const expectedKnownTopicResult = Maybe.nothing();
+		const actualUnknownTopicResult = createBlogPostTopicArchiveEntryForSlug([], "unknown");
+		const expectedUnknownTopicResult = Maybe.nothing();
+
+		expect(actualKnownTopicResult).toStrictEqual(expectedKnownTopicResult);
+		expect(actualUnknownTopicResult).toStrictEqual(expectedUnknownTopicResult);
 	});
 });

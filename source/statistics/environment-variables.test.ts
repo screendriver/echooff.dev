@@ -8,98 +8,139 @@ import { parseGitHubApiToken, parseGitHubBaseUrl, parseGitHubLogin } from "./env
 
 describe("gitHub base URL schema", () => {
 	it("does not allow booleans", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			gitHubBaseUrlInputSchema.assert(true);
-		}).toThrow("must be a string (was boolean)");
+		};
+		const expectedErrorMessage = "must be a string (was boolean)";
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("does not allow numbers", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			gitHubBaseUrlInputSchema.assert(42);
-		}).toThrow("must be a string (was a number)");
+		};
+		const expectedErrorMessage = "must be a string (was a number)";
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("does not allow empty strings", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			gitHubBaseUrlInputSchema.assert("");
-		}).toThrow('must be a URL string (was "")');
+		};
+		const expectedErrorMessage = 'must be a URL string (was "")';
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("does not allow strings that are not an URL", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			gitHubBaseUrlInputSchema.assert("foo");
-		}).toThrow('must be a URL string (was "foo")');
+		};
+		const expectedErrorMessage = 'must be a URL string (was "foo")';
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("allows a string URL", () => {
-		const gitHubBaseUrl = gitHubBaseUrlInputSchema.assert("https://example.com");
+		const actualGitHubBaseUrl = gitHubBaseUrlInputSchema.assert("https://example.com");
+		const expectedGitHubBaseUrl = "https://example.com";
 
-		expect(gitHubBaseUrl).toBe("https://example.com");
+		expect(actualGitHubBaseUrl).toBe(expectedGitHubBaseUrl);
 	});
 
 	it("parses a string URL into a URL instance", () => {
 		const gitHubBaseUrl = parseGitHubBaseUrl("https://example.com");
+		const actualGitHubBaseUrl = gitHubBaseUrl.toString();
+		const expectedGitHubBaseUrl = new URL("https://example.com").toString();
 
-		expect(gitHubBaseUrl.toString()).toStrictEqual(new URL("https://example.com").toString());
+		expect(actualGitHubBaseUrl).toStrictEqual(expectedGitHubBaseUrl);
 	});
 });
 
 describe("gitHub login schema", () => {
 	it("does not allow booleans", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			gitHubLoginInputSchema.assert(true);
-		}).toThrow("must be a string (was boolean)");
+		};
+		const expectedErrorMessage = "must be a string (was boolean)";
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("does not allow numbers", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			gitHubLoginInputSchema.assert(42);
-		}).toThrow("must be a string (was a number)");
+		};
+		const expectedErrorMessage = "must be a string (was a number)";
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("does not allow empty strings", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			gitHubLoginInputSchema.assert("");
-		}).toThrow("must be non-empty");
+		};
+		const expectedErrorMessage = "must be non-empty";
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("allows non empty strings", () => {
-		const gitHubLogin = gitHubLoginInputSchema.assert("foo");
+		const actualGitHubLogin = gitHubLoginInputSchema.assert("foo");
+		const expectedGitHubLogin = "foo";
 
-		expect(gitHubLogin).toBe("foo");
+		expect(actualGitHubLogin).toBe(expectedGitHubLogin);
 	});
 
 	it("parses a validated login string", () => {
-		expect(parseGitHubLogin("foo")).toBe("foo");
+		const actualGitHubLogin = parseGitHubLogin("foo");
+		const expectedGitHubLogin = "foo";
+
+		expect(actualGitHubLogin).toBe(expectedGitHubLogin);
 	});
 });
 
 describe("gitHub API token schema", () => {
 	it("does not allow booleans", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			gitHubApiTokenInputSchema.assert(true);
-		}).toThrow("must be a string (was boolean)");
+		};
+		const expectedErrorMessage = "must be a string (was boolean)";
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("does not allow numbers", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			gitHubApiTokenInputSchema.assert(42);
-		}).toThrow("must be a string (was a number)");
+		};
+		const expectedErrorMessage = "must be a string (was a number)";
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("does not allow empty strings", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			gitHubApiTokenInputSchema.assert("");
-		}).toThrow("must be non-empty");
+		};
+		const expectedErrorMessage = "must be non-empty";
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 
 	it("allows non empty strings", () => {
-		const gitHubLogin = gitHubApiTokenInputSchema.assert("foo");
+		const actualGitHubApiToken = gitHubApiTokenInputSchema.assert("foo");
+		const expectedGitHubApiToken = "foo";
 
-		expect(gitHubLogin).toBe("foo");
+		expect(actualGitHubApiToken).toBe(expectedGitHubApiToken);
 	});
 
 	it("parses a validated API token string", () => {
-		expect(parseGitHubApiToken("foo")).toBe("foo");
+		const actualGitHubApiToken = parseGitHubApiToken("foo");
+		const expectedGitHubApiToken = "foo";
+
+		expect(actualGitHubApiToken).toBe(expectedGitHubApiToken);
 	});
 });

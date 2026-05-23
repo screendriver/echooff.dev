@@ -8,8 +8,10 @@ import {
 describe("validateInternalBlogPostLinks()", () => {
 	it("accepts the current blog post links", async () => {
 		const blogPostMarkdownDocuments = await readBlogPostMarkdownDocuments();
+		const actualValidationProblems = await validateInternalBlogPostLinks(blogPostMarkdownDocuments);
+		const expectedValidationProblems: readonly unknown[] = [];
 
-		await expect(validateInternalBlogPostLinks(blogPostMarkdownDocuments)).resolves.toStrictEqual([]);
+		expect(actualValidationProblems).toStrictEqual(expectedValidationProblems);
 	});
 
 	it("reports a missing internal route target", async () => {
@@ -20,13 +22,16 @@ describe("validateInternalBlogPostLinks()", () => {
 			}
 		];
 
-		await expect(validateInternalBlogPostLinks(blogPostMarkdownDocuments)).resolves.toStrictEqual([
+		const actualValidationProblems = await validateInternalBlogPostLinks(blogPostMarkdownDocuments);
+		const expectedValidationProblems = [
 			{
 				href: "/blog/missing-post",
 				message: 'Target path "/blog/missing-post" does not exist',
 				sourceBlogPostSlug: "post-a"
 			}
-		]);
+		];
+
+		expect(actualValidationProblems).toStrictEqual(expectedValidationProblems);
 	});
 
 	it("reports a missing blog heading fragment", async () => {
@@ -41,13 +46,16 @@ describe("validateInternalBlogPostLinks()", () => {
 			}
 		];
 
-		await expect(validateInternalBlogPostLinks(blogPostMarkdownDocuments)).resolves.toStrictEqual([
+		const actualValidationProblems = await validateInternalBlogPostLinks(blogPostMarkdownDocuments);
+		const expectedValidationProblems = [
 			{
 				href: "/blog/post-a#missing-heading",
 				message: 'Fragment "missing-heading" does not exist on "/blog/post-a"',
 				sourceBlogPostSlug: "post-b"
 			}
-		]);
+		];
+
+		expect(actualValidationProblems).toStrictEqual(expectedValidationProblems);
 	});
 
 	it("ignores external links and markdown code examples", async () => {
@@ -66,6 +74,9 @@ describe("validateInternalBlogPostLinks()", () => {
 			}
 		];
 
-		await expect(validateInternalBlogPostLinks(blogPostMarkdownDocuments)).resolves.toStrictEqual([]);
+		const actualValidationProblems = await validateInternalBlogPostLinks(blogPostMarkdownDocuments);
+		const expectedValidationProblems: readonly unknown[] = [];
+
+		expect(actualValidationProblems).toStrictEqual(expectedValidationProblems);
 	});
 });

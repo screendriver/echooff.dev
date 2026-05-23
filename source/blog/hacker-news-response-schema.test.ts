@@ -15,12 +15,14 @@ describe("hacker news response schema", () => {
 				}
 			]
 		});
+		const actualObjectIdentifier = validatedPayload.hits?.[0]?.objectID;
+		const expectedObjectIdentifier = "44000001";
 
-		expect(validatedPayload.hits?.[0]?.objectID).toBe("44000001");
+		expect(actualObjectIdentifier).toBe(expectedObjectIdentifier);
 	});
 
 	it("rejects an invalid payload", () => {
-		expect(() => {
+		const actualAssertionOperation = (): void => {
 			hackerNewsApiResponseSchema.assert({
 				hits: [
 					{
@@ -28,6 +30,9 @@ describe("hacker news response schema", () => {
 					}
 				]
 			});
-		}).toThrow("hits[0].objectID must be a string");
+		};
+		const expectedErrorMessage = "hits[0].objectID must be a string";
+
+		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
 	});
 });

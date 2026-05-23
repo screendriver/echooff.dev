@@ -1,4 +1,5 @@
 ---
+import { isErr } from "true-myth/result";
 import { icons } from "feather-icons";
 import { parseResumeData } from "./resume-data.js";
 import resumeDate from "./resumeData.json";
@@ -6,8 +7,8 @@ import ResumeTimelineItem from "./ResumeTimelineItem.astro";
 
 const parsedResumeResult = parseResumeData(resumeDate);
 
-if (parsedResumeResult.isErr) {
-	throw new Error(parsedResumeResult.error);
+if (isErr(parsedResumeResult)) {
+	throw parsedResumeResult.error;
 }
 
 const resume = parsedResumeResult.value;
