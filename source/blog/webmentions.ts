@@ -1,6 +1,7 @@
 import is from "@sindresorhus/is";
 import { match } from "ts-pattern";
 import { Maybe } from "true-myth";
+import { recordFailedWebmentionBuildMentionLoad, recordWebmentionBuildMentionTotals } from "./build-mention-totals.ts";
 import { parseWebmentionApiUrl } from "./environment-variables.ts";
 import { webmentionApiResponseSchema } from "./webmention-response-schema.ts";
 
@@ -381,21 +382,29 @@ export async function loadWebmentionsForTargetUrl(
 	dependencies: WebmentionDependencies,
 	targetUrl: string
 ): Promise<WebmentionSectionModel> {
-	const webmentionApiUrl = parseWebmentionApiUrl(
-		import.meta.env.WEBMENTION_API_URL ?? "https://webmention.io/api/mentions.jf2"
-	);
-	const response = await dependencies.fetch(
-		createWebmentionApiRequestUrl({
-			targetUrl,
-			webmentionApiUrl
-		})
-	);
+	try {
+		const webmentionApiUrl = parseWebmentionApiUrl(
+			import.meta.env.WEBMENTION_API_URL ?? "https://webmention.io/api/mentions.jf2"
+		);
+		const response = await dependencies.fetch(
+			createWebmentionApiRequestUrl({
+				targetUrl,
+				webmentionApiUrl
+			})
+		);
 
-	if (!response.ok) {
-		throw new Error(`Webmention API request failed with status ${response.status}`);
+		if (!response.ok) {
+			throw new Error(`Webmention API request failed with status ${response.status}`);
+		}
+
+		const webmentionApiResponse: unknown = await response.json();
+		const webmentionSectionModel = parseWebmentionApiResponse(webmentionApiResponse);
+
+		recordWebmentionBuildMentionTotals(webmentionSectionModel);
+
+		return webmentionSectionModel;
+	} catch (error: unknown) {
+		recordFailedWebmentionBuildMentionLoad();
+		throw error;
 	}
-
-	const webmentionApiResponse: unknown = await response.json();
-
-	return parseWebmentionApiResponse(webmentionApiResponse);
 }

@@ -1,5 +1,6 @@
 import is from "@sindresorhus/is";
 import { Maybe } from "true-myth";
+import { recordFailedHackerNewsBuildMentionLoad, recordHackerNewsBuildMentionTotals } from "./build-mention-totals.ts";
 import { parseHackerNewsApiUrl } from "./environment-variables.ts";
 import { hackerNewsApiResponseSchema } from "./hacker-news-response-schema.ts";
 
@@ -230,21 +231,29 @@ export async function loadHackerNewsMentionsForTargetUrl(
 	dependencies: HackerNewsDependencies,
 	targetUrl: string
 ): Promise<HackerNewsSectionModel> {
-	const hackerNewsApiUrl = parseHackerNewsApiUrl(
-		import.meta.env.HACKER_NEWS_API_URL ?? "https://hn.algolia.com/api/v1/search_by_date"
-	);
-	const response = await dependencies.fetch(
-		createHackerNewsApiRequestUrl({
-			hackerNewsApiUrl,
-			targetUrl
-		})
-	);
+	try {
+		const hackerNewsApiUrl = parseHackerNewsApiUrl(
+			import.meta.env.HACKER_NEWS_API_URL ?? "https://hn.algolia.com/api/v1/search_by_date"
+		);
+		const response = await dependencies.fetch(
+			createHackerNewsApiRequestUrl({
+				hackerNewsApiUrl,
+				targetUrl
+			})
+		);
 
-	if (!response.ok) {
-		throw new Error(`Hacker News API request failed with status ${response.status}`);
+		if (!response.ok) {
+			throw new Error(`Hacker News API request failed with status ${response.status}`);
+		}
+
+		const hackerNewsApiResponse: unknown = await response.json();
+		const hackerNewsSectionModel = parseHackerNewsApiResponse(targetUrl, hackerNewsApiResponse);
+
+		recordHackerNewsBuildMentionTotals(hackerNewsSectionModel);
+
+		return hackerNewsSectionModel;
+	} catch (error: unknown) {
+		recordFailedHackerNewsBuildMentionLoad();
+		throw error;
 	}
-
-	const hackerNewsApiResponse: unknown = await response.json();
-
-	return parseHackerNewsApiResponse(targetUrl, hackerNewsApiResponse);
 }
