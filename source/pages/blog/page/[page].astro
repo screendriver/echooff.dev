@@ -1,0 +1,104 @@
+---
+import type { GetStaticPaths, Page } from "astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import BlogArchiveList from "../../../blog/BlogArchiveList.astro";
+import BlogArchiveNavigation from "../../../blog/BlogArchiveNavigation.astro";
+import BlogArchiveSection from "../../../blog/BlogArchiveSection.astro";
+import BlogEmptyState from "../../../blog/BlogEmptyState.astro";
+import BlogIndexEntry from "../../../blog/BlogIndexEntry.astro";
+import BlogRssFeedLink from "../../../blog/BlogRssFeedLink.astro";
+import BlogShell from "../../../blog/BlogShell.astro";
+import BlogTopicLink from "../../../blog/BlogTopicLink.astro";
+import LocalizedDateTime from "../../../blog/LocalizedDateTime.astro";
+import LocalizedDateTimeScript from "../../../blog/LocalizedDateTimeScript.astro";
+import { createBlogIndexEntries, sortBlogPostsByPublicationDateDescending } from "../../../blog/blog-posts.js";
+import {
+	createAbsoluteAssetUrl,
+	createBlogIndexPageAbsoluteUrl,
+	createBlogRssFeedAbsoluteUrl,
+	createBlogTopicPath
+} from "../../../blog/blog-site.js";
+import headerImage from "../../../assets/images/header-01.jpg";
+
+interface Props {
+	readonly page: Page<CollectionEntry<"blog">>;
+}
+
+export const getStaticPaths: GetStaticPaths = async (staticPathOptions) => {
+	const { paginate } = staticPathOptions;
+	const sortedBlogPosts = sortBlogPostsByPublicationDateDescending(await getCollection("blog"));
+	const paginatedBlogArchivePaths = paginate(sortedBlogPosts, { pageSize: 20 });
+
+	return paginatedBlogArchivePaths.filter((paginatedBlogArchivePath) => {
+		return paginatedBlogArchivePath.params.page !== "1";
+	});
+};
+
+const { page }: Props = Astro.props;
+const paginatedBlogIndexAbsoluteUrlResult = createBlogIndexPageAbsoluteUrl(Astro.site, page.currentPage);
+
+if (paginatedBlogIndexAbsoluteUrlResult.isErr) {
+	throw paginatedBlogIndexAbsoluteUrlResult.error;
+}
+
+const blogIndexEntries = createBlogIndexEntries(page.data);
+const blogIndexUrl = paginatedBlogIndexAbsoluteUrlResult.value;
+const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(Astro.site);
+const openGraphImageUrl = createAbsoluteAssetUrl(Astro.site, headerImage.src);
+const openGraphImageAlternativeText = "echooff.dev header illustration";
+const paginatedPostCountLabel = `${page.start + 1}-${page.end + 1} of ${page.total} posts`;
+---
+
+<BlogShell
+	canonicalUrl={blogIndexUrl}
+	description="Notes on web technologies, engineering tradeoffs, and front-end architecture."
+	openGraphImageAlternativeText={openGraphImageAlternativeText}
+	openGraphImageUrl={openGraphImageUrl}
+	openGraphPublishedTime=""
+	openGraphType="website"
+	openGraphUrl={blogIndexUrl}
+	rssFeedUrl={blogRssFeedUrl}
+	robots="index,follow,max-image-preview:large"
+	title="Software Engineering Blog | Christian Rackerseder"
+	twitterCardType="summary_large_image"
+	pageTitle="Blog"
+	intro="Notes on web technologies, engineering tradeoffs, and front-end architecture."
+	terminalOutput={paginatedPostCountLabel}
+>
+	<BlogRssFeedLink slot="title-action" rssFeedUrl={blogRssFeedUrl} />
+
+	<BlogArchiveSection label={`Blog posts page ${page.currentPage}`}>
+		<BlogArchiveNavigation label="Blog topic archive">
+			<BlogTopicLink href="/blog/topics">Browse posts by topic</BlogTopicLink>
+		</BlogArchiveNavigation>
+
+		{
+			blogIndexEntries.length > 0 ? (
+				<BlogArchiveList>
+					{blogIndexEntries.map((blogIndexEntry) => (
+						<li>
+							<BlogIndexEntry
+								description={blogIndexEntry.description}
+								href={`/blog/${blogIndexEntry.slug}`}
+								title={blogIndexEntry.title}
+							>
+								<Fragment slot="footer">
+									Published <LocalizedDateTime publishedAt={blogIndexEntry.publishedAt} /> in{" "}
+									<BlogTopicLink href={createBlogTopicPath(blogIndexEntry.topicSlug)}>
+										{blogIndexEntry.topic}
+									</BlogTopicLink>
+									{" · "}
+									<span>{blogIndexEntry.readingTimeLabel}</span>
+								</Fragment>
+							</BlogIndexEntry>
+						</li>
+					))}
+				</BlogArchiveList>
+			) : (
+				<BlogEmptyState>No blog posts published yet.</BlogEmptyState>
+			)
+		}
+	</BlogArchiveSection>
+
+	<LocalizedDateTimeScript />
+</BlogShell>
