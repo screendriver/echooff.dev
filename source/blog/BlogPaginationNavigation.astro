@@ -139,8 +139,27 @@ const { paginationModel } = Astro.props;
 
 	@media (max-width: variables.$small-width) {
 		.blog-pagination-navigation-links {
-			align-items: flex-start;
-			flex-direction: column;
+			align-items: stretch;
+			display: grid;
+			gap: 0.9rem;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			grid-template-areas:
+				"pages pages"
+				"previous next";
+		}
+
+		.blog-pagination-navigation-page-list {
+			grid-area: pages;
+			justify-content: center;
+		}
+
+		.blog-pagination-navigation-links > :first-child {
+			grid-area: previous;
+		}
+
+		.blog-pagination-navigation-links > :last-child {
+			grid-area: next;
+			justify-self: end;
 		}
 	}
 </style>
