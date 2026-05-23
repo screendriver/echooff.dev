@@ -5,11 +5,13 @@ import BlogArchiveNavigation from "../../blog/BlogArchiveNavigation.astro";
 import BlogArchiveSection from "../../blog/BlogArchiveSection.astro";
 import BlogEmptyState from "../../blog/BlogEmptyState.astro";
 import BlogIndexEntry from "../../blog/BlogIndexEntry.astro";
+import BlogPaginationNavigation from "../../blog/BlogPaginationNavigation.astro";
 import BlogRssFeedLink from "../../blog/BlogRssFeedLink.astro";
 import BlogShell from "../../blog/BlogShell.astro";
 import BlogTopicLink from "../../blog/BlogTopicLink.astro";
 import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
 import LocalizedDateTimeScript from "../../blog/LocalizedDateTimeScript.astro";
+import { blogArchivePageSize, createBlogPaginationModel } from "../../blog/blog-pagination.js";
 import { createBlogIndexEntries, sortBlogPostsByPublicationDateDescending } from "../../blog/blog-posts.js";
 import {
 	createAbsoluteAssetUrl,
@@ -21,17 +23,29 @@ import headerImage from "../../assets/images/header-01.jpg";
 
 const blogCollection = await getCollection("blog");
 const sortedBlogPosts = sortBlogPostsByPublicationDateDescending(blogCollection);
-const blogIndexEntries = createBlogIndexEntries(sortedBlogPosts);
 const blogPostCount = sortedBlogPosts.length;
+const paginatedBlogPosts = sortedBlogPosts.slice(0, blogArchivePageSize);
+const blogIndexEntries = createBlogIndexEntries(paginatedBlogPosts);
 const blogIndexUrl = createBlogIndexAbsoluteUrl(Astro.site);
 const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(Astro.site);
 const openGraphImageUrl = createAbsoluteAssetUrl(Astro.site, headerImage.src);
 const openGraphImageAlternativeText = "echooff.dev header illustration";
+const blogPaginationModelResult = createBlogPaginationModel({
+	currentPage: 1,
+	pageSize: blogArchivePageSize,
+	totalPostCount: blogPostCount
+});
 let blogPostCountLabel = `${blogPostCount} posts available`;
 
 if (blogPostCount === 1) {
 	blogPostCountLabel = "1 post available";
 }
+
+if (blogPaginationModelResult.isErr) {
+	throw blogPaginationModelResult.error;
+}
+
+const blogPaginationModel = blogPaginationModelResult.value;
 ---
 
 <BlogShell
@@ -59,26 +73,29 @@ if (blogPostCount === 1) {
 
 		{
 			blogIndexEntries.length > 0 ? (
-				<BlogArchiveList>
-					{blogIndexEntries.map((blogIndexEntry) => (
-						<li>
-							<BlogIndexEntry
-								description={blogIndexEntry.description}
-								href={`/blog/${blogIndexEntry.slug}`}
-								title={blogIndexEntry.title}
-							>
-								<Fragment slot="footer">
-									Published <LocalizedDateTime publishedAt={blogIndexEntry.publishedAt} /> in{" "}
-									<BlogTopicLink href={createBlogTopicPath(blogIndexEntry.topicSlug)}>
-										{blogIndexEntry.topic}
-									</BlogTopicLink>
-									{" · "}
-									<span>{blogIndexEntry.readingTimeLabel}</span>
-								</Fragment>
-							</BlogIndexEntry>
-						</li>
-					))}
-				</BlogArchiveList>
+				<Fragment>
+					<BlogArchiveList>
+						{blogIndexEntries.map((blogIndexEntry) => (
+							<li>
+								<BlogIndexEntry
+									description={blogIndexEntry.description}
+									href={`/blog/${blogIndexEntry.slug}`}
+									title={blogIndexEntry.title}
+								>
+									<Fragment slot="footer">
+										Published <LocalizedDateTime publishedAt={blogIndexEntry.publishedAt} /> in{" "}
+										<BlogTopicLink href={createBlogTopicPath(blogIndexEntry.topicSlug)}>
+											{blogIndexEntry.topic}
+										</BlogTopicLink>
+										{" · "}
+										<span>{blogIndexEntry.readingTimeLabel}</span>
+									</Fragment>
+								</BlogIndexEntry>
+							</li>
+						))}
+					</BlogArchiveList>
+					<BlogPaginationNavigation paginationModel={blogPaginationModel} />
+				</Fragment>
 			) : (
 				<BlogEmptyState>No blog posts published yet.</BlogEmptyState>
 			)
