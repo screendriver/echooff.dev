@@ -4,7 +4,6 @@ import { Schema } from "astro-seo-schema";
 import { getCollection, render } from "astro:content";
 import BlogArticleByline from "../../blog/BlogArticleByline.astro";
 import BlogBackLink from "../../blog/BlogBackLink.astro";
-import BlogMetadata from "../../blog/BlogMetadata.astro";
 import BlogPostContent from "../../blog/BlogPostContent.astro";
 import BlogShell from "../../blog/BlogShell.astro";
 import BlogTopicLink from "../../blog/BlogTopicLink.astro";
@@ -128,36 +127,46 @@ try {
 
 	<article class="blog-post-article h-entry">
 		<header class="blog-post-article-header">
-			<section class="blog-post-article-top-row" aria-label="Article navigation and author">
-				<nav aria-label="Blog">
-					<BlogBackLink href="/blog" includeIcon>Back to Blog</BlogBackLink>
-				</nav>
-
-				<figure class="blog-post-article-avatar h-card">
-					<a class="u-url" href={siteUrl} rel="author">
-						<Image
-							alt={blogPostAuthorName}
-							class="blog-post-article-avatar-image u-photo"
-							height={88}
-							src={aboutImage}
-							quality={75}
-							width={88}
-						/>
-					</a>
-					<span class="blog-post-screen-reader-only p-name">{blogPostAuthorName}</span>
-				</figure>
+			<nav aria-label="Blog" class="blog-post-article-navigation">
+				<BlogBackLink href="/blog" includeIcon>Back to Blog</BlogBackLink>
+			</nav>
+			<section class="blog-post-article-heading-group" aria-label="Article title and author">
+				<h1 class="p-name">{blogPost.data.title}</h1>
+				<div class="blog-post-article-author-row">
+					<figure class="blog-post-article-avatar h-card">
+						<a class="u-url" href={siteUrl} rel="author">
+							<Image
+								alt={blogPostAuthorName}
+								class="blog-post-article-avatar-image u-photo"
+								height={88}
+								src={aboutImage}
+								quality={75}
+								width={88}
+							/>
+						</a>
+						<span class="blog-post-screen-reader-only p-name">{blogPostAuthorName}</span>
+					</figure>
+					<div class="blog-post-article-author-copy">
+						<BlogArticleByline authorName={blogPostAuthorName} authorUrl={siteUrl} />
+						<p class="blog-post-article-metadata">
+							<span class="blog-post-article-metadata-item">
+								Published <LocalizedDateTime
+									className="dt-published"
+									publishedAt={blogPost.data.publishedAt}
+								/>
+							</span>
+							<span class="blog-post-article-metadata-item">
+								in <BlogTopicLink href={`/blog/topics/${topicDetails.slug}`}
+									>{topicDetails.label}</BlogTopicLink
+								>
+							</span>
+							<span class="blog-post-article-metadata-item blog-post-article-reading-time">
+								{blogPostReadingTimeLabel}
+							</span>
+						</p>
+					</div>
+				</div>
 			</section>
-			<h1 class="p-name">{blogPost.data.title}</h1>
-			<BlogArticleByline authorName={blogPostAuthorName} authorUrl={siteUrl} />
-			<BlogMetadata>
-				Published{" "}
-				<LocalizedDateTime className="dt-published" publishedAt={blogPost.data.publishedAt} />{" "}
-				in <BlogTopicLink href={`/blog/topics/${topicDetails.slug}`}>{topicDetails.label}</BlogTopicLink>
-				<span class="blog-post-article-metadata-separator" aria-hidden="true">
-					{" "}·{" "}
-				</span>
-				<span class="blog-post-article-reading-time">{blogPostReadingTimeLabel}</span>
-			</BlogMetadata>
 			<a class="u-url blog-post-screen-reader-only" href={blogPostUrl}> Permalink </a>
 		</header>
 
@@ -187,27 +196,44 @@ try {
 		@include mixins.blog-shell-page-header-surface(1.5rem);
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
+		gap: 1.25rem;
 		padding-bottom: 1.25rem;
 	}
 
-	.blog-post-article-top-row {
-		align-items: flex-start;
+	.blog-post-article-navigation {
 		display: flex;
+	}
+
+	.blog-post-article-heading-group {
+		display: flex;
+		flex-direction: column;
 		gap: 1rem;
-		justify-content: space-between;
+	}
+
+	.blog-post-article-author-row {
+		align-items: center;
+		display: flex;
+		gap: 0.9rem;
 	}
 
 	.blog-post-article-avatar {
 		flex-shrink: 0;
+		margin: 0;
 	}
 
 	.blog-post-article-avatar-image {
 		border: 4px solid variables.$comment;
 		border-radius: 9999px;
 		display: block;
-		height: 5.5rem;
-		width: 5.5rem;
+		height: 4.5rem;
+		width: 4.5rem;
+	}
+
+	.blog-post-article-author-copy {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		min-width: 0;
 	}
 
 	.blog-post-screen-reader-only {
@@ -222,13 +248,33 @@ try {
 		border: 0;
 	}
 
-	.blog-post-article-metadata-separator {
+	.blog-post-article-metadata {
+		color: rgba(variables.$foreground, 0.46);
+		font-size: 0;
+		margin: 0;
+	}
+
+	.blog-post-article-metadata-item {
+		display: inline;
+		font-size: 0.82rem;
+	}
+
+	.blog-post-article-metadata-item + .blog-post-article-metadata-item::before {
 		color: rgba(variables.$foreground, 0.3);
+		content: " · ";
+	}
+
+	.blog-post-article-metadata-item:first-child::before {
+		content: none;
+	}
+
+	.blog-post-article-metadata-item:first-child,
+	.blog-post-article-metadata-item:nth-child(2) {
+		white-space: nowrap;
 	}
 
 	.blog-post-article-reading-time {
 		letter-spacing: -0.01em;
-		white-space: nowrap;
 	}
 
 	h1 {
@@ -249,9 +295,67 @@ try {
 			padding-bottom: 1.25rem;
 		}
 
+		.blog-post-article-author-row {
+			gap: 1rem;
+		}
+
+		.blog-post-article-avatar-image {
+			height: 4.75rem;
+			width: 4.75rem;
+		}
+
 		.blog-post-article-body {
 			padding-left: 2rem;
 			padding-right: 2rem;
+		}
+	}
+
+	@media (max-width: calc(variables.$small-width - 0.02rem)) {
+		.blog-post-article-header {
+			gap: 1rem;
+		}
+
+		.blog-post-article-heading-group {
+			gap: 0.85rem;
+		}
+
+		.blog-post-article-author-row {
+			align-items: center;
+			display: grid;
+			gap: 0.55rem 0.75rem;
+			grid-template-columns: auto 1fr;
+		}
+
+		.blog-post-article-avatar-image {
+			height: 3.5rem;
+			width: 3.5rem;
+		}
+
+		.blog-post-article-author-copy {
+			display: contents;
+		}
+
+		.blog-post-article-metadata {
+			grid-column: 1 / -1;
+		}
+
+		.blog-post-article-metadata {
+			align-items: baseline;
+			column-gap: 0.5rem;
+			display: flex;
+			font-size: 0.82rem;
+			flex-wrap: wrap;
+			row-gap: 0.2rem;
+		}
+
+		.blog-post-article-metadata-item {
+			display: block;
+			font-size: inherit;
+			white-space: nowrap;
+		}
+
+		.blog-post-article-metadata-item + .blog-post-article-metadata-item::before {
+			content: none;
 		}
 	}
 </style>
