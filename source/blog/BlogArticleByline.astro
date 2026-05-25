@@ -8,7 +8,9 @@ const { authorName, authorUrl } = Astro.props;
 ---
 
 <p class="blog-article-byline">
-	By <a class="blog-article-byline-author p-author h-card" href={authorUrl} rel="author">{authorName}</a>
+	By <a class="blog-article-byline-author p-author h-card p-name u-url" href={authorUrl} rel="author">
+		{authorName}
+	</a>
 </p>
 
 <style lang="scss">
