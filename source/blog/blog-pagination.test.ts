@@ -27,7 +27,7 @@ describe("createBlogPaginationModel()", () => {
 				}
 			],
 			previousPageHref: undefined,
-			resultsLabel: "Showing 1-20 of 21 posts"
+			resultsLabel: "Posts 1-20 of 21"
 		});
 
 		expect(actualPaginationModel).toStrictEqual(expectedPaginationModel);
@@ -67,7 +67,37 @@ describe("createBlogPaginationModel()", () => {
 				}
 			],
 			previousPageHref: "/blog",
-			resultsLabel: "Showing 11-20 of 35 posts"
+			resultsLabel: "Posts 11-20 of 35"
+		});
+
+		expect(actualPaginationModel).toStrictEqual(expectedPaginationModel);
+	});
+
+	it("creates a singular range label for a single-post final page", () => {
+		const actualPaginationModel = createBlogPaginationModel({
+			currentPage: 2,
+			pageSize: blogArchivePageSize,
+			totalPostCount: 21
+		});
+		const expectedPaginationModel = ok({
+			currentPage: 2,
+			lastPage: 2,
+			nextPageHref: undefined,
+			pageCountLabel: "Page 2 of 2",
+			pageLinks: [
+				{
+					href: "/blog",
+					isCurrent: false,
+					pageNumber: 1
+				},
+				{
+					href: "/blog/page/2",
+					isCurrent: true,
+					pageNumber: 2
+				}
+			],
+			previousPageHref: "/blog",
+			resultsLabel: "Post 21 of 21"
 		});
 
 		expect(actualPaginationModel).toStrictEqual(expectedPaginationModel);

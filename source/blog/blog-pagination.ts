@@ -20,21 +20,82 @@ export type BlogPaginationModel = {
 	readonly resultsLabel: string;
 };
 
+export type BlogVisiblePostSummary = {
+	readonly firstVisiblePostNumber: number;
+	readonly lastVisiblePostNumber: number;
+	readonly visiblePostCount: number;
+	readonly visiblePostCountLabel: string;
+	readonly visiblePostRangeLabel: string;
+};
+
 export type CreateBlogPaginationModelInput = {
 	readonly currentPage: number;
 	readonly pageSize: number;
 	readonly totalPostCount: number;
 };
 
-function createResultsLabel(currentPage: number, pageSize: number, totalPostCount: number): string {
+export type CreateBlogVisiblePostSummaryInput = {
+	readonly currentPage: number;
+	readonly pageSize: number;
+	readonly totalPostCount: number;
+};
+
+type CreateVisiblePostRangeLabelInput = {
+	readonly firstVisiblePostNumber: number;
+	readonly lastVisiblePostNumber: number;
+	readonly totalPostCount: number;
+	readonly visiblePostCount: number;
+};
+
+function createVisiblePostCountLabel(visiblePostCount: number): string {
+	if (visiblePostCount === 1) {
+		return "Showing 1 post";
+	}
+
+	return `Showing ${visiblePostCount} posts`;
+}
+
+function createVisiblePostRangeLabel(input: CreateVisiblePostRangeLabelInput): string {
+	const { firstVisiblePostNumber, lastVisiblePostNumber, totalPostCount, visiblePostCount } = input;
+
+	if (visiblePostCount === 1) {
+		return `Post ${firstVisiblePostNumber} of ${totalPostCount}`;
+	}
+
+	return `Posts ${firstVisiblePostNumber}-${lastVisiblePostNumber} of ${totalPostCount}`;
+}
+
+export function createBlogVisiblePostSummary(input: CreateBlogVisiblePostSummaryInput): BlogVisiblePostSummary {
+	const { currentPage, pageSize, totalPostCount } = input;
+
 	if (totalPostCount === 0) {
-		return "Showing 0 of 0 posts";
+		return {
+			firstVisiblePostNumber: 0,
+			lastVisiblePostNumber: 0,
+			visiblePostCount: 0,
+			visiblePostCountLabel: "Showing 0 posts",
+			visiblePostRangeLabel: "0 posts"
+		};
 	}
 
 	const firstVisiblePostNumber = (currentPage - 1) * pageSize + 1;
 	const lastVisiblePostNumber = Math.min(currentPage * pageSize, totalPostCount);
+	const visiblePostCount = lastVisiblePostNumber - firstVisiblePostNumber + 1;
+	const visiblePostCountLabel = createVisiblePostCountLabel(visiblePostCount);
+	const visiblePostRangeLabel = createVisiblePostRangeLabel({
+		firstVisiblePostNumber,
+		lastVisiblePostNumber,
+		totalPostCount,
+		visiblePostCount
+	});
 
-	return `Showing ${firstVisiblePostNumber}-${lastVisiblePostNumber} of ${totalPostCount} posts`;
+	return {
+		firstVisiblePostNumber,
+		lastVisiblePostNumber,
+		visiblePostCount,
+		visiblePostCountLabel,
+		visiblePostRangeLabel
+	};
 }
 
 function createOptionalPageHref(pageNumber: number | undefined): Result<string | undefined, RangeError> {
@@ -133,6 +194,8 @@ export function createBlogPaginationModel(
 		return err(paginationWindowResult.error);
 	}
 
+	const visiblePostSummary = createBlogVisiblePostSummary({ currentPage, pageSize, totalPostCount });
+
 	return ok({
 		currentPage,
 		lastPage,
@@ -140,6 +203,6 @@ export function createBlogPaginationModel(
 		pageCountLabel: `Page ${currentPage} of ${lastPage}`,
 		pageLinks: pageLinksResult.value,
 		previousPageHref: paginationWindowResult.value.previousPageHref,
-		resultsLabel: createResultsLabel(currentPage, pageSize, totalPostCount)
+		resultsLabel: visiblePostSummary.visiblePostRangeLabel
 	});
 }

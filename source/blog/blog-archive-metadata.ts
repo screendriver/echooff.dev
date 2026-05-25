@@ -1,3 +1,5 @@
+import { createBlogVisiblePostSummary } from "./blog-pagination.ts";
+
 export type BlogArchiveMetadata = {
 	readonly description: string;
 	readonly intro: string;
@@ -35,15 +37,13 @@ export function createDefaultBlogArchiveMetadata(totalPostCount: number): BlogAr
 export function createPaginatedBlogArchiveMetadata(input: CreateBlogArchiveMetadataInput): BlogArchiveMetadata {
 	const { currentPage, lastPage, pageSize, totalPostCount } = input;
 	const description = `Older software engineering notes, page ${currentPage} of ${lastPage}.`;
-	const firstVisiblePostNumber = (currentPage - 1) * pageSize + 1;
-	const lastVisiblePostNumber = Math.min(currentPage * pageSize, totalPostCount);
-	const terminalOutput = `Showing ${firstVisiblePostNumber}-${lastVisiblePostNumber} of ${totalPostCount} posts`;
+	const visiblePostSummary = createBlogVisiblePostSummary({ currentPage, pageSize, totalPostCount });
 
 	return {
 		description,
 		intro: description,
 		pageTitle: `Blog - Page ${currentPage}`,
-		terminalOutput,
+		terminalOutput: visiblePostSummary.visiblePostCountLabel,
 		title: `Software Engineering Blog - Page ${currentPage} | ${siteOwnerName}`
 	};
 }

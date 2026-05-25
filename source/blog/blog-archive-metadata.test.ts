@@ -35,10 +35,22 @@ describe("createPaginatedBlogArchiveMetadata()", () => {
 			description: "Older software engineering notes, page 2 of 4.",
 			intro: "Older software engineering notes, page 2 of 4.",
 			pageTitle: "Blog - Page 2",
-			terminalOutput: "Showing 11-20 of 35 posts",
+			terminalOutput: "Showing 10 posts",
 			title: "Software Engineering Blog - Page 2 | Christian Rackerseder"
 		};
 
 		expect(actualArchiveMetadata).toStrictEqual(expectedArchiveMetadata);
+	});
+
+	it("creates a singular terminal label for a single-post final page", () => {
+		const actualTerminalOutput = createPaginatedBlogArchiveMetadata({
+			currentPage: 2,
+			lastPage: 2,
+			pageSize: 20,
+			totalPostCount: 21
+		}).terminalOutput;
+		const expectedTerminalOutput = "Showing 1 post";
+
+		expect(actualTerminalOutput).toBe(expectedTerminalOutput);
 	});
 });
