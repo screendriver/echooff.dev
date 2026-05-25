@@ -1,0 +1,35 @@
+---
+export interface Props {
+	readonly authorName: string;
+	readonly authorUrl: string;
+}
+
+const { authorName, authorUrl } = Astro.props;
+---
+
+<p class="blog-article-byline">
+	By <a class="blog-article-byline-author p-author h-card" href={authorUrl} rel="author">{authorName}</a>
+</p>
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	.blog-article-byline {
+		color: rgba(variables.$foreground, 0.58);
+		font-size: 0.82rem;
+		margin: -0.35rem 0 -0.2rem;
+	}
+
+	.blog-article-byline-author {
+		color: inherit;
+		text-decoration-color: rgba(variables.$foreground, 0.32);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.15em;
+	}
+
+	.blog-article-byline-author:hover,
+	.blog-article-byline-author:focus-visible {
+		color: variables.$cyan;
+		text-decoration-color: rgba(variables.$cyan, 0.55);
+	}
+</style>

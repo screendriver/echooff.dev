@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { Schema } from "astro-seo-schema";
 import { getCollection, render } from "astro:content";
+import BlogArticleByline from "../../blog/BlogArticleByline.astro";
 import BlogBackLink from "../../blog/BlogBackLink.astro";
 import BlogMetadata from "../../blog/BlogMetadata.astro";
 import BlogPostContent from "../../blog/BlogPostContent.astro";
@@ -55,6 +56,7 @@ const openGraphImageUrl = createAbsoluteAssetUrl(configuredSiteUrl, headerImage.
 const openGraphImageAlternativeText = "echooff.dev header illustration";
 const topicDetails = getBlogPostTopicDetails(blogPost.data.topic);
 const blogPostReadingTimeLabel = createBlogPostReadingTimeLabel(blogPost.body ?? "");
+const blogPostAuthorName = "Christian Rackerseder";
 const siteUrl = configuredSiteUrl.toString();
 let webmentionSectionModel = createEmptyWebmentionSectionModel();
 let hackerNewsSectionModel = createEmptyHackerNewsSectionModel();
@@ -105,7 +107,7 @@ try {
 				"@type": "BlogPosting",
 				author: {
 					"@type": "Person",
-					name: "Christian Rackerseder",
+					name: blogPostAuthorName,
 					url: siteUrl
 				},
 				datePublished: blogPost.data.publishedAt,
@@ -116,7 +118,7 @@ try {
 				mainEntityOfPage: blogPostUrl,
 				publisher: {
 					"@type": "Person",
-					name: "Christian Rackerseder",
+					name: blogPostAuthorName,
 					url: siteUrl
 				},
 				url: blogPostUrl
@@ -134,7 +136,7 @@ try {
 				<figure class="blog-post-article-avatar h-card">
 					<a class="u-url" href={siteUrl}>
 						<Image
-							alt="Christian Rackerseder"
+							alt={blogPostAuthorName}
 							class="blog-post-article-avatar-image u-photo"
 							height={88}
 							src={aboutImage}
@@ -142,10 +144,11 @@ try {
 							width={88}
 						/>
 					</a>
-					<span class="blog-post-screen-reader-only p-name">Christian Rackerseder</span>
+					<span class="blog-post-screen-reader-only p-name">{blogPostAuthorName}</span>
 				</figure>
 			</section>
 			<h1 class="p-name">{blogPost.data.title}</h1>
+			<BlogArticleByline authorName={blogPostAuthorName} authorUrl={siteUrl} />
 			<BlogMetadata>
 				Published{" "}
 				<LocalizedDateTime className="dt-published" publishedAt={blogPost.data.publishedAt} />{" "}
