@@ -50,7 +50,7 @@
 		"fishery": "2.4.0",
 		"get-port": "7.2.0",
 		"globals": "17.6.0",
-		"hono": "4.12.22",
+		"hono": "4.12.23",
 		"prettier": "3.8.3",
 		"prettier-plugin-astro": "0.14.1",
 		"rust-just": "1.51.0",
