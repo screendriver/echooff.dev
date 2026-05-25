@@ -1,5 +1,5 @@
 ---
-import { formatPublishedAtFallbackDateTime } from "./blog-posts.js";
+import LocalizedDateTime from "./LocalizedDateTime.astro";
 import type { WebmentionReply } from "./webmentions.js";
 
 export interface Props {
@@ -13,9 +13,7 @@ const { webmentionReply } = Astro.props;
 	webmentionReply.visiblePublishedAt.isJust && (
 		<span>
 			{" · "}
-			<time datetime={webmentionReply.visiblePublishedAt.value}>
-				{formatPublishedAtFallbackDateTime(webmentionReply.visiblePublishedAt.value)}
-			</time>
+			<LocalizedDateTime publishedAt={webmentionReply.visiblePublishedAt.value} />
 		</span>
 	)
 }

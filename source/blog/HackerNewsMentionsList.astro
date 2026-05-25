@@ -1,8 +1,8 @@
 ---
 import BlogEmptyState from "./BlogEmptyState.astro";
 import CommentIcon from "./CommentIcon.astro";
+import LocalizedDateTime from "./LocalizedDateTime.astro";
 import ScoreIcon from "./ScoreIcon.astro";
-import { formatPublishedAtFallbackDateTime } from "./blog-posts.js";
 import type { HackerNewsSectionModel } from "./hacker-news-mentions.js";
 
 export interface Props {
@@ -39,11 +39,9 @@ const { hackerNewsSectionModel } = Astro.props;
 									<Fragment>
 										<dt class="meta-date-label">Published</dt>
 										<dd class="meta-date-value">
-											<time datetime={hackerNewsMention.visiblePublishedAt.value}>
-												{formatPublishedAtFallbackDateTime(
-													hackerNewsMention.visiblePublishedAt.value
-												)}
-											</time>
+											<LocalizedDateTime
+												publishedAt={hackerNewsMention.visiblePublishedAt.value}
+											/>
 										</dd>
 									</Fragment>
 								)}
