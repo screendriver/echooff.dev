@@ -45,7 +45,7 @@
 		"@types/node": "25.9.1",
 		"@types/sinon": "21.0.1",
 		"common-tags": "1.8.2",
-		"concurrently": "10.0.1",
+		"concurrently": "10.0.3",
 		"eslint": "10.4.0",
 		"fishery": "2.4.0",
 		"get-port": "7.2.0",
