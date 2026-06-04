@@ -11,10 +11,10 @@ import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.ts";
 
 describe("getBlogPostTopicDetails()", () => {
 	it("returns the stable display label and URL slug for a topic", () => {
-		const actualTopicDetails = getBlogPostTopicDetails("TypeScript");
+		const actualTopicDetails = getBlogPostTopicDetails("Node.js");
 		const expectedTopicDetails = {
-			label: "TypeScript",
-			slug: "typescript"
+			label: "Node.js",
+			slug: "nodejs"
 		};
 
 		expect(actualTopicDetails).toMatchObject(expectedTopicDetails);
@@ -71,6 +71,13 @@ describe("groupBlogPostsByTopic()", () => {
 
 describe("createBlogPostTopicArchiveEntries()", () => {
 	it("returns populated topics in deterministic display order", () => {
+		const nodeJsBlogPost = createBlogPostCollectionEntry({
+			description: "Node.js description",
+			id: "nodejs-post",
+			title: "Node.js post",
+			publishedAt: "2026-03-16T07:22:00+01:00",
+			topic: "Node.js"
+		});
 		const testingBlogPost = createBlogPostCollectionEntry({
 			description: "Testing description",
 			id: "testing-post",
@@ -86,12 +93,21 @@ describe("createBlogPostTopicArchiveEntries()", () => {
 			topic: "Architecture"
 		});
 
-		const actualTopicArchiveEntries = createBlogPostTopicArchiveEntries([testingBlogPost, architectureBlogPost]);
+		const actualTopicArchiveEntries = createBlogPostTopicArchiveEntries([
+			testingBlogPost,
+			nodeJsBlogPost,
+			architectureBlogPost
+		]);
 		const expectedTopicArchiveEntries = [
 			{
 				label: "Architecture",
 				postCount: 1,
 				slug: "architecture"
+			},
+			{
+				label: "Node.js",
+				postCount: 1,
+				slug: "nodejs"
 			},
 			{
 				label: "Testing",

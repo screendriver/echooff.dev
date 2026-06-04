@@ -2,7 +2,15 @@ import is from "@sindresorhus/is";
 import type { CollectionEntry } from "astro:content";
 import { Maybe } from "true-myth";
 
-export const blogPostTopics = ["Architecture", "Debugging", "Git", "Testing", "TypeScript", "Writing"] as const;
+export const blogPostTopics = [
+	"Architecture",
+	"Debugging",
+	"Git",
+	"Node.js",
+	"Testing",
+	"TypeScript",
+	"Writing"
+] as const;
 
 export type BlogPostTopic = (typeof blogPostTopics)[number];
 
@@ -31,6 +39,12 @@ const blogPostTopicDetailsByTopic = {
 		description: "Practical Git workflows, repository operations, and tradeoffs in source control.",
 		label: "Git",
 		slug: "git"
+	},
+	"Node.js": {
+		description:
+			"Node.js runtime behavior, process boundaries, and operational tradeoffs in server-side JavaScript.",
+		label: "Node.js",
+		slug: "nodejs"
 	},
 	Testing: {
 		description: "Testing strategy, test design, and feedback loops for reliable software.",
