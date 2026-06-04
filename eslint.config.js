@@ -6,6 +6,51 @@ import { nodeConfig, nodeConfigFileConfig } from "@enormora/eslint-config-node";
 import { vitestConfig } from "@enormora/eslint-config-vitest";
 import globals from "globals";
 
+const astroAccessibilityRuleNames = [
+	"astro/jsx-a11y/alt-text",
+	"astro/jsx-a11y/anchor-ambiguous-text",
+	"astro/jsx-a11y/anchor-has-content",
+	"astro/jsx-a11y/anchor-is-valid",
+	"astro/jsx-a11y/aria-activedescendant-has-tabindex",
+	"astro/jsx-a11y/aria-props",
+	"astro/jsx-a11y/aria-proptypes",
+	"astro/jsx-a11y/aria-role",
+	"astro/jsx-a11y/aria-unsupported-elements",
+	"astro/jsx-a11y/autocomplete-valid",
+	"astro/jsx-a11y/click-events-have-key-events",
+	"astro/jsx-a11y/control-has-associated-label",
+	"astro/jsx-a11y/heading-has-content",
+	"astro/jsx-a11y/html-has-lang",
+	"astro/jsx-a11y/iframe-has-title",
+	"astro/jsx-a11y/img-redundant-alt",
+	"astro/jsx-a11y/interactive-supports-focus",
+	"astro/jsx-a11y/label-has-associated-control",
+	"astro/jsx-a11y/lang",
+	"astro/jsx-a11y/media-has-caption",
+	"astro/jsx-a11y/mouse-events-have-key-events",
+	"astro/jsx-a11y/no-access-key",
+	"astro/jsx-a11y/no-aria-hidden-on-focusable",
+	"astro/jsx-a11y/no-autofocus",
+	"astro/jsx-a11y/no-distracting-elements",
+	"astro/jsx-a11y/no-interactive-element-to-noninteractive-role",
+	"astro/jsx-a11y/no-noninteractive-element-interactions",
+	"astro/jsx-a11y/no-noninteractive-element-to-interactive-role",
+	"astro/jsx-a11y/no-noninteractive-tabindex",
+	"astro/jsx-a11y/no-redundant-roles",
+	"astro/jsx-a11y/no-static-element-interactions",
+	"astro/jsx-a11y/prefer-tag-over-role",
+	"astro/jsx-a11y/role-has-required-aria-props",
+	"astro/jsx-a11y/role-supports-aria-props",
+	"astro/jsx-a11y/scope",
+	"astro/jsx-a11y/tabindex-no-positive"
+];
+
+const disabledAstroAccessibilityRules = Object.fromEntries(
+	astroAccessibilityRuleNames.map((astroAccessibilityRuleName) => {
+		return [astroAccessibilityRuleName, "off"];
+	})
+);
+
 export default [
 	{
 		ignores: [".astro/**/*", "public/**/*", "target/**/*"]
@@ -62,6 +107,7 @@ export default [
 	{
 		files: ["**/*.astro"],
 		rules: {
+			...disabledAstroAccessibilityRules,
 			"astro/no-set-html-directive": "off",
 			"astro/no-unsafe-inline-scripts": "off"
 		}
