@@ -85,6 +85,10 @@
 	text-underline-offset: 0.2rem;
 }
 
+.blog-prose .blog-heading-anchor-link {
+	text-decoration: none;
+}
+
 .blog-prose strong {
 	color: variables.$yellow;
 	font-weight: 700;
