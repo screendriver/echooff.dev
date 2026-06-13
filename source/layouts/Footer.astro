@@ -3,27 +3,56 @@ import pretzelSvg from "../assets/images/pretzel.svg";
 ---
 
 <footer>
-	<p>Made with</p>
+	<p class="made-with">
+		Made with
+		<img src={pretzelSvg.src} alt="" loading="lazy" width={28} height={28} />
+	</p>
 
-	<img src={pretzelSvg.src} alt="" loading="lazy" width={28} height={28} />
+	<a href="https://overkill.dev">side quest: overkill.dev</a>
 </footer>
 
 <style lang="scss">
 	@use "../styles/variables";
 
 	footer {
+		align-items: center;
 		border-top: 1px solid variables.$purple;
 		display: flex;
-		height: 3rem;
+		flex-direction: column;
 		flex-shrink: 0;
-		align-items: center;
+		gap: 0.125rem;
 		justify-content: center;
-		gap: 0.5rem;
+		min-height: 4rem;
 	}
 
-	p {
+	.made-with {
+		align-items: center;
 		color: variables.$foreground;
+		display: flex;
 		font-size: 0.875rem;
 		font-weight: 200;
+		gap: 0.5rem;
+		justify-content: center;
+		line-height: 1;
+		margin: 0;
+	}
+
+	img {
+		display: block;
+	}
+
+	a {
+		color: variables.$foreground;
+		font-size: 0.75rem;
+		font-weight: 200;
+		line-height: 1;
+		opacity: 0.7;
+		text-decoration: none;
+
+		&:hover,
+		&:focus-visible {
+			opacity: 1;
+			text-decoration: underline;
+		}
 	}
 </style>
