@@ -199,7 +199,7 @@ describe("loadWebmentionsForTargetUrl()", () => {
 	it("fetches the parsed section model for the target URL", async () => {
 		const fetchImplementation = vi.fn<typeof fetch>().mockResolvedValue({
 			ok: true,
-			json: async () => {
+			async json() {
 				return {
 					children: [
 						{
@@ -233,7 +233,7 @@ describe("loadWebmentionsForTargetUrl()", () => {
 	it("throws when the API request fails", async () => {
 		const fetchImplementation = vi.fn<typeof fetch>().mockResolvedValue({
 			ok: false,
-			json: async () => {
+			async json() {
 				return {};
 			},
 			status: 503

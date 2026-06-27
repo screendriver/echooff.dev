@@ -35,6 +35,9 @@ describe("createDeterministicServerApplication()", () => {
 
 	it("registers the development API routes", async () => {
 		const application = createDeterministicServerApplication();
+		const contactFormBody = new URLSearchParams({
+			message: "hello"
+		});
 
 		const hackerNewsResponse = await application.request("/hacker-news?query=https%3A%2F%2Fexample.com%2Fpost");
 		const contactFormResponse = await application.request("/contact-form", {
@@ -42,9 +45,7 @@ describe("createDeterministicServerApplication()", () => {
 			headers: {
 				"content-type": "application/x-www-form-urlencoded"
 			},
-			body: new URLSearchParams({
-				message: "hello"
-			}).toString()
+			body: contactFormBody.toString()
 		});
 		const webmentionResponse = await application.request("http://127.0.0.1/webmentions");
 		const actualHackerNewsResponseStatus = hackerNewsResponse.status;

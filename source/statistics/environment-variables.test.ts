@@ -52,8 +52,9 @@ describe("gitHub base URL schema", () => {
 
 	it("parses a string URL into a URL instance", () => {
 		const gitHubBaseUrl = parseGitHubBaseUrl("https://example.com");
-		const actualGitHubBaseUrl = gitHubBaseUrl.toString();
-		const expectedGitHubBaseUrl = new URL("https://example.com").toString();
+		const expectedParsedGitHubBaseUrl = new URL("https://example.com");
+		const actualGitHubBaseUrl = gitHubBaseUrl.href;
+		const expectedGitHubBaseUrl = expectedParsedGitHubBaseUrl.href;
 
 		expect(actualGitHubBaseUrl).toStrictEqual(expectedGitHubBaseUrl);
 	});

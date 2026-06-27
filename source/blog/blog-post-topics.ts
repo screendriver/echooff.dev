@@ -24,7 +24,7 @@ export type BlogPostTopicArchiveEntry = BlogPostTopicDetails & {
 	readonly postCount: number;
 };
 
-const blogPostTopicDetailsByTopic = {
+const blogPostTopicDetailsByTopic: Record<BlogPostTopic, BlogPostTopicDetails> = {
 	Architecture: {
 		description: "Design notes on explicit dependencies, runtime boundaries, and maintainable JavaScript systems.",
 		label: "Architecture",
@@ -61,7 +61,7 @@ const blogPostTopicDetailsByTopic = {
 		label: "Writing",
 		slug: "writing"
 	}
-} satisfies Record<BlogPostTopic, BlogPostTopicDetails>;
+};
 
 export function getBlogPostTopicDetails(blogPostTopic: BlogPostTopic): BlogPostTopicDetails {
 	return blogPostTopicDetailsByTopic[blogPostTopic];

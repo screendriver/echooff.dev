@@ -5,11 +5,11 @@ import { executeGraphQLQuery } from "./graphql-query.ts";
 
 export type GitHubStatistics = {
 	user: {
-		repositories: {
-			totalCount: number;
+		readonly repositories: {
+			readonly totalCount: number;
 		};
-		starredRepositories: {
-			totalCount: number;
+		readonly starredRepositories: {
+			readonly totalCount: number;
 		};
 	};
 };

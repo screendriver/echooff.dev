@@ -20,10 +20,15 @@ type RenderedBlogPostDocument = {
 	readonly headingSlugs: ReadonlySet<string>;
 	readonly renderedHtml: string;
 };
+type FindBlogPostLinkValidationProblemsInput = {
+	readonly headingSlugsByPathname: ReadonlyMap<string, ReadonlySet<string>>;
+	readonly knownRoutePathnames: ReadonlySet<string>;
+	readonly renderedBlogPostDocument: RenderedBlogPostDocument;
+};
 
 const siteBaseUrl = new URL("https://www.echooff.dev");
 const blogContentDirectoryPath = join(process.cwd(), "source/content/blog");
-const anchorHrefPattern = /<a\b[^>]*\bhref="(?<href>[^"]+)"/gu;
+const anchorHrefPattern = /<a\b[^>]+\bhref="(?<href>[^"]+)"/gu;
 
 function extractAnchorHrefs(renderedHtml: string): string[] {
 	const anchorHrefs: string[] = [];
@@ -59,11 +64,9 @@ function decodeFragmentIdentifier(fragmentIdentifier: string): string {
 	}
 }
 
-function findBlogPostLinkValidationProblems(input: {
-	readonly headingSlugsByPathname: ReadonlyMap<string, ReadonlySet<string>>;
-	readonly knownRoutePathnames: ReadonlySet<string>;
-	readonly renderedBlogPostDocument: RenderedBlogPostDocument;
-}): BlogPostLinkValidationProblem[] {
+function findBlogPostLinkValidationProblems(
+	input: FindBlogPostLinkValidationProblemsInput
+): BlogPostLinkValidationProblem[] {
 	const { headingSlugsByPathname, knownRoutePathnames, renderedBlogPostDocument } = input;
 	const sourceBlogPostUrl = new URL(`/blog/${renderedBlogPostDocument.blogPostSlug}`, siteBaseUrl);
 

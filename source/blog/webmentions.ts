@@ -59,14 +59,14 @@ type WebmentionApiRequestUrlInput = {
 	readonly webmentionApiUrl: URL;
 };
 
-const emptyWebmentionSectionModel = {
+const emptyWebmentionSectionModel: WebmentionSectionModel = {
 	reactions: {
 		bookmarkCount: 0,
 		likeCount: 0,
 		repostCount: 0
 	},
 	replies: []
-} as const satisfies WebmentionSectionModel;
+};
 const maximumDisplayedWebmentionContentLength = 280;
 
 function readRecord(value: unknown): Maybe<Record<string, unknown>> {
@@ -89,7 +89,9 @@ function readString(objectValue: Record<string, unknown>, propertyName: string):
 
 function parseAbsoluteUrl(urlValue: string): Maybe<string> {
 	try {
-		return just(new URL(urlValue).toString());
+		const parsedUrl = new URL(urlValue);
+
+		return just(parsedUrl.href);
 	} catch {
 		return nothing();
 	}
@@ -155,7 +157,8 @@ function readWebmentionEntries(webmentionApiResponse: unknown): readonly Webment
 }
 
 function readWebmentionAuthor(webmentionEntry: WebmentionApiEntry, sourceUrl: string): WebmentionAuthor {
-	const defaultAuthorDisplayName = new URL(sourceUrl).hostname;
+	const parsedSourceUrl = new URL(sourceUrl);
+	const defaultAuthorDisplayName = parsedSourceUrl.hostname;
 	const authorRecord = readRecord(webmentionEntry.author);
 
 	return createWebmentionAuthor(
@@ -307,14 +310,14 @@ function parseSourceWebmentionEntry(
 
 function parseWebmentionEntry(webmentionEntry: WebmentionApiEntry): ParsedWebmentionEntry {
 	return readPublicSourceUrl(webmentionEntry).match({
-		Just: (sourceUrl) => {
+		Just(sourceUrl) {
 			return parseSourceWebmentionEntry(
 				webmentionEntry,
 				sourceUrl,
 				readString(webmentionEntry, "wm-property").unwrapOr("")
 			);
 		},
-		Nothing: () => {
+		Nothing() {
 			return {
 				kind: "ignore"
 			};
@@ -327,7 +330,7 @@ export function createEmptyWebmentionSectionModel(): WebmentionSectionModel {
 		reactions: {
 			...emptyWebmentionSectionModel.reactions
 		},
-		replies: []
+		replies: emptyWebmentionSectionModel.replies
 	};
 }
 
@@ -338,7 +341,7 @@ export function createWebmentionApiRequestUrl(webmentionApiRequestUrlInput: Webm
 	apiRequestUrl.searchParams.set("per-page", "100");
 	apiRequestUrl.searchParams.set("target", targetUrl);
 
-	return apiRequestUrl.toString();
+	return apiRequestUrl.href;
 }
 
 export function parseWebmentionApiResponse(webmentionApiResponse: unknown): WebmentionSectionModel {
@@ -378,31 +381,38 @@ export function parseWebmentionApiResponse(webmentionApiResponse: unknown): Webm
 	};
 }
 
+async function fetchWebmentionsForTargetUrl(
+	dependencies: WebmentionDependencies,
+	targetUrl: string
+): Promise<WebmentionSectionModel> {
+	const webmentionApiUrl = parseWebmentionApiUrl(
+		import.meta.env.WEBMENTION_API_URL ?? "https://webmention.io/api/mentions.jf2"
+	);
+	const response = await dependencies.fetch(
+		createWebmentionApiRequestUrl({
+			targetUrl,
+			webmentionApiUrl
+		})
+	);
+
+	if (!response.ok) {
+		throw new Error(`Webmention API request failed with status ${response.status}`);
+	}
+
+	const webmentionApiResponse: unknown = await response.json();
+	const webmentionSectionModel = parseWebmentionApiResponse(webmentionApiResponse);
+
+	recordWebmentionBuildMentionTotals(webmentionSectionModel);
+
+	return webmentionSectionModel;
+}
+
 export async function loadWebmentionsForTargetUrl(
 	dependencies: WebmentionDependencies,
 	targetUrl: string
 ): Promise<WebmentionSectionModel> {
 	try {
-		const webmentionApiUrl = parseWebmentionApiUrl(
-			import.meta.env.WEBMENTION_API_URL ?? "https://webmention.io/api/mentions.jf2"
-		);
-		const response = await dependencies.fetch(
-			createWebmentionApiRequestUrl({
-				targetUrl,
-				webmentionApiUrl
-			})
-		);
-
-		if (!response.ok) {
-			throw new Error(`Webmention API request failed with status ${response.status}`);
-		}
-
-		const webmentionApiResponse: unknown = await response.json();
-		const webmentionSectionModel = parseWebmentionApiResponse(webmentionApiResponse);
-
-		recordWebmentionBuildMentionTotals(webmentionSectionModel);
-
-		return webmentionSectionModel;
+		return await fetchWebmentionsForTargetUrl(dependencies, targetUrl);
 	} catch (error: unknown) {
 		recordFailedWebmentionBuildMentionLoad();
 		throw error;

@@ -55,14 +55,15 @@ describe("request validation", () => {
 	});
 
 	it("returns a Result Ok for a valid contact form request", async () => {
+		const formBody = new URLSearchParams({
+			message: "hello"
+		});
 		const contactFormRequest = new Request("https://example.com/contact-form", {
 			method: "POST",
 			headers: {
 				"content-type": "application/x-www-form-urlencoded"
 			},
-			body: new URLSearchParams({
-				message: "hello"
-			}).toString()
+			body: formBody.toString()
 		});
 
 		const actualValidationResult = await validateContactFormRequest(contactFormRequest);

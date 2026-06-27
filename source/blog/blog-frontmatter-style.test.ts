@@ -64,9 +64,9 @@ function findUnquotedFrontmatterStringProperties(
 	return blogPostFrontmatterDocuments.flatMap((blogPostFrontmatterDocument) => {
 		return quotedFrontmatterStringPropertyNames
 			.filter((propertyName) => {
-				return !new RegExp(`^${propertyName}: ["']`, "mu").test(
-					blogPostFrontmatterDocument.frontmatterDocument
-				);
+				const frontmatterPropertyPattern = new RegExp(`^${propertyName}: ["']`, "mu");
+
+				return !frontmatterPropertyPattern.test(blogPostFrontmatterDocument.frontmatterDocument);
 			})
 			.map((propertyName) => {
 				return {

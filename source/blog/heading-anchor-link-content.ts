@@ -4,5 +4,5 @@ type HeadingAnchorLinkContentPart = {
 };
 
 export function buildHeadingAnchorLinkContent(): HeadingAnchorLinkContentPart[] {
-	return [{ type: "text", value: "\u00A0#" }];
+	return [{ type: "text", value: "\u{A0}#" }];
 }

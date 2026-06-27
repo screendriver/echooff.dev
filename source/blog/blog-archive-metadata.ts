@@ -19,11 +19,7 @@ const defaultBlogArchiveDescription = "Notes on web technologies, engineering tr
 const siteOwnerName = "Christian Rackerseder";
 
 export function createDefaultBlogArchiveMetadata(totalPostCount: number): BlogArchiveMetadata {
-	let terminalOutput = `${totalPostCount} posts available`;
-
-	if (totalPostCount === 1) {
-		terminalOutput = "1 post available";
-	}
+	const terminalOutput = totalPostCount === 1 ? "1 post available" : `${totalPostCount} posts available`;
 
 	return {
 		description: defaultBlogArchiveDescription,

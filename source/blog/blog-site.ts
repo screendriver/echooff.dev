@@ -2,7 +2,9 @@ import { isUndefined, isPositiveInteger } from "@sindresorhus/is";
 import { err, isErr, ok, type Result } from "true-myth/result";
 
 function createAbsoluteUrl(configuredSiteUrl: URL, pathname: string): string {
-	return new URL(pathname, configuredSiteUrl).toString();
+	const absoluteUrl = new URL(pathname, configuredSiteUrl);
+
+	return absoluteUrl.href;
 }
 
 export function createBlogIndexPagePath(blogIndexPageNumber: number): Result<string, RangeError> {

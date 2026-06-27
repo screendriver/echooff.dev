@@ -15,7 +15,7 @@ export function createDeterministicServerApplication(): Hono {
 	application.use(
 		"/webmention-avatar.svg",
 		serveStatic({
-			onFound: (_servedPathname, context) => {
+			onFound(_servedPathname, context) {
 				context.header("content-type", "image/svg+xml");
 			},
 			root: "./source/deterministic-server/assets",
