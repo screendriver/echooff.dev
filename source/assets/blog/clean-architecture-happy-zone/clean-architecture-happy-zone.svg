@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" aria-labelledby="title desc" viewBox="0 0 1200 760">
+  <title>Clean Architecture protects the happy zone</title>
+  <desc>
+    A simplified onion diagram. The happy zone is intentionally large. A thinner DMZ boundary protects it from the thinnest outside-world ring. Source code dependencies point inward.
+  </desc>
+  <defs>
+    <marker id="a" markerHeight="9" markerWidth="9" orient="auto-start-reverse" refX="8" refY="5" viewBox="0 0 10 10">
+      <path fill="#334155" d="m0 0 10 5-10 5z"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="760" fill="#f8fafc" rx="28"/>
+  <g font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Arial, sans-serif">
+    <text x="600" y="72" fill="#0f172a" font-size="42" font-weight="800" text-anchor="middle">Clean Architecture protects the happy zone</text>
+    <text x="600" y="116" fill="#475569" font-size="22" text-anchor="middle">The onion matters because source code dependencies point inward.</text>
+    <circle cx="390" cy="415" r="260" fill="#fff1f2" stroke="#fb7185" stroke-width="7"/>
+    <circle cx="390" cy="415" r="234" fill="#fffbeb" stroke="#f59e0b" stroke-width="7"/>
+    <circle cx="390" cy="415" r="194" fill="#ecfdf5" stroke="#10b981" stroke-width="7"/>
+    <text x="390" y="389" fill="#065f46" font-size="40" font-weight="800" text-anchor="middle">Happy zone</text>
+    <text x="390" y="431" fill="#065f46" font-size="24" text-anchor="middle">pure decisions</text>
+    <text x="390" y="464" fill="#065f46" font-size="21" text-anchor="middle">explicit inputs · immutable state</text>
+    <path stroke="#fb7185" stroke-linecap="round" stroke-width="3" d="m642 327 100-45"/>
+    <path stroke="#f59e0b" stroke-linecap="round" stroke-width="3" d="M624 415h118"/>
+    <path stroke="#10b981" stroke-linecap="round" stroke-width="3" d="m552 532 190 3"/>
+    <rect width="336" height="100" x="758" y="232" fill="#fff" stroke="#fecdd3" stroke-width="2" rx="16"/>
+    <circle cx="788" cy="282" r="8" fill="#fb7185"/>
+    <text x="812" y="274" fill="#9f1239" font-size="23" font-weight="800">Evil outside world</text>
+    <text x="812" y="304" fill="#9f1239" font-size="18">I/O · time · input · frameworks</text>
+    <rect width="336" height="100" x="758" y="354" fill="#fff" stroke="#fde68a" stroke-width="2" rx="16"/>
+    <circle cx="788" cy="404" r="8" fill="#f59e0b"/>
+    <text x="812" y="396" fill="#92400e" font-size="23" font-weight="800">DMZ / boundary</text>
+    <text x="812" y="426" fill="#92400e" font-size="18">validate · parse · map</text>
+    <rect width="336" height="100" x="758" y="476" fill="#fff" stroke="#bbf7d0" stroke-width="2" rx="16"/>
+    <circle cx="788" cy="526" r="8" fill="#10b981"/>
+    <text x="812" y="518" fill="#065f46" font-size="23" font-weight="800">Happy zone</text>
+    <text x="812" y="548" fill="#065f46" font-size="18">pure application logic</text>
+    <text x="940" y="642" fill="#334155" font-size="20" font-weight="800" text-anchor="middle">source code dependencies point inward</text>
+    <path stroke="#334155" stroke-linecap="round" stroke-width="4" marker-end="url(#a)" d="M1070 665H780"/>
+    <text x="600" y="724" fill="#0f172a" font-size="22" font-weight="800" text-anchor="middle">Outer code may know inner code. Inner code must not know outer code.</text>
+  </g>
+</svg>
