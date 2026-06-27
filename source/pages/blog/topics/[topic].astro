@@ -23,15 +23,19 @@ export async function getStaticPaths() {
 	const topicArchiveEntries = createBlogPostTopicArchiveEntries(blogPosts);
 	const blogPostsByTopic = groupBlogPostsByTopic(blogPosts);
 
-	return topicArchiveEntries.map((topicArchiveEntry) => ({
-		params: {
-			topic: topicArchiveEntry.slug
-		},
-		props: {
-			blogPosts: sortBlogPostsByPublicationDateDescending(blogPostsByTopic.get(topicArchiveEntry.label) ?? []),
-			topicArchiveEntry
-		}
-	}));
+	return topicArchiveEntries.map((topicArchiveEntry) => {
+		return {
+			params: {
+				topic: topicArchiveEntry.slug
+			},
+			props: {
+				blogPosts: sortBlogPostsByPublicationDateDescending(
+					blogPostsByTopic.get(topicArchiveEntry.label) ?? []
+				),
+				topicArchiveEntry
+			}
+		};
+	});
 }
 
 const { blogPosts, topicArchiveEntry } = Astro.props;
