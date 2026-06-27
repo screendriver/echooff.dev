@@ -13,7 +13,7 @@ const { link, title, description, style } = Astro.props;
 	<a href={link.toString()} title={title}>
 		<slot />
 
-		<h3>{title}</h3>
+		<h3>{title}</h3>{" "}
 
 		<p>{description}</p>
 	</a>
