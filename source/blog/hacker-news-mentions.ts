@@ -26,9 +26,9 @@ type HackerNewsApiRequestUrlInput = {
 	readonly targetUrl: string;
 };
 
-const emptyHackerNewsSectionModel = {
+const emptyHackerNewsSectionModel: HackerNewsSectionModel = {
 	mentions: []
-} as const satisfies HackerNewsSectionModel;
+};
 
 function readString(objectValue: Record<string, unknown>, propertyName: string): Maybe<string> {
 	const propertyValue = objectValue[propertyName];
@@ -52,7 +52,9 @@ function readNumber(objectValue: Record<string, unknown>, propertyName: string):
 
 function parseAbsoluteUrl(urlValue: string): Maybe<string> {
 	try {
-		return just(new URL(urlValue).toString());
+		const parsedUrl = new URL(urlValue);
+
+		return just(parsedUrl.href);
 	} catch {
 		return nothing();
 	}
@@ -204,17 +206,17 @@ export function createHackerNewsApiRequestUrl(hackerNewsApiRequestUrlInput: Hack
 	apiRequestUrl.searchParams.set("hitsPerPage", "100");
 	apiRequestUrl.searchParams.set("query", targetUrl);
 
-	return apiRequestUrl.toString();
+	return apiRequestUrl.href;
 }
 
 export function parseHackerNewsApiResponse(targetUrl: string, hackerNewsApiResponse: unknown): HackerNewsSectionModel {
 	const parsedMentions = readHackerNewsApiHits(hackerNewsApiResponse)
 		.flatMap((hackerNewsApiHit) => {
 			return readMentionFromApiHit(targetUrl, hackerNewsApiHit).match({
-				Just: (mention) => {
+				Just(mention) {
 					return [mention];
 				},
-				Nothing: () => {
+				Nothing() {
 					return [];
 				}
 			});
@@ -227,31 +229,38 @@ export function parseHackerNewsApiResponse(targetUrl: string, hackerNewsApiRespo
 	};
 }
 
+async function fetchHackerNewsMentionsForTargetUrl(
+	dependencies: HackerNewsDependencies,
+	targetUrl: string
+): Promise<HackerNewsSectionModel> {
+	const hackerNewsApiUrl = parseHackerNewsApiUrl(
+		import.meta.env.HACKER_NEWS_API_URL ?? "https://hn.algolia.com/api/v1/search_by_date"
+	);
+	const response = await dependencies.fetch(
+		createHackerNewsApiRequestUrl({
+			hackerNewsApiUrl,
+			targetUrl
+		})
+	);
+
+	if (!response.ok) {
+		throw new Error(`Hacker News API request failed with status ${response.status}`);
+	}
+
+	const hackerNewsApiResponse: unknown = await response.json();
+	const hackerNewsSectionModel = parseHackerNewsApiResponse(targetUrl, hackerNewsApiResponse);
+
+	recordHackerNewsBuildMentionTotals(hackerNewsSectionModel);
+
+	return hackerNewsSectionModel;
+}
+
 export async function loadHackerNewsMentionsForTargetUrl(
 	dependencies: HackerNewsDependencies,
 	targetUrl: string
 ): Promise<HackerNewsSectionModel> {
 	try {
-		const hackerNewsApiUrl = parseHackerNewsApiUrl(
-			import.meta.env.HACKER_NEWS_API_URL ?? "https://hn.algolia.com/api/v1/search_by_date"
-		);
-		const response = await dependencies.fetch(
-			createHackerNewsApiRequestUrl({
-				hackerNewsApiUrl,
-				targetUrl
-			})
-		);
-
-		if (!response.ok) {
-			throw new Error(`Hacker News API request failed with status ${response.status}`);
-		}
-
-		const hackerNewsApiResponse: unknown = await response.json();
-		const hackerNewsSectionModel = parseHackerNewsApiResponse(targetUrl, hackerNewsApiResponse);
-
-		recordHackerNewsBuildMentionTotals(hackerNewsSectionModel);
-
-		return hackerNewsSectionModel;
+		return await fetchHackerNewsMentionsForTargetUrl(dependencies, targetUrl);
 	} catch (error: unknown) {
 		recordFailedHackerNewsBuildMentionLoad();
 		throw error;

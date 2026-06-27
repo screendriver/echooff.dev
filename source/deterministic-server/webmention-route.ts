@@ -1,8 +1,10 @@
 import type { Hono } from "hono";
 
-function createDeterministicWebmentionResponseBody(requestOrigin: string): {
+type DeterministicWebmentionResponseBody = {
 	readonly children: readonly unknown[];
-} {
+};
+
+function createDeterministicWebmentionResponseBody(requestOrigin: string): DeterministicWebmentionResponseBody {
 	return {
 		children: [
 			{
@@ -44,6 +46,8 @@ function createDeterministicWebmentionResponseBody(requestOrigin: string): {
 
 export function registerWebmentionRoute(application: Hono): void {
 	application.get("/webmentions", (context) => {
-		return context.json(createDeterministicWebmentionResponseBody(new URL(context.req.url).origin));
+		const requestUrl = new URL(context.req.url);
+
+		return context.json(createDeterministicWebmentionResponseBody(requestUrl.origin));
 	});
 }

@@ -50,8 +50,9 @@ describe("hacker news API URL schema", () => {
 
 	it("parses a string URL into a URL instance", () => {
 		const hackerNewsApiUrl = parseHackerNewsApiUrl("https://hn.algolia.com/api/v1/search_by_date");
-		const actualHackerNewsApiUrl = hackerNewsApiUrl.toString();
-		const expectedHackerNewsApiUrl = new URL("https://hn.algolia.com/api/v1/search_by_date").toString();
+		const expectedParsedHackerNewsApiUrl = new URL("https://hn.algolia.com/api/v1/search_by_date");
+		const actualHackerNewsApiUrl = hackerNewsApiUrl.href;
+		const expectedHackerNewsApiUrl = expectedParsedHackerNewsApiUrl.href;
 
 		expect(actualHackerNewsApiUrl).toStrictEqual(expectedHackerNewsApiUrl);
 	});
@@ -103,8 +104,9 @@ describe("webmention API URL schema", () => {
 
 	it("parses a string URL into a URL instance", () => {
 		const webmentionApiUrl = parseWebmentionApiUrl("https://webmention.io/api/mentions.jf2");
-		const actualWebmentionApiUrl = webmentionApiUrl.toString();
-		const expectedWebmentionApiUrl = new URL("https://webmention.io/api/mentions.jf2").toString();
+		const expectedParsedWebmentionApiUrl = new URL("https://webmention.io/api/mentions.jf2");
+		const actualWebmentionApiUrl = webmentionApiUrl.href;
+		const expectedWebmentionApiUrl = expectedParsedWebmentionApiUrl.href;
 
 		expect(actualWebmentionApiUrl).toStrictEqual(expectedWebmentionApiUrl);
 	});

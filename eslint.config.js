@@ -51,20 +51,26 @@ const disabledAstroAccessibilityRules = Object.fromEntries(
 	})
 );
 
+const [javaScriptAndTypeScriptBaseConfig] = baseConfig;
+
 export default [
 	{
 		ignores: [".astro/**/*", "public/**/*", "target/**/*"]
 	},
 	{
-		...baseConfig,
+		...javaScriptAndTypeScriptBaseConfig,
 		files: ["**/*.{js,cjs,mjs,ts,mts,cts}"],
 		rules: {
-			...baseConfig.rules,
+			...javaScriptAndTypeScriptBaseConfig.rules,
 
 			"@cspell/spellchecker": "off",
+			"@stylistic/array-bracket-spacing": ["error", "never"],
+			"@stylistic/no-extra-parens": "off",
 			"@stylistic/quotes": ["error", "double", { avoidEscape: true }],
 			"@stylistic/no-tabs": "off",
+			"dprint/typescript": "off",
 			"import/no-unused-modules": "off",
+			"restricted-syntax/no-unnecessary-arrow-function": "off",
 			"@stylistic/indent": [
 				"error",
 				"tab",
@@ -143,6 +149,7 @@ export default [
 		rules: {
 			...vitestConfig.rules,
 			"@vitest/no-alias-methods": "off",
+			"@vitest/prefer-called-with": "off",
 			"@typescript-eslint/no-magic-numbers": "off",
 			"@typescript-eslint/no-shadow": "off",
 			"@typescript-eslint/no-unsafe-type-assertion": "off"

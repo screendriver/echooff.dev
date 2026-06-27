@@ -147,7 +147,7 @@ function validateInput(input: CreateBlogPaginationModelInput): Result<CreateBlog
 function createPaginationWindow(
 	currentPage: number,
 	lastPage: number
-): Result<{ nextPageHref: string | undefined; previousPageHref: string | undefined }, RangeError> {
+): Result<{ readonly nextPageHref: string | undefined; readonly previousPageHref: string | undefined }, RangeError> {
 	const previousPageHrefResult = createOptionalPageHref(currentPage > 1 ? currentPage - 1 : undefined);
 
 	if (isErr(previousPageHrefResult)) {

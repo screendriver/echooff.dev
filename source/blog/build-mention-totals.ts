@@ -17,10 +17,10 @@ type BuildMentionTotalsRecorder = {
 	readonly recordWebmentionCount: (webmentionCount: number) => void;
 };
 
-const emptyBuildMentionTotals = {
+const emptyBuildMentionTotals: BuildMentionTotals = {
 	totalHackerNewsPostCount: 0,
 	totalWebmentionCount: 0
-} as const satisfies BuildMentionTotals;
+};
 
 export function countHackerNewsPosts(hackerNewsSectionModel: HackerNewsSectionModel): number {
 	return hackerNewsSectionModel.mentions.length;
@@ -47,7 +47,7 @@ export function createBuildMentionTotalsRecorder(
 	let hasFlushedAccumulatedMentionTotals = false;
 
 	return {
-		flushAccumulatedMentionTotals: () => {
+		flushAccumulatedMentionTotals() {
 			if (hasFlushedAccumulatedMentionTotals) {
 				return;
 			}
@@ -55,13 +55,13 @@ export function createBuildMentionTotalsRecorder(
 			hasFlushedAccumulatedMentionTotals = true;
 			buildMentionTotalsRecorderDependencies.writeLine(formatBuildMentionTotals(accumulatedBuildMentionTotals));
 		},
-		recordHackerNewsPostCount: (hackerNewsPostCount) => {
+		recordHackerNewsPostCount(hackerNewsPostCount) {
 			accumulatedBuildMentionTotals = {
 				totalHackerNewsPostCount: accumulatedBuildMentionTotals.totalHackerNewsPostCount + hackerNewsPostCount,
 				totalWebmentionCount: accumulatedBuildMentionTotals.totalWebmentionCount
 			};
 		},
-		recordWebmentionCount: (webmentionCount) => {
+		recordWebmentionCount(webmentionCount) {
 			accumulatedBuildMentionTotals = {
 				totalHackerNewsPostCount: accumulatedBuildMentionTotals.totalHackerNewsPostCount,
 				totalWebmentionCount: accumulatedBuildMentionTotals.totalWebmentionCount + webmentionCount
@@ -71,19 +71,21 @@ export function createBuildMentionTotalsRecorder(
 }
 
 const buildMentionTotalsRecorder = createBuildMentionTotalsRecorder({
-	writeLine: (message) => {
+	writeLine(message) {
 		process.stdout.write(`\n${message}\n`);
 	}
 });
 
-let hasRegisteredBuildMentionTotalsProcessExitHook = false;
+const buildMentionTotalsProcessExitHookRegistration = {
+	hasRegisteredProcessExitHook: false
+};
 
 function registerBuildMentionTotalsProcessExitHook(): void {
-	if (hasRegisteredBuildMentionTotalsProcessExitHook) {
+	if (buildMentionTotalsProcessExitHookRegistration.hasRegisteredProcessExitHook) {
 		return;
 	}
 
-	hasRegisteredBuildMentionTotalsProcessExitHook = true;
+	buildMentionTotalsProcessExitHookRegistration.hasRegisteredProcessExitHook = true;
 	process.once("exit", () => {
 		buildMentionTotalsRecorder.flushAccumulatedMentionTotals();
 	});

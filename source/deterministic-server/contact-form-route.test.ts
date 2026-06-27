@@ -13,15 +13,16 @@ function createContactFormTestApplication(): Hono {
 describe("contact form route", () => {
 	it("returns an empty JSON object when making a HTTP POST request", async () => {
 		const application = createContactFormTestApplication();
+		const formBody = new URLSearchParams({
+			message: "hello"
+		});
 
 		const response = await application.request("/contact-form", {
 			method: "POST",
 			headers: {
 				"content-type": "application/x-www-form-urlencoded"
 			},
-			body: new URLSearchParams({
-				message: "hello"
-			}).toString()
+			body: formBody.toString()
 		});
 		const actualResponseBody: unknown = await response.json();
 		const expectedResponseBody = {};

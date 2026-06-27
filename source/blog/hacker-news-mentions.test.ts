@@ -109,7 +109,7 @@ describe("loadHackerNewsMentionsForTargetUrl()", () => {
 	it("fetches and parses mentions for the target URL", async () => {
 		const fetchImplementation = vi.fn<typeof fetch>().mockResolvedValue({
 			ok: true,
-			json: async () => {
+			async json() {
 				return {
 					hits: [
 						{
@@ -150,7 +150,7 @@ describe("loadHackerNewsMentionsForTargetUrl()", () => {
 	it("throws when the API request fails", async () => {
 		const fetchImplementation = vi.fn<typeof fetch>().mockResolvedValue({
 			ok: false,
-			json: async () => {
+			async json() {
 				return {};
 			},
 			status: 503

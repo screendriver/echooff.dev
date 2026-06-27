@@ -15,33 +15,11 @@ type NormalizedOpenGraphUrlResolutionInput = {
 function createOpenGraphUrlResolutionInput(
 	parameters: OpenGraphUrlResolutionInput
 ): NormalizedOpenGraphUrlResolutionInput {
-	let openGraphUrlResolutionInput: NormalizedOpenGraphUrlResolutionInput = {
-		defaultOpenGraphUrl: parameters.defaultOpenGraphUrl
+	return {
+		defaultOpenGraphUrl: parameters.defaultOpenGraphUrl,
+		...(isString(parameters.canonicalUrl) && { canonicalUrl: parameters.canonicalUrl }),
+		...(isString(parameters.openGraphUrl) && { openGraphUrl: parameters.openGraphUrl })
 	};
-
-	if (isString(parameters.canonicalUrl)) {
-		openGraphUrlResolutionInput = {
-			canonicalUrl: parameters.canonicalUrl,
-			defaultOpenGraphUrl: parameters.defaultOpenGraphUrl
-		};
-	}
-
-	if (isString(parameters.openGraphUrl)) {
-		openGraphUrlResolutionInput = {
-			defaultOpenGraphUrl: parameters.defaultOpenGraphUrl,
-			openGraphUrl: parameters.openGraphUrl
-		};
-
-		if (isString(parameters.canonicalUrl)) {
-			openGraphUrlResolutionInput = {
-				canonicalUrl: parameters.canonicalUrl,
-				defaultOpenGraphUrl: parameters.defaultOpenGraphUrl,
-				openGraphUrl: parameters.openGraphUrl
-			};
-		}
-	}
-
-	return openGraphUrlResolutionInput;
 }
 
 export function resolveOpenGraphUrl(parameters: OpenGraphUrlResolutionInput): string {

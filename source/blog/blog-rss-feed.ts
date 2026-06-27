@@ -1,14 +1,14 @@
+import type { RSSOptions } from "@astrojs/rss";
 import type { CollectionEntry } from "astro:content";
-import { createRssFeedItemsForBlogPosts, type RssFeedItem } from "./blog-feed.ts";
+import { createRssFeedItemsForBlogPosts } from "./blog-feed.ts";
 import { sortBlogPostsByPublicationDateDescending } from "./blog-posts.ts";
 import { getConfiguredSiteUrlOrThrow } from "./blog-site.ts";
 
-export type BlogRssFeedOptions = {
+export type BlogRssFeedOptions = RSSOptions & {
 	readonly title: string;
 	readonly description: string;
 	readonly site: URL;
 	readonly trailingSlash: false;
-	readonly items: RssFeedItem[];
 };
 
 export function createBlogRssFeedOptions(
