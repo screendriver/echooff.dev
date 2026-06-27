@@ -106,7 +106,9 @@ In TypeScript, [strictNullChecks](https://www.typescriptlang.org/tsconfig/#stric
 **Every consumer must remember to handle `null`.**
 
 ```ts
-if (user !== null) {
+import { isNull } from "@sindresorhus/is";
+
+if (!isNull(user)) {
   console.log(user.name);
 }
 ```
@@ -283,6 +285,7 @@ Now absence becomes **explicit in the type system**.
 One JavaScript library implementing this pattern is [True Myth](https://true-myth.js.org).
 
 ```ts
+import { isUndefined } from "@sindresorhus/is";
 import { just, nothing, type Maybe } from "true-myth/maybe";
 ```
 
@@ -292,7 +295,7 @@ Now our example becomes:
 function findUser(id: string): Maybe<User> {
   const user = database.get(id);
 
-  if (user === undefined) {
+  if (isUndefined(user)) {
     return nothing();
   }
 

@@ -1,3 +1,4 @@
+import { isDirectInstanceOf } from "@sindresorhus/is";
 import { err, ok, type Result } from "true-myth/result";
 import { type } from "arktype";
 import { resumeDataInputSchema, type ResumeDataInput } from "./resume-data-input-schema.ts";
@@ -35,7 +36,7 @@ function parseResumeEntry(resumeDataInput: ResumeDataInput): ResumeData {
 export function parseResumeData(resumeData: unknown): Result<ResumesData, TypeError> {
 	const parseResult = resumeDataInputSchema(resumeData);
 
-	if (parseResult instanceof type.errors) {
+	if (isDirectInstanceOf(parseResult, type.errors)) {
 		return err(new TypeError(parseResult.summary));
 	}
 

@@ -56,8 +56,10 @@ The bug is caused by using a falsy check where the real question is whether the 
 An explicit check makes the intention clear:
 
 ```typescript
+import { isUndefined } from "@sindresorhus/is";
+
 function applyDiscount(discountPercentage?: number): string {
-  if (discountPercentage === undefined) {
+  if (isUndefined(discountPercentage)) {
     return "No discount";
   }
 
@@ -92,8 +94,10 @@ The problem is that the condition does not make the intention obvious.
 If only missing values should fall back to `"No nickname"`, write that:
 
 ```typescript
+import { isUndefined } from "@sindresorhus/is";
+
 function formatNickname(nickname?: string): string {
-  if (nickname === undefined) {
+  if (isUndefined(nickname)) {
     return "No nickname";
   }
 
@@ -104,8 +108,10 @@ function formatNickname(nickname?: string): string {
 If an empty string should also fall back, write that explicitly too:
 
 ```typescript
+import { isEmptyString, isUndefined } from "@sindresorhus/is";
+
 function formatNickname(nickname?: string): string {
-  if (nickname === undefined || nickname === "") {
+  if (isUndefined(nickname) || isEmptyString(nickname)) {
     return "No nickname";
   }
 
@@ -142,8 +148,10 @@ That is wrong.
 The explicit version is correct:
 
 ```typescript
+import { isUndefined } from "@sindresorhus/is";
+
 function isDarkModeEnabled(config: Config): boolean {
-  if (config.darkMode === undefined) {
+  if (isUndefined(config.darkMode)) {
     return true;
   }
 
@@ -192,24 +200,30 @@ Readers should not need to think about JavaScript coercion rules just to underst
 
 ## Prefer explicit checks
 
-If you care about `undefined`, check for `undefined`.
+If you care about `undefined`, check for `undefined` explicitly.
 
 ```typescript
-if (value === undefined) {
+import { isUndefined } from "@sindresorhus/is";
+
+if (isUndefined(value)) {
 }
 ```
 
-If you care about `null`, check for `null`.
+If you care about `null`, check for `null` explicitly.
 
 ```typescript
-if (value === null) {
+import { isNull } from "@sindresorhus/is";
+
+if (isNull(value)) {
 }
 ```
 
-If you care about an empty string, check for an empty string.
+If you care about an empty string, check for an empty string explicitly.
 
 ```typescript
-if (value === "") {
+import { isEmptyString } from "@sindresorhus/is";
+
+if (isEmptyString(value)) {
 }
 ```
 
@@ -230,7 +244,9 @@ They hide intent, collapse different states into the same branch, and make code 
 Even in cases where a truthy check happens to work, I still prefer the explicit version.
 
 ```ts
-if (title !== "") {
+import { isEmptyString } from "@sindresorhus/is";
+
+if (!isEmptyString(title)) {
 }
 ```
 
@@ -274,6 +290,6 @@ In TypeScript, I want conditions to describe the rule I care about, not rely on 
 
 `if (!value)` is short.
 
-`if (value === undefined)` is often better.
+`if (isUndefined(value))` is often better.
 
 Because it says what it means.

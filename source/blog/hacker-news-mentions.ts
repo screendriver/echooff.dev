@@ -1,4 +1,4 @@
-import { isString, isNumber, isValidDate } from "@sindresorhus/is";
+import { isNull, isNumber, isString, isUndefined, isValidDate } from "@sindresorhus/is";
 import { just, nothing, type Maybe } from "true-myth/maybe";
 import { recordFailedHackerNewsBuildMentionLoad, recordHackerNewsBuildMentionTotals } from "./build-mention-totals.ts";
 import { parseHackerNewsApiUrl } from "./environment-variables.ts";
@@ -85,7 +85,7 @@ function readHackerNewsApiHits(hackerNewsApiResponse: unknown): readonly HackerN
 
 	const { hits } = hackerNewsApiResponseSchema.assert(hackerNewsApiResponse);
 
-	if (hits === undefined) {
+	if (isUndefined(hits)) {
 		return [];
 	}
 
@@ -176,7 +176,7 @@ function readMentionFromApiHit(targetUrl: string, hackerNewsApiHit: HackerNewsAp
 
 	const completeMentionFields = readCompleteMentionFields(hackerNewsApiHit);
 
-	if (completeMentionFields === null) {
+	if (isNull(completeMentionFields)) {
 		return nothing();
 	}
 

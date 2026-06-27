@@ -1,3 +1,4 @@
+import { isNonEmptyString, isPlainObject, isString } from "@sindresorhus/is";
 import { err, isErr, ok, type Result } from "true-myth/result";
 
 export type RequestValidationResult = Result<void, TypeError>;
@@ -23,23 +24,19 @@ function validateRequiredHeaderValue(
 function validatePresentHeader(request: Request, headerName: string): RequestValidationResult {
 	const headerValue = readHeaderValue(request, headerName);
 
-	if (headerValue === null || headerValue.length === 0) {
+	if (!isNonEmptyString(headerValue)) {
 		return err(new TypeError(`The ${headerName} header is required.`));
 	}
 
 	return ok(undefined);
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-	return typeof value === "object" && value !== null;
-}
-
 function validateGraphQlRequestBody(requestBody: unknown): RequestValidationResult {
-	if (!isRecord(requestBody)) {
+	if (!isPlainObject(requestBody)) {
 		return err(new TypeError("The request body must contain a query string."));
 	}
 
-	if (typeof requestBody.query !== "string") {
+	if (!isString(requestBody.query)) {
 		return err(new TypeError("The request body must contain a query string."));
 	}
 

@@ -1,4 +1,4 @@
-import { isPlainObject, isString, isValidDate } from "@sindresorhus/is";
+import { isPlainObject, isString, isUndefined, isValidDate } from "@sindresorhus/is";
 import { match } from "ts-pattern";
 import { just, nothing, type Maybe } from "true-myth/maybe";
 import { recordFailedWebmentionBuildMentionLoad, recordWebmentionBuildMentionTotals } from "./build-mention-totals.ts";
@@ -147,7 +147,7 @@ function readWebmentionEntries(webmentionApiResponse: unknown): readonly Webment
 	}
 
 	const { children } = webmentionApiResponseSchema.assert(webmentionApiResponse);
-	if (children === undefined) {
+	if (isUndefined(children)) {
 		return [];
 	}
 

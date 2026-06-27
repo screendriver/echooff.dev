@@ -14,6 +14,8 @@ But there is another kind of ambiguity in many codebases: **whether an operation
 In TypeScript, the default way to signal errors is by throwing exceptions.
 
 ```ts
+import { isPlainObject, isString } from "@sindresorhus/is";
+
 type User = {
   id: string;
 };
@@ -21,11 +23,11 @@ type User = {
 function parseUser(json: string): User {
   const data: unknown = JSON.parse(json);
 
-  if (typeof data !== "object" || data === null || !("id" in data)) {
+  if (!isPlainObject(data) || !("id" in data)) {
     throw new Error("Missing id");
   }
 
-  if (typeof data.id !== "string") {
+  if (!isString(data.id)) {
     throw new Error("Invalid id");
   }
 
@@ -67,6 +69,7 @@ A `Result` represents one of two states:
 Libraries like [True Myth](https://true-myth.js.org) implement this pattern for TypeScript.
 
 ```ts
+import { isError, isPlainObject, isString } from "@sindresorhus/is";
 import { err, ok, type Result } from "true-myth/result";
 
 type User = {
@@ -77,17 +80,17 @@ function parseUser(json: string): Result<User, Error> {
   try {
     const data: unknown = JSON.parse(json);
 
-    if (typeof data !== "object" || data === null || !("id" in data)) {
+    if (!isPlainObject(data) || !("id" in data)) {
       return err(new Error("Missing id"));
     }
 
-    if (typeof data.id !== "string") {
+    if (!isString(data.id)) {
       return err(new Error("Invalid id"));
     }
 
     return ok({ id: data.id });
   } catch (error: unknown) {
-    return err(error instanceof Error ? error : new Error("Unknown error"));
+    return err(isError(error) ? error : new Error("Unknown error"));
   }
 }
 ```
@@ -213,19 +216,20 @@ That keeps the core application logic predictable and free from hidden control f
 For example:
 
 ```ts
+import { isError, isUndefined } from "@sindresorhus/is";
 import { err, ok, type Result } from "true-myth/result";
 
 function readApiKey(): Result<string, Error> {
   try {
     const apiKey = process.env.API_KEY;
 
-    if (apiKey === undefined) {
+    if (isUndefined(apiKey)) {
       return err(new Error("API_KEY must be configured"));
     }
 
     return ok(apiKey);
   } catch (error: unknown) {
-    return err(error instanceof Error ? error : new Error("Unknown error"));
+    return err(isError(error) ? error : new Error("Unknown error"));
   }
 }
 ```

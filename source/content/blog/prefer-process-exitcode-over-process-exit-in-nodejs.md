@@ -240,6 +240,8 @@ The inner application should receive the dependencies it needs and return a resu
 The entry point should provide those dependencies, then translate the result into console output and an exit code.
 
 ```typescript
+import { isUndefined } from "@sindresorhus/is";
+
 type Configuration = {
   filePath: string;
 };
@@ -258,7 +260,7 @@ async function run(dependencies: RunDependencies): Promise<CliResult> {
 
   const configuration = await readConfiguration();
 
-  if (configuration === undefined) {
+  if (isUndefined(configuration)) {
     return {
       type: "failure",
       message: "Missing configuration.",

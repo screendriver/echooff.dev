@@ -3,11 +3,12 @@
 </div>
 
 <script>
+	import { isHtmlElement } from "@sindresorhus/is";
 	import { initializeReadingProgressIndicator } from "./reading-progress.js";
 
 	const progressIndicatorFillElement = document.querySelector("[data-blog-reading-progress-indicator-fill]");
 
-	if (progressIndicatorFillElement instanceof HTMLElement) {
+	if (isHtmlElement(progressIndicatorFillElement)) {
 		initializeReadingProgressIndicator({
 			readDocumentScrollHeight() {
 				return document.documentElement.scrollHeight;

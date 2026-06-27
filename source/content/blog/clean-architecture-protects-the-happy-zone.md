@@ -80,6 +80,8 @@ The boundary turns it into application data.
 This is bad:
 
 ```typescript
+import { isNumber, isPlainObject, isString } from "@sindresorhus/is";
+
 type Order = {
   id: string;
   totalInCents: number;
@@ -110,7 +112,7 @@ type ParseOrderResponseResult =
   | { status: "invalid"; reason: "invalidOrderResponse" };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
+  return isPlainObject(value);
 }
 
 function parseOrderResponse(externalOrder: unknown): ParseOrderResponseResult {
@@ -121,11 +123,11 @@ function parseOrderResponse(externalOrder: unknown): ParseOrderResponseResult {
   const id = externalOrder["id"];
   const totalInCents = externalOrder["totalInCents"];
 
-  if (typeof id !== "string") {
+  if (!isString(id)) {
     return { status: "invalid", reason: "invalidOrderResponse" };
   }
 
-  if (typeof totalInCents !== "number") {
+  if (!isNumber(totalInCents)) {
     return { status: "invalid", reason: "invalidOrderResponse" };
   }
 
@@ -213,6 +215,8 @@ Imagine `translate` comes from the UI's i18n setup. Passing it as an argument ma
 This is the wrong direction:
 
 ```typescript
+import { isUndefined } from "@sindresorhus/is";
+
 type Translate = (key: string) => string;
 
 type Checkout = {
@@ -236,7 +240,7 @@ function validateCheckout(
 ): ValidateCheckoutResult {
   const { checkout, translate } = options;
 
-  if (checkout.shippingAddressId === undefined) {
+  if (isUndefined(checkout.shippingAddressId)) {
     return {
       status: "invalid",
       message: translate("checkout.error.shippingAddressMissing")
@@ -265,6 +269,8 @@ Inside the use case, that key is a dependency leak.
 The application layer should return a semantic result:
 
 ```typescript
+import { isUndefined } from "@sindresorhus/is";
+
 type Checkout = {
   shippingAddressId: string | undefined;
   totalInCents: number;
@@ -287,7 +293,7 @@ function validateCheckout(
 ): ValidateCheckoutResult {
   const { checkout } = options;
 
-  if (checkout.shippingAddressId === undefined) {
+  if (isUndefined(checkout.shippingAddressId)) {
     return { status: "invalid", error: "shippingAddressMissing" };
   }
 
