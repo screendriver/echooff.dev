@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Maybe } from "true-myth";
+import { just, nothing } from "true-myth/maybe";
 import {
 	createBlogPostTopicArchiveEntries,
 	createBlogPostTopicArchiveEntryForSlug,
@@ -24,7 +24,7 @@ describe("getBlogPostTopicDetails()", () => {
 describe("getBlogPostTopicDetailsBySlug()", () => {
 	it("returns a topic details Maybe for a known topic slug", () => {
 		const actualTopicDetails = getBlogPostTopicDetailsBySlug("typescript");
-		const expectedTopicDetails = Maybe.just({
+		const expectedTopicDetails = just({
 			description: "TypeScript patterns that make intent, failures, and domain rules explicit.",
 			label: "TypeScript",
 			slug: "typescript"
@@ -35,7 +35,7 @@ describe("getBlogPostTopicDetailsBySlug()", () => {
 
 	it("returns Nothing for an unknown topic slug", () => {
 		const actualTopicDetails = getBlogPostTopicDetailsBySlug("unknown");
-		const expectedTopicDetails = Maybe.nothing();
+		const expectedTopicDetails = nothing();
 
 		expect(actualTopicDetails).toStrictEqual(expectedTopicDetails);
 	});
@@ -131,7 +131,7 @@ describe("createBlogPostTopicArchiveEntryForSlug()", () => {
 		});
 
 		const actualTopicArchiveEntry = createBlogPostTopicArchiveEntryForSlug([blogPost], "typescript");
-		const expectedTopicArchiveEntry = Maybe.just({
+		const expectedTopicArchiveEntry = just({
 			description: "TypeScript patterns that make intent, failures, and domain rules explicit.",
 			label: "TypeScript",
 			postCount: 1,
@@ -143,9 +143,9 @@ describe("createBlogPostTopicArchiveEntryForSlug()", () => {
 
 	it("returns Nothing for an unknown or empty topic slug", () => {
 		const actualKnownTopicResult = createBlogPostTopicArchiveEntryForSlug([], "typescript");
-		const expectedKnownTopicResult = Maybe.nothing();
+		const expectedKnownTopicResult = nothing();
 		const actualUnknownTopicResult = createBlogPostTopicArchiveEntryForSlug([], "unknown");
-		const expectedUnknownTopicResult = Maybe.nothing();
+		const expectedUnknownTopicResult = nothing();
 
 		expect(actualKnownTopicResult).toStrictEqual(expectedKnownTopicResult);
 		expect(actualUnknownTopicResult).toStrictEqual(expectedUnknownTopicResult);

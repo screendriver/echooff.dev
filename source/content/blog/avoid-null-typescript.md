@@ -283,7 +283,7 @@ Now absence becomes **explicit in the type system**.
 One JavaScript library implementing this pattern is [True Myth](https://true-myth.js.org).
 
 ```ts
-import { Maybe } from "true-myth";
+import { just, nothing, type Maybe } from "true-myth/maybe";
 ```
 
 Now our example becomes:
@@ -293,10 +293,10 @@ function findUser(id: string): Maybe<User> {
   const user = database.get(id);
 
   if (user === undefined) {
-    return Maybe.nothing();
+    return nothing();
   }
 
-  return Maybe.just(user);
+  return just(user);
 }
 ```
 
@@ -323,10 +323,12 @@ Real applications often receive data that might be `null` or `undefined`, especi
 
 Instead of propagating these values throughout the system, convert them immediately.
 
-With **true-myth** this is done using `Maybe.of()`.
+With **true-myth** this is done using `of()`.
 
 ```ts
-const street = Maybe.of(apiResponse.address)
+import { of } from "true-myth/maybe";
+
+const street = of(apiResponse.address)
   .map((address) => {
     return address.street;
   })

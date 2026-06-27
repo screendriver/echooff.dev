@@ -2,7 +2,7 @@ import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import process from "node:process";
 import { createMarkdownProcessor } from "@astrojs/markdown-remark";
-import is from "@sindresorhus/is";
+import { isString } from "@sindresorhus/is";
 
 export type BlogPostMarkdownDocument = {
 	readonly blogPostSlug: string;
@@ -31,7 +31,7 @@ function extractAnchorHrefs(renderedHtml: string): string[] {
 	for (const anchorHrefMatch of renderedHtml.matchAll(anchorHrefPattern)) {
 		const href = anchorHrefMatch.groups?.href;
 
-		if (is.string(href)) {
+		if (isString(href)) {
 			anchorHrefs.push(href);
 		}
 	}

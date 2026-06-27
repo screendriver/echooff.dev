@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { Maybe } from "true-myth";
+import { just, nothing } from "true-myth/maybe";
 import {
 	createEmptyWebmentionSectionModel,
 	createWebmentionApiRequestUrl,
@@ -98,24 +98,24 @@ describe("parseWebmentionApiResponse()", () => {
 				{
 					author: {
 						name: "Chris",
-						photoUrl: Maybe.nothing(),
-						websiteUrl: Maybe.nothing()
+						photoUrl: nothing(),
+						websiteUrl: nothing()
 					},
-					content: Maybe.nothing(),
+					content: nothing(),
 					sourceUrl: "https://social.example/@chris/2",
 					type: "mention",
-					visiblePublishedAt: Maybe.just("2026-03-25T08:30:00+00:00")
+					visiblePublishedAt: just("2026-03-25T08:30:00+00:00")
 				},
 				{
 					author: {
 						name: "Jane Doe",
-						photoUrl: Maybe.just("https://social.example/jane.jpg"),
-						websiteUrl: Maybe.just("https://social.example/@jane")
+						photoUrl: just("https://social.example/jane.jpg"),
+						websiteUrl: just("https://social.example/@jane")
 					},
-					content: Maybe.just("Thoughtful article."),
+					content: just("Thoughtful article."),
 					sourceUrl: "https://social.example/@jane/1",
 					type: "reply",
-					visiblePublishedAt: Maybe.just("2026-03-24T10:00:00+00:00")
+					visiblePublishedAt: just("2026-03-24T10:00:00+00:00")
 				}
 			]
 		};
@@ -139,13 +139,13 @@ describe("parseWebmentionApiResponse()", () => {
 			{
 				author: {
 					name: "remote.example",
-					photoUrl: Maybe.nothing(),
-					websiteUrl: Maybe.nothing()
+					photoUrl: nothing(),
+					websiteUrl: nothing()
 				},
-				content: Maybe.nothing(),
+				content: nothing(),
 				sourceUrl: "https://remote.example/post/1",
 				type: "mention",
-				visiblePublishedAt: Maybe.just("2026-03-26T09:45:00+00:00")
+				visiblePublishedAt: just("2026-03-26T09:45:00+00:00")
 			}
 		];
 
@@ -167,7 +167,7 @@ describe("parseWebmentionApiResponse()", () => {
 		});
 
 		const actualContent = actualSectionModel.replies[0]?.content;
-		const expectedContent = Maybe.just("Short summary");
+		const expectedContent = just("Short summary");
 
 		expect(actualContent).toStrictEqual(expectedContent);
 	});

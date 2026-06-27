@@ -1,7 +1,7 @@
 import { readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import is from "@sindresorhus/is";
+import { isUndefined } from "@sindresorhus/is";
 import { describe, expect, it } from "vitest";
 
 const repositoryRootDirectoryPath = fileURLToPath(new URL("../../", import.meta.url));
@@ -36,7 +36,7 @@ async function readBlogPostMarkdownFileNames(): Promise<readonly string[]> {
 function readFrontmatterDocument(markdownDocument: string): string {
 	const frontmatterMatch = /^---\n(?<frontmatterDocument>[\s\S]*?)\n---/u.exec(markdownDocument);
 
-	if (is.undefined(frontmatterMatch?.groups?.frontmatterDocument)) {
+	if (isUndefined(frontmatterMatch?.groups?.frontmatterDocument)) {
 		throw new TypeError("Blog post markdown document must start with a frontmatter block.");
 	}
 

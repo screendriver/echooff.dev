@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { Maybe } from "true-myth";
+import { just } from "true-myth/maybe";
 import {
 	createEmptyHackerNewsSectionModel,
 	createHackerNewsApiRequestUrl,
@@ -76,16 +76,16 @@ describe("parseHackerNewsApiResponse()", () => {
 					discussionUrl: "https://news.ycombinator.com/item?id=44000002",
 					pointCount: 90,
 					storyTitle: "Why I started this blog (repost)",
-					submittedUrl: Maybe.just("https://www.echooff.dev/blog/why-i-started-this-blog"),
-					visiblePublishedAt: Maybe.just("2026-04-02T10:00:00.000Z")
+					submittedUrl: just("https://www.echooff.dev/blog/why-i-started-this-blog"),
+					visiblePublishedAt: just("2026-04-02T10:00:00.000Z")
 				},
 				{
 					commentCount: 12,
 					discussionUrl: "https://news.ycombinator.com/item?id=44000001",
 					pointCount: 150,
 					storyTitle: "Why I started this blog",
-					submittedUrl: Maybe.just("https://www.echooff.dev/blog/why-i-started-this-blog"),
-					visiblePublishedAt: Maybe.just("2026-04-01T10:00:00.000Z")
+					submittedUrl: just("https://www.echooff.dev/blog/why-i-started-this-blog"),
+					visiblePublishedAt: just("2026-04-01T10:00:00.000Z")
 				}
 			]
 		};

@@ -1,5 +1,5 @@
 <script>
-	import is from "@sindresorhus/is";
+	import { isValidDate, isString } from "@sindresorhus/is";
 
 	let preferredBrowserLanguages = undefined;
 
@@ -14,14 +14,14 @@
 	for (const localizedDateTimeElement of document.querySelectorAll("[data-localized-date-time]")) {
 		const publishedAt = localizedDateTimeElement.getAttribute("datetime");
 
-		if (!is.string(publishedAt)) {
+		if (!isString(publishedAt)) {
 			localizedDateTimeElement.classList.remove("localized-date-time-pending");
 			continue;
 		}
 
 		const publishedAtDate = new Date(publishedAt);
 
-		if (!is.validDate(publishedAtDate)) {
+		if (!isValidDate(publishedAtDate)) {
 			localizedDateTimeElement.classList.remove("localized-date-time-pending");
 			continue;
 		}

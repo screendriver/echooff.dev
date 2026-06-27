@@ -1,6 +1,6 @@
-import is from "@sindresorhus/is";
+import { isEmptyArray } from "@sindresorhus/is";
 import type { CollectionEntry } from "astro:content";
-import { Maybe } from "true-myth";
+import { just, nothing, of, type Maybe } from "true-myth/maybe";
 
 export const blogPostTopics = [
 	"Architecture",
@@ -72,7 +72,7 @@ export function getBlogPostTopicDetailsBySlug(topicSlug: string): Maybe<BlogPost
 		return availableTopicDetails.slug === topicSlug;
 	});
 
-	return Maybe.of(matchingTopicDetails);
+	return of(matchingTopicDetails);
 }
 
 export function groupBlogPostsByTopic(
@@ -118,11 +118,11 @@ export function createBlogPostTopicArchiveEntryForSlug(
 			return blogPost.data.topic === topicDetails.label;
 		});
 
-		if (is.emptyArray(matchingBlogPosts)) {
-			return Maybe.nothing();
+		if (isEmptyArray(matchingBlogPosts)) {
+			return nothing();
 		}
 
-		return Maybe.just({
+		return just({
 			description: topicDetails.description,
 			label: topicDetails.label,
 			slug: topicDetails.slug,

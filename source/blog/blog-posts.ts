@@ -1,4 +1,4 @@
-import is from "@sindresorhus/is";
+import { isValidDate } from "@sindresorhus/is";
 import type { CollectionEntry } from "astro:content";
 import readingTime from "reading-time";
 import { getBlogPostTopicDetails } from "./blog-post-topics.ts";
@@ -64,7 +64,7 @@ export function createBlogPostPageTitle(blogPostTitle: string): string {
 export function formatPublishedAtFallbackDateTime(publishedAt: string): string {
 	const publishedAtDate = new Date(publishedAt);
 
-	if (!is.validDate(publishedAtDate)) {
+	if (!isValidDate(publishedAtDate)) {
 		throw new TypeError(`Published at "${publishedAt}" is not a valid ISO 8601 date-time`);
 	}
 

@@ -67,7 +67,7 @@ A `Result` represents one of two states:
 Libraries like [True Myth](https://true-myth.js.org) implement this pattern for TypeScript.
 
 ```ts
-import { Result } from "true-myth";
+import { err, ok, type Result } from "true-myth/result";
 
 type User = {
   id: string;
@@ -78,18 +78,16 @@ function parseUser(json: string): Result<User, Error> {
     const data: unknown = JSON.parse(json);
 
     if (typeof data !== "object" || data === null || !("id" in data)) {
-      return Result.err(new Error("Missing id"));
+      return err(new Error("Missing id"));
     }
 
     if (typeof data.id !== "string") {
-      return Result.err(new Error("Invalid id"));
+      return err(new Error("Invalid id"));
     }
 
-    return Result.ok({ id: data.id });
+    return ok({ id: data.id });
   } catch (error: unknown) {
-    return Result.err(
-      error instanceof Error ? error : new Error("Unknown error")
-    );
+    return err(error instanceof Error ? error : new Error("Unknown error"));
   }
 }
 ```
@@ -215,21 +213,19 @@ That keeps the core application logic predictable and free from hidden control f
 For example:
 
 ```ts
-import { Result } from "true-myth";
+import { err, ok, type Result } from "true-myth/result";
 
 function readApiKey(): Result<string, Error> {
   try {
     const apiKey = process.env.API_KEY;
 
     if (apiKey === undefined) {
-      return Result.err(new Error("API_KEY must be configured"));
+      return err(new Error("API_KEY must be configured"));
     }
 
-    return Result.ok(apiKey);
+    return ok(apiKey);
   } catch (error: unknown) {
-    return Result.err(
-      error instanceof Error ? error : new Error("Unknown error")
-    );
+    return err(error instanceof Error ? error : new Error("Unknown error"));
   }
 }
 ```

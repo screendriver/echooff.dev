@@ -1,6 +1,6 @@
-import is from "@sindresorhus/is";
+import { isPlainObject, isString, isValidDate } from "@sindresorhus/is";
 import { match } from "ts-pattern";
-import { Maybe } from "true-myth";
+import { just, nothing, type Maybe } from "true-myth/maybe";
 import { recordFailedWebmentionBuildMentionLoad, recordWebmentionBuildMentionTotals } from "./build-mention-totals.ts";
 import { parseWebmentionApiUrl } from "./environment-variables.ts";
 import { webmentionApiResponseSchema } from "./webmention-response-schema.ts";
@@ -70,28 +70,28 @@ const emptyWebmentionSectionModel = {
 const maximumDisplayedWebmentionContentLength = 280;
 
 function readRecord(value: unknown): Maybe<Record<string, unknown>> {
-	if (!is.plainObject(value)) {
-		return Maybe.nothing();
+	if (!isPlainObject(value)) {
+		return nothing();
 	}
 
-	return Maybe.just(value);
+	return just(value);
 }
 
 function readString(objectValue: Record<string, unknown>, propertyName: string): Maybe<string> {
 	const propertyValue = objectValue[propertyName];
 
-	if (!is.string(propertyValue)) {
-		return Maybe.nothing();
+	if (!isString(propertyValue)) {
+		return nothing();
 	}
 
-	return Maybe.just(propertyValue);
+	return just(propertyValue);
 }
 
 function parseAbsoluteUrl(urlValue: string): Maybe<string> {
 	try {
-		return Maybe.just(new URL(urlValue).toString());
+		return just(new URL(urlValue).toString());
 	} catch {
-		return Maybe.nothing();
+		return nothing();
 	}
 }
 
@@ -103,10 +103,10 @@ function normalizeWhitespace(textContent: string): Maybe<string> {
 	const normalizedTextContent = textContent.replaceAll(/\s+/gu, " ").trim();
 
 	if (normalizedTextContent.length === 0) {
-		return Maybe.nothing();
+		return nothing();
 	}
 
-	return Maybe.just(normalizedTextContent);
+	return just(normalizedTextContent);
 }
 
 function truncateTextContent(textContent: string): string {
@@ -122,7 +122,7 @@ function normalizeAndTruncateTextContent(textContent: string): Maybe<string> {
 }
 
 function isValidDateTimeString(value: string): boolean {
-	return is.validDate(new Date(value));
+	return isValidDate(new Date(value));
 }
 
 function createWebmentionAuthor(
@@ -176,7 +176,7 @@ function readWebmentionAuthor(webmentionEntry: WebmentionApiEntry, sourceUrl: st
 function readWebmentionContent(webmentionEntry: WebmentionApiEntry): Maybe<string> {
 	const { content } = webmentionEntry;
 
-	if (is.string(content)) {
+	if (isString(content)) {
 		return normalizeAndTruncateTextContent(content);
 	}
 
@@ -198,10 +198,10 @@ function readWebmentionContent(webmentionEntry: WebmentionApiEntry): Maybe<strin
 
 function validateDateTimeString(value: string): Maybe<string> {
 	if (!isValidDateTimeString(value)) {
-		return Maybe.nothing();
+		return nothing();
 	}
 
-	return Maybe.just(value);
+	return just(value);
 }
 
 function readVisiblePublishedAt(webmentionEntry: WebmentionApiEntry): Maybe<string> {
@@ -239,22 +239,22 @@ function compareWebmentionRepliesByVisiblePublishedAtDescending(
 function readReactionCountName(webmentionPropertyName: string): Maybe<WebmentionReactionCountName> {
 	return match(webmentionPropertyName)
 		.with("bookmark-of", () => {
-			return Maybe.just<WebmentionReactionCountName>("bookmarkCount");
+			return just<WebmentionReactionCountName>("bookmarkCount");
 		})
 		.with("like-of", () => {
-			return Maybe.just<WebmentionReactionCountName>("likeCount");
+			return just<WebmentionReactionCountName>("likeCount");
 		})
 		.with("repost-of", () => {
-			return Maybe.just<WebmentionReactionCountName>("repostCount");
+			return just<WebmentionReactionCountName>("repostCount");
 		})
 		.otherwise(() => {
-			return Maybe.nothing();
+			return nothing();
 		});
 }
 
 function readPublicSourceUrl(webmentionEntry: WebmentionApiEntry): Maybe<string> {
 	if (webmentionEntry["wm-private"] === true) {
-		return Maybe.nothing();
+		return nothing();
 	}
 
 	return readValidAbsoluteUrl(webmentionEntry, "url");

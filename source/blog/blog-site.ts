@@ -1,4 +1,4 @@
-import is from "@sindresorhus/is";
+import { isUndefined, isPositiveInteger } from "@sindresorhus/is";
 import { err, isErr, ok, type Result } from "true-myth/result";
 
 function createAbsoluteUrl(configuredSiteUrl: URL, pathname: string): string {
@@ -6,7 +6,7 @@ function createAbsoluteUrl(configuredSiteUrl: URL, pathname: string): string {
 }
 
 export function createBlogIndexPagePath(blogIndexPageNumber: number): Result<string, RangeError> {
-	if (!is.positiveInteger(blogIndexPageNumber)) {
+	if (!isPositiveInteger(blogIndexPageNumber)) {
 		return err(
 			new RangeError(`Blog index page number must be a positive integer, received "${blogIndexPageNumber}"`)
 		);
@@ -20,7 +20,7 @@ export function createBlogIndexPagePath(blogIndexPageNumber: number): Result<str
 }
 
 export function getConfiguredSiteUrlOrThrow(configuredSiteUrl: URL | undefined): URL {
-	if (is.undefined(configuredSiteUrl)) {
+	if (isUndefined(configuredSiteUrl)) {
 		throw new TypeError("Astro.site must be configured to create absolute blog URLs");
 	}
 

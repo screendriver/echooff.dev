@@ -1,5 +1,5 @@
-import is from "@sindresorhus/is";
-import { Maybe } from "true-myth";
+import { isString, isNumber, isValidDate } from "@sindresorhus/is";
+import { just, nothing, type Maybe } from "true-myth/maybe";
 import { recordFailedHackerNewsBuildMentionLoad, recordHackerNewsBuildMentionTotals } from "./build-mention-totals.ts";
 import { parseHackerNewsApiUrl } from "./environment-variables.ts";
 import { hackerNewsApiResponseSchema } from "./hacker-news-response-schema.ts";
@@ -33,28 +33,28 @@ const emptyHackerNewsSectionModel = {
 function readString(objectValue: Record<string, unknown>, propertyName: string): Maybe<string> {
 	const propertyValue = objectValue[propertyName];
 
-	if (!is.string(propertyValue)) {
-		return Maybe.nothing();
+	if (!isString(propertyValue)) {
+		return nothing();
 	}
 
-	return Maybe.just(propertyValue);
+	return just(propertyValue);
 }
 
 function readNumber(objectValue: Record<string, unknown>, propertyName: string): Maybe<number> {
 	const propertyValue = objectValue[propertyName];
 
-	if (!is.number(propertyValue)) {
-		return Maybe.nothing();
+	if (!isNumber(propertyValue)) {
+		return nothing();
 	}
 
-	return Maybe.just(propertyValue);
+	return just(propertyValue);
 }
 
 function parseAbsoluteUrl(urlValue: string): Maybe<string> {
 	try {
-		return Maybe.just(new URL(urlValue).toString());
+		return just(new URL(urlValue).toString());
 	} catch {
-		return Maybe.nothing();
+		return nothing();
 	}
 }
 
@@ -71,11 +71,11 @@ function readValidAbsoluteUrl(objectValue: Record<string, unknown>, propertyName
 }
 
 function validateDateTimeString(value: string): Maybe<string> {
-	if (!is.validDate(new Date(value))) {
-		return Maybe.nothing();
+	if (!isValidDate(new Date(value))) {
+		return nothing();
 	}
 
-	return Maybe.just(value);
+	return just(value);
 }
 
 function readHackerNewsApiHits(hackerNewsApiResponse: unknown): readonly HackerNewsApiHit[] {
@@ -128,10 +128,10 @@ function readDiscussionUrl(hackerNewsApiHit: HackerNewsApiHit): Maybe<string> {
 	const itemId = readString(hackerNewsApiHit, "objectID");
 
 	if (itemId.isNothing) {
-		return Maybe.nothing();
+		return nothing();
 	}
 
-	return Maybe.just(`https://news.ycombinator.com/item?id=${itemId.value}`);
+	return just(`https://news.ycombinator.com/item?id=${itemId.value}`);
 }
 
 function readComparableSubmittedUrl(hackerNewsApiHit: HackerNewsApiHit): Maybe<string> {
@@ -167,20 +167,20 @@ function readMentionFromApiHit(targetUrl: string, hackerNewsApiHit: HackerNewsAp
 	const submittedComparableUrl = readComparableSubmittedUrl(hackerNewsApiHit);
 
 	if (targetComparableUrl.isNothing || submittedComparableUrl.isNothing) {
-		return Maybe.nothing();
+		return nothing();
 	}
 
 	if (submittedComparableUrl.value !== targetComparableUrl.value) {
-		return Maybe.nothing();
+		return nothing();
 	}
 
 	const completeMentionFields = readCompleteMentionFields(hackerNewsApiHit);
 
 	if (completeMentionFields === null) {
-		return Maybe.nothing();
+		return nothing();
 	}
 
-	return Maybe.just({
+	return just({
 		commentCount: completeMentionFields.commentCount,
 		discussionUrl: completeMentionFields.discussionUrl,
 		pointCount: completeMentionFields.pointCount,

@@ -1,4 +1,4 @@
-import is from "@sindresorhus/is";
+import { isUndefined, isPositiveInteger, isNonNegativeInteger } from "@sindresorhus/is";
 import { err, isErr, ok, type Result } from "true-myth/result";
 import { createBlogIndexPagePath } from "./blog-site.ts";
 
@@ -99,7 +99,7 @@ export function createBlogVisiblePostSummary(input: CreateBlogVisiblePostSummary
 }
 
 function createOptionalPageHref(pageNumber: number | undefined): Result<string | undefined, RangeError> {
-	if (is.undefined(pageNumber)) {
+	if (isUndefined(pageNumber)) {
 		return ok(undefined);
 	}
 
@@ -129,15 +129,15 @@ function createPageLinks(currentPage: number, lastPage: number): Result<readonly
 function validateInput(input: CreateBlogPaginationModelInput): Result<CreateBlogPaginationModelInput, RangeError> {
 	const { currentPage, pageSize, totalPostCount } = input;
 
-	if (!is.positiveInteger(currentPage)) {
+	if (!isPositiveInteger(currentPage)) {
 		return err(new RangeError(`Current page must be a positive integer, received "${currentPage}"`));
 	}
 
-	if (!is.positiveInteger(pageSize)) {
+	if (!isPositiveInteger(pageSize)) {
 		return err(new RangeError(`Page size must be a positive integer, received "${pageSize}"`));
 	}
 
-	if (!is.nonNegativeInteger(totalPostCount)) {
+	if (!isNonNegativeInteger(totalPostCount)) {
 		return err(new RangeError(`Total post count must be a non-negative integer, received "${totalPostCount}"`));
 	}
 

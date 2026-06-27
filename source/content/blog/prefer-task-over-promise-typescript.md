@@ -65,7 +65,7 @@ That is exactly the kind of ambiguity I want to remove.
 With `Task` from [True Myth](https://true-myth.js.org), I can model the same operation like this:
 
 ```ts
-import { Task } from "true-myth";
+import { fromPromise, reject, type Task } from "true-myth/task";
 
 type FetchUserError =
   | { type: "network-error" }
@@ -73,23 +73,23 @@ type FetchUserError =
   | { type: "not-found" };
 
 function parseUser(response: Response): Task<User, FetchUserError> {
-  return Task.fromPromise(response.json()).mapRejected(() => {
+  return fromPromise(response.json()).mapRejected(() => {
     return { type: "invalid-response" };
   });
 }
 
 function fetchUser(id: string): Task<User, FetchUserError> {
-  return Task.fromPromise(fetch(`/api/users/${id}`))
+  return fromPromise(fetch(`/api/users/${id}`))
     .mapRejected(() => {
       return { type: "network-error" };
     })
     .andThen((response) => {
       if (response.status === 404) {
-        return Task.reject({ type: "not-found" } as const);
+        return reject({ type: "not-found" } as const);
       }
 
       if (!response.ok) {
-        return Task.reject({ type: "network-error" } as const);
+        return reject({ type: "network-error" } as const);
       }
 
       return parseUser(response);
@@ -150,16 +150,16 @@ Use `andThen` when the next step is itself another async computation returning a
 type FetchAvatarError = { type: "avatar-not-found" };
 
 function fetchAvatar(user: User): Task<string, FetchAvatarError> {
-  return Task.fromPromise(fetch(`/api/avatars/${user.id}`))
+  return fromPromise(fetch(`/api/avatars/${user.id}`))
     .mapRejected(() => {
       return { type: "avatar-not-found" };
     })
     .andThen((response) => {
       if (!response.ok) {
-        return Task.reject({ type: "avatar-not-found" } as const);
+        return reject({ type: "avatar-not-found" } as const);
       }
 
-      return Task.fromPromise(response.text()).mapRejected(() => {
+      return fromPromise(response.text()).mapRejected(() => {
         return { type: "avatar-not-found" };
       });
     });

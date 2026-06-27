@@ -1,4 +1,4 @@
-import is from "@sindresorhus/is";
+import { isValidDate } from "@sindresorhus/is";
 import type { CollectionEntry } from "astro:content";
 import { createBlogPostAbsoluteUrl } from "./blog-site.ts";
 
@@ -16,7 +16,7 @@ export function createRssFeedItemsForBlogPosts(
 	return blogPosts.map((blogPost) => {
 		const publishedAtDate = new Date(blogPost.data.publishedAt);
 
-		if (!is.validDate(publishedAtDate)) {
+		if (!isValidDate(publishedAtDate)) {
 			throw new TypeError(`Published at "${blogPost.data.publishedAt}" is not a valid ISO 8601 date-time`);
 		}
 
