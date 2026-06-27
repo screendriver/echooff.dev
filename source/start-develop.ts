@@ -1,6 +1,7 @@
 import os from "node:os";
-import { writeFile, appendFile, rm } from "node:fs/promises";
+import { writeFile, rm } from "node:fs/promises";
 import { $, echo } from "zx";
+import { createDevelopmentEnvironmentFileContent } from "./development-environment-file.ts";
 import { startDeterministicServer } from "./deterministic-server/deterministic-server.ts";
 
 const envFilePath = "./.env";
@@ -9,16 +10,7 @@ const listeningAddress = await startDeterministicServer();
 
 echo("Deterministic server listening on", listeningAddress);
 
-await writeFile(envFilePath, `GITHUB_API_BASE_URL=${listeningAddress}${os.EOL}`, { encoding: "utf8" });
-await appendFile(envFilePath, `GITHUB_LOGIN="foo"${os.EOL}`, { encoding: "utf8" });
-await appendFile(envFilePath, `GITHUB_TOKEN="foo"${os.EOL}`, { encoding: "utf8" });
-await appendFile(envFilePath, `WEBMENTION_API_URL="${listeningAddress}/webmentions"${os.EOL}`, {
-	encoding: "utf8"
-});
-await appendFile(envFilePath, `HACKER_NEWS_API_URL="${listeningAddress}/hacker-news"${os.EOL}`, {
-	encoding: "utf8"
-});
-await appendFile(envFilePath, `CONTACT_FORM_URL="${listeningAddress}/contact-form"`, {
+await writeFile(envFilePath, createDevelopmentEnvironmentFileContent(listeningAddress, os.EOL), {
 	encoding: "utf-8"
 });
 
