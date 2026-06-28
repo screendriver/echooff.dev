@@ -247,8 +247,7 @@ type Configuration = {
 };
 
 type CliResult =
-  | { type: "success" }
-  | { type: "failure"; message: string; exitCode: 1 };
+  { type: "success" } | { type: "failure"; message: string; exitCode: 1 };
 
 type RunDependencies = {
   readConfiguration: () => Promise<Configuration | undefined>;

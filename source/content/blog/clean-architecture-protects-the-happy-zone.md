@@ -230,8 +230,7 @@ type ValidateCheckoutOptions = {
 };
 
 type ValidateCheckoutResult =
-  | { status: "valid" }
-  | { status: "invalid"; message: string };
+  { status: "valid" } | { status: "invalid"; message: string };
 
 const paymentLimitInCents = 500_000;
 
@@ -283,8 +282,7 @@ type ValidateCheckoutOptions = {
 };
 
 type ValidateCheckoutResult =
-  | { status: "valid" }
-  | { status: "invalid"; error: ValidateCheckoutError };
+  { status: "valid" } | { status: "invalid"; error: ValidateCheckoutError };
 
 const paymentLimitInCents = 500_000;
 
@@ -452,8 +450,7 @@ type ChargePaymentRequest = {
 type ChargePaymentError = "paymentRejected" | "paymentProviderUnavailable";
 
 type ChargePaymentResult =
-  | { status: "charged" }
-  | { status: "failed"; error: ChargePaymentError };
+  { status: "charged" } | { status: "failed"; error: ChargePaymentError };
 
 type PaymentGateway = {
   charge: (request: ChargePaymentRequest) => Promise<ChargePaymentResult>;
