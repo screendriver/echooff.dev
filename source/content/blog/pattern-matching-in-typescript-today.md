@@ -347,8 +347,7 @@ For example:
 
 ```typescript
 export type Result<TValue, TError> =
-  | { type: "success"; value: TValue }
-  | { type: "failure"; error: TError };
+  { type: "success"; value: TValue } | { type: "failure"; error: TError };
 ```
 
 A `switch` works:
