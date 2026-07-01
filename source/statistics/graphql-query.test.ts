@@ -1,14 +1,15 @@
-import { describe, it, expect, type TestFunction } from "vitest";
-import { fake } from "sinon";
+import { describe, it, expect, vi, type TestFunction } from "vitest";
 import { Factory } from "fishery";
 import { stripIndent } from "common-tags";
 import type { graphql as octokitGraphql, RequestParameters } from "@octokit/graphql/types";
 import { type ExecuteGraphQLQueryOptions, executeGraphQLQuery } from "./graphql-query.ts";
 
 const fetchGitHubStatisticsOptionsFactory = Factory.define<ExecuteGraphQLQueryOptions>(() => {
-	const graphql = fake.resolves(undefined) as unknown as octokitGraphql;
+	const graphqlImplementation = vi
+		.fn<(requestParameters: RequestParameters) => Promise<unknown>>()
+		.mockResolvedValue(undefined);
 	return {
-		graphql,
+		graphql: graphqlImplementation as unknown as octokitGraphql,
 		gitHubBaseUrl: new URL("https://example.com/"),
 		gitHubLogin: "username",
 		gitHubApiToken: "my-token"
@@ -24,15 +25,17 @@ function testExecuteGraphQLQuery(testInput: TestFetchGitHubStatisticsInput): Tes
 	const { requestParameter, expectedRequestParameters } = testInput;
 
 	return async () => {
-		const graphql = fake.resolves<readonly RequestParameters[]>(undefined);
+		const graphqlImplementation = vi
+			.fn<(requestParameters: RequestParameters) => Promise<unknown>>()
+			.mockResolvedValue(undefined);
 		const fetchGitHubStatisticsOptions = fetchGitHubStatisticsOptionsFactory.build({
-			graphql: graphql as unknown as octokitGraphql
+			graphql: graphqlImplementation as unknown as octokitGraphql
 		});
 
 		await executeGraphQLQuery(fetchGitHubStatisticsOptions);
-		const actualGraphqlCallCount = graphql.callCount;
+		const actualGraphqlCallCount = graphqlImplementation.mock.calls.length;
 		const expectedGraphqlCallCount = 1;
-		const actualRequestParameters = graphql.args[0]?.[0]?.[requestParameter];
+		const actualRequestParameters = graphqlImplementation.mock.calls[0]?.[0]?.[requestParameter];
 
 		expect(actualGraphqlCallCount).toBe(expectedGraphqlCallCount);
 		expect(actualRequestParameters).toStrictEqual(expectedRequestParameters);
