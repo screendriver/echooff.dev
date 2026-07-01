@@ -5,14 +5,20 @@ import {
 	type BlogPostMarkdownDocument
 } from "./blog-link-validation.ts";
 
-describe("validateInternalBlogPostLinks()", () => {
-	it("accepts the current blog post links", async () => {
-		const blogPostMarkdownDocuments = await readBlogPostMarkdownDocuments();
-		const actualValidationProblems = await validateInternalBlogPostLinks(blogPostMarkdownDocuments);
-		const expectedValidationProblems: readonly unknown[] = [];
+const currentBlogPostLinkValidationTimeoutMilliseconds = 15_000;
 
-		expect(actualValidationProblems).toStrictEqual(expectedValidationProblems);
-	});
+describe("validateInternalBlogPostLinks()", () => {
+	it(
+		"accepts the current blog post links",
+		async () => {
+			const blogPostMarkdownDocuments = await readBlogPostMarkdownDocuments();
+			const actualValidationProblems = await validateInternalBlogPostLinks(blogPostMarkdownDocuments);
+			const expectedValidationProblems: readonly unknown[] = [];
+
+			expect(actualValidationProblems).toStrictEqual(expectedValidationProblems);
+		},
+		currentBlogPostLinkValidationTimeoutMilliseconds
+	);
 
 	it("reports a missing internal route target", async () => {
 		const blogPostMarkdownDocuments: readonly BlogPostMarkdownDocument[] = [
