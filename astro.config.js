@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import { rehypeHeadingIds, unified } from "@astrojs/markdown-remark";
+import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { buildHeadingAnchorLinkContent } from "./source/blog/heading-anchor-link-content.js";
@@ -9,9 +10,9 @@ export default defineConfig({
 	output: "static",
 	outDir: "./target",
 	trailingSlash: "never",
-	build: {
-		format: "file"
-	},
+	adapter: node({
+		mode: "standalone"
+	}),
 	integrations: [sitemap()],
 	vite: {
 		css: {

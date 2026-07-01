@@ -78,7 +78,7 @@ describe("createDeterministicServerApplication()", () => {
 
 		const response = await application.request("/hacker-news", {
 			headers: {
-				origin: "https://www.echooff.dev"
+				origin: "https://example.com"
 			}
 		});
 		const actualCorsHeader = response.headers.get("access-control-allow-origin");

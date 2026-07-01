@@ -11,7 +11,7 @@ describe("hacker news response schema", () => {
 					objectID: "44000001",
 					points: 150,
 					title: "Why I started this blog",
-					url: "https://www.echooff.dev/blog/why-i-started-this-blog"
+					url: "https://example.com/blog/why-i-started-this-blog"
 				}
 			]
 		});

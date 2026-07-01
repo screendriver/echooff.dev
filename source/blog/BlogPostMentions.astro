@@ -1,0 +1,37 @@
+---
+import HackerNewsMentions from "./HackerNewsMentions.astro";
+import Webmentions from "./Webmentions.astro";
+import { createBlogPostAbsoluteUrl } from "./blog-site.js";
+import {
+	loadBlogPostMentionsForTargetUrl,
+	runtimeMentionCacheTtlMilliseconds,
+	runtimeMentionRequestTimeoutMilliseconds
+} from "./runtime-blog-post-mentions.js";
+import { standardErrorRuntimeWarningLogger } from "./runtime-warning-logger.js";
+
+export interface Props {
+	readonly blogPostId: string;
+}
+
+const { blogPostId } = Astro.props;
+const blogPostUrl = createBlogPostAbsoluteUrl(Astro.site, blogPostId);
+
+Astro.response.headers.set("Cache-Control", "public, max-age=300, stale-while-revalidate=3600");
+
+const { hackerNewsSectionModel, webmentionSectionModel } = await loadBlogPostMentionsForTargetUrl(
+	{
+		createTimeoutSignal(timeoutMilliseconds) {
+			return AbortSignal.timeout(timeoutMilliseconds);
+		},
+		fetch,
+		logWarning: standardErrorRuntimeWarningLogger.warn,
+		nowMilliseconds: Date.now,
+		requestTimeoutMilliseconds: runtimeMentionRequestTimeoutMilliseconds,
+		runtimeMentionCacheTtlMilliseconds
+	},
+	blogPostUrl
+);
+---
+
+<Webmentions webmentionSectionModel={webmentionSectionModel} />
+<HackerNewsMentions hackerNewsSectionModel={hackerNewsSectionModel} />

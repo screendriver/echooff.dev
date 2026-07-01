@@ -6,7 +6,7 @@ describe("webmention route", () => {
 		const application = createDeterministicServerApplication();
 
 		const response = await application.request(
-			"/webmentions?target=https://www.echooff.dev/blog/why-i-started-this-blog"
+			"/webmentions?target=https://example.com/blog/why-i-started-this-blog"
 		);
 		const actualResponseBody: unknown = await response.json();
 		const expectedResponseBody = {
