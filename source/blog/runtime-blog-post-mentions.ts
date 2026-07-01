@@ -156,51 +156,53 @@ export async function loadRuntimeMentionSectionModel<SectionModel>(
 		ttlMilliseconds
 	});
 
-	if (cacheReadResult.kind === "fresh") {
-		return {
-			sectionModel: cacheReadResult.value,
-			state: "fresh"
-		};
-	}
-
-	const freshSectionModelResult = await tryTaskOrElse(normalizeUnknownError, loadFreshSectionModel);
-
-	return freshSectionModelResult.match<RuntimeMentionSectionLoadingResult<SectionModel>>({
-		Ok(freshSectionModel) {
-			writeRuntimeMentionCache({
-				cache,
-				cacheKey,
-				nowMilliseconds,
-				value: freshSectionModel
-			});
-
+	return match(cacheReadResult)
+		.with({ kind: "fresh" }, (freshCacheReadResult) => {
 			return {
-				sectionModel: freshSectionModel,
-				state: "refreshed"
+				sectionModel: freshCacheReadResult.value,
+				state: "fresh" as const
 			};
-		},
-		Err(error) {
-			logWarning(`Unable to load ${serviceName} mentions at runtime`, error, {
-				cacheKey,
-				event: "blog_post_mentions_section_load_failed",
-				serviceName
-			});
+		})
+		.otherwise(async () => {
+			const freshSectionModelResult = await tryTaskOrElse(normalizeUnknownError, loadFreshSectionModel);
 
-			return match(cacheReadResult)
-				.with({ kind: "stale" }, (staleCacheReadResult) => {
+			return freshSectionModelResult.match<RuntimeMentionSectionLoadingResult<SectionModel>>({
+				Ok(freshSectionModel) {
+					writeRuntimeMentionCache({
+						cache,
+						cacheKey,
+						nowMilliseconds,
+						value: freshSectionModel
+					});
+
 					return {
-						sectionModel: staleCacheReadResult.value,
-						state: "stale_after_error" as const
+						sectionModel: freshSectionModel,
+						state: "refreshed"
 					};
-				})
-				.otherwise(() => {
-					return {
-						sectionModel: createEmptySectionModel(),
-						state: "empty_after_error" as const
-					};
-				});
-		}
-	});
+				},
+				Err(error) {
+					logWarning(`Unable to load ${serviceName} mentions at runtime`, error, {
+						cacheKey,
+						event: "blog_post_mentions_section_load_failed",
+						serviceName
+					});
+
+					return match(cacheReadResult)
+						.with({ kind: "stale" }, (staleCacheReadResult) => {
+							return {
+								sectionModel: staleCacheReadResult.value,
+								state: "stale_after_error" as const
+							};
+						})
+						.otherwise(() => {
+							return {
+								sectionModel: createEmptySectionModel(),
+								state: "empty_after_error" as const
+							};
+						});
+				}
+			});
+		});
 }
 
 export async function loadBlogPostMentionsForTargetUrl(
