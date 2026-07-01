@@ -149,6 +149,21 @@ export default [
 		rules: {
 			...vitestConfig.rules,
 			"@vitest/no-alias-methods": "off",
+			"@vitest/no-restricted-vi-methods": [
+				"error",
+				{
+					doMock: "Use explicit fakes instead of Vitest module mocking.",
+					doUnmock: "Use explicit fakes instead of Vitest module mocking.",
+					mock: "Use explicit fakes instead of Vitest module mocking.",
+					mocked: "Use explicit fakes instead of Vitest module mocking.",
+					spyOn: "Use vi.fn() with explicit dependency injection instead of spying on existing objects.",
+					stubEnv: "Use explicit dependency injection instead of mutating environment state.",
+					stubGlobal: "Use explicit dependency injection instead of mutating global state.",
+					unmock: "Use explicit fakes instead of Vitest module mocking.",
+					unstubAllEnvs: "Use explicit dependency injection instead of mutating environment state.",
+					unstubAllGlobals: "Use explicit dependency injection instead of mutating global state."
+				}
+			],
 			"@vitest/prefer-called-with": "off",
 			"@typescript-eslint/no-magic-numbers": "off",
 			"@typescript-eslint/no-shadow": "off",

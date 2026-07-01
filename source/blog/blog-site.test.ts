@@ -17,7 +17,7 @@ import {
 
 describe("getConfiguredSiteUrlOrThrow()", () => {
 	it("returns the configured site URL", () => {
-		const configuredSiteUrl = new URL("https://www.echooff.dev");
+		const configuredSiteUrl = new URL("https://example.com");
 		const actualConfiguredSiteUrl = getConfiguredSiteUrlOrThrow(configuredSiteUrl);
 		const expectedConfiguredSiteUrl = configuredSiteUrl;
 
@@ -36,8 +36,8 @@ describe("getConfiguredSiteUrlOrThrow()", () => {
 
 describe("createBlogIndexAbsoluteUrl()", () => {
 	it("creates the absolute blog index URL", () => {
-		const actualBlogIndexAbsoluteUrl = createBlogIndexAbsoluteUrl(new URL("https://www.echooff.dev"));
-		const expectedBlogIndexAbsoluteUrl = "https://www.echooff.dev/blog";
+		const actualBlogIndexAbsoluteUrl = createBlogIndexAbsoluteUrl(new URL("https://example.com"));
+		const expectedBlogIndexAbsoluteUrl = "https://example.com/blog";
 
 		expect(actualBlogIndexAbsoluteUrl).toBe(expectedBlogIndexAbsoluteUrl);
 	});
@@ -75,21 +75,21 @@ describe("createBlogIndexPagePath()", () => {
 
 describe("createBlogIndexPageAbsoluteUrl()", () => {
 	it("creates the absolute URL for the first blog index page", () => {
-		const actualBlogIndexPageAbsoluteUrl = createBlogIndexPageAbsoluteUrl(new URL("https://www.echooff.dev"), 1);
-		const expectedBlogIndexPageAbsoluteUrl = ok("https://www.echooff.dev/blog");
+		const actualBlogIndexPageAbsoluteUrl = createBlogIndexPageAbsoluteUrl(new URL("https://example.com"), 1);
+		const expectedBlogIndexPageAbsoluteUrl = ok("https://example.com/blog");
 
 		expect(actualBlogIndexPageAbsoluteUrl).toStrictEqual(expectedBlogIndexPageAbsoluteUrl);
 	});
 
 	it("creates the absolute URL for later blog index pages", () => {
-		const actualBlogIndexPageAbsoluteUrl = createBlogIndexPageAbsoluteUrl(new URL("https://www.echooff.dev"), 3);
-		const expectedBlogIndexPageAbsoluteUrl = ok("https://www.echooff.dev/blog/page/3");
+		const actualBlogIndexPageAbsoluteUrl = createBlogIndexPageAbsoluteUrl(new URL("https://example.com"), 3);
+		const expectedBlogIndexPageAbsoluteUrl = ok("https://example.com/blog/page/3");
 
 		expect(actualBlogIndexPageAbsoluteUrl).toStrictEqual(expectedBlogIndexPageAbsoluteUrl);
 	});
 
 	it("propagates invalid blog index page numbers as a Result Err", () => {
-		const actualBlogIndexPageAbsoluteUrl = createBlogIndexPageAbsoluteUrl(new URL("https://www.echooff.dev"), 0);
+		const actualBlogIndexPageAbsoluteUrl = createBlogIndexPageAbsoluteUrl(new URL("https://example.com"), 0);
 		const expectedBlogIndexPageAbsoluteUrl = err(
 			new RangeError('Blog index page number must be a positive integer, received "0"')
 		);
@@ -100,8 +100,8 @@ describe("createBlogIndexPageAbsoluteUrl()", () => {
 
 describe("createSiteHomeAbsoluteUrl()", () => {
 	it("creates the absolute site home URL", () => {
-		const actualSiteHomeAbsoluteUrl = createSiteHomeAbsoluteUrl(new URL("https://www.echooff.dev"));
-		const expectedSiteHomeAbsoluteUrl = "https://www.echooff.dev/";
+		const actualSiteHomeAbsoluteUrl = createSiteHomeAbsoluteUrl(new URL("https://example.com"));
+		const expectedSiteHomeAbsoluteUrl = "https://example.com/";
 
 		expect(actualSiteHomeAbsoluteUrl).toBe(expectedSiteHomeAbsoluteUrl);
 	});
@@ -110,10 +110,10 @@ describe("createSiteHomeAbsoluteUrl()", () => {
 describe("createBlogPostAbsoluteUrl()", () => {
 	it("creates the absolute URL for a blog post", () => {
 		const actualBlogPostAbsoluteUrl = createBlogPostAbsoluteUrl(
-			new URL("https://www.echooff.dev"),
+			new URL("https://example.com"),
 			"why-i-started-this-blog"
 		);
-		const expectedBlogPostAbsoluteUrl = "https://www.echooff.dev/blog/why-i-started-this-blog";
+		const expectedBlogPostAbsoluteUrl = "https://example.com/blog/why-i-started-this-blog";
 
 		expect(actualBlogPostAbsoluteUrl).toBe(expectedBlogPostAbsoluteUrl);
 	});
@@ -121,8 +121,8 @@ describe("createBlogPostAbsoluteUrl()", () => {
 
 describe("createBlogTopicIndexAbsoluteUrl()", () => {
 	it("creates the absolute URL for the blog topic index", () => {
-		const actualBlogTopicIndexAbsoluteUrl = createBlogTopicIndexAbsoluteUrl(new URL("https://www.echooff.dev"));
-		const expectedBlogTopicIndexAbsoluteUrl = "https://www.echooff.dev/blog/topics";
+		const actualBlogTopicIndexAbsoluteUrl = createBlogTopicIndexAbsoluteUrl(new URL("https://example.com"));
+		const expectedBlogTopicIndexAbsoluteUrl = "https://example.com/blog/topics";
 
 		expect(actualBlogTopicIndexAbsoluteUrl).toBe(expectedBlogTopicIndexAbsoluteUrl);
 	});
@@ -139,8 +139,8 @@ describe("createBlogTopicPath()", () => {
 
 describe("createBlogTopicAbsoluteUrl()", () => {
 	it("creates the absolute URL for a blog topic archive", () => {
-		const actualBlogTopicAbsoluteUrl = createBlogTopicAbsoluteUrl(new URL("https://www.echooff.dev"), "typescript");
-		const expectedBlogTopicAbsoluteUrl = "https://www.echooff.dev/blog/topics/typescript";
+		const actualBlogTopicAbsoluteUrl = createBlogTopicAbsoluteUrl(new URL("https://example.com"), "typescript");
+		const expectedBlogTopicAbsoluteUrl = "https://example.com/blog/topics/typescript";
 
 		expect(actualBlogTopicAbsoluteUrl).toBe(expectedBlogTopicAbsoluteUrl);
 	});
@@ -148,8 +148,8 @@ describe("createBlogTopicAbsoluteUrl()", () => {
 
 describe("createBlogRssFeedAbsoluteUrl()", () => {
 	it("creates the absolute URL for the RSS feed", () => {
-		const actualBlogRssFeedAbsoluteUrl = createBlogRssFeedAbsoluteUrl(new URL("https://www.echooff.dev"));
-		const expectedBlogRssFeedAbsoluteUrl = "https://www.echooff.dev/rss.xml";
+		const actualBlogRssFeedAbsoluteUrl = createBlogRssFeedAbsoluteUrl(new URL("https://example.com"));
+		const expectedBlogRssFeedAbsoluteUrl = "https://example.com/rss.xml";
 
 		expect(actualBlogRssFeedAbsoluteUrl).toBe(expectedBlogRssFeedAbsoluteUrl);
 	});
@@ -157,8 +157,8 @@ describe("createBlogRssFeedAbsoluteUrl()", () => {
 
 describe("createAbsoluteAssetUrl()", () => {
 	it("creates the absolute URL for an asset pathname", () => {
-		const actualAbsoluteAssetUrl = createAbsoluteAssetUrl(new URL("https://www.echooff.dev"), "/_astro/header.jpg");
-		const expectedAbsoluteAssetUrl = "https://www.echooff.dev/_astro/header.jpg";
+		const actualAbsoluteAssetUrl = createAbsoluteAssetUrl(new URL("https://example.com"), "/_astro/header.jpg");
+		const expectedAbsoluteAssetUrl = "https://example.com/_astro/header.jpg";
 
 		expect(actualAbsoluteAssetUrl).toBe(expectedAbsoluteAssetUrl);
 	});
@@ -166,8 +166,8 @@ describe("createAbsoluteAssetUrl()", () => {
 
 describe("createWebmentionEndpointUrl()", () => {
 	it("creates the webmention.io endpoint URL for the configured site host", () => {
-		const actualWebmentionEndpointUrl = createWebmentionEndpointUrl(new URL("https://www.echooff.dev"));
-		const expectedWebmentionEndpointUrl = "https://webmention.io/www.echooff.dev/webmention";
+		const actualWebmentionEndpointUrl = createWebmentionEndpointUrl(new URL("https://example.com"));
+		const expectedWebmentionEndpointUrl = "https://webmention.io/example.com/webmention";
 
 		expect(actualWebmentionEndpointUrl).toBe(expectedWebmentionEndpointUrl);
 	});

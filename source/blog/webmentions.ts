@@ -1,8 +1,8 @@
+import process from "node:process";
 import { isPlainObject, isString, isUndefined, isValidDate } from "@sindresorhus/is";
 import { match } from "ts-pattern";
 import { just, nothing, type Maybe } from "true-myth/maybe";
-import { recordFailedWebmentionBuildMentionLoad, recordWebmentionBuildMentionTotals } from "./build-mention-totals.ts";
-import { parseWebmentionApiUrl } from "./environment-variables.ts";
+import { parseRuntimeWebmentionApiUrl } from "./environment-variables.ts";
 import { webmentionApiResponseSchema } from "./webmention-response-schema.ts";
 
 export type WebmentionAuthor = {
@@ -52,7 +52,9 @@ type WebmentionReplyInput = {
 	readonly visiblePublishedAt: Maybe<string>;
 };
 type WebmentionDependencies = {
+	readonly createTimeoutSignal: (timeoutMilliseconds: number) => AbortSignal;
 	readonly fetch: typeof fetch;
+	readonly timeoutMilliseconds: number;
 };
 type WebmentionApiRequestUrlInput = {
 	readonly targetUrl: string;
@@ -381,18 +383,19 @@ export function parseWebmentionApiResponse(webmentionApiResponse: unknown): Webm
 	};
 }
 
-async function fetchWebmentionsForTargetUrl(
+export async function loadWebmentionsForTargetUrl(
 	dependencies: WebmentionDependencies,
 	targetUrl: string
 ): Promise<WebmentionSectionModel> {
-	const webmentionApiUrl = parseWebmentionApiUrl(
-		import.meta.env.WEBMENTION_API_URL ?? "https://webmention.io/api/mentions.jf2"
-	);
+	const webmentionApiUrl = parseRuntimeWebmentionApiUrl(process.env);
 	const response = await dependencies.fetch(
 		createWebmentionApiRequestUrl({
 			targetUrl,
 			webmentionApiUrl
-		})
+		}),
+		{
+			signal: dependencies.createTimeoutSignal(dependencies.timeoutMilliseconds)
+		}
 	);
 
 	if (!response.ok) {
@@ -400,21 +403,5 @@ async function fetchWebmentionsForTargetUrl(
 	}
 
 	const webmentionApiResponse: unknown = await response.json();
-	const webmentionSectionModel = parseWebmentionApiResponse(webmentionApiResponse);
-
-	recordWebmentionBuildMentionTotals(webmentionSectionModel);
-
-	return webmentionSectionModel;
-}
-
-export async function loadWebmentionsForTargetUrl(
-	dependencies: WebmentionDependencies,
-	targetUrl: string
-): Promise<WebmentionSectionModel> {
-	try {
-		return await fetchWebmentionsForTargetUrl(dependencies, targetUrl);
-	} catch (error: unknown) {
-		recordFailedWebmentionBuildMentionLoad();
-		throw error;
-	}
+	return parseWebmentionApiResponse(webmentionApiResponse);
 }

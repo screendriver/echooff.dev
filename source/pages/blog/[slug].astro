@@ -5,12 +5,11 @@ import { getCollection, render } from "astro:content";
 import BlogArticleByline from "../../blog/BlogArticleByline.astro";
 import BlogBackLink from "../../blog/BlogBackLink.astro";
 import BlogPostContent from "../../blog/BlogPostContent.astro";
+import BlogPostMentions from "../../blog/BlogPostMentions.astro";
 import BlogShell from "../../blog/BlogShell.astro";
 import BlogTopicLink from "../../blog/BlogTopicLink.astro";
-import HackerNewsMentions from "../../blog/HackerNewsMentions.astro";
 import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
 import LocalizedDateTimeScript from "../../blog/LocalizedDateTimeScript.astro";
-import Webmentions from "../../blog/Webmentions.astro";
 import { getBlogPostTopicDetails } from "../../blog/blog-post-topics.js";
 import {
 	createBlogPostPageTitle,
@@ -23,11 +22,6 @@ import {
 	createBlogRssFeedAbsoluteUrl,
 	getConfiguredSiteUrlOrThrow
 } from "../../blog/blog-site.js";
-import {
-	createEmptyHackerNewsSectionModel,
-	loadHackerNewsMentionsForTargetUrl
-} from "../../blog/hacker-news-mentions.js";
-import { createEmptyWebmentionSectionModel, loadWebmentionsForTargetUrl } from "../../blog/webmentions.js";
 import aboutImage from "../../assets/images/about.jpg";
 import headerImage from "../../assets/images/header-01.jpg";
 
@@ -57,30 +51,6 @@ const topicDetails = getBlogPostTopicDetails(blogPost.data.topic);
 const blogPostReadingTimeLabel = createBlogPostReadingTimeLabel(blogPost.body ?? "");
 const blogPostAuthorName = "Christian Rackerseder";
 const siteUrl = configuredSiteUrl.toString();
-let webmentionSectionModel = createEmptyWebmentionSectionModel();
-let hackerNewsSectionModel = createEmptyHackerNewsSectionModel();
-
-try {
-	webmentionSectionModel = await loadWebmentionsForTargetUrl(
-		{
-			fetch
-		},
-		blogPostUrl
-	);
-} catch (error: unknown) {
-	console.warn(`Unable to load webmentions for "${blogPostUrl}" during build`, error);
-}
-
-try {
-	hackerNewsSectionModel = await loadHackerNewsMentionsForTargetUrl(
-		{
-			fetch
-		},
-		blogPostUrl
-	);
-} catch (error: unknown) {
-	console.warn(`Unable to load Hacker News mentions for "${blogPostUrl}" during build`, error);
-}
 ---
 
 <BlogShell
@@ -175,8 +145,11 @@ try {
 				<Content />
 			</BlogPostContent>
 
-			<Webmentions webmentionSectionModel={webmentionSectionModel} />
-			<HackerNewsMentions hackerNewsSectionModel={hackerNewsSectionModel} />
+			<BlogPostMentions blogPostId={blogPost.id} server:defer>
+				<section class="blog-post-mentions-loading" aria-live="polite" slot="fallback">
+					<p>Loading mentions...</p>
+				</section>
+			</BlogPostMentions>
 		</section>
 	</article>
 
@@ -246,6 +219,17 @@ try {
 		clip: rect(0, 0, 0, 0);
 		white-space: nowrap;
 		border: 0;
+	}
+
+	.blog-post-mentions-loading {
+		border-top: 1px solid rgba(variables.$selection, 0.8);
+		color: rgba(variables.$foreground, 0.62);
+		margin-top: 2rem;
+		padding-top: 1.5rem;
+	}
+
+	.blog-post-mentions-loading p {
+		margin: 0;
 	}
 
 	.blog-post-article-metadata {

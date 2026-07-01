@@ -4,7 +4,7 @@ import { createBlogRssFeedOptions } from "./blog-rss-feed.ts";
 
 describe("createBlogRssFeedOptions()", () => {
 	it("creates RSS feed options from posts sorted by publication date descending", () => {
-		const configuredSiteUrl = new URL("https://www.echooff.dev");
+		const configuredSiteUrl = new URL("https://example.com");
 		const actualRssFeedOptions = createBlogRssFeedOptions(
 			[
 				createBlogPostCollectionEntry({
@@ -33,13 +33,13 @@ describe("createBlogRssFeedOptions()", () => {
 				{
 					title: "Newer post",
 					description: "Newer post",
-					link: "https://www.echooff.dev/blog/newer-post",
+					link: "https://example.com/blog/newer-post",
 					pubDate: new Date("2026-02-01T10:00:00+01:00")
 				},
 				{
 					title: "Older post",
 					description: "Older post",
-					link: "https://www.echooff.dev/blog/older-post",
+					link: "https://example.com/blog/older-post",
 					pubDate: new Date("2026-01-01T10:00:00+01:00")
 				}
 			]

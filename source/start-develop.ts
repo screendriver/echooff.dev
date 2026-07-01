@@ -1,12 +1,20 @@
 import os from "node:os";
 import { writeFile, rm } from "node:fs/promises";
 import { $, echo } from "zx";
-import { createDevelopmentEnvironmentFileContent } from "./development-environment-file.ts";
+import {
+	createDevelopmentEnvironmentFileContent,
+	createDevelopmentEnvironmentVariables
+} from "./development-environment-file.ts";
 import { startDeterministicServer } from "./deterministic-server/deterministic-server.ts";
 
 const envFilePath = "./.env";
 
 const listeningAddress = await startDeterministicServer();
+const developmentEnvironmentVariables = createDevelopmentEnvironmentVariables(listeningAddress);
+
+for (const [environmentVariableName, environmentVariableValue] of Object.entries(developmentEnvironmentVariables)) {
+	$.env[environmentVariableName] = environmentVariableValue;
+}
 
 echo("Deterministic server listening on", listeningAddress);
 

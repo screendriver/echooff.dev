@@ -2,8 +2,6 @@
 when:
     - event: push
       branch: main
-    - event: cron
-      cron: deploy
     - event: manual
 
 steps:
@@ -15,10 +13,8 @@ steps:
               from_secret: github_api_token
           GITHUB_LOGIN:
               from_secret: github_login
-          WEBMENTION_API_URL:
-              from_secret: webmention_api_url
-          HACKER_NEWS_API_URL:
-              from_secret: hacker_news_api_url
+          ASTRO_KEY:
+              from_secret: astro_key
       commands:
           - npm clean-install
           - npx just build
@@ -26,7 +22,7 @@ steps:
     - name: publish-container-image
       image: woodpeckerci/plugin-docker-buildx:6.1.0
       settings:
-          # Dockerfile expects the static site in ./target from the previous build step.
+          # Dockerfile expects the Astro standalone build in ./target from the previous build step.
           repo:
               from_secret: repository
           registry:

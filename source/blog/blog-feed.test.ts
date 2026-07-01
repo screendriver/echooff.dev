@@ -7,20 +7,20 @@ describe("createRssFeedItemsForBlogPosts()", () => {
 		const actualRssFeedItems = createRssFeedItemsForBlogPosts(
 			[
 				createBlogPostCollectionEntry({
-					description: "Why I started writing on echooff.dev",
+					description: "Why I started writing on example.com",
 					id: "why-i-started-this-blog",
 					title: "Why I started this Blog",
 					publishedAt: "2026-02-28T12:39:00+01:00",
 					topic: "Writing"
 				})
 			],
-			new URL("https://www.echooff.dev")
+			new URL("https://example.com")
 		);
 		const expectedRssFeedItems = [
 			{
 				title: "Why I started this Blog",
-				description: "Why I started writing on echooff.dev",
-				link: "https://www.echooff.dev/blog/why-i-started-this-blog",
+				description: "Why I started writing on example.com",
+				link: "https://example.com/blog/why-i-started-this-blog",
 				pubDate: new Date("2026-02-28T12:39:00+01:00")
 			}
 		];
@@ -40,7 +40,7 @@ describe("createRssFeedItemsForBlogPosts()", () => {
 						topic: "Writing"
 					})
 				],
-				new URL("https://www.echooff.dev")
+				new URL("https://example.com")
 			);
 		};
 		const expectedErrorMessage = 'Published at "not-a-date" is not a valid ISO 8601 date-time';

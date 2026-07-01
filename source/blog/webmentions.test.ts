@@ -26,11 +26,11 @@ describe("createEmptyWebmentionSectionModel()", () => {
 describe("createWebmentionApiRequestUrl()", () => {
 	it("creates the API request URL for a target URL", () => {
 		const actualRequestUrl = createWebmentionApiRequestUrl({
-			targetUrl: "https://www.echooff.dev/blog/why-i-started-this-blog",
+			targetUrl: "https://example.com/blog/why-i-started-this-blog",
 			webmentionApiUrl: new URL("https://webmention.io/api/mentions.jf2")
 		});
 		const expectedRequestUrl =
-			"https://webmention.io/api/mentions.jf2?per-page=100&target=https%3A%2F%2Fwww.echooff.dev%2Fblog%2Fwhy-i-started-this-blog";
+			"https://webmention.io/api/mentions.jf2?per-page=100&target=https%3A%2F%2Fexample.com%2Fblog%2Fwhy-i-started-this-blog";
 
 		expect(actualRequestUrl).toBe(expectedRequestUrl);
 	});
@@ -214,20 +214,58 @@ describe("loadWebmentionsForTargetUrl()", () => {
 
 		const sectionModel = await loadWebmentionsForTargetUrl(
 			{
-				fetch: fetchImplementation
+				createTimeoutSignal(timeoutMilliseconds) {
+					return AbortSignal.timeout(timeoutMilliseconds);
+				},
+				fetch: fetchImplementation,
+				timeoutMilliseconds: 5000
 			},
-			"https://www.echooff.dev/blog/why-i-started-this-blog"
+			"https://example.com/blog/why-i-started-this-blog"
 		);
 
 		const expectedFetchCall =
-			"https://webmention.io/api/mentions.jf2?per-page=100&target=https%3A%2F%2Fwww.echooff.dev%2Fblog%2Fwhy-i-started-this-blog";
+			"https://webmention.io/api/mentions.jf2?per-page=100&target=https%3A%2F%2Fexample.com%2Fblog%2Fwhy-i-started-this-blog";
 		const actualLikeCount = sectionModel.reactions.likeCount;
 		const expectedLikeCount = 1;
 
 		const actualFetchImplementation = fetchImplementation;
 
-		expect(actualFetchImplementation).toHaveBeenCalledWith(expectedFetchCall);
+		expect(actualFetchImplementation).toHaveBeenCalledWith(expectedFetchCall, {
+			signal: fetchImplementation.mock.calls[0]?.[1]?.signal
+		});
+		expect(fetchImplementation.mock.calls[0]?.[1]?.signal).toBeInstanceOf(AbortSignal);
 		expect(actualLikeCount).toBe(expectedLikeCount);
+	});
+
+	it("uses the configured request timeout", async () => {
+		const timeoutAbortController = new AbortController();
+		const timeoutSignal = timeoutAbortController.signal;
+		const createTimeoutSignal = vi
+			.fn<(timeoutMilliseconds: number) => AbortSignal>()
+			.mockReturnValue(timeoutSignal);
+		const fetchImplementation = vi.fn<typeof fetch>().mockResolvedValue({
+			ok: true,
+			async json() {
+				return {
+					children: []
+				};
+			},
+			status: 200
+		} as Response);
+
+		await loadWebmentionsForTargetUrl(
+			{
+				createTimeoutSignal,
+				fetch: fetchImplementation,
+				timeoutMilliseconds: 123
+			},
+			"https://example.com/blog/why-i-started-this-blog"
+		);
+
+		expect(createTimeoutSignal).toHaveBeenCalledWith(123);
+		expect(fetchImplementation).toHaveBeenCalledWith(expect.any(String), {
+			signal: timeoutSignal
+		});
 	});
 
 	it("throws when the API request fails", async () => {
@@ -242,9 +280,13 @@ describe("loadWebmentionsForTargetUrl()", () => {
 		const actualLoadOperation = async (): Promise<Awaited<ReturnType<typeof loadWebmentionsForTargetUrl>>> => {
 			return loadWebmentionsForTargetUrl(
 				{
-					fetch: fetchImplementation
+					createTimeoutSignal(timeoutMilliseconds) {
+						return AbortSignal.timeout(timeoutMilliseconds);
+					},
+					fetch: fetchImplementation,
+					timeoutMilliseconds: 5000
 				},
-				"https://www.echooff.dev/blog/why-i-started-this-blog"
+				"https://example.com/blog/why-i-started-this-blog"
 			);
 		};
 		const expectedErrorMessage = "Webmention API request failed with status 503";

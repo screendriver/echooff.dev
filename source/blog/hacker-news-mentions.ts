@@ -1,7 +1,7 @@
+import process from "node:process";
 import { isNull, isNumber, isString, isUndefined, isValidDate } from "@sindresorhus/is";
 import { just, nothing, type Maybe } from "true-myth/maybe";
-import { recordFailedHackerNewsBuildMentionLoad, recordHackerNewsBuildMentionTotals } from "./build-mention-totals.ts";
-import { parseHackerNewsApiUrl } from "./environment-variables.ts";
+import { parseRuntimeHackerNewsApiUrl } from "./environment-variables.ts";
 import { hackerNewsApiResponseSchema } from "./hacker-news-response-schema.ts";
 
 export type HackerNewsMention = {
@@ -19,7 +19,9 @@ export type HackerNewsSectionModel = {
 
 type HackerNewsApiHit = Record<string, unknown>;
 type HackerNewsDependencies = {
+	readonly createTimeoutSignal: (timeoutMilliseconds: number) => AbortSignal;
 	readonly fetch: typeof fetch;
+	readonly timeoutMilliseconds: number;
 };
 type HackerNewsApiRequestUrlInput = {
 	readonly hackerNewsApiUrl: URL;
@@ -229,18 +231,19 @@ export function parseHackerNewsApiResponse(targetUrl: string, hackerNewsApiRespo
 	};
 }
 
-async function fetchHackerNewsMentionsForTargetUrl(
+export async function loadHackerNewsMentionsForTargetUrl(
 	dependencies: HackerNewsDependencies,
 	targetUrl: string
 ): Promise<HackerNewsSectionModel> {
-	const hackerNewsApiUrl = parseHackerNewsApiUrl(
-		import.meta.env.HACKER_NEWS_API_URL ?? "https://hn.algolia.com/api/v1/search_by_date"
-	);
+	const hackerNewsApiUrl = parseRuntimeHackerNewsApiUrl(process.env);
 	const response = await dependencies.fetch(
 		createHackerNewsApiRequestUrl({
 			hackerNewsApiUrl,
 			targetUrl
-		})
+		}),
+		{
+			signal: dependencies.createTimeoutSignal(dependencies.timeoutMilliseconds)
+		}
 	);
 
 	if (!response.ok) {
@@ -248,21 +251,5 @@ async function fetchHackerNewsMentionsForTargetUrl(
 	}
 
 	const hackerNewsApiResponse: unknown = await response.json();
-	const hackerNewsSectionModel = parseHackerNewsApiResponse(targetUrl, hackerNewsApiResponse);
-
-	recordHackerNewsBuildMentionTotals(hackerNewsSectionModel);
-
-	return hackerNewsSectionModel;
-}
-
-export async function loadHackerNewsMentionsForTargetUrl(
-	dependencies: HackerNewsDependencies,
-	targetUrl: string
-): Promise<HackerNewsSectionModel> {
-	try {
-		return await fetchHackerNewsMentionsForTargetUrl(dependencies, targetUrl);
-	} catch (error: unknown) {
-		recordFailedHackerNewsBuildMentionLoad();
-		throw error;
-	}
+	return parseHackerNewsApiResponse(targetUrl, hackerNewsApiResponse);
 }

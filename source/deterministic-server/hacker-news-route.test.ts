@@ -6,7 +6,7 @@ describe("hacker news route", () => {
 		const application = createDeterministicServerApplication();
 
 		const response = await application.request(
-			"/hacker-news?query=https://www.echooff.dev/blog/why-i-started-this-blog"
+			"/hacker-news?query=https://example.com/blog/why-i-started-this-blog"
 		);
 		const actualResponseBody: unknown = await response.json();
 		const expectedResponseBody = {
@@ -17,7 +17,7 @@ describe("hacker news route", () => {
 					objectID: "44000002",
 					points: 128,
 					title: "Why I started this blog",
-					url: "https://www.echooff.dev/blog/why-i-started-this-blog"
+					url: "https://example.com/blog/why-i-started-this-blog"
 				}
 			]
 		};
