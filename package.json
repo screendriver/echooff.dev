@@ -15,6 +15,7 @@
 		"@astrojs/node": "11.0.0",
 		"@astrojs/rss": "4.0.19",
 		"@astrojs/sitemap": "3.7.3",
+		"@enormora/wall-clock": "0.0.2",
 		"@fontsource/jetbrains-mono": "5.2.8",
 		"@fontsource/source-sans-pro": "5.2.5",
 		"@octokit/graphql": "9.0.3",
