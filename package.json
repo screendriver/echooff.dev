@@ -20,7 +20,7 @@
 		"@fontsource/source-sans-pro": "5.2.5",
 		"@octokit/graphql": "9.0.3",
 		"@sindresorhus/is": "8.1.0",
-		"arktype": "2.2.1",
+		"arktype": "2.2.2",
 		"astro": "7.0.5",
 		"astro-seo-schema": "7.0.0",
 		"date-fns": "4.4.0",
