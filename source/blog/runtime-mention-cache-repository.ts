@@ -1,13 +1,19 @@
+import { isError } from "@sindresorhus/is";
 import { just, nothing, type Maybe } from "true-myth/maybe";
-import { resolve as resolveTask, type Task } from "true-myth/task";
-import {
-	createMentionCacheRepository,
-	type MentionCacheRepository as SqliteMentionCacheRepository
-} from "./mention-cache-database.ts";
+import { resolve as resolveTask, tryOrElse as tryTaskOrElse, type Task } from "true-myth/task";
+import type { MentionCacheRepository as SqliteMentionCacheRepository } from "./mention-cache-database.ts";
 import type { MentionCacheEntry, MentionCacheRepository } from "./mention-cache.ts";
 
 const mentionCacheDatabaseBusyTimeoutMilliseconds = 5000;
 const productionMentionCacheDatabasePath = "/data/echooff-cache.sqlite";
+
+function normalizeDynamicImportError(error: unknown): Error {
+	if (isError(error)) {
+		return error;
+	}
+
+	return new Error(String(error));
+}
 
 export function createDisabledMentionCacheRepository(): MentionCacheRepository {
 	return {
@@ -29,9 +35,13 @@ function createRuntimeMentionCacheRepositoryTaskReader(): () => Task<SqliteMenti
 				return mentionCacheRepositoryTask;
 			},
 			Nothing() {
-				const mentionCacheRepositoryTask = createMentionCacheRepository({
-					busyTimeoutMilliseconds: mentionCacheDatabaseBusyTimeoutMilliseconds,
-					databasePath: productionMentionCacheDatabasePath
+				const mentionCacheRepositoryTask = tryTaskOrElse(normalizeDynamicImportError, async () => {
+					return import("./mention-cache-database.ts");
+				}).andThen((mentionCacheDatabaseModule) => {
+					return mentionCacheDatabaseModule.createMentionCacheRepository({
+						busyTimeoutMilliseconds: mentionCacheDatabaseBusyTimeoutMilliseconds,
+						databasePath: productionMentionCacheDatabasePath
+					});
 				});
 
 				createdMentionCacheRepositoryTask = just(mentionCacheRepositoryTask);
