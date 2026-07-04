@@ -2,6 +2,13 @@ import process from "node:process";
 import { isPlainObject, isString, isUndefined, isValidDate } from "@sindresorhus/is";
 import { match } from "ts-pattern";
 import { just, nothing, type Maybe } from "true-myth/maybe";
+import { err, ok, type Result } from "true-myth/result";
+import {
+	cachedWebmentionSectionModelSchema,
+	type CachedWebmentionAuthor,
+	type CachedWebmentionReply
+} from "./cached-mention-section-schema.ts";
+import { parseCachedMaybeString } from "./cached-maybe.ts";
 import { parseRuntimeWebmentionApiUrl } from "./environment-variables.ts";
 import { webmentionApiResponseSchema } from "./webmention-response-schema.ts";
 
@@ -209,6 +216,29 @@ function validateDateTimeString(value: string): Maybe<string> {
 	return just(value);
 }
 
+function parseCachedMaybeDateTimeString(serializedMaybeValue: unknown): Result<Maybe<string>, TypeError> {
+	const dateTimeString = parseCachedMaybeString(serializedMaybeValue);
+
+	if (dateTimeString.isErr) {
+		return dateTimeString;
+	}
+
+	return dateTimeString.value.match({
+		Nothing() {
+			return ok(nothing());
+		},
+		Just(value) {
+			const validatedValue = validateDateTimeString(value);
+
+			if (validatedValue.isNothing) {
+				return err(new TypeError("Cached Maybe Just value must be a valid date-time string."));
+			}
+
+			return ok(just(validatedValue.value));
+		}
+	});
+}
+
 function readVisiblePublishedAt(webmentionEntry: WebmentionApiEntry): Maybe<string> {
 	return readString(webmentionEntry, "published")
 		.andThen(validateDateTimeString)
@@ -239,6 +269,58 @@ function compareWebmentionRepliesByVisiblePublishedAtDescending(
 	}
 
 	return secondWebmentionReplyPublishedAtValue - firstWebmentionReplyPublishedAtValue;
+}
+
+function parseCachedWebmentionAuthor(cachedAuthor: CachedWebmentionAuthor): Maybe<WebmentionAuthor> {
+	const photoUrl = parseCachedMaybeString(cachedAuthor.photoUrl);
+	const websiteUrl = parseCachedMaybeString(cachedAuthor.websiteUrl);
+
+	if (photoUrl.isErr || websiteUrl.isErr) {
+		return nothing();
+	}
+
+	return just({
+		name: cachedAuthor.name,
+		photoUrl: photoUrl.value,
+		websiteUrl: websiteUrl.value
+	});
+}
+
+function parseCachedWebmentionReply(cachedReply: CachedWebmentionReply): Maybe<WebmentionReply> {
+	const author = parseCachedWebmentionAuthor(cachedReply.author);
+	const content = parseCachedMaybeString(cachedReply.content);
+	const sourceUrl = parseAbsoluteUrl(cachedReply.sourceUrl);
+	const visiblePublishedAt = parseCachedMaybeDateTimeString(cachedReply.visiblePublishedAt);
+
+	if (author.isNothing || content.isErr || sourceUrl.isNothing || visiblePublishedAt.isErr) {
+		return nothing();
+	}
+
+	return just({
+		author: author.value,
+		content: content.value,
+		sourceUrl: sourceUrl.value,
+		type: cachedReply.type,
+		visiblePublishedAt: visiblePublishedAt.value
+	});
+}
+
+function parseCachedWebmentionReplies(
+	cachedReplies: readonly CachedWebmentionReply[]
+): Maybe<readonly WebmentionReply[]> {
+	const replies: WebmentionReply[] = [];
+
+	for (const cachedReply of cachedReplies) {
+		const reply = parseCachedWebmentionReply(cachedReply);
+
+		if (reply.isNothing) {
+			return nothing();
+		}
+
+		replies.push(reply.value);
+	}
+
+	return just(replies);
 }
 
 function readReactionCountName(webmentionPropertyName: string): Maybe<WebmentionReactionCountName> {
@@ -381,6 +463,24 @@ export function parseWebmentionApiResponse(webmentionApiResponse: unknown): Webm
 			compareWebmentionRepliesByVisiblePublishedAtDescending
 		)
 	};
+}
+
+export function parseCachedWebmentionSectionModel(serializedSectionModel: unknown): Maybe<WebmentionSectionModel> {
+	if (!cachedWebmentionSectionModelSchema.allows(serializedSectionModel)) {
+		return nothing();
+	}
+
+	const cachedSectionModel = cachedWebmentionSectionModelSchema.assert(serializedSectionModel);
+	const replies = parseCachedWebmentionReplies(cachedSectionModel.replies);
+
+	if (replies.isNothing) {
+		return nothing();
+	}
+
+	return just({
+		reactions: cachedSectionModel.reactions,
+		replies: replies.value
+	});
 }
 
 export async function loadWebmentionsForTargetUrl(

@@ -4,6 +4,7 @@ import {
 	createEmptyWebmentionSectionModel,
 	createWebmentionApiRequestUrl,
 	loadWebmentionsForTargetUrl,
+	parseCachedWebmentionSectionModel,
 	parseWebmentionApiResponse
 } from "./webmentions.ts";
 
@@ -192,6 +193,80 @@ describe("parseWebmentionApiResponse()", () => {
 
 		expect(actualRenderedContentLength).toBe(expectedRenderedContentLength);
 		expect(actualEndsWithEllipsis).toBe(expectedEndsWithEllipsis);
+	});
+});
+
+describe("parseCachedWebmentionSectionModel()", () => {
+	it("recreates Maybe values from a cached JSON section model", () => {
+		const sectionModel = {
+			reactions: {
+				bookmarkCount: 1,
+				likeCount: 2,
+				repostCount: 3
+			},
+			replies: [
+				{
+					author: {
+						name: "Jane Doe",
+						photoUrl: just("https://social.example/jane.jpg"),
+						websiteUrl: nothing()
+					},
+					content: just("Cached reply"),
+					sourceUrl: "https://social.example/@jane/1",
+					type: "reply" as const,
+					visiblePublishedAt: just("2026-03-24T10:00:00+00:00")
+				}
+			]
+		};
+		const serializedSectionModel = {
+			reactions: {
+				bookmarkCount: 1,
+				likeCount: 2,
+				repostCount: 3
+			},
+			replies: [
+				{
+					author: {
+						name: "Jane Doe",
+						photoUrl: {
+							value: "https://social.example/jane.jpg",
+							variant: "Just"
+						},
+						websiteUrl: {
+							variant: "Nothing"
+						}
+					},
+					content: {
+						value: "Cached reply",
+						variant: "Just"
+					},
+					sourceUrl: "https://social.example/@jane/1",
+					type: "reply",
+					visiblePublishedAt: {
+						value: "2026-03-24T10:00:00+00:00",
+						variant: "Just"
+					}
+				}
+			]
+		};
+
+		const actualSectionModel = parseCachedWebmentionSectionModel(serializedSectionModel);
+		const expectedSectionModel = just(sectionModel);
+
+		expect(actualSectionModel).toStrictEqual(expectedSectionModel);
+	});
+
+	it("ignores malformed cached section models", () => {
+		const actualSectionModel = parseCachedWebmentionSectionModel({
+			reactions: {
+				bookmarkCount: 1,
+				likeCount: "2",
+				repostCount: 3
+			},
+			replies: []
+		});
+
+		expect(actualSectionModel).toStrictEqual(nothing());
 	});
 });
 

@@ -1,9 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { just } from "true-myth/maybe";
+import { just, nothing } from "true-myth/maybe";
 import {
 	createEmptyHackerNewsSectionModel,
 	createHackerNewsApiRequestUrl,
 	loadHackerNewsMentionsForTargetUrl,
+	parseCachedHackerNewsSectionModel,
 	parseHackerNewsApiResponse
 } from "./hacker-news-mentions.ts";
 
@@ -102,6 +103,67 @@ describe("parseHackerNewsApiResponse()", () => {
 		};
 
 		expect(actualSectionModel).toStrictEqual(expectedSectionModel);
+	});
+});
+
+describe("parseCachedHackerNewsSectionModel()", () => {
+	it("recreates Maybe values from a cached JSON section model", () => {
+		const sectionModel = {
+			mentions: [
+				{
+					commentCount: 5,
+					discussionUrl: "https://news.ycombinator.com/item?id=44000002",
+					pointCount: 90,
+					storyTitle: "Why I started this blog",
+					submittedUrl: just("https://example.com/blog/why-i-started-this-blog"),
+					visiblePublishedAt: just("2026-04-02T10:00:00.000Z")
+				}
+			]
+		};
+		const serializedSectionModel = {
+			mentions: [
+				{
+					commentCount: 5,
+					discussionUrl: "https://news.ycombinator.com/item?id=44000002",
+					pointCount: 90,
+					storyTitle: "Why I started this blog",
+					submittedUrl: {
+						value: "https://example.com/blog/why-i-started-this-blog",
+						variant: "Just"
+					},
+					visiblePublishedAt: {
+						value: "2026-04-02T10:00:00.000Z",
+						variant: "Just"
+					}
+				}
+			]
+		};
+
+		const actualSectionModel = parseCachedHackerNewsSectionModel(serializedSectionModel);
+		const expectedSectionModel = just(sectionModel);
+
+		expect(actualSectionModel).toStrictEqual(expectedSectionModel);
+	});
+
+	it("ignores malformed cached section models", () => {
+		const actualSectionModel = parseCachedHackerNewsSectionModel({
+			mentions: [
+				{
+					commentCount: "5",
+					discussionUrl: "https://news.ycombinator.com/item?id=44000002",
+					pointCount: 90,
+					storyTitle: "Why I started this blog",
+					submittedUrl: {
+						variant: "Nothing"
+					},
+					visiblePublishedAt: {
+						variant: "Nothing"
+					}
+				}
+			]
+		});
+
+		expect(actualSectionModel).toStrictEqual(nothing());
 	});
 });
 

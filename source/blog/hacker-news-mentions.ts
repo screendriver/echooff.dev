@@ -1,6 +1,9 @@
 import process from "node:process";
 import { isNull, isNumber, isString, isUndefined, isValidDate } from "@sindresorhus/is";
 import { just, nothing, type Maybe } from "true-myth/maybe";
+import { err, ok, type Result } from "true-myth/result";
+import { cachedHackerNewsSectionModelSchema, type CachedHackerNewsMention } from "./cached-mention-section-schema.ts";
+import { parseCachedMaybeString } from "./cached-maybe.ts";
 import { parseRuntimeHackerNewsApiUrl } from "./environment-variables.ts";
 import { hackerNewsApiResponseSchema } from "./hacker-news-response-schema.ts";
 
@@ -27,7 +30,6 @@ type HackerNewsApiRequestUrlInput = {
 	readonly hackerNewsApiUrl: URL;
 	readonly targetUrl: string;
 };
-
 const emptyHackerNewsSectionModel: HackerNewsSectionModel = {
 	mentions: []
 };
@@ -122,6 +124,89 @@ function compareMentionsByVisiblePublishedAtDescending(
 	}
 
 	return secondMentionPublishedAtValue - firstMentionPublishedAtValue;
+}
+
+function parseCachedMaybeAbsoluteUrl(serializedMaybeValue: unknown): Result<Maybe<string>, TypeError> {
+	const urlValue = parseCachedMaybeString(serializedMaybeValue);
+
+	if (urlValue.isErr) {
+		return urlValue;
+	}
+
+	return urlValue.value.match({
+		Nothing() {
+			return ok(nothing());
+		},
+		Just(value) {
+			const absoluteUrl = parseAbsoluteUrl(value);
+
+			if (absoluteUrl.isNothing) {
+				return err(new TypeError("Cached Maybe Just value must be an absolute URL."));
+			}
+
+			return ok(just(absoluteUrl.value));
+		}
+	});
+}
+
+function parseCachedMaybeDateTimeString(serializedMaybeValue: unknown): Result<Maybe<string>, TypeError> {
+	const dateTimeValue = parseCachedMaybeString(serializedMaybeValue);
+
+	if (dateTimeValue.isErr) {
+		return dateTimeValue;
+	}
+
+	return dateTimeValue.value.match({
+		Nothing() {
+			return ok(nothing());
+		},
+		Just(value) {
+			const dateTimeString = validateDateTimeString(value);
+
+			if (dateTimeString.isNothing) {
+				return err(new TypeError("Cached Maybe Just value must be a valid date-time string."));
+			}
+
+			return ok(just(dateTimeString.value));
+		}
+	});
+}
+
+function parseCachedHackerNewsMention(cachedMention: CachedHackerNewsMention): Maybe<HackerNewsMention> {
+	const discussionUrl = parseAbsoluteUrl(cachedMention.discussionUrl);
+	const submittedUrl = parseCachedMaybeAbsoluteUrl(cachedMention.submittedUrl);
+	const visiblePublishedAt = parseCachedMaybeDateTimeString(cachedMention.visiblePublishedAt);
+
+	if (discussionUrl.isNothing || submittedUrl.isErr || visiblePublishedAt.isErr) {
+		return nothing();
+	}
+
+	return just({
+		commentCount: cachedMention.commentCount,
+		discussionUrl: discussionUrl.value,
+		pointCount: cachedMention.pointCount,
+		storyTitle: cachedMention.storyTitle,
+		submittedUrl: submittedUrl.value,
+		visiblePublishedAt: visiblePublishedAt.value
+	});
+}
+
+function parseCachedHackerNewsMentions(
+	cachedMentions: readonly CachedHackerNewsMention[]
+): Maybe<readonly HackerNewsMention[]> {
+	const mentions: HackerNewsMention[] = [];
+
+	for (const cachedMention of cachedMentions) {
+		const mention = parseCachedHackerNewsMention(cachedMention);
+
+		if (mention.isNothing) {
+			return nothing();
+		}
+
+		mentions.push(mention.value);
+	}
+
+	return just(mentions);
 }
 
 function readStoryTitle(hackerNewsApiHit: HackerNewsApiHit): Maybe<string> {
@@ -229,6 +314,23 @@ export function parseHackerNewsApiResponse(targetUrl: string, hackerNewsApiRespo
 		...emptyHackerNewsSectionModel,
 		mentions: parsedMentions
 	};
+}
+
+export function parseCachedHackerNewsSectionModel(serializedSectionModel: unknown): Maybe<HackerNewsSectionModel> {
+	if (!cachedHackerNewsSectionModelSchema.allows(serializedSectionModel)) {
+		return nothing();
+	}
+
+	const cachedSectionModel = cachedHackerNewsSectionModelSchema.assert(serializedSectionModel);
+	const mentions = parseCachedHackerNewsMentions(cachedSectionModel.mentions);
+
+	if (mentions.isNothing) {
+		return nothing();
+	}
+
+	return just({
+		mentions: mentions.value
+	});
 }
 
 export async function loadHackerNewsMentionsForTargetUrl(

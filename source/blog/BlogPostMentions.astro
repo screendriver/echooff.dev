@@ -5,9 +5,12 @@ import Webmentions from "./Webmentions.astro";
 import { createBlogPostAbsoluteUrl } from "./blog-site.js";
 import {
 	loadBlogPostMentionsForTargetUrl,
-	runtimeMentionCacheTtlMilliseconds,
 	runtimeMentionRequestTimeoutMilliseconds
 } from "./runtime-blog-post-mentions.js";
+import {
+	createDisabledMentionCacheRepository,
+	readRuntimeMentionCacheRepositoryTask
+} from "./runtime-mention-cache-repository.js";
 import { standardStreamRuntimeLogger } from "./runtime-logger.js";
 
 export interface Props {
@@ -17,6 +20,26 @@ export interface Props {
 const systemWallClock = createWallClock();
 const { blogPostId } = Astro.props;
 const blogPostUrl = createBlogPostAbsoluteUrl(Astro.site, blogPostId);
+const mentionCacheRepository = await (async () => {
+	if (import.meta.env.DEV) {
+		return createDisabledMentionCacheRepository();
+	}
+
+	const repositoryResult = await readRuntimeMentionCacheRepositoryTask();
+
+	return repositoryResult.match({
+		Err(error) {
+			standardStreamRuntimeLogger.warn("Unable to open mention cache database", error, {
+				event: "mention_cache_database_open_failed"
+			});
+
+			return createDisabledMentionCacheRepository();
+		},
+		Ok(repository) {
+			return repository;
+		}
+	});
+})();
 
 Astro.response.headers.set("Cache-Control", "public, max-age=300, stale-while-revalidate=3600");
 
@@ -28,11 +51,9 @@ const { hackerNewsSectionModel, webmentionSectionModel } = await loadBlogPostMen
 		fetch,
 		logInfo: standardStreamRuntimeLogger.info,
 		logWarning: standardStreamRuntimeLogger.warn,
-		nowMilliseconds() {
-			return systemWallClock.currentTimestampInMilliseconds;
-		},
+		mentionCacheRepository,
 		requestTimeoutMilliseconds: runtimeMentionRequestTimeoutMilliseconds,
-		runtimeMentionCacheTtlMilliseconds
+		wallClock: systemWallClock
 	},
 	blogPostUrl
 );

@@ -1,15 +1,23 @@
 import { describe, expect, it, vi } from "vitest";
 import { isString } from "@sindresorhus/is";
-import { createRuntimeMentionCache, writeRuntimeMentionCache } from "./runtime-mention-cache.ts";
+import { createDeterministicWallClock } from "@enormora/wall-clock";
+import { nothing, of as maybeOf, type Maybe } from "true-myth/maybe";
+import { resolve as resolveTask, type Task } from "true-myth/task";
 import {
-	loadBlogPostMentionsForTargetUrl,
-	loadRuntimeMentionSectionModel,
-	runtimeMentionCacheTtlMilliseconds
-} from "./runtime-blog-post-mentions.ts";
+	createMentionCacheKey,
+	mentionCacheSchemaVersion,
+	type MentionCacheEntry,
+	type MentionCacheRepository
+} from "./mention-cache.ts";
+import { loadBlogPostMentionsForTargetUrl } from "./runtime-blog-post-mentions.ts";
 import type { RuntimeLogProperties } from "./runtime-logger.ts";
 
 type TestRuntimeWarningLogger = (message: string, error: unknown, properties: RuntimeLogProperties) => void;
 type TestRuntimeInfoLogger = (message: string, properties: RuntimeLogProperties) => void;
+
+type MemoryMentionCacheRepository = MentionCacheRepository & {
+	readonly readStoredEntry: (cacheKey: string) => Maybe<MentionCacheEntry>;
+};
 
 function readRequestUrlText(requestUrl: RequestInfo | URL): string {
 	if (isString(requestUrl)) {
@@ -23,160 +31,41 @@ function readRequestUrlText(requestUrl: RequestInfo | URL): string {
 	return requestUrl.url;
 }
 
-describe("runtimeMentionCacheTtlMilliseconds", () => {
-	it("keeps mention cache entries fresh for eight hours", () => {
-		const expectedCacheTtlMilliseconds = 8 * 60 * 60 * 1000;
+function createMemoryMentionCacheRepository(): MemoryMentionCacheRepository {
+	const mutableEntries = new Map<string, MentionCacheEntry>();
 
-		expect(runtimeMentionCacheTtlMilliseconds).toBe(expectedCacheTtlMilliseconds);
+	return {
+		readEntry(cacheKey) {
+			return resolveTask(maybeOf(mutableEntries.get(cacheKey)));
+		},
+		readStoredEntry(cacheKey) {
+			return maybeOf(mutableEntries.get(cacheKey));
+		},
+		writeEntry(mentionCacheEntry) {
+			mutableEntries.set(mentionCacheEntry.cacheKey, mentionCacheEntry);
+
+			return resolveTask(undefined);
+		}
+	};
+}
+
+async function unwrapTestTask<Value>(task: Task<Value, Error>): Promise<Value> {
+	const taskResult = await task;
+
+	return taskResult.match({
+		Err(error) {
+			throw error;
+		},
+		Ok(value) {
+			return value;
+		}
 	});
-});
-
-describe("loadRuntimeMentionSectionModel()", () => {
-	it("returns fresh cached values without loading again", async () => {
-		const cache = createRuntimeMentionCache<string>();
-		const loadFreshSectionModel = vi.fn<() => Promise<string>>().mockResolvedValue("fresh mentions");
-
-		writeRuntimeMentionCache({
-			cache,
-			cacheKey: "https://example.com/blog/post",
-			nowMilliseconds: 1000,
-			value: "cached mentions"
-		});
-		const logWarning = vi.fn<TestRuntimeWarningLogger>();
-
-		const actualLoadingResult = await loadRuntimeMentionSectionModel({
-			cache,
-			cacheKey: "https://example.com/blog/post",
-			createEmptySectionModel() {
-				return "empty mentions";
-			},
-			loadFreshSectionModel,
-			logWarning,
-			nowMilliseconds: 1100,
-			serviceName: "Example",
-			ttlMilliseconds: 500
-		});
-		const actualSectionModel = actualLoadingResult.sectionModel;
-		const expectedSectionModel = "cached mentions";
-		const actualState = actualLoadingResult.state;
-		const expectedState = "fresh";
-
-		expect(actualSectionModel).toBe(expectedSectionModel);
-		expect(actualState).toBe(expectedState);
-		expect(loadFreshSectionModel).not.toHaveBeenCalled();
-	});
-
-	it("refreshes stale cached values when loading succeeds", async () => {
-		const cache = createRuntimeMentionCache<string>();
-
-		writeRuntimeMentionCache({
-			cache,
-			cacheKey: "https://example.com/blog/post",
-			nowMilliseconds: 1000,
-			value: "stale mentions"
-		});
-		const logWarning = vi.fn<TestRuntimeWarningLogger>();
-
-		const actualLoadingResult = await loadRuntimeMentionSectionModel({
-			cache,
-			cacheKey: "https://example.com/blog/post",
-			createEmptySectionModel() {
-				return "empty mentions";
-			},
-			async loadFreshSectionModel() {
-				return "fresh mentions";
-			},
-			logWarning,
-			nowMilliseconds: 2000,
-			serviceName: "Example",
-			ttlMilliseconds: 500
-		});
-		const actualSectionModel = actualLoadingResult.sectionModel;
-		const expectedSectionModel = "fresh mentions";
-		const actualState = actualLoadingResult.state;
-		const expectedState = "refreshed";
-
-		const actualCachedResult = cache.get("https://example.com/blog/post");
-		const expectedCachedResult = {
-			refreshedAtMilliseconds: 2000,
-			value: "fresh mentions"
-		};
-
-		expect(actualSectionModel).toBe(expectedSectionModel);
-		expect(actualState).toBe(expectedState);
-		expect(actualCachedResult).toStrictEqual(expectedCachedResult);
-	});
-
-	it("returns stale cached values when refreshing fails", async () => {
-		const cache = createRuntimeMentionCache<string>();
-		const logWarning = vi.fn<TestRuntimeWarningLogger>();
-
-		writeRuntimeMentionCache({
-			cache,
-			cacheKey: "https://example.com/blog/post",
-			nowMilliseconds: 1000,
-			value: "stale mentions"
-		});
-
-		const actualLoadingResult = await loadRuntimeMentionSectionModel({
-			cache,
-			cacheKey: "https://example.com/blog/post",
-			createEmptySectionModel() {
-				return "empty mentions";
-			},
-			async loadFreshSectionModel() {
-				throw new Error("service unavailable");
-			},
-			logWarning,
-			nowMilliseconds: 2000,
-			serviceName: "Example",
-			ttlMilliseconds: 500
-		});
-		const actualSectionModel = actualLoadingResult.sectionModel;
-		const expectedSectionModel = "stale mentions";
-		const actualState = actualLoadingResult.state;
-		const expectedState = "stale_after_error";
-
-		expect(actualSectionModel).toBe(expectedSectionModel);
-		expect(actualState).toBe(expectedState);
-		expect(logWarning).toHaveBeenCalledWith("Unable to load Example mentions at runtime", expect.any(Error), {
-			cacheKey: "https://example.com/blog/post",
-			event: "blog_post_mentions_section_load_failed",
-			serviceName: "Example"
-		});
-	});
-
-	it("returns an empty model when loading fails without cached data", async () => {
-		const cache = createRuntimeMentionCache<string>();
-		const logWarning = vi.fn<TestRuntimeWarningLogger>();
-
-		const actualLoadingResult = await loadRuntimeMentionSectionModel({
-			cache,
-			cacheKey: "https://example.com/blog/post",
-			createEmptySectionModel() {
-				return "empty mentions";
-			},
-			async loadFreshSectionModel() {
-				throw new Error("service unavailable");
-			},
-			logWarning,
-			nowMilliseconds: 2000,
-			serviceName: "Example",
-			ttlMilliseconds: 500
-		});
-		const actualSectionModel = actualLoadingResult.sectionModel;
-		const expectedSectionModel = "empty mentions";
-		const actualState = actualLoadingResult.state;
-		const expectedState = "empty_after_error";
-
-		expect(actualSectionModel).toBe(expectedSectionModel);
-		expect(actualState).toBe(expectedState);
-	});
-});
+}
 
 describe("loadBlogPostMentionsForTargetUrl()", () => {
-	it("logs one structured event for a rendered mentions island", async () => {
-		let nowCallCount = 0;
+	it("loads mentions through the persistent cache repository and logs one structured event", async () => {
+		const targetUrl = "https://example.com/blog/runtime-log-test";
+		const mentionCacheRepository = createMemoryMentionCacheRepository();
 		const logInfo = vi.fn<TestRuntimeInfoLogger>();
 		const logWarning = vi.fn<TestRuntimeWarningLogger>();
 		const fetchImplementation = vi.fn<typeof fetch>(async (requestUrl) => {
@@ -192,6 +81,9 @@ describe("loadBlogPostMentionsForTargetUrl()", () => {
 				hits: []
 			});
 		});
+		const wallClock = createDeterministicWallClock({
+			initialCurrentTimestampInMilliseconds: 1000
+		});
 
 		await loadBlogPostMentionsForTargetUrl(
 			{
@@ -201,28 +93,109 @@ describe("loadBlogPostMentionsForTargetUrl()", () => {
 				fetch: fetchImplementation,
 				logInfo,
 				logWarning,
-				nowMilliseconds() {
-					nowCallCount += 1;
-
-					if (nowCallCount === 1) {
-						return 1000;
-					}
-
-					return 1250;
-				},
+				mentionCacheRepository,
 				requestTimeoutMilliseconds: 5000,
-				runtimeMentionCacheTtlMilliseconds: 500
+				wallClock
 			},
-			"https://example.com/blog/runtime-log-test"
+			targetUrl
 		);
 
+		const webmentionCacheKey = createMentionCacheKey({
+			schemaVersion: mentionCacheSchemaVersion,
+			serviceIdentifier: "webmentions",
+			targetUrl
+		});
+		const hackerNewsCacheKey = createMentionCacheKey({
+			schemaVersion: mentionCacheSchemaVersion,
+			serviceIdentifier: "hacker-news",
+			targetUrl
+		});
+		const actualWebmentionCacheEntry = mentionCacheRepository.readStoredEntry(webmentionCacheKey);
+		const actualHackerNewsCacheEntry = mentionCacheRepository.readStoredEntry(hackerNewsCacheKey);
+
+		expect(actualWebmentionCacheEntry.isJust).toBe(true);
+		expect(actualHackerNewsCacheEntry.isJust).toBe(true);
+		expect(actualWebmentionCacheEntry).not.toStrictEqual(nothing());
+		expect(actualHackerNewsCacheEntry).not.toStrictEqual(nothing());
 		expect(logInfo).toHaveBeenCalledWith("Loaded blog post mentions", {
-			durationMilliseconds: 250,
+			durationMilliseconds: 0,
 			event: "blog_post_mentions_loaded",
 			hackerNewsState: "refreshed",
 			status: "ok",
 			targetPathname: "/blog/runtime-log-test",
 			webmentionState: "refreshed"
+		});
+		expect(logWarning).not.toHaveBeenCalled();
+	});
+
+	it("reuses fresh cached mention sections without fetching", async () => {
+		const targetUrl = "https://example.com/blog/cached-runtime-log-test";
+		const mentionCacheRepository = createMemoryMentionCacheRepository();
+		const webmentionCacheKey = createMentionCacheKey({
+			schemaVersion: mentionCacheSchemaVersion,
+			serviceIdentifier: "webmentions",
+			targetUrl
+		});
+		const hackerNewsCacheKey = createMentionCacheKey({
+			schemaVersion: mentionCacheSchemaVersion,
+			serviceIdentifier: "hacker-news",
+			targetUrl
+		});
+		await unwrapTestTask(
+			mentionCacheRepository.writeEntry({
+				cacheKey: webmentionCacheKey,
+				fetchedAt: "1970-01-01T00:00:01.000Z",
+				schemaVersion: mentionCacheSchemaVersion,
+				value: JSON.stringify({
+					reactions: {
+						bookmarkCount: 0,
+						likeCount: 0,
+						repostCount: 0
+					},
+					replies: []
+				})
+			})
+		);
+		await unwrapTestTask(
+			mentionCacheRepository.writeEntry({
+				cacheKey: hackerNewsCacheKey,
+				fetchedAt: "1970-01-01T00:00:01.000Z",
+				schemaVersion: mentionCacheSchemaVersion,
+				value: JSON.stringify({
+					mentions: []
+				})
+			})
+		);
+		const logInfo = vi.fn<TestRuntimeInfoLogger>();
+		const logWarning = vi.fn<TestRuntimeWarningLogger>();
+		const fetchImplementation = vi.fn<typeof fetch>();
+		const wallClock = createDeterministicWallClock({
+			initialCurrentTimestampInMilliseconds: 1000
+		});
+
+		await loadBlogPostMentionsForTargetUrl(
+			{
+				createTimeoutSignal(timeoutMilliseconds) {
+					return AbortSignal.timeout(timeoutMilliseconds);
+				},
+				fetch: fetchImplementation,
+				logInfo,
+				logWarning,
+				mentionCacheRepository,
+				requestTimeoutMilliseconds: 5000,
+				wallClock
+			},
+			targetUrl
+		);
+
+		expect(fetchImplementation).not.toHaveBeenCalled();
+		expect(logInfo).toHaveBeenCalledWith("Loaded blog post mentions", {
+			durationMilliseconds: 0,
+			event: "blog_post_mentions_loaded",
+			hackerNewsState: "fresh",
+			status: "ok",
+			targetPathname: "/blog/cached-runtime-log-test",
+			webmentionState: "fresh"
 		});
 		expect(logWarning).not.toHaveBeenCalled();
 	});
