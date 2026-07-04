@@ -1,7 +1,9 @@
 import process from "node:process";
-import { isPlainObject, isString, isUndefined, isValidDate } from "@sindresorhus/is";
+import { isArray, isNumber, isPlainObject, isString, isUndefined, isValidDate } from "@sindresorhus/is";
 import { match } from "ts-pattern";
 import { just, nothing, type Maybe } from "true-myth/maybe";
+import { err, ok, type Result } from "true-myth/result";
+import { parseCachedMaybeString } from "./cached-maybe.ts";
 import { parseRuntimeWebmentionApiUrl } from "./environment-variables.ts";
 import { webmentionApiResponseSchema } from "./webmention-response-schema.ts";
 
@@ -83,6 +85,16 @@ function readString(objectValue: Record<string, unknown>, propertyName: string):
 	const propertyValue = objectValue[propertyName];
 
 	if (!isString(propertyValue)) {
+		return nothing();
+	}
+
+	return just(propertyValue);
+}
+
+function readNumber(objectValue: Record<string, unknown>, propertyName: string): Maybe<number> {
+	const propertyValue = objectValue[propertyName];
+
+	if (!isNumber(propertyValue)) {
 		return nothing();
 	}
 
@@ -209,6 +221,29 @@ function validateDateTimeString(value: string): Maybe<string> {
 	return just(value);
 }
 
+function parseCachedMaybeDateTimeString(serializedMaybeValue: unknown): Result<Maybe<string>, TypeError> {
+	const dateTimeString = parseCachedMaybeString(serializedMaybeValue);
+
+	if (dateTimeString.isErr) {
+		return dateTimeString;
+	}
+
+	return dateTimeString.value.match({
+		Nothing() {
+			return ok(nothing());
+		},
+		Just(value) {
+			const validatedValue = validateDateTimeString(value);
+
+			if (validatedValue.isNothing) {
+				return err(new TypeError("Cached Maybe Just value must be a valid date-time string."));
+			}
+
+			return ok(just(validatedValue.value));
+		}
+	});
+}
+
 function readVisiblePublishedAt(webmentionEntry: WebmentionApiEntry): Maybe<string> {
 	return readString(webmentionEntry, "published")
 		.andThen(validateDateTimeString)
@@ -239,6 +274,94 @@ function compareWebmentionRepliesByVisiblePublishedAtDescending(
 	}
 
 	return secondWebmentionReplyPublishedAtValue - firstWebmentionReplyPublishedAtValue;
+}
+
+function parseCachedWebmentionReactionSummary(serializedReactionSummary: unknown): Maybe<WebmentionReactionSummary> {
+	const reactionSummaryRecord = readRecord(serializedReactionSummary);
+
+	return reactionSummaryRecord.andThen((recordValue) => {
+		const bookmarkCount = readNumber(recordValue, "bookmarkCount");
+		const likeCount = readNumber(recordValue, "likeCount");
+		const repostCount = readNumber(recordValue, "repostCount");
+
+		if (bookmarkCount.isNothing || likeCount.isNothing || repostCount.isNothing) {
+			return nothing();
+		}
+
+		return just({
+			bookmarkCount: bookmarkCount.value,
+			likeCount: likeCount.value,
+			repostCount: repostCount.value
+		});
+	});
+}
+
+function parseCachedWebmentionAuthor(serializedAuthor: unknown): Maybe<WebmentionAuthor> {
+	const authorRecord = readRecord(serializedAuthor);
+
+	return authorRecord.andThen((recordValue) => {
+		const authorName = readString(recordValue, "name");
+		const photoUrl = parseCachedMaybeString(recordValue.photoUrl);
+		const websiteUrl = parseCachedMaybeString(recordValue.websiteUrl);
+
+		if (authorName.isNothing || photoUrl.isErr || websiteUrl.isErr) {
+			return nothing();
+		}
+
+		return just({
+			name: authorName.value,
+			photoUrl: photoUrl.value,
+			websiteUrl: websiteUrl.value
+		});
+	});
+}
+
+function parseCachedWebmentionReplyType(serializedReplyType: unknown): Maybe<WebmentionReply["type"]> {
+	if (serializedReplyType === "mention" || serializedReplyType === "reply") {
+		return just(serializedReplyType);
+	}
+
+	return nothing();
+}
+
+function parseCachedWebmentionReply(serializedReply: unknown): Maybe<WebmentionReply> {
+	const replyRecord = readRecord(serializedReply);
+
+	return replyRecord.andThen((recordValue) => {
+		const author = parseCachedWebmentionAuthor(recordValue.author);
+		const content = parseCachedMaybeString(recordValue.content);
+		const sourceUrl = readString(recordValue, "sourceUrl").andThen(parseAbsoluteUrl);
+		const type = parseCachedWebmentionReplyType(recordValue.type);
+		const visiblePublishedAt = parseCachedMaybeDateTimeString(recordValue.visiblePublishedAt);
+
+		if (author.isNothing || content.isErr || sourceUrl.isNothing || type.isNothing || visiblePublishedAt.isErr) {
+			return nothing();
+		}
+
+		return just({
+			author: author.value,
+			content: content.value,
+			sourceUrl: sourceUrl.value,
+			type: type.value,
+			visiblePublishedAt: visiblePublishedAt.value
+		});
+	});
+}
+
+function parseCachedWebmentionReplies(serializedReplies: readonly unknown[]): Maybe<readonly WebmentionReply[]> {
+	const replies: WebmentionReply[] = [];
+
+	for (const serializedReply of serializedReplies) {
+		const reply = parseCachedWebmentionReply(serializedReply);
+
+		if (reply.isNothing) {
+			return nothing();
+		}
+
+		replies.push(reply.value);
+	}
+
+	return just(replies);
 }
 
 function readReactionCountName(webmentionPropertyName: string): Maybe<WebmentionReactionCountName> {
@@ -381,6 +504,30 @@ export function parseWebmentionApiResponse(webmentionApiResponse: unknown): Webm
 			compareWebmentionRepliesByVisiblePublishedAtDescending
 		)
 	};
+}
+
+export function parseCachedWebmentionSectionModel(serializedSectionModel: unknown): Maybe<WebmentionSectionModel> {
+	const sectionModelRecord = readRecord(serializedSectionModel);
+
+	return sectionModelRecord.andThen((recordValue) => {
+		const reactions = parseCachedWebmentionReactionSummary(recordValue.reactions);
+		const serializedReplies = recordValue.replies;
+
+		if (reactions.isNothing || !isArray(serializedReplies)) {
+			return nothing();
+		}
+
+		const replies = parseCachedWebmentionReplies(serializedReplies);
+
+		if (replies.isNothing) {
+			return nothing();
+		}
+
+		return just({
+			reactions: reactions.value,
+			replies: replies.value
+		});
+	});
 }
 
 export async function loadWebmentionsForTargetUrl(
