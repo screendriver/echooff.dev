@@ -6,7 +6,6 @@ import { Kysely, sql, SqliteDialect, type Selectable } from "kysely";
 import { just, nothing, type Maybe } from "true-myth/maybe";
 import { tryOrElse as tryTaskOrElse, type Task } from "true-myth/task";
 
-export const defaultMentionCacheDatabasePath = ".cache/echooff-cache.sqlite";
 export const mentionCacheSchemaVersion = 1;
 
 export type MentionCacheTable = {
@@ -82,12 +81,6 @@ function normalizeMentionCacheDatabaseError(error: unknown): Error {
 	}
 
 	return new Error(String(error));
-}
-
-export function readMentionCacheDatabasePath(
-	environmentVariables: Readonly<Record<string, string | undefined>>
-): string {
-	return environmentVariables.MENTION_CACHE_DATABASE_PATH ?? defaultMentionCacheDatabasePath;
 }
 
 async function openMentionCacheDatabase(

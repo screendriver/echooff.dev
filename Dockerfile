@@ -13,7 +13,6 @@ FROM node:26.4.0-slim
 
 WORKDIR /app
 
-ENV MENTION_CACHE_DATABASE_PATH=/data/echooff-cache.sqlite
 ENV NODE_ENV=production
 
 RUN apt-get update \

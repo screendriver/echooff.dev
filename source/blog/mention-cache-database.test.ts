@@ -6,9 +6,7 @@ import { just, nothing } from "true-myth/maybe";
 import { isOk, ok, type Result } from "true-myth/result";
 import {
 	createMentionCacheRepository,
-	defaultMentionCacheDatabasePath,
 	mentionCacheSchemaVersion,
-	readMentionCacheDatabasePath,
 	type MentionCacheEntry,
 	type MentionCacheRepository
 } from "./mention-cache-database.ts";
@@ -69,23 +67,6 @@ function unwrapTestResult<Value>(result: Result<Value, Error>): Value {
 
 	throw result.error;
 }
-
-describe("readMentionCacheDatabasePath()", () => {
-	it("uses the configured database path when present", () => {
-		const actualDatabasePath = readMentionCacheDatabasePath({
-			MENTION_CACHE_DATABASE_PATH: "/data/echooff-cache.sqlite"
-		});
-		const expectedDatabasePath = "/data/echooff-cache.sqlite";
-
-		expect(actualDatabasePath).toBe(expectedDatabasePath);
-	});
-
-	it("uses the local development default when no database path is configured", () => {
-		const actualDatabasePath = readMentionCacheDatabasePath({});
-
-		expect(actualDatabasePath).toBe(defaultMentionCacheDatabasePath);
-	});
-});
 
 describe("mention cache database repository", () => {
 	it("creates the schema idempotently", async () => {

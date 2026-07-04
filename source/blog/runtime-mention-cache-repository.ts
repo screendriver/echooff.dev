@@ -1,14 +1,13 @@
-import process from "node:process";
 import { just, nothing, type Maybe } from "true-myth/maybe";
 import { resolve as resolveTask, type Task } from "true-myth/task";
 import {
 	createMentionCacheRepository,
-	readMentionCacheDatabasePath,
 	type MentionCacheRepository as SqliteMentionCacheRepository
 } from "./mention-cache-database.ts";
 import type { MentionCacheEntry, MentionCacheRepository } from "./mention-cache.ts";
 
 const mentionCacheDatabaseBusyTimeoutMilliseconds = 5000;
+const productionMentionCacheDatabasePath = "/data/echooff-cache.sqlite";
 
 export function createDisabledMentionCacheRepository(): MentionCacheRepository {
 	return {
@@ -32,7 +31,7 @@ function createRuntimeMentionCacheRepositoryTaskReader(): () => Task<SqliteMenti
 			Nothing() {
 				const mentionCacheRepositoryTask = createMentionCacheRepository({
 					busyTimeoutMilliseconds: mentionCacheDatabaseBusyTimeoutMilliseconds,
-					databasePath: readMentionCacheDatabasePath(process.env)
+					databasePath: productionMentionCacheDatabasePath
 				});
 
 				createdMentionCacheRepositoryTask = just(mentionCacheRepositoryTask);
