@@ -1,7 +1,8 @@
 import process from "node:process";
-import { isArray, isNull, isNumber, isPlainObject, isString, isUndefined, isValidDate } from "@sindresorhus/is";
-import { isJust, just, nothing, type Just, type Maybe } from "true-myth/maybe";
-import { err, isOk, ok, type Ok, type Result } from "true-myth/result";
+import { isNull, isNumber, isString, isUndefined, isValidDate } from "@sindresorhus/is";
+import { just, nothing, type Maybe } from "true-myth/maybe";
+import { err, ok, type Result } from "true-myth/result";
+import { cachedHackerNewsSectionModelSchema, type CachedHackerNewsMention } from "./cached-mention-section-schema.ts";
 import { parseCachedMaybeString } from "./cached-maybe.ts";
 import { parseRuntimeHackerNewsApiUrl } from "./environment-variables.ts";
 import { hackerNewsApiResponseSchema } from "./hacker-news-response-schema.ts";
@@ -29,23 +30,6 @@ type HackerNewsApiRequestUrlInput = {
 	readonly hackerNewsApiUrl: URL;
 	readonly targetUrl: string;
 };
-type CachedHackerNewsMentionFields = {
-	readonly commentCount: Maybe<number>;
-	readonly discussionUrl: Maybe<string>;
-	readonly pointCount: Maybe<number>;
-	readonly storyTitle: Maybe<string>;
-	readonly submittedUrl: Result<Maybe<string>, TypeError>;
-	readonly visiblePublishedAt: Result<Maybe<string>, TypeError>;
-};
-type CompleteCachedHackerNewsMentionFields = {
-	readonly commentCount: Just<number>;
-	readonly discussionUrl: Just<string>;
-	readonly pointCount: Just<number>;
-	readonly storyTitle: Just<string>;
-	readonly submittedUrl: Ok<Maybe<string>, TypeError>;
-	readonly visiblePublishedAt: Ok<Maybe<string>, TypeError>;
-};
-
 const emptyHackerNewsSectionModel: HackerNewsSectionModel = {
 	mentions: []
 };
@@ -64,16 +48,6 @@ function readNumber(objectValue: Record<string, unknown>, propertyName: string):
 	const propertyValue = objectValue[propertyName];
 
 	if (!isNumber(propertyValue)) {
-		return nothing();
-	}
-
-	return just(propertyValue);
-}
-
-function readArray(objectValue: Record<string, unknown>, propertyName: string): Maybe<readonly unknown[]> {
-	const propertyValue = objectValue[propertyName];
-
-	if (!isArray(propertyValue)) {
 		return nothing();
 	}
 
@@ -104,14 +78,6 @@ function readValidAbsoluteUrl(objectValue: Record<string, unknown>, propertyName
 
 function validateDateTimeString(value: string): Maybe<string> {
 	if (!isValidDate(new Date(value))) {
-		return nothing();
-	}
-
-	return just(value);
-}
-
-function readRecord(value: unknown): Maybe<Record<string, unknown>> {
-	if (!isPlainObject(value)) {
 		return nothing();
 	}
 
@@ -206,62 +172,32 @@ function parseCachedMaybeDateTimeString(serializedMaybeValue: unknown): Result<M
 	});
 }
 
-function readCachedHackerNewsMentionFields(recordValue: Record<string, unknown>): CachedHackerNewsMentionFields {
-	return {
-		commentCount: readNumber(recordValue, "commentCount"),
-		discussionUrl: readString(recordValue, "discussionUrl").andThen(parseAbsoluteUrl),
-		pointCount: readNumber(recordValue, "pointCount"),
-		storyTitle: readString(recordValue, "storyTitle"),
-		submittedUrl: parseCachedMaybeAbsoluteUrl(recordValue.submittedUrl),
-		visiblePublishedAt: parseCachedMaybeDateTimeString(recordValue.visiblePublishedAt)
-	};
-}
+function parseCachedHackerNewsMention(cachedMention: CachedHackerNewsMention): Maybe<HackerNewsMention> {
+	const discussionUrl = parseAbsoluteUrl(cachedMention.discussionUrl);
+	const submittedUrl = parseCachedMaybeAbsoluteUrl(cachedMention.submittedUrl);
+	const visiblePublishedAt = parseCachedMaybeDateTimeString(cachedMention.visiblePublishedAt);
 
-function hasCompleteCachedHackerNewsMentionFields(
-	cachedHackerNewsMentionFields: CachedHackerNewsMentionFields
-): cachedHackerNewsMentionFields is CompleteCachedHackerNewsMentionFields {
-	const { commentCount, discussionUrl, pointCount, storyTitle, submittedUrl, visiblePublishedAt } =
-		cachedHackerNewsMentionFields;
-	const numberFields: readonly Maybe<number>[] = [commentCount, pointCount];
-	const stringFields: readonly Maybe<string>[] = [discussionUrl, storyTitle];
-	const cachedMaybeStringFields: readonly Result<Maybe<string>, TypeError>[] = [submittedUrl, visiblePublishedAt];
-
-	return numberFields.every(isJust) && stringFields.every(isJust) && cachedMaybeStringFields.every(isOk);
-}
-
-function createCachedHackerNewsMention(
-	cachedHackerNewsMentionFields: CachedHackerNewsMentionFields
-): Maybe<HackerNewsMention> {
-	if (!hasCompleteCachedHackerNewsMentionFields(cachedHackerNewsMentionFields)) {
+	if (discussionUrl.isNothing || submittedUrl.isErr || visiblePublishedAt.isErr) {
 		return nothing();
 	}
 
-	const { commentCount, discussionUrl, pointCount, storyTitle, submittedUrl, visiblePublishedAt } =
-		cachedHackerNewsMentionFields;
-
 	return just({
-		commentCount: commentCount.value,
+		commentCount: cachedMention.commentCount,
 		discussionUrl: discussionUrl.value,
-		pointCount: pointCount.value,
-		storyTitle: storyTitle.value,
+		pointCount: cachedMention.pointCount,
+		storyTitle: cachedMention.storyTitle,
 		submittedUrl: submittedUrl.value,
 		visiblePublishedAt: visiblePublishedAt.value
 	});
 }
 
-function parseCachedHackerNewsMention(serializedMention: unknown): Maybe<HackerNewsMention> {
-	const mentionRecord = readRecord(serializedMention);
-
-	return mentionRecord.andThen((recordValue) => {
-		return createCachedHackerNewsMention(readCachedHackerNewsMentionFields(recordValue));
-	});
-}
-
-function parseCachedHackerNewsMentions(serializedMentions: readonly unknown[]): Maybe<readonly HackerNewsMention[]> {
+function parseCachedHackerNewsMentions(
+	cachedMentions: readonly CachedHackerNewsMention[]
+): Maybe<readonly HackerNewsMention[]> {
 	const mentions: HackerNewsMention[] = [];
 
-	for (const serializedMention of serializedMentions) {
-		const mention = parseCachedHackerNewsMention(serializedMention);
+	for (const cachedMention of cachedMentions) {
+		const mention = parseCachedHackerNewsMention(cachedMention);
 
 		if (mention.isNothing) {
 			return nothing();
@@ -381,16 +317,19 @@ export function parseHackerNewsApiResponse(targetUrl: string, hackerNewsApiRespo
 }
 
 export function parseCachedHackerNewsSectionModel(serializedSectionModel: unknown): Maybe<HackerNewsSectionModel> {
-	const sectionModelRecord = readRecord(serializedSectionModel);
+	if (!cachedHackerNewsSectionModelSchema.allows(serializedSectionModel)) {
+		return nothing();
+	}
 
-	return sectionModelRecord.andThen((recordValue) => {
-		return readArray(recordValue, "mentions")
-			.andThen(parseCachedHackerNewsMentions)
-			.map((mentions) => {
-				return {
-					mentions
-				};
-			});
+	const cachedSectionModel = cachedHackerNewsSectionModelSchema.assert(serializedSectionModel);
+	const mentions = parseCachedHackerNewsMentions(cachedSectionModel.mentions);
+
+	if (mentions.isNothing) {
+		return nothing();
+	}
+
+	return just({
+		mentions: mentions.value
 	});
 }
 

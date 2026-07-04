@@ -28,7 +28,7 @@ describe("parseCachedMaybeString()", () => {
 			value: 123,
 			variant: "Just"
 		});
-		const expectedResult = err(new TypeError("Cached Maybe Just value must be a string."));
+		const expectedResult = err(new TypeError("Cached Maybe value is malformed."));
 
 		expect(actualResult).toStrictEqual(expectedResult);
 	});

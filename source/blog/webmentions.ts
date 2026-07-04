@@ -1,8 +1,13 @@
 import process from "node:process";
-import { isArray, isNumber, isPlainObject, isString, isUndefined, isValidDate } from "@sindresorhus/is";
+import { isPlainObject, isString, isUndefined, isValidDate } from "@sindresorhus/is";
 import { match } from "ts-pattern";
 import { just, nothing, type Maybe } from "true-myth/maybe";
 import { err, ok, type Result } from "true-myth/result";
+import {
+	cachedWebmentionSectionModelSchema,
+	type CachedWebmentionAuthor,
+	type CachedWebmentionReply
+} from "./cached-mention-section-schema.ts";
 import { parseCachedMaybeString } from "./cached-maybe.ts";
 import { parseRuntimeWebmentionApiUrl } from "./environment-variables.ts";
 import { webmentionApiResponseSchema } from "./webmention-response-schema.ts";
@@ -85,16 +90,6 @@ function readString(objectValue: Record<string, unknown>, propertyName: string):
 	const propertyValue = objectValue[propertyName];
 
 	if (!isString(propertyValue)) {
-		return nothing();
-	}
-
-	return just(propertyValue);
-}
-
-function readNumber(objectValue: Record<string, unknown>, propertyName: string): Maybe<number> {
-	const propertyValue = objectValue[propertyName];
-
-	if (!isNumber(propertyValue)) {
 		return nothing();
 	}
 
@@ -276,83 +271,47 @@ function compareWebmentionRepliesByVisiblePublishedAtDescending(
 	return secondWebmentionReplyPublishedAtValue - firstWebmentionReplyPublishedAtValue;
 }
 
-function parseCachedWebmentionReactionSummary(serializedReactionSummary: unknown): Maybe<WebmentionReactionSummary> {
-	const reactionSummaryRecord = readRecord(serializedReactionSummary);
+function parseCachedWebmentionAuthor(cachedAuthor: CachedWebmentionAuthor): Maybe<WebmentionAuthor> {
+	const photoUrl = parseCachedMaybeString(cachedAuthor.photoUrl);
+	const websiteUrl = parseCachedMaybeString(cachedAuthor.websiteUrl);
 
-	return reactionSummaryRecord.andThen((recordValue) => {
-		const bookmarkCount = readNumber(recordValue, "bookmarkCount");
-		const likeCount = readNumber(recordValue, "likeCount");
-		const repostCount = readNumber(recordValue, "repostCount");
-
-		if (bookmarkCount.isNothing || likeCount.isNothing || repostCount.isNothing) {
-			return nothing();
-		}
-
-		return just({
-			bookmarkCount: bookmarkCount.value,
-			likeCount: likeCount.value,
-			repostCount: repostCount.value
-		});
-	});
-}
-
-function parseCachedWebmentionAuthor(serializedAuthor: unknown): Maybe<WebmentionAuthor> {
-	const authorRecord = readRecord(serializedAuthor);
-
-	return authorRecord.andThen((recordValue) => {
-		const authorName = readString(recordValue, "name");
-		const photoUrl = parseCachedMaybeString(recordValue.photoUrl);
-		const websiteUrl = parseCachedMaybeString(recordValue.websiteUrl);
-
-		if (authorName.isNothing || photoUrl.isErr || websiteUrl.isErr) {
-			return nothing();
-		}
-
-		return just({
-			name: authorName.value,
-			photoUrl: photoUrl.value,
-			websiteUrl: websiteUrl.value
-		});
-	});
-}
-
-function parseCachedWebmentionReplyType(serializedReplyType: unknown): Maybe<WebmentionReply["type"]> {
-	if (serializedReplyType === "mention" || serializedReplyType === "reply") {
-		return just(serializedReplyType);
+	if (photoUrl.isErr || websiteUrl.isErr) {
+		return nothing();
 	}
 
-	return nothing();
-}
-
-function parseCachedWebmentionReply(serializedReply: unknown): Maybe<WebmentionReply> {
-	const replyRecord = readRecord(serializedReply);
-
-	return replyRecord.andThen((recordValue) => {
-		const author = parseCachedWebmentionAuthor(recordValue.author);
-		const content = parseCachedMaybeString(recordValue.content);
-		const sourceUrl = readString(recordValue, "sourceUrl").andThen(parseAbsoluteUrl);
-		const type = parseCachedWebmentionReplyType(recordValue.type);
-		const visiblePublishedAt = parseCachedMaybeDateTimeString(recordValue.visiblePublishedAt);
-
-		if (author.isNothing || content.isErr || sourceUrl.isNothing || type.isNothing || visiblePublishedAt.isErr) {
-			return nothing();
-		}
-
-		return just({
-			author: author.value,
-			content: content.value,
-			sourceUrl: sourceUrl.value,
-			type: type.value,
-			visiblePublishedAt: visiblePublishedAt.value
-		});
+	return just({
+		name: cachedAuthor.name,
+		photoUrl: photoUrl.value,
+		websiteUrl: websiteUrl.value
 	});
 }
 
-function parseCachedWebmentionReplies(serializedReplies: readonly unknown[]): Maybe<readonly WebmentionReply[]> {
+function parseCachedWebmentionReply(cachedReply: CachedWebmentionReply): Maybe<WebmentionReply> {
+	const author = parseCachedWebmentionAuthor(cachedReply.author);
+	const content = parseCachedMaybeString(cachedReply.content);
+	const sourceUrl = parseAbsoluteUrl(cachedReply.sourceUrl);
+	const visiblePublishedAt = parseCachedMaybeDateTimeString(cachedReply.visiblePublishedAt);
+
+	if (author.isNothing || content.isErr || sourceUrl.isNothing || visiblePublishedAt.isErr) {
+		return nothing();
+	}
+
+	return just({
+		author: author.value,
+		content: content.value,
+		sourceUrl: sourceUrl.value,
+		type: cachedReply.type,
+		visiblePublishedAt: visiblePublishedAt.value
+	});
+}
+
+function parseCachedWebmentionReplies(
+	cachedReplies: readonly CachedWebmentionReply[]
+): Maybe<readonly WebmentionReply[]> {
 	const replies: WebmentionReply[] = [];
 
-	for (const serializedReply of serializedReplies) {
-		const reply = parseCachedWebmentionReply(serializedReply);
+	for (const cachedReply of cachedReplies) {
+		const reply = parseCachedWebmentionReply(cachedReply);
 
 		if (reply.isNothing) {
 			return nothing();
@@ -507,26 +466,20 @@ export function parseWebmentionApiResponse(webmentionApiResponse: unknown): Webm
 }
 
 export function parseCachedWebmentionSectionModel(serializedSectionModel: unknown): Maybe<WebmentionSectionModel> {
-	const sectionModelRecord = readRecord(serializedSectionModel);
+	if (!cachedWebmentionSectionModelSchema.allows(serializedSectionModel)) {
+		return nothing();
+	}
 
-	return sectionModelRecord.andThen((recordValue) => {
-		const reactions = parseCachedWebmentionReactionSummary(recordValue.reactions);
-		const serializedReplies = recordValue.replies;
+	const cachedSectionModel = cachedWebmentionSectionModelSchema.assert(serializedSectionModel);
+	const replies = parseCachedWebmentionReplies(cachedSectionModel.replies);
 
-		if (reactions.isNothing || !isArray(serializedReplies)) {
-			return nothing();
-		}
+	if (replies.isNothing) {
+		return nothing();
+	}
 
-		const replies = parseCachedWebmentionReplies(serializedReplies);
-
-		if (replies.isNothing) {
-			return nothing();
-		}
-
-		return just({
-			reactions: reactions.value,
-			replies: replies.value
-		});
+	return just({
+		reactions: cachedSectionModel.reactions,
+		replies: replies.value
 	});
 }
 
