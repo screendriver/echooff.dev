@@ -4,9 +4,11 @@ import { createDeterministicWallClock } from "@enormora/wall-clock";
 import { just, nothing, of as maybeOf, type Maybe } from "true-myth/maybe";
 import { isOk } from "true-myth/result";
 import { reject as rejectTask, resolve as resolveTask, type Task } from "true-myth/task";
+import { Unit } from "true-myth/unit";
 import {
 	createMentionCacheKey,
 	loadMentionCacheSectionModel,
+	mentionCacheCleanupAgeDays,
 	mentionCacheFreshMilliseconds,
 	mentionCacheSchemaVersion,
 	mentionCacheUsableStaleMilliseconds,
@@ -25,6 +27,7 @@ type TestMentionSectionModel = Record<string, unknown> & {
 type TestRuntimeWarningLogger = (message: string, error: unknown, properties: RuntimeLogProperties) => void;
 
 type MemoryMentionCacheRepositoryInput = {
+	readonly deleteError?: Error;
 	readonly entries?: ReadonlyMap<string, MentionCacheEntry>;
 	readonly readError?: Error;
 	readonly writeError?: Error;
@@ -70,10 +73,28 @@ function createMentionCacheEntry(mentionCacheEntry: Partial<MentionCacheEntry> =
 function createMemoryMentionCacheRepository(
 	memoryMentionCacheRepositoryInput: MemoryMentionCacheRepositoryInput = {}
 ): MemoryMentionCacheRepository {
-	const { entries = new Map<string, MentionCacheEntry>(), readError, writeError } = memoryMentionCacheRepositoryInput;
+	const {
+		deleteError,
+		entries = new Map<string, MentionCacheEntry>(),
+		readError,
+		writeError
+	} = memoryMentionCacheRepositoryInput;
 	const mutableEntries = new Map(entries);
 
 	return {
+		deleteEntriesFetchedBefore(fetchedBefore) {
+			if (deleteError !== undefined) {
+				return rejectTask(deleteError);
+			}
+
+			for (const [cacheKey, mentionCacheEntry] of mutableEntries) {
+				if (mentionCacheEntry.fetchedAt < fetchedBefore) {
+					mutableEntries.delete(cacheKey);
+				}
+			}
+
+			return resolveTask(Unit);
+		},
 		readEntry(cacheKey) {
 			if (readError !== undefined) {
 				return rejectTask(readError);
@@ -91,7 +112,7 @@ function createMemoryMentionCacheRepository(
 
 			mutableEntries.set(mentionCacheEntry.cacheKey, mentionCacheEntry);
 
-			return resolveTask(undefined);
+			return resolveTask(Unit);
 		}
 	};
 }
@@ -311,6 +332,49 @@ describe("loadMentionCacheSectionModel()", () => {
 		);
 	});
 
+	it("cleans entries older than the retention window after a successful refresh", async () => {
+		const cacheKey = "mentions:v1:webmentions:cleanup-target-url-hash";
+		const oldCacheKey = "mentions:v1:webmentions:old-target-url-hash";
+		const retainedCacheKey = "mentions:v1:webmentions:retained-target-url-hash";
+		const repository = createMemoryMentionCacheRepository({
+			entries: new Map([
+				[
+					oldCacheKey,
+					createMentionCacheEntry({
+						cacheKey: oldCacheKey,
+						fetchedAt: "2026-04-01T10:00:00.000Z"
+					})
+				],
+				[
+					retainedCacheKey,
+					createMentionCacheEntry({
+						cacheKey: retainedCacheKey,
+						fetchedAt: "2026-04-06T10:00:00.000Z"
+					})
+				]
+			])
+		});
+
+		const actualLoadingResult = await unwrapTestTask(
+			loadMentionCacheSectionModel(
+				createLoadMentionCacheSectionModelInput({
+					cacheKey,
+					repository
+				})
+			)
+		);
+		const expectedLoadingResult = {
+			sectionModel: createTestMentionSectionModel("fresh mentions"),
+			state: "refreshed"
+		};
+
+		expect(actualLoadingResult).toStrictEqual(expectedLoadingResult);
+		expect(repository.readStoredEntry(cacheKey).isJust).toBe(true);
+		expect(repository.readStoredEntry(oldCacheKey)).toStrictEqual(nothing());
+		expect(repository.readStoredEntry(retainedCacheKey).isJust).toBe(true);
+		expect(mentionCacheCleanupAgeDays).toBe(90);
+	});
+
 	it("renders an empty model after a cache miss when refreshing fails", async () => {
 		const cacheKey = "mentions:v1:webmentions:miss-target-url-hash";
 
@@ -387,6 +451,35 @@ describe("loadMentionCacheSectionModel()", () => {
 		expect(logWarning).toHaveBeenCalledWith("Unable to write Webmention mentions cache", expect.any(Error), {
 			cacheKey,
 			event: "mention_cache_write_failed",
+			serviceName: "Webmention"
+		});
+	});
+
+	it("renders fresh values when cache cleanup fails", async () => {
+		const cacheKey = "mentions:v1:webmentions:cleanup-failure-target-url-hash";
+		const logWarning = vi.fn<TestRuntimeWarningLogger>();
+		const repository = createMemoryMentionCacheRepository({
+			deleteError: new Error("database is busy")
+		});
+
+		const actualLoadingResult = await unwrapTestTask(
+			loadMentionCacheSectionModel(
+				createLoadMentionCacheSectionModelInput({
+					cacheKey,
+					logWarning,
+					repository
+				})
+			)
+		);
+		const expectedLoadingResult = {
+			sectionModel: createTestMentionSectionModel("fresh mentions"),
+			state: "refreshed"
+		};
+
+		expect(actualLoadingResult).toStrictEqual(expectedLoadingResult);
+		expect(logWarning).toHaveBeenCalledWith("Unable to clean Webmention mentions cache", expect.any(Error), {
+			cacheKey,
+			event: "mention_cache_cleanup_failed",
 			serviceName: "Webmention"
 		});
 	});

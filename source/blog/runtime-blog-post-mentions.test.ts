@@ -3,6 +3,7 @@ import { isString } from "@sindresorhus/is";
 import { createDeterministicWallClock } from "@enormora/wall-clock";
 import { nothing, of as maybeOf, type Maybe } from "true-myth/maybe";
 import { resolve as resolveTask, type Task } from "true-myth/task";
+import { Unit } from "true-myth/unit";
 import {
 	createMentionCacheKey,
 	mentionCacheSchemaVersion,
@@ -35,6 +36,9 @@ function createMemoryMentionCacheRepository(): MemoryMentionCacheRepository {
 	const mutableEntries = new Map<string, MentionCacheEntry>();
 
 	return {
+		deleteEntriesFetchedBefore() {
+			return resolveTask(Unit);
+		},
 		readEntry(cacheKey) {
 			return resolveTask(maybeOf(mutableEntries.get(cacheKey)));
 		},
@@ -44,7 +48,7 @@ function createMemoryMentionCacheRepository(): MemoryMentionCacheRepository {
 		writeEntry(mentionCacheEntry) {
 			mutableEntries.set(mentionCacheEntry.cacheKey, mentionCacheEntry);
 
-			return resolveTask(undefined);
+			return resolveTask(Unit);
 		}
 	};
 }

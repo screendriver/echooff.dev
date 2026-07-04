@@ -1,12 +1,14 @@
 import { createHash } from "node:crypto";
 import { isError } from "@sindresorhus/is";
 import type { WallClock } from "@enormora/wall-clock";
-import { differenceInMilliseconds, isValid, parseISO } from "date-fns";
+import { differenceInMilliseconds, isValid, parseISO, subDays } from "date-fns";
 import { nothing, type Maybe } from "true-myth/maybe";
 import { resolve as resolveTask, tryOrElse as tryTaskOrElse, type Task } from "true-myth/task";
+import type { Unit } from "true-myth/unit";
 import type { RuntimeLogProperties } from "./runtime-logger.ts";
 
 export const mentionCacheFreshMilliseconds = 8 * 60 * 60 * 1000;
+export const mentionCacheCleanupAgeDays = 90;
 export const mentionCacheSchemaVersion = 1;
 export const mentionCacheUsableStaleMilliseconds = 30 * 24 * 60 * 60 * 1000;
 
@@ -20,8 +22,9 @@ export type MentionCacheEntry = {
 };
 
 export type MentionCacheRepository = {
+	readonly deleteEntriesFetchedBefore: (fetchedBefore: string) => Task<Unit, Error>;
 	readonly readEntry: (cacheKey: string) => Task<Maybe<MentionCacheEntry>, Error>;
-	readonly writeEntry: (mentionCacheEntry: MentionCacheEntry) => Task<void, Error>;
+	readonly writeEntry: (mentionCacheEntry: MentionCacheEntry) => Task<Unit, Error>;
 };
 
 export type MentionCacheFreshness = "expired" | "fresh" | "stale";
@@ -74,6 +77,7 @@ type RefreshMentionSectionModelInput<SectionModel extends MentionCacheSectionMod
 	readonly logWarning: (message: string, error: unknown, properties: RuntimeLogProperties) => void;
 	readonly repository: MentionCacheRepository;
 	readonly requestedAt: Date;
+	readonly retentionDays: number;
 	readonly schemaVersion: number;
 	readonly serviceName: string;
 	readonly staleSectionModel: Maybe<SectionModel>;
@@ -83,6 +87,12 @@ type MentionCacheWarningPropertiesInput = {
 	readonly cacheKey: string;
 	readonly eventName: string;
 	readonly serviceName: string;
+};
+
+type CleanupMentionCacheEntriesInput = {
+	readonly repository: MentionCacheRepository;
+	readonly requestedAt: Date;
+	readonly retentionDays: number;
 };
 
 function normalizeMentionCacheError(error: unknown): Error {
@@ -159,6 +169,15 @@ function readMentionCacheEntrySectionModel<SectionModel extends MentionCacheSect
 	});
 }
 
+function cleanupMentionCacheEntries(
+	cleanupMentionCacheEntriesInput: CleanupMentionCacheEntriesInput
+): Task<Unit, Error> {
+	const { repository, requestedAt, retentionDays } = cleanupMentionCacheEntriesInput;
+	const fetchedBefore = subDays(requestedAt, retentionDays).toISOString();
+
+	return repository.deleteEntriesFetchedBefore(fetchedBefore);
+}
+
 async function refreshMentionSectionModel<SectionModel extends MentionCacheSectionModel>(
 	refreshMentionSectionModelInput: RefreshMentionSectionModelInput<SectionModel>
 ): Promise<MentionCacheSectionLoadingResult<SectionModel>> {
@@ -169,6 +188,7 @@ async function refreshMentionSectionModel<SectionModel extends MentionCacheSecti
 		logWarning,
 		repository,
 		requestedAt,
+		retentionDays,
 		schemaVersion,
 		serviceName,
 		staleSectionModel
@@ -216,6 +236,24 @@ async function refreshMentionSectionModel<SectionModel extends MentionCacheSecti
 				serviceName
 			})
 		);
+	} else {
+		const cleanupResult = await cleanupMentionCacheEntries({
+			repository,
+			requestedAt,
+			retentionDays
+		});
+
+		if (cleanupResult.isErr) {
+			logWarning(
+				`Unable to clean ${serviceName} mentions cache`,
+				cleanupResult.error,
+				createMentionCacheWarningProperties({
+					cacheKey,
+					eventName: "mention_cache_cleanup_failed",
+					serviceName
+				})
+			);
+		}
 	}
 
 	return {
@@ -264,6 +302,7 @@ export function loadMentionCacheSectionModel<SectionModel extends MentionCacheSe
 					logWarning,
 					repository,
 					requestedAt,
+					retentionDays: mentionCacheCleanupAgeDays,
 					schemaVersion,
 					serviceName,
 					staleSectionModel: nothing<SectionModel>()
@@ -278,6 +317,7 @@ export function loadMentionCacheSectionModel<SectionModel extends MentionCacheSe
 					logWarning,
 					repository,
 					requestedAt,
+					retentionDays: mentionCacheCleanupAgeDays,
 					schemaVersion,
 					serviceName,
 					staleSectionModel: nothing<SectionModel>()
@@ -297,6 +337,7 @@ export function loadMentionCacheSectionModel<SectionModel extends MentionCacheSe
 					logWarning,
 					repository,
 					requestedAt,
+					retentionDays: mentionCacheCleanupAgeDays,
 					schemaVersion,
 					serviceName,
 					staleSectionModel: nothing<SectionModel>()
@@ -324,6 +365,7 @@ export function loadMentionCacheSectionModel<SectionModel extends MentionCacheSe
 				logWarning,
 				repository,
 				requestedAt,
+				retentionDays: mentionCacheCleanupAgeDays,
 				schemaVersion,
 				serviceName,
 				staleSectionModel: freshness === "stale" ? cachedSectionModel : nothing<SectionModel>()

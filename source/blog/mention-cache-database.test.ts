@@ -4,6 +4,7 @@ import { dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { just, nothing } from "true-myth/maybe";
 import { isOk, ok, type Result } from "true-myth/result";
+import { Unit } from "true-myth/unit";
 import {
 	createMentionCacheRepository,
 	mentionCacheSchemaVersion,
@@ -85,7 +86,7 @@ describe("mention cache database repository", () => {
 						expectedMentionCacheEntry.cacheKey
 					);
 
-					expect(actualWriteResult).toStrictEqual(ok(undefined));
+					expect(actualWriteResult).toStrictEqual(ok(Unit));
 					expect(actualReadResult).toStrictEqual(ok(just(expectedMentionCacheEntry)));
 				} finally {
 					unwrapTestResult(await secondMentionCacheRepository.close());
@@ -112,7 +113,7 @@ describe("mention cache database repository", () => {
 					expectedMentionCacheEntry.cacheKey
 				);
 
-				expect(actualWriteResult).toStrictEqual(ok(undefined));
+				expect(actualWriteResult).toStrictEqual(ok(Unit));
 				expect(actualMentionCacheEntry).toStrictEqual(ok(just(expectedMentionCacheEntry)));
 			} finally {
 				unwrapTestResult(await mentionCacheRepository.close());

@@ -5,6 +5,7 @@ import Database from "better-sqlite3";
 import { Kysely, sql, SqliteDialect, type Selectable } from "kysely";
 import { just, nothing, type Maybe } from "true-myth/maybe";
 import { tryOrElse as tryTaskOrElse, type Task } from "true-myth/task";
+import { Unit, type Unit as UnitType } from "true-myth/unit";
 
 export const mentionCacheSchemaVersion = 1;
 
@@ -32,10 +33,10 @@ export type MentionCacheDatabaseConnection = {
 };
 
 export type MentionCacheRepository = {
-	readonly close: () => Task<void, Error>;
-	readonly deleteEntriesFetchedBefore: (fetchedBefore: string) => Task<void, Error>;
+	readonly close: () => Task<UnitType, Error>;
+	readonly deleteEntriesFetchedBefore: (fetchedBefore: string) => Task<UnitType, Error>;
 	readonly readEntry: (cacheKey: string) => Task<Maybe<MentionCacheEntry>, Error>;
-	readonly writeEntry: (mentionCacheEntry: MentionCacheEntry) => Task<void, Error>;
+	readonly writeEntry: (mentionCacheEntry: MentionCacheEntry) => Task<UnitType, Error>;
 };
 
 type OpenMentionCacheDatabaseInput = {
@@ -188,11 +189,15 @@ async function createMentionCacheRepositoryUnsafe(
 		close() {
 			return tryTaskOrElse(normalizeMentionCacheDatabaseError, async () => {
 				await closeMentionCacheDatabase(mentionCacheDatabaseConnection);
+
+				return Unit;
 			});
 		},
 		deleteEntriesFetchedBefore(fetchedBefore) {
 			return tryTaskOrElse(normalizeMentionCacheDatabaseError, async () => {
 				await deleteMentionCacheEntriesFetchedBefore(database, fetchedBefore);
+
+				return Unit;
 			});
 		},
 		readEntry(cacheKey) {
@@ -203,6 +208,8 @@ async function createMentionCacheRepositoryUnsafe(
 		writeEntry(mentionCacheEntry) {
 			return tryTaskOrElse(normalizeMentionCacheDatabaseError, async () => {
 				await writeMentionCacheEntry(database, mentionCacheEntry);
+
+				return Unit;
 			});
 		}
 	};

@@ -1,6 +1,7 @@
 import { isError } from "@sindresorhus/is";
 import { just, nothing, type Maybe } from "true-myth/maybe";
 import { resolve as resolveTask, tryOrElse as tryTaskOrElse, type Task } from "true-myth/task";
+import { Unit } from "true-myth/unit";
 import type { MentionCacheRepository as SqliteMentionCacheRepository } from "./mention-cache-database.ts";
 import type { MentionCacheEntry, MentionCacheRepository } from "./mention-cache.ts";
 
@@ -17,11 +18,14 @@ function normalizeDynamicImportError(error: unknown): Error {
 
 export function createDisabledMentionCacheRepository(): MentionCacheRepository {
 	return {
+		deleteEntriesFetchedBefore() {
+			return resolveTask(Unit);
+		},
 		readEntry() {
 			return resolveTask(nothing<MentionCacheEntry>());
 		},
 		writeEntry() {
-			return resolveTask(undefined);
+			return resolveTask(Unit);
 		}
 	};
 }
