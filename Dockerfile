@@ -7,7 +7,7 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 COPY package.json package-lock.json ./
-RUN npm clean-install --omit=dev
+RUN npm clean-install --omit=dev --omit=optional
 
 FROM node:26.4.0-slim
 
@@ -20,7 +20,6 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 COPY --from=dependencies /app/node_modules ./node_modules
-COPY package.json package-lock.json ./
 COPY target ./target
 
 RUN node --input-type=module --eval "import Database from 'better-sqlite3'; new Database(':memory:').close();"
