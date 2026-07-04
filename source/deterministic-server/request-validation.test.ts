@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, expect, it } from "vitest";
 import { isErr, isOk, ok } from "true-myth/result";
+import { Unit } from "true-myth/unit";
 import { validateContactFormRequest, validateGraphQlRequest } from "./request-validation.ts";
 
 describe("request validation", () => {
@@ -19,7 +20,7 @@ describe("request validation", () => {
 		});
 
 		const actualValidationResult = await validateGraphQlRequest(graphQlRequest);
-		const expectedValidationResult = ok(undefined);
+		const expectedValidationResult = ok(Unit);
 		const actualIsOkResult = isOk(actualValidationResult);
 
 		assert.ok(actualIsOkResult);
@@ -67,7 +68,7 @@ describe("request validation", () => {
 		});
 
 		const actualValidationResult = await validateContactFormRequest(contactFormRequest);
-		const expectedValidationResult = ok(undefined);
+		const expectedValidationResult = ok(Unit);
 		const actualIsOkResult = isOk(actualValidationResult);
 
 		assert.ok(actualIsOkResult);

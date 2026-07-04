@@ -1,7 +1,8 @@
 import { isNonEmptyString, isPlainObject, isString } from "@sindresorhus/is";
 import { err, isErr, ok, type Result } from "true-myth/result";
+import { Unit, type Unit as UnitType } from "true-myth/unit";
 
-export type RequestValidationResult = Result<void, TypeError>;
+export type RequestValidationResult = Result<UnitType, TypeError>;
 
 function readHeaderValue(request: Request, headerName: string): string | null {
 	return request.headers.get(headerName);
@@ -18,7 +19,7 @@ function validateRequiredHeaderValue(
 		return err(new TypeError(`The ${headerName} header must be ${expectedHeaderValue}.`));
 	}
 
-	return ok(undefined);
+	return ok(Unit);
 }
 
 function validatePresentHeader(request: Request, headerName: string): RequestValidationResult {
@@ -28,7 +29,7 @@ function validatePresentHeader(request: Request, headerName: string): RequestVal
 		return err(new TypeError(`The ${headerName} header is required.`));
 	}
 
-	return ok(undefined);
+	return ok(Unit);
 }
 
 function validateGraphQlRequestBody(requestBody: unknown): RequestValidationResult {
@@ -40,7 +41,7 @@ function validateGraphQlRequestBody(requestBody: unknown): RequestValidationResu
 		return err(new TypeError("The request body must contain a query string."));
 	}
 
-	return ok(undefined);
+	return ok(Unit);
 }
 
 async function parseJsonRequestBody(request: Request): Promise<unknown> {
@@ -96,5 +97,5 @@ export async function validateContactFormRequest(request: Request): Promise<Requ
 		return err(new TypeError("The request body must be form encoded."));
 	}
 
-	return ok(undefined);
+	return ok(Unit);
 }
