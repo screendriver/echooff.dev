@@ -46,12 +46,14 @@ type MentionCacheFreshnessInput = {
 	readonly usableStaleMilliseconds: number;
 };
 
-type ParseMentionCacheValueInput<SectionModel extends Record<string, unknown>> = {
+type MentionCacheSectionModel = NonNullable<unknown>;
+
+type ParseMentionCacheValueInput<SectionModel extends MentionCacheSectionModel> = {
 	readonly parseSectionModel: (serializedSectionModel: unknown) => Maybe<SectionModel>;
 	readonly value: string;
 };
 
-export type LoadMentionCacheSectionModelInput<SectionModel extends Record<string, unknown>> = {
+export type LoadMentionCacheSectionModelInput<SectionModel extends MentionCacheSectionModel> = {
 	readonly cacheKey: string;
 	readonly createEmptySectionModel: () => SectionModel;
 	readonly freshMilliseconds: number;
@@ -65,7 +67,7 @@ export type LoadMentionCacheSectionModelInput<SectionModel extends Record<string
 	readonly wallClock: WallClock;
 };
 
-type RefreshMentionSectionModelInput<SectionModel extends Record<string, unknown>> = {
+type RefreshMentionSectionModelInput<SectionModel extends MentionCacheSectionModel> = {
 	readonly cacheKey: string;
 	readonly createEmptySectionModel: () => SectionModel;
 	readonly loadFreshSectionModel: () => Task<SectionModel, Error>;
@@ -135,7 +137,7 @@ export function readMentionCacheFreshness(
 	return "expired";
 }
 
-export function parseMentionCacheValue<SectionModel extends Record<string, unknown>>(
+export function parseMentionCacheValue<SectionModel extends MentionCacheSectionModel>(
 	parseMentionCacheValueInput: ParseMentionCacheValueInput<SectionModel>
 ): Maybe<SectionModel> {
 	const { parseSectionModel, value } = parseMentionCacheValueInput;
@@ -147,7 +149,7 @@ export function parseMentionCacheValue<SectionModel extends Record<string, unkno
 	}
 }
 
-function readMentionCacheEntrySectionModel<SectionModel extends Record<string, unknown>>(
+function readMentionCacheEntrySectionModel<SectionModel extends MentionCacheSectionModel>(
 	mentionCacheEntry: MentionCacheEntry,
 	parseSectionModel: (serializedSectionModel: unknown) => Maybe<SectionModel>
 ): Maybe<SectionModel> {
@@ -157,7 +159,7 @@ function readMentionCacheEntrySectionModel<SectionModel extends Record<string, u
 	});
 }
 
-async function refreshMentionSectionModel<SectionModel extends Record<string, unknown>>(
+async function refreshMentionSectionModel<SectionModel extends MentionCacheSectionModel>(
 	refreshMentionSectionModelInput: RefreshMentionSectionModelInput<SectionModel>
 ): Promise<MentionCacheSectionLoadingResult<SectionModel>> {
 	const {
@@ -222,7 +224,7 @@ async function refreshMentionSectionModel<SectionModel extends Record<string, un
 	};
 }
 
-export function loadMentionCacheSectionModel<SectionModel extends Record<string, unknown>>(
+export function loadMentionCacheSectionModel<SectionModel extends MentionCacheSectionModel>(
 	loadMentionCacheSectionModelInput: LoadMentionCacheSectionModelInput<SectionModel>
 ): Task<MentionCacheSectionLoadingResult<SectionModel>, never> {
 	return tryTaskOrElse(

@@ -1,20 +1,28 @@
 import { isError } from "@sindresorhus/is";
+import type { WallClock } from "@enormora/wall-clock";
 import { match } from "ts-pattern";
+import type { Result } from "true-myth/result";
 import { tryOrElse as tryTaskOrElse } from "true-myth/task";
 import {
 	createEmptyHackerNewsSectionModel,
 	type HackerNewsSectionModel,
-	loadHackerNewsMentionsForTargetUrl
+	loadHackerNewsMentionsForTargetUrl,
+	parseCachedHackerNewsSectionModel
 } from "./hacker-news-mentions.ts";
 import {
-	createRuntimeMentionCache,
-	readRuntimeMentionCache,
-	type RuntimeMentionCache,
-	writeRuntimeMentionCache
-} from "./runtime-mention-cache.ts";
+	createMentionCacheKey,
+	loadMentionCacheSectionModel,
+	mentionCacheFreshMilliseconds,
+	mentionCacheSchemaVersion,
+	mentionCacheUsableStaleMilliseconds,
+	type MentionCacheRepository,
+	type MentionCacheSectionLoadingResult,
+	type MentionCacheSectionLoadState
+} from "./mention-cache.ts";
 import {
 	createEmptyWebmentionSectionModel,
 	loadWebmentionsForTargetUrl,
+	parseCachedWebmentionSectionModel,
 	type WebmentionSectionModel
 } from "./webmentions.ts";
 import type { RuntimeLogProperties } from "./runtime-logger.ts";
@@ -24,32 +32,14 @@ export type BlogPostMentionsModel = {
 	readonly webmentionSectionModel: WebmentionSectionModel;
 };
 
-export type RuntimeMentionSectionLoadState = "empty_after_error" | "fresh" | "refreshed" | "stale_after_error";
-
-export type RuntimeMentionSectionLoadingResult<SectionModel> = {
-	readonly sectionModel: SectionModel;
-	readonly state: RuntimeMentionSectionLoadState;
-};
-
-export type RuntimeMentionSectionLoadingDependencies<SectionModel> = {
-	readonly cache: RuntimeMentionCache<SectionModel>;
-	readonly cacheKey: string;
-	readonly createEmptySectionModel: () => SectionModel;
-	readonly loadFreshSectionModel: () => Promise<SectionModel>;
-	readonly logWarning: (message: string, error: unknown, properties: RuntimeLogProperties) => void;
-	readonly nowMilliseconds: number;
-	readonly serviceName: string;
-	readonly ttlMilliseconds: number;
-};
-
 type BlogPostMentionsDependencies = {
 	readonly createTimeoutSignal: (timeoutMilliseconds: number) => AbortSignal;
 	readonly fetch: typeof fetch;
 	readonly logInfo: (message: string, properties: RuntimeLogProperties) => void;
 	readonly logWarning: (message: string, error: unknown, properties: RuntimeLogProperties) => void;
-	readonly nowMilliseconds: () => number;
+	readonly mentionCacheRepository: MentionCacheRepository;
 	readonly requestTimeoutMilliseconds: number;
-	readonly runtimeMentionCacheTtlMilliseconds: number;
+	readonly wallClock: WallClock;
 };
 type MentionLoadingDependencies = {
 	readonly createTimeoutSignal: (timeoutMilliseconds: number) => AbortSignal;
@@ -58,16 +48,12 @@ type MentionLoadingDependencies = {
 };
 type BlogPostMentionsLoadedLogPropertiesInput = {
 	readonly durationMilliseconds: number;
-	readonly hackerNewsState: RuntimeMentionSectionLoadState;
+	readonly hackerNewsState: MentionCacheSectionLoadState;
 	readonly targetPathname: string;
-	readonly webmentionState: RuntimeMentionSectionLoadState;
+	readonly webmentionState: MentionCacheSectionLoadState;
 };
 
-export const runtimeMentionCacheTtlMilliseconds = 8 * 60 * 60 * 1000;
 export const runtimeMentionRequestTimeoutMilliseconds = 5000;
-
-const webmentionSectionModelCache = createRuntimeMentionCache<WebmentionSectionModel>();
-const hackerNewsSectionModelCache = createRuntimeMentionCache<HackerNewsSectionModel>();
 
 function normalizeUnknownError(error: unknown): Error {
 	return match(error)
@@ -87,7 +73,7 @@ function createMentionLoadingDependencies(dependencies: BlogPostMentionsDependen
 	};
 }
 
-function didMentionSectionLoadUseErrorFallback(state: RuntimeMentionSectionLoadState): boolean {
+function didMentionSectionLoadUseErrorFallback(state: MentionCacheSectionLoadState): boolean {
 	return match(state)
 		.with("empty_after_error", "stale_after_error", () => {
 			return true;
@@ -98,8 +84,8 @@ function didMentionSectionLoadUseErrorFallback(state: RuntimeMentionSectionLoadS
 }
 
 function createBlogPostMentionsLoadStatus(
-	webmentionState: RuntimeMentionSectionLoadState,
-	hackerNewsState: RuntimeMentionSectionLoadState
+	webmentionState: MentionCacheSectionLoadState,
+	hackerNewsState: MentionCacheSectionLoadState
 ): "failed" | "ok" | "partial" {
 	return match({ hackerNewsState, webmentionState })
 		.with({ hackerNewsState: "empty_after_error", webmentionState: "empty_after_error" }, () => {
@@ -136,108 +122,69 @@ function createBlogPostMentionsLoadedLogProperties(
 	};
 }
 
-export async function loadRuntimeMentionSectionModel<SectionModel>(
-	dependencies: RuntimeMentionSectionLoadingDependencies<SectionModel>
-): Promise<RuntimeMentionSectionLoadingResult<SectionModel>> {
-	const {
-		cache,
-		cacheKey,
-		createEmptySectionModel,
-		loadFreshSectionModel,
-		logWarning,
-		nowMilliseconds,
-		serviceName,
-		ttlMilliseconds
-	} = dependencies;
-	const cacheReadResult = readRuntimeMentionCache({
-		cache,
-		cacheKey,
-		nowMilliseconds,
-		ttlMilliseconds
-	});
+function unwrapInfallibleResult<Value>(result: Result<Value, never>): Value {
+	if (result.isOk) {
+		return result.value;
+	}
 
-	return match(cacheReadResult)
-		.with({ kind: "fresh" }, (freshCacheReadResult) => {
-			return {
-				sectionModel: freshCacheReadResult.value,
-				state: "fresh" as const
-			};
-		})
-		.otherwise(async () => {
-			const freshSectionModelResult = await tryTaskOrElse(normalizeUnknownError, loadFreshSectionModel);
-
-			return freshSectionModelResult.match<RuntimeMentionSectionLoadingResult<SectionModel>>({
-				Ok(freshSectionModel) {
-					writeRuntimeMentionCache({
-						cache,
-						cacheKey,
-						nowMilliseconds,
-						value: freshSectionModel
-					});
-
-					return {
-						sectionModel: freshSectionModel,
-						state: "refreshed"
-					};
-				},
-				Err(error) {
-					logWarning(`Unable to load ${serviceName} mentions at runtime`, error, {
-						cacheKey,
-						event: "blog_post_mentions_section_load_failed",
-						serviceName
-					});
-
-					return match(cacheReadResult)
-						.with({ kind: "stale" }, (staleCacheReadResult) => {
-							return {
-								sectionModel: staleCacheReadResult.value,
-								state: "stale_after_error" as const
-							};
-						})
-						.otherwise(() => {
-							return {
-								sectionModel: createEmptySectionModel(),
-								state: "empty_after_error" as const
-							};
-						});
-				}
-			});
-		});
+	return result.error;
 }
 
 export async function loadBlogPostMentionsForTargetUrl(
 	dependencies: BlogPostMentionsDependencies,
 	targetUrl: string
 ): Promise<BlogPostMentionsModel> {
-	const startedAtMilliseconds = dependencies.nowMilliseconds();
+	const startedAtMilliseconds = dependencies.wallClock.currentTimestampInMilliseconds;
 	const mentionLoadingDependencies = createMentionLoadingDependencies(dependencies);
-	const [webmentionLoadingResult, hackerNewsLoadingResult] = await Promise.all([
-		loadRuntimeMentionSectionModel({
-			cache: webmentionSectionModelCache,
-			cacheKey: targetUrl,
+	const [webmentionTaskResult, hackerNewsTaskResult] = await Promise.all([
+		loadMentionCacheSectionModel({
+			cacheKey: createMentionCacheKey({
+				schemaVersion: mentionCacheSchemaVersion,
+				serviceIdentifier: "webmentions",
+				targetUrl
+			}),
 			createEmptySectionModel: createEmptyWebmentionSectionModel,
-			async loadFreshSectionModel() {
-				return loadWebmentionsForTargetUrl(mentionLoadingDependencies, targetUrl);
+			freshMilliseconds: mentionCacheFreshMilliseconds,
+			loadFreshSectionModel() {
+				return tryTaskOrElse(normalizeUnknownError, async () => {
+					return loadWebmentionsForTargetUrl(mentionLoadingDependencies, targetUrl);
+				});
 			},
 			logWarning: dependencies.logWarning,
-			nowMilliseconds: startedAtMilliseconds,
+			parseSectionModel: parseCachedWebmentionSectionModel,
+			repository: dependencies.mentionCacheRepository,
+			schemaVersion: mentionCacheSchemaVersion,
 			serviceName: "Webmention",
-			ttlMilliseconds: dependencies.runtimeMentionCacheTtlMilliseconds
+			usableStaleMilliseconds: mentionCacheUsableStaleMilliseconds,
+			wallClock: dependencies.wallClock
 		}),
-		loadRuntimeMentionSectionModel({
-			cache: hackerNewsSectionModelCache,
-			cacheKey: targetUrl,
+		loadMentionCacheSectionModel({
+			cacheKey: createMentionCacheKey({
+				schemaVersion: mentionCacheSchemaVersion,
+				serviceIdentifier: "hacker-news",
+				targetUrl
+			}),
 			createEmptySectionModel: createEmptyHackerNewsSectionModel,
-			async loadFreshSectionModel() {
-				return loadHackerNewsMentionsForTargetUrl(mentionLoadingDependencies, targetUrl);
+			freshMilliseconds: mentionCacheFreshMilliseconds,
+			loadFreshSectionModel() {
+				return tryTaskOrElse(normalizeUnknownError, async () => {
+					return loadHackerNewsMentionsForTargetUrl(mentionLoadingDependencies, targetUrl);
+				});
 			},
 			logWarning: dependencies.logWarning,
-			nowMilliseconds: startedAtMilliseconds,
+			parseSectionModel: parseCachedHackerNewsSectionModel,
+			repository: dependencies.mentionCacheRepository,
+			schemaVersion: mentionCacheSchemaVersion,
 			serviceName: "Hacker News",
-			ttlMilliseconds: dependencies.runtimeMentionCacheTtlMilliseconds
+			usableStaleMilliseconds: mentionCacheUsableStaleMilliseconds,
+			wallClock: dependencies.wallClock
 		})
 	]);
-	const finishedAtMilliseconds = dependencies.nowMilliseconds();
+	const webmentionLoadingResult: MentionCacheSectionLoadingResult<WebmentionSectionModel> =
+		unwrapInfallibleResult(webmentionTaskResult);
+	const hackerNewsLoadingResult: MentionCacheSectionLoadingResult<HackerNewsSectionModel> =
+		unwrapInfallibleResult(hackerNewsTaskResult);
+	const finishedAtMilliseconds = dependencies.wallClock.currentTimestampInMilliseconds;
 	const targetUrlValue = new URL(targetUrl);
 	const targetPathname = targetUrlValue.pathname;
 
