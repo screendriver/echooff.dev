@@ -4,6 +4,7 @@ import { browserConfig } from "@enormora/eslint-config-browser";
 import { mochaConfig } from "@enormora/eslint-config-mocha";
 import { typescriptConfig } from "@enormora/eslint-config-typescript";
 import { nodeConfig, nodeConfigFileConfig } from "@enormora/eslint-config-node";
+import nodeAssertPlugin from "@enormora/eslint-plugin-node-assert";
 import globals from "globals";
 
 const astroAccessibilityRuleNames = [
@@ -146,9 +147,26 @@ export default [
 	{
 		...mochaConfig,
 		files: ["**/*.test.ts"],
+		plugins: {
+			...mochaConfig.plugins,
+			"node-assert": nodeAssertPlugin
+		},
 		rules: {
 			...mochaConfig.rules,
-			"mocha/max-top-level-suites": "off"
+			"mocha/max-top-level-suites": "off",
+			"node-assert/consistent-import": ["error", { style: "base" }],
+			"node-assert/no-async-function-in-sync-assertion": "error",
+			"node-assert/no-await-argument-in-rejects": "error",
+			"node-assert/no-constant-actual": "error",
+			"node-assert/no-expected-value-as-message": "error",
+			"node-assert/no-useless-assertion": "error",
+			"node-assert/prefer-comparison-assertion": "error",
+			"node-assert/prefer-deep-equality": "error",
+			"node-assert/prefer-match": "error",
+			"node-assert/prefer-partial-deep-strict-equal": "error",
+			"node-assert/require-error-matcher": "error",
+			"node-assert/require-strict": ["error", { mode: "semantic" }],
+			"node-assert/require-valid-error-validator-return": "error"
 		}
 	},
 	{
