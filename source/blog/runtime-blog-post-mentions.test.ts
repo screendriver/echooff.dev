@@ -1,4 +1,6 @@
-import { describe, expect, it, vi } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
+import { fake } from "sinon";
 import { isString } from "@sindresorhus/is";
 import { createDeterministicWallClock } from "@enormora/wall-clock";
 import { nothing, of as maybeOf, type Maybe } from "true-myth/maybe";
@@ -66,13 +68,13 @@ async function unwrapTestTask<Value>(task: Task<Value, Error>): Promise<Value> {
 	});
 }
 
-describe("loadBlogPostMentionsForTargetUrl()", () => {
-	it("loads mentions through the persistent cache repository and logs one structured event", async () => {
+suite("loadBlogPostMentionsForTargetUrl()", function () {
+	test("loads mentions through the persistent cache repository and logs one structured event", async function () {
 		const targetUrl = "https://example.com/blog/runtime-log-test";
 		const mentionCacheRepository = createMemoryMentionCacheRepository();
-		const logInfo = vi.fn<TestRuntimeInfoLogger>();
-		const logWarning = vi.fn<TestRuntimeWarningLogger>();
-		const fetchImplementation = vi.fn<typeof fetch>(async (requestUrl) => {
+		const logInfoFake = fake<Parameters<TestRuntimeInfoLogger>, undefined>();
+		const logWarningFake = fake<Parameters<TestRuntimeWarningLogger>, undefined>();
+		const fetchFake = fake(async (requestUrl: RequestInfo | URL) => {
 			const requestUrlText = readRequestUrlText(requestUrl);
 
 			if (requestUrlText.startsWith("https://webmention.io/api/mentions.jf2")) {
@@ -85,6 +87,9 @@ describe("loadBlogPostMentionsForTargetUrl()", () => {
 				hits: []
 			});
 		});
+		const logInfo: TestRuntimeInfoLogger = logInfoFake;
+		const logWarning: TestRuntimeWarningLogger = logWarningFake;
+		const fetchImplementation: typeof fetch = fetchFake;
 		const wallClock = createDeterministicWallClock({
 			initialCurrentTimestampInMilliseconds: 1000
 		});
@@ -117,22 +122,26 @@ describe("loadBlogPostMentionsForTargetUrl()", () => {
 		const actualWebmentionCacheEntry = mentionCacheRepository.readStoredEntry(webmentionCacheKey);
 		const actualHackerNewsCacheEntry = mentionCacheRepository.readStoredEntry(hackerNewsCacheKey);
 
-		expect(actualWebmentionCacheEntry.isJust).toBe(true);
-		expect(actualHackerNewsCacheEntry.isJust).toBe(true);
-		expect(actualWebmentionCacheEntry).not.toStrictEqual(nothing());
-		expect(actualHackerNewsCacheEntry).not.toStrictEqual(nothing());
-		expect(logInfo).toHaveBeenCalledWith("Loaded blog post mentions", {
-			durationMilliseconds: 0,
-			event: "blog_post_mentions_loaded",
-			hackerNewsState: "refreshed",
-			status: "ok",
-			targetPathname: "/blog/runtime-log-test",
-			webmentionState: "refreshed"
-		});
-		expect(logWarning).not.toHaveBeenCalled();
+		assert.strictEqual(actualWebmentionCacheEntry.isJust, true);
+		assert.strictEqual(actualHackerNewsCacheEntry.isJust, true);
+		assert.notDeepStrictEqual(actualWebmentionCacheEntry, nothing());
+		assert.notDeepStrictEqual(actualHackerNewsCacheEntry, nothing());
+		assert.strictEqual(fetchFake.callCount, 2);
+		assert.deepStrictEqual(logInfoFake.firstCall.args, [
+			"Loaded blog post mentions",
+			{
+				durationMilliseconds: 0,
+				event: "blog_post_mentions_loaded",
+				hackerNewsState: "refreshed",
+				status: "ok",
+				targetPathname: "/blog/runtime-log-test",
+				webmentionState: "refreshed"
+			}
+		]);
+		assert.strictEqual(logWarningFake.notCalled, true);
 	});
 
-	it("reuses fresh cached mention sections without fetching", async () => {
+	test("reuses fresh cached mention sections without fetching", async function () {
 		const targetUrl = "https://example.com/blog/cached-runtime-log-test";
 		const mentionCacheRepository = createMemoryMentionCacheRepository();
 		const webmentionCacheKey = createMentionCacheKey({
@@ -170,9 +179,14 @@ describe("loadBlogPostMentionsForTargetUrl()", () => {
 				})
 			})
 		);
-		const logInfo = vi.fn<TestRuntimeInfoLogger>();
-		const logWarning = vi.fn<TestRuntimeWarningLogger>();
-		const fetchImplementation = vi.fn<typeof fetch>();
+		const logInfoFake = fake<Parameters<TestRuntimeInfoLogger>, undefined>();
+		const logWarningFake = fake<Parameters<TestRuntimeWarningLogger>, undefined>();
+		const fetchFake = fake(async () => {
+			return Response.json({});
+		});
+		const logInfo: TestRuntimeInfoLogger = logInfoFake;
+		const logWarning: TestRuntimeWarningLogger = logWarningFake;
+		const fetchImplementation: typeof fetch = fetchFake;
 		const wallClock = createDeterministicWallClock({
 			initialCurrentTimestampInMilliseconds: 1000
 		});
@@ -192,15 +206,18 @@ describe("loadBlogPostMentionsForTargetUrl()", () => {
 			targetUrl
 		);
 
-		expect(fetchImplementation).not.toHaveBeenCalled();
-		expect(logInfo).toHaveBeenCalledWith("Loaded blog post mentions", {
-			durationMilliseconds: 0,
-			event: "blog_post_mentions_loaded",
-			hackerNewsState: "fresh",
-			status: "ok",
-			targetPathname: "/blog/cached-runtime-log-test",
-			webmentionState: "fresh"
-		});
-		expect(logWarning).not.toHaveBeenCalled();
+		assert.strictEqual(fetchFake.notCalled, true);
+		assert.deepStrictEqual(logInfoFake.firstCall.args, [
+			"Loaded blog post mentions",
+			{
+				durationMilliseconds: 0,
+				event: "blog_post_mentions_loaded",
+				hackerNewsState: "fresh",
+				status: "ok",
+				targetPathname: "/blog/cached-runtime-log-test",
+				webmentionState: "fresh"
+			}
+		]);
+		assert.strictEqual(logWarningFake.notCalled, true);
 	});
 });

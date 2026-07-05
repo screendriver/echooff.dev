@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { Hono } from "hono";
 import { registerContactFormRoute } from "./contact-form-route.ts";
 
@@ -10,8 +11,8 @@ function createContactFormTestApplication(): Hono {
 	return application;
 }
 
-describe("contact form route", () => {
-	it("returns an empty JSON object when making a HTTP POST request", async () => {
+suite("contact form route", function () {
+	test("returns an empty JSON object when making a HTTP POST request", async function () {
 		const application = createContactFormTestApplication();
 		const formBody = new URLSearchParams({
 			message: "hello"
@@ -27,10 +28,10 @@ describe("contact form route", () => {
 		const actualResponseBody: unknown = await response.json();
 		const expectedResponseBody = {};
 
-		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
+		assert.deepStrictEqual(actualResponseBody, expectedResponseBody);
 	});
 
-	it("rejects requests when the content type is incorrect", async () => {
+	test("rejects requests when the content type is incorrect", async function () {
 		const application = createContactFormTestApplication();
 
 		const response = await application.request("/contact-form", {
@@ -47,7 +48,7 @@ describe("contact form route", () => {
 			error: "The content-type header must be application/x-www-form-urlencoded."
 		};
 
-		expect(actualResponseStatus).toBe(expectedResponseStatus);
-		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
+		assert.strictEqual(actualResponseStatus, expectedResponseStatus);
+		assert.deepStrictEqual(actualResponseBody, expectedResponseBody);
 	});
 });

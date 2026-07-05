@@ -9,7 +9,7 @@ sync:
 
 lint: sync
 	astro check --minimumFailingSeverity=hint
-	prettier --check source
+	prettier --check source tests
 	eslint . --cache --cache-location "./target/eslintcache" --cache-strategy content --max-warnings 0
 
 lint-fix:
@@ -28,7 +28,10 @@ lint-fix:
 @preview:
 	astro preview
 
-@test-unit *options: sync
-	vitest {{options}}
+test-unit *options: sync
+	mocha --config mocha.config.unit-tests.cjs {{options}}
 
-test: sync compile (test-unit "--run") lint
+test-content *options: sync
+	mocha --config mocha.config.content-tests.cjs {{options}}
+
+test: sync compile test-unit test-content lint

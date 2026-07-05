@@ -1,7 +1,8 @@
 import { readFile, readdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 
 const repositoryRootDirectoryPath = fileURLToPath(new URL("../../", import.meta.url));
 const astroGeneratedDataStorePath = join(repositoryRootDirectoryPath, "node_modules/.astro/data-store.json");
@@ -27,30 +28,30 @@ async function readAstroGeneratedDataStoreDocument(): Promise<string> {
 	return readFile(astroGeneratedDataStorePath, "utf8");
 }
 
-describe("blog content collection", () => {
-	it("loads every blog markdown file into Astro's generated data store", async () => {
+suite("blog content collection", function () {
+	test("loads every blog markdown file into Astro's generated data store", async function () {
 		const [actualAstroGeneratedDataStoreDocument, expectedBlogPostIdentifiers] = await Promise.all([
 			readAstroGeneratedDataStoreDocument(),
 			readExpectedBlogPostIdentifiersFromMarkdownFiles()
 		]);
 		const expectedBlogCollectionMarker = '"blog"';
 
-		expect(actualAstroGeneratedDataStoreDocument).toContain(expectedBlogCollectionMarker);
+		assert.ok(actualAstroGeneratedDataStoreDocument.includes(expectedBlogCollectionMarker));
 
 		for (const expectedBlogPostIdentifier of expectedBlogPostIdentifiers) {
 			const expectedBlogPostIdentifierMarker = `"${expectedBlogPostIdentifier}"`;
 
-			expect(actualAstroGeneratedDataStoreDocument).toContain(expectedBlogPostIdentifierMarker);
+			assert.ok(actualAstroGeneratedDataStoreDocument.includes(expectedBlogPostIdentifierMarker));
 		}
 	});
 
-	it("does not use blog post identifiers reserved for blog routes", async () => {
+	test("does not use blog post identifiers reserved for blog routes", async function () {
 		const actualBlogPostIdentifiers = await readExpectedBlogPostIdentifiersFromMarkdownFiles();
 
 		for (const blogPostIdentifierReservedForRoute of blogPostIdentifiersReservedForRoutes) {
 			const expectedReservedBlogPostIdentifier = blogPostIdentifierReservedForRoute;
 
-			expect(actualBlogPostIdentifiers).not.toContain(expectedReservedBlogPostIdentifier);
+			assert.strictEqual(actualBlogPostIdentifiers.includes(expectedReservedBlogPostIdentifier), false);
 		}
 	});
 });

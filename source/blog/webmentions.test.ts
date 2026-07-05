@@ -1,4 +1,6 @@
-import { describe, expect, it, vi } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
+import { fake } from "sinon";
 import { just, nothing } from "true-myth/maybe";
 import {
 	createEmptyWebmentionSectionModel,
@@ -8,8 +10,8 @@ import {
 	parseWebmentionApiResponse
 } from "./webmentions.ts";
 
-describe("createEmptyWebmentionSectionModel()", () => {
-	it("creates an empty section model", () => {
+suite("createEmptyWebmentionSectionModel()", function () {
+	test("creates an empty section model", function () {
 		const actualSectionModel = createEmptyWebmentionSectionModel();
 		const expectedSectionModel = {
 			reactions: {
@@ -20,12 +22,12 @@ describe("createEmptyWebmentionSectionModel()", () => {
 			replies: []
 		};
 
-		expect(actualSectionModel).toStrictEqual(expectedSectionModel);
+		assert.deepStrictEqual(actualSectionModel, expectedSectionModel);
 	});
 });
 
-describe("createWebmentionApiRequestUrl()", () => {
-	it("creates the API request URL for a target URL", () => {
+suite("createWebmentionApiRequestUrl()", function () {
+	test("creates the API request URL for a target URL", function () {
 		const actualRequestUrl = createWebmentionApiRequestUrl({
 			targetUrl: "https://example.com/blog/why-i-started-this-blog",
 			webmentionApiUrl: new URL("https://webmention.io/api/mentions.jf2")
@@ -33,12 +35,12 @@ describe("createWebmentionApiRequestUrl()", () => {
 		const expectedRequestUrl =
 			"https://webmention.io/api/mentions.jf2?per-page=100&target=https%3A%2F%2Fexample.com%2Fblog%2Fwhy-i-started-this-blog";
 
-		expect(actualRequestUrl).toBe(expectedRequestUrl);
+		assert.strictEqual(actualRequestUrl, expectedRequestUrl);
 	});
 });
 
-describe("parseWebmentionApiResponse()", () => {
-	it("groups public reactions and replies while filtering invalid entries", () => {
+suite("parseWebmentionApiResponse()", function () {
+	test("groups public reactions and replies while filtering invalid entries", function () {
 		const actualSectionModel = parseWebmentionApiResponse({
 			children: [
 				{
@@ -121,10 +123,10 @@ describe("parseWebmentionApiResponse()", () => {
 			]
 		};
 
-		expect(actualSectionModel).toStrictEqual(expectedSectionModel);
+		assert.deepStrictEqual(actualSectionModel, expectedSectionModel);
 	});
 
-	it("falls back to the received date and source hostname when the payload omits them", () => {
+	test("falls back to the received date and source hostname when the payload omits them", function () {
 		const actualSectionModel = parseWebmentionApiResponse({
 			children: [
 				{
@@ -150,10 +152,10 @@ describe("parseWebmentionApiResponse()", () => {
 			}
 		];
 
-		expect(actualReplies).toStrictEqual(expectedReplies);
+		assert.deepStrictEqual(actualReplies, expectedReplies);
 	});
 
-	it("prefers summarized content over the full text content", () => {
+	test("prefers summarized content over the full text content", function () {
 		const actualSectionModel = parseWebmentionApiResponse({
 			children: [
 				{
@@ -170,10 +172,10 @@ describe("parseWebmentionApiResponse()", () => {
 		const actualContent = actualSectionModel.replies[0]?.content;
 		const expectedContent = just("Short summary");
 
-		expect(actualContent).toStrictEqual(expectedContent);
+		assert.deepStrictEqual(actualContent, expectedContent);
 	});
 
-	it("truncates long rendered content", () => {
+	test("truncates long rendered content", function () {
 		const actualSectionModel = parseWebmentionApiResponse({
 			children: [
 				{
@@ -191,13 +193,13 @@ describe("parseWebmentionApiResponse()", () => {
 		const actualEndsWithEllipsis = actualRenderedContent.endsWith("…");
 		const expectedEndsWithEllipsis = true;
 
-		expect(actualRenderedContentLength).toBe(expectedRenderedContentLength);
-		expect(actualEndsWithEllipsis).toBe(expectedEndsWithEllipsis);
+		assert.strictEqual(actualRenderedContentLength, expectedRenderedContentLength);
+		assert.strictEqual(actualEndsWithEllipsis, expectedEndsWithEllipsis);
 	});
 });
 
-describe("parseCachedWebmentionSectionModel()", () => {
-	it("recreates Maybe values from a cached JSON section model", () => {
+suite("parseCachedWebmentionSectionModel()", function () {
+	test("recreates Maybe values from a cached JSON section model", function () {
 		const sectionModel = {
 			reactions: {
 				bookmarkCount: 1,
@@ -253,10 +255,10 @@ describe("parseCachedWebmentionSectionModel()", () => {
 		const actualSectionModel = parseCachedWebmentionSectionModel(serializedSectionModel);
 		const expectedSectionModel = just(sectionModel);
 
-		expect(actualSectionModel).toStrictEqual(expectedSectionModel);
+		assert.deepStrictEqual(actualSectionModel, expectedSectionModel);
 	});
 
-	it("ignores malformed cached section models", () => {
+	test("ignores malformed cached section models", function () {
 		const actualSectionModel = parseCachedWebmentionSectionModel({
 			reactions: {
 				bookmarkCount: 1,
@@ -266,26 +268,23 @@ describe("parseCachedWebmentionSectionModel()", () => {
 			replies: []
 		});
 
-		expect(actualSectionModel).toStrictEqual(nothing());
+		assert.deepStrictEqual(actualSectionModel, nothing());
 	});
 });
 
-describe("loadWebmentionsForTargetUrl()", () => {
-	it("fetches the parsed section model for the target URL", async () => {
-		const fetchImplementation = vi.fn<typeof fetch>().mockResolvedValue({
-			ok: true,
-			async json() {
-				return {
-					children: [
-						{
-							url: "https://social.example/@jane/1",
-							"wm-property": "like-of"
-						}
-					]
-				};
-			},
-			status: 200
-		} as Response);
+suite("loadWebmentionsForTargetUrl()", function () {
+	test("fetches the parsed section model for the target URL", async function () {
+		const fetchFake = fake.resolves<Parameters<typeof fetch>, ReturnType<typeof fetch>>(
+			Response.json({
+				children: [
+					{
+						url: "https://social.example/@jane/1",
+						"wm-property": "like-of"
+					}
+				]
+			})
+		);
+		const fetchImplementation: typeof fetch = fetchFake;
 
 		const sectionModel = await loadWebmentionsForTargetUrl(
 			{
@@ -303,30 +302,29 @@ describe("loadWebmentionsForTargetUrl()", () => {
 		const actualLikeCount = sectionModel.reactions.likeCount;
 		const expectedLikeCount = 1;
 
-		const actualFetchImplementation = fetchImplementation;
+		assert.strictEqual(fetchFake.calledOnce, true);
+		const actualFetchCall = fetchFake.firstCall;
 
-		expect(actualFetchImplementation).toHaveBeenCalledWith(expectedFetchCall, {
-			signal: fetchImplementation.mock.calls[0]?.[1]?.signal
-		});
-		expect(fetchImplementation.mock.calls[0]?.[1]?.signal).toBeInstanceOf(AbortSignal);
-		expect(actualLikeCount).toBe(expectedLikeCount);
+		assert.strictEqual(actualFetchCall.args[0], expectedFetchCall);
+		assert.ok(actualFetchCall.args[1]?.signal instanceof AbortSignal);
+		assert.strictEqual(actualLikeCount, expectedLikeCount);
 	});
 
-	it("uses the configured request timeout", async () => {
+	test("uses the configured request timeout", async function () {
 		const timeoutAbortController = new AbortController();
 		const timeoutSignal = timeoutAbortController.signal;
-		const createTimeoutSignal = vi
-			.fn<(timeoutMilliseconds: number) => AbortSignal>()
-			.mockReturnValue(timeoutSignal);
-		const fetchImplementation = vi.fn<typeof fetch>().mockResolvedValue({
-			ok: true,
-			async json() {
-				return {
-					children: []
-				};
-			},
-			status: 200
-		} as Response);
+		const recordedTimeoutMilliseconds: number[] = [];
+		function createTimeoutSignal(timeoutMilliseconds: number): AbortSignal {
+			recordedTimeoutMilliseconds.push(timeoutMilliseconds);
+
+			return timeoutSignal;
+		}
+		const fetchFake = fake.resolves<Parameters<typeof fetch>, ReturnType<typeof fetch>>(
+			Response.json({
+				children: []
+			})
+		);
+		const fetchImplementation: typeof fetch = fetchFake;
 
 		await loadWebmentionsForTargetUrl(
 			{
@@ -337,20 +335,18 @@ describe("loadWebmentionsForTargetUrl()", () => {
 			"https://example.com/blog/why-i-started-this-blog"
 		);
 
-		expect(createTimeoutSignal).toHaveBeenCalledWith(123);
-		expect(fetchImplementation).toHaveBeenCalledWith(expect.any(String), {
-			signal: timeoutSignal
-		});
+		const actualFetchCall = fetchFake.firstCall;
+
+		assert.deepStrictEqual(recordedTimeoutMilliseconds, [123]);
+		assert.strictEqual(typeof actualFetchCall.args[0], "string");
+		assert.deepStrictEqual(actualFetchCall.args[1], { signal: timeoutSignal });
 	});
 
-	it("throws when the API request fails", async () => {
-		const fetchImplementation = vi.fn<typeof fetch>().mockResolvedValue({
-			ok: false,
-			async json() {
-				return {};
-			},
-			status: 503
-		} as Response);
+	test("throws when the API request fails", async function () {
+		const fetchFake = fake.resolves<Parameters<typeof fetch>, ReturnType<typeof fetch>>(
+			new Response("{}", { status: 503 })
+		);
+		const fetchImplementation: typeof fetch = fetchFake;
 
 		const actualLoadOperation = async (): Promise<Awaited<ReturnType<typeof loadWebmentionsForTargetUrl>>> => {
 			return loadWebmentionsForTargetUrl(
@@ -366,6 +362,6 @@ describe("loadWebmentionsForTargetUrl()", () => {
 		};
 		const expectedErrorMessage = "Webmention API request failed with status 503";
 
-		await expect(actualLoadOperation).rejects.toThrow(expectedErrorMessage);
+		await assert.rejects(actualLoadOperation, { message: expectedErrorMessage });
 	});
 });

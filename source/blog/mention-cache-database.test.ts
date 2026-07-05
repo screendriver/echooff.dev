@@ -1,7 +1,8 @@
 import process from "node:process";
 import { mkdir, mkdtemp, rm } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { just, nothing } from "true-myth/maybe";
 import { isOk, ok, type Result } from "true-myth/result";
 import { Unit } from "true-myth/unit";
@@ -69,8 +70,8 @@ function unwrapTestResult<Value>(result: Result<Value, Error>): Value {
 	throw result.error;
 }
 
-describe("mention cache database repository", () => {
-	it("creates the schema idempotently", async () => {
+suite("mention cache database repository", function () {
+	test("creates the schema idempotently", async function () {
 		const databasePath = await createTemporaryDatabasePath();
 
 		try {
@@ -86,8 +87,8 @@ describe("mention cache database repository", () => {
 						expectedMentionCacheEntry.cacheKey
 					);
 
-					expect(actualWriteResult).toStrictEqual(ok(Unit));
-					expect(actualReadResult).toStrictEqual(ok(just(expectedMentionCacheEntry)));
+					assert.deepStrictEqual(actualWriteResult, ok(Unit));
+					assert.deepStrictEqual(actualReadResult, ok(just(expectedMentionCacheEntry)));
 				} finally {
 					unwrapTestResult(await secondMentionCacheRepository.close());
 				}
@@ -99,7 +100,7 @@ describe("mention cache database repository", () => {
 		}
 	});
 
-	it("writes and reads an entry", async () => {
+	test("writes and reads an entry", async function () {
 		const databasePath = await createTemporaryDatabasePath();
 
 		try {
@@ -113,8 +114,8 @@ describe("mention cache database repository", () => {
 					expectedMentionCacheEntry.cacheKey
 				);
 
-				expect(actualWriteResult).toStrictEqual(ok(Unit));
-				expect(actualMentionCacheEntry).toStrictEqual(ok(just(expectedMentionCacheEntry)));
+				assert.deepStrictEqual(actualWriteResult, ok(Unit));
+				assert.deepStrictEqual(actualMentionCacheEntry, ok(just(expectedMentionCacheEntry)));
 			} finally {
 				unwrapTestResult(await mentionCacheRepository.close());
 			}
@@ -123,7 +124,7 @@ describe("mention cache database repository", () => {
 		}
 	});
 
-	it("updates an older entry with newer fetched data", async () => {
+	test("updates an older entry with newer fetched data", async function () {
 		const databasePath = await createTemporaryDatabasePath();
 
 		try {
@@ -143,7 +144,7 @@ describe("mention cache database repository", () => {
 				unwrapTestResult(await mentionCacheRepository.writeEntry(newerMentionCacheEntry));
 				const actualMentionCacheEntry = await mentionCacheRepository.readEntry(newerMentionCacheEntry.cacheKey);
 
-				expect(actualMentionCacheEntry).toStrictEqual(ok(just(newerMentionCacheEntry)));
+				assert.deepStrictEqual(actualMentionCacheEntry, ok(just(newerMentionCacheEntry)));
 			} finally {
 				unwrapTestResult(await mentionCacheRepository.close());
 			}
@@ -152,7 +153,7 @@ describe("mention cache database repository", () => {
 		}
 	});
 
-	it("does not overwrite newer fetched data with older fetched data", async () => {
+	test("does not overwrite newer fetched data with older fetched data", async function () {
 		const databasePath = await createTemporaryDatabasePath();
 
 		try {
@@ -172,7 +173,7 @@ describe("mention cache database repository", () => {
 				unwrapTestResult(await mentionCacheRepository.writeEntry(olderMentionCacheEntry));
 				const actualMentionCacheEntry = await mentionCacheRepository.readEntry(newerMentionCacheEntry.cacheKey);
 
-				expect(actualMentionCacheEntry).toStrictEqual(ok(just(newerMentionCacheEntry)));
+				assert.deepStrictEqual(actualMentionCacheEntry, ok(just(newerMentionCacheEntry)));
 			} finally {
 				unwrapTestResult(await mentionCacheRepository.close());
 			}
@@ -181,7 +182,7 @@ describe("mention cache database repository", () => {
 		}
 	});
 
-	it("deletes entries older than the cleanup threshold", async () => {
+	test("deletes entries older than the cleanup threshold", async function () {
 		const databasePath = await createTemporaryDatabasePath();
 
 		try {
@@ -208,8 +209,8 @@ describe("mention cache database repository", () => {
 					currentMentionCacheEntry.cacheKey
 				);
 
-				expect(actualOldMentionCacheEntry).toStrictEqual(ok(nothing()));
-				expect(actualCurrentMentionCacheEntry).toStrictEqual(ok(just(currentMentionCacheEntry)));
+				assert.deepStrictEqual(actualOldMentionCacheEntry, ok(nothing()));
+				assert.deepStrictEqual(actualCurrentMentionCacheEntry, ok(just(currentMentionCacheEntry)));
 			} finally {
 				unwrapTestResult(await mentionCacheRepository.close());
 			}

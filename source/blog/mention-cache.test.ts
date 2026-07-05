@@ -1,4 +1,6 @@
-import { describe, expect, it, vi } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
+import { fake } from "sinon";
 import { isPlainObject, isString } from "@sindresorhus/is";
 import { createDeterministicWallClock } from "@enormora/wall-clock";
 import { just, nothing, of as maybeOf, type Maybe } from "true-myth/maybe";
@@ -130,6 +132,7 @@ async function unwrapTestTask<Value>(task: Task<Value, never>): Promise<Value> {
 function createLoadMentionCacheSectionModelInput(
 	input: CreateLoadMentionCacheSectionModelInput = {}
 ): TestLoadMentionCacheSectionModelInput {
+	const logWarningFake = fake<Parameters<TestRuntimeWarningLogger>, undefined>();
 	const defaultInput: TestLoadMentionCacheSectionModelInput = {
 		cacheKey: "mentions:v1:webmentions:target-url-hash",
 		createEmptySectionModel() {
@@ -139,7 +142,7 @@ function createLoadMentionCacheSectionModelInput(
 		loadFreshSectionModel() {
 			return resolveTask(createTestMentionSectionModel("fresh mentions"));
 		},
-		logWarning: vi.fn<TestRuntimeWarningLogger>(),
+		logWarning: logWarningFake,
 		parseSectionModel: parseTestMentionSectionModel,
 		repository: createMemoryMentionCacheRepository(),
 		schemaVersion: mentionCacheSchemaVersion,
@@ -156,8 +159,8 @@ function createLoadMentionCacheSectionModelInput(
 	};
 }
 
-describe("createMentionCacheKey()", () => {
-	it("creates a versioned cache key with a hashed target URL", () => {
+suite("createMentionCacheKey()", function () {
+	test("creates a versioned cache key with a hashed target URL", function () {
 		const actualCacheKey = createMentionCacheKey({
 			schemaVersion: 1,
 			serviceIdentifier: "webmentions",
@@ -166,12 +169,12 @@ describe("createMentionCacheKey()", () => {
 		const expectedCacheKey =
 			"mentions:v1:webmentions:87a8a1059047fa456e8b2917518290a9f771f46c3f5c8555bb108ca187c3b145";
 
-		expect(actualCacheKey).toBe(expectedCacheKey);
+		assert.strictEqual(actualCacheKey, expectedCacheKey);
 	});
 });
 
-describe("readMentionCacheFreshness()", () => {
-	it("treats entries inside the fresh window as fresh", () => {
+suite("readMentionCacheFreshness()", function () {
+	test("treats entries inside the fresh window as fresh", function () {
 		const actualFreshness = readMentionCacheFreshness({
 			currentDate: new Date("2026-07-04T07:59:59.000Z"),
 			fetchedAt: "2026-07-04T00:00:00.000Z",
@@ -179,10 +182,10 @@ describe("readMentionCacheFreshness()", () => {
 			usableStaleMilliseconds: mentionCacheUsableStaleMilliseconds
 		});
 
-		expect(actualFreshness).toBe("fresh");
+		assert.strictEqual(actualFreshness, "fresh");
 	});
 
-	it("treats entries outside the fresh window but inside the usable window as stale", () => {
+	test("treats entries outside the fresh window but inside the usable window as stale", function () {
 		const actualFreshness = readMentionCacheFreshness({
 			currentDate: new Date("2026-07-04T08:00:01.000Z"),
 			fetchedAt: "2026-07-04T00:00:00.000Z",
@@ -190,10 +193,10 @@ describe("readMentionCacheFreshness()", () => {
 			usableStaleMilliseconds: mentionCacheUsableStaleMilliseconds
 		});
 
-		expect(actualFreshness).toBe("stale");
+		assert.strictEqual(actualFreshness, "stale");
 	});
 
-	it("treats entries outside the usable window as expired", () => {
+	test("treats entries outside the usable window as expired", function () {
 		const actualFreshness = readMentionCacheFreshness({
 			currentDate: new Date("2026-08-04T00:00:01.000Z"),
 			fetchedAt: "2026-07-04T00:00:00.000Z",
@@ -201,10 +204,10 @@ describe("readMentionCacheFreshness()", () => {
 			usableStaleMilliseconds: mentionCacheUsableStaleMilliseconds
 		});
 
-		expect(actualFreshness).toBe("expired");
+		assert.strictEqual(actualFreshness, "expired");
 	});
 
-	it("treats invalid fetched timestamps as expired", () => {
+	test("treats invalid fetched timestamps as expired", function () {
 		const actualFreshness = readMentionCacheFreshness({
 			currentDate: new Date("2026-07-04T08:00:01.000Z"),
 			fetchedAt: "not a date",
@@ -212,25 +215,25 @@ describe("readMentionCacheFreshness()", () => {
 			usableStaleMilliseconds: mentionCacheUsableStaleMilliseconds
 		});
 
-		expect(actualFreshness).toBe("expired");
+		assert.strictEqual(actualFreshness, "expired");
 	});
 });
 
-describe("parseMentionCacheValue()", () => {
-	it("ignores corrupted JSON cache values", () => {
+suite("parseMentionCacheValue()", function () {
+	test("ignores corrupted JSON cache values", function () {
 		const actualParsedValue = parseMentionCacheValue({
 			parseSectionModel: parseTestMentionSectionModel,
 			value: "{"
 		});
 
-		expect(actualParsedValue).toStrictEqual(nothing());
+		assert.deepStrictEqual(actualParsedValue, nothing());
 	});
 });
 
-describe("loadMentionCacheSectionModel()", () => {
-	it("uses fresh cached values without loading again", async () => {
+suite("loadMentionCacheSectionModel()", function () {
+	test("uses fresh cached values without loading again", async function () {
 		const cacheKey = "mentions:v1:webmentions:fresh-target-url-hash";
-		const loadFreshSectionModel = vi.fn<() => Task<TestMentionSectionModel, Error>>(() => {
+		const loadFreshSectionModel = fake(function (): Task<TestMentionSectionModel, Error> {
 			return resolveTask(createTestMentionSectionModel("fresh mentions"));
 		});
 		const repository = createMemoryMentionCacheRepository({
@@ -259,13 +262,14 @@ describe("loadMentionCacheSectionModel()", () => {
 			state: "fresh"
 		};
 
-		expect(actualLoadingResult).toStrictEqual(expectedLoadingResult);
-		expect(loadFreshSectionModel).not.toHaveBeenCalled();
+		assert.deepStrictEqual(actualLoadingResult, expectedLoadingResult);
+		assert.strictEqual(loadFreshSectionModel.notCalled, true);
 	});
 
-	it("renders stale cached values when refreshing fails", async () => {
+	test("renders stale cached values when refreshing fails", async function () {
 		const cacheKey = "mentions:v1:webmentions:stale-target-url-hash";
-		const logWarning = vi.fn<TestRuntimeWarningLogger>();
+		const logWarningFake = fake<Parameters<TestRuntimeWarningLogger>, undefined>();
+		const logWarning: TestRuntimeWarningLogger = logWarningFake;
 		const repository = createMemoryMentionCacheRepository({
 			entries: new Map([
 				[
@@ -295,15 +299,18 @@ describe("loadMentionCacheSectionModel()", () => {
 			state: "stale_after_error"
 		};
 
-		expect(actualLoadingResult).toStrictEqual(expectedLoadingResult);
-		expect(logWarning).toHaveBeenCalledWith("Unable to load Webmention mentions at runtime", expect.any(Error), {
+		assert.deepStrictEqual(actualLoadingResult, expectedLoadingResult);
+		assert.strictEqual(logWarningFake.calledOnce, true);
+		assert.strictEqual(logWarningFake.firstCall.args[0], "Unable to load Webmention mentions at runtime");
+		assert.ok(logWarningFake.firstCall.args[1] instanceof Error);
+		assert.deepStrictEqual(logWarningFake.firstCall.args[2], {
 			cacheKey,
 			event: "mention_section_load_failed",
 			serviceName: "Webmention"
 		});
 	});
 
-	it("writes and renders fresh values after a cache miss", async () => {
+	test("writes and renders fresh values after a cache miss", async function () {
 		const cacheKey = "mentions:v1:webmentions:miss-target-url-hash";
 		const repository = createMemoryMentionCacheRepository();
 
@@ -321,8 +328,9 @@ describe("loadMentionCacheSectionModel()", () => {
 			state: "refreshed"
 		};
 
-		expect(actualLoadingResult).toStrictEqual(expectedLoadingResult);
-		expect(actualStoredEntry).toStrictEqual(
+		assert.deepStrictEqual(actualLoadingResult, expectedLoadingResult);
+		assert.deepStrictEqual(
+			actualStoredEntry,
 			just({
 				cacheKey,
 				fetchedAt: "2026-07-04T10:30:00.000Z",
@@ -332,7 +340,7 @@ describe("loadMentionCacheSectionModel()", () => {
 		);
 	});
 
-	it("cleans entries older than the retention window after a successful refresh", async () => {
+	test("cleans entries older than the retention window after a successful refresh", async function () {
 		const cacheKey = "mentions:v1:webmentions:cleanup-target-url-hash";
 		const oldCacheKey = "mentions:v1:webmentions:old-target-url-hash";
 		const retainedCacheKey = "mentions:v1:webmentions:retained-target-url-hash";
@@ -368,14 +376,14 @@ describe("loadMentionCacheSectionModel()", () => {
 			state: "refreshed"
 		};
 
-		expect(actualLoadingResult).toStrictEqual(expectedLoadingResult);
-		expect(repository.readStoredEntry(cacheKey).isJust).toBe(true);
-		expect(repository.readStoredEntry(oldCacheKey)).toStrictEqual(nothing());
-		expect(repository.readStoredEntry(retainedCacheKey).isJust).toBe(true);
-		expect(mentionCacheCleanupAgeDays).toBe(90);
+		assert.deepStrictEqual(actualLoadingResult, expectedLoadingResult);
+		assert.strictEqual(repository.readStoredEntry(cacheKey).isJust, true);
+		assert.deepStrictEqual(repository.readStoredEntry(oldCacheKey), nothing());
+		assert.strictEqual(repository.readStoredEntry(retainedCacheKey).isJust, true);
+		assert.strictEqual(mentionCacheCleanupAgeDays, 90);
 	});
 
-	it("renders an empty model after a cache miss when refreshing fails", async () => {
+	test("renders an empty model after a cache miss when refreshing fails", async function () {
 		const cacheKey = "mentions:v1:webmentions:miss-target-url-hash";
 
 		const actualLoadingResult = await unwrapTestTask(
@@ -393,10 +401,10 @@ describe("loadMentionCacheSectionModel()", () => {
 			state: "empty_after_error"
 		};
 
-		expect(actualLoadingResult).toStrictEqual(expectedLoadingResult);
+		assert.deepStrictEqual(actualLoadingResult, expectedLoadingResult);
 	});
 
-	it("ignores corrupted cached JSON and refreshes", async () => {
+	test("ignores corrupted cached JSON and refreshes", async function () {
 		const cacheKey = "mentions:v1:webmentions:corrupted-target-url-hash";
 		const repository = createMemoryMentionCacheRepository({
 			entries: new Map([
@@ -423,12 +431,13 @@ describe("loadMentionCacheSectionModel()", () => {
 			state: "refreshed"
 		};
 
-		expect(actualLoadingResult).toStrictEqual(expectedLoadingResult);
+		assert.deepStrictEqual(actualLoadingResult, expectedLoadingResult);
 	});
 
-	it("renders fresh values when cache writing fails", async () => {
+	test("renders fresh values when cache writing fails", async function () {
 		const cacheKey = "mentions:v1:webmentions:write-failure-target-url-hash";
-		const logWarning = vi.fn<TestRuntimeWarningLogger>();
+		const logWarningFake = fake<Parameters<TestRuntimeWarningLogger>, undefined>();
+		const logWarning: TestRuntimeWarningLogger = logWarningFake;
 		const repository = createMemoryMentionCacheRepository({
 			writeError: new Error("database is busy")
 		});
@@ -447,17 +456,21 @@ describe("loadMentionCacheSectionModel()", () => {
 			state: "refreshed"
 		};
 
-		expect(actualLoadingResult).toStrictEqual(expectedLoadingResult);
-		expect(logWarning).toHaveBeenCalledWith("Unable to write Webmention mentions cache", expect.any(Error), {
+		assert.deepStrictEqual(actualLoadingResult, expectedLoadingResult);
+		assert.strictEqual(logWarningFake.calledOnce, true);
+		assert.strictEqual(logWarningFake.firstCall.args[0], "Unable to write Webmention mentions cache");
+		assert.ok(logWarningFake.firstCall.args[1] instanceof Error);
+		assert.deepStrictEqual(logWarningFake.firstCall.args[2], {
 			cacheKey,
 			event: "mention_cache_write_failed",
 			serviceName: "Webmention"
 		});
 	});
 
-	it("renders fresh values when cache cleanup fails", async () => {
+	test("renders fresh values when cache cleanup fails", async function () {
 		const cacheKey = "mentions:v1:webmentions:cleanup-failure-target-url-hash";
-		const logWarning = vi.fn<TestRuntimeWarningLogger>();
+		const logWarningFake = fake<Parameters<TestRuntimeWarningLogger>, undefined>();
+		const logWarning: TestRuntimeWarningLogger = logWarningFake;
 		const repository = createMemoryMentionCacheRepository({
 			deleteError: new Error("database is busy")
 		});
@@ -476,17 +489,21 @@ describe("loadMentionCacheSectionModel()", () => {
 			state: "refreshed"
 		};
 
-		expect(actualLoadingResult).toStrictEqual(expectedLoadingResult);
-		expect(logWarning).toHaveBeenCalledWith("Unable to clean Webmention mentions cache", expect.any(Error), {
+		assert.deepStrictEqual(actualLoadingResult, expectedLoadingResult);
+		assert.strictEqual(logWarningFake.calledOnce, true);
+		assert.strictEqual(logWarningFake.firstCall.args[0], "Unable to clean Webmention mentions cache");
+		assert.ok(logWarningFake.firstCall.args[1] instanceof Error);
+		assert.deepStrictEqual(logWarningFake.firstCall.args[2], {
 			cacheKey,
 			event: "mention_cache_cleanup_failed",
 			serviceName: "Webmention"
 		});
 	});
 
-	it("fetches directly when cache reading fails", async () => {
+	test("fetches directly when cache reading fails", async function () {
 		const cacheKey = "mentions:v1:webmentions:read-failure-target-url-hash";
-		const logWarning = vi.fn<TestRuntimeWarningLogger>();
+		const logWarningFake = fake<Parameters<TestRuntimeWarningLogger>, undefined>();
+		const logWarning: TestRuntimeWarningLogger = logWarningFake;
 		const repository = createMemoryMentionCacheRepository({
 			readError: new Error("database is unavailable")
 		});
@@ -505,8 +522,11 @@ describe("loadMentionCacheSectionModel()", () => {
 			state: "refreshed"
 		};
 
-		expect(actualLoadingResult).toStrictEqual(expectedLoadingResult);
-		expect(logWarning).toHaveBeenCalledWith("Unable to read Webmention mentions cache", expect.any(Error), {
+		assert.deepStrictEqual(actualLoadingResult, expectedLoadingResult);
+		assert.strictEqual(logWarningFake.calledOnce, true);
+		assert.strictEqual(logWarningFake.firstCall.args[0], "Unable to read Webmention mentions cache");
+		assert.ok(logWarningFake.firstCall.args[1] instanceof Error);
+		assert.deepStrictEqual(logWarningFake.firstCall.args[2], {
 			cacheKey,
 			event: "mention_cache_read_failed",
 			serviceName: "Webmention"

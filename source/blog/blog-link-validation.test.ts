@@ -1,26 +1,9 @@
-import { describe, expect, it } from "vitest";
-import {
-	readBlogPostMarkdownDocuments,
-	validateInternalBlogPostLinks,
-	type BlogPostMarkdownDocument
-} from "./blog-link-validation.ts";
+import assert from "node:assert";
+import { suite, test } from "mocha";
+import { validateInternalBlogPostLinks, type BlogPostMarkdownDocument } from "./blog-link-validation.ts";
 
-const currentBlogPostLinkValidationTimeoutMilliseconds = 15_000;
-
-describe("validateInternalBlogPostLinks()", () => {
-	it(
-		"accepts the current blog post links",
-		async () => {
-			const blogPostMarkdownDocuments = await readBlogPostMarkdownDocuments();
-			const actualValidationProblems = await validateInternalBlogPostLinks(blogPostMarkdownDocuments);
-			const expectedValidationProblems: readonly unknown[] = [];
-
-			expect(actualValidationProblems).toStrictEqual(expectedValidationProblems);
-		},
-		currentBlogPostLinkValidationTimeoutMilliseconds
-	);
-
-	it("reports a missing internal route target", async () => {
+suite("validateInternalBlogPostLinks()", function () {
+	test("reports a missing internal route target", async function () {
 		const blogPostMarkdownDocuments: readonly BlogPostMarkdownDocument[] = [
 			{
 				blogPostSlug: "post-a",
@@ -37,10 +20,10 @@ describe("validateInternalBlogPostLinks()", () => {
 			}
 		];
 
-		expect(actualValidationProblems).toStrictEqual(expectedValidationProblems);
+		assert.deepStrictEqual(actualValidationProblems, expectedValidationProblems);
 	});
 
-	it("reports a missing blog heading fragment", async () => {
+	test("reports a missing blog heading fragment", async function () {
 		const blogPostMarkdownDocuments: readonly BlogPostMarkdownDocument[] = [
 			{
 				blogPostSlug: "post-a",
@@ -61,10 +44,10 @@ describe("validateInternalBlogPostLinks()", () => {
 			}
 		];
 
-		expect(actualValidationProblems).toStrictEqual(expectedValidationProblems);
+		assert.deepStrictEqual(actualValidationProblems, expectedValidationProblems);
 	});
 
-	it("ignores external links and markdown code examples", async () => {
+	test("ignores external links and markdown code examples", async function () {
 		const blogPostMarkdownDocuments: readonly BlogPostMarkdownDocument[] = [
 			{
 				blogPostSlug: "post-a",
@@ -83,6 +66,6 @@ describe("validateInternalBlogPostLinks()", () => {
 		const actualValidationProblems = await validateInternalBlogPostLinks(blogPostMarkdownDocuments);
 		const expectedValidationProblems: readonly unknown[] = [];
 
-		expect(actualValidationProblems).toStrictEqual(expectedValidationProblems);
+		assert.deepStrictEqual(actualValidationProblems, expectedValidationProblems);
 	});
 });

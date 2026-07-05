@@ -1,9 +1,10 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { createRssFeedItemsForBlogPosts } from "./blog-feed.ts";
 import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.ts";
 
-describe("createRssFeedItemsForBlogPosts()", () => {
-	it("creates RSS feed items for blog posts", () => {
+suite("createRssFeedItemsForBlogPosts()", function () {
+	test("creates RSS feed items for blog posts", function () {
 		const actualRssFeedItems = createRssFeedItemsForBlogPosts(
 			[
 				createBlogPostCollectionEntry({
@@ -25,10 +26,10 @@ describe("createRssFeedItemsForBlogPosts()", () => {
 			}
 		];
 
-		expect(actualRssFeedItems).toStrictEqual(expectedRssFeedItems);
+		assert.deepStrictEqual(actualRssFeedItems, expectedRssFeedItems);
 	});
 
-	it("throws when a blog post publication timestamp is invalid", () => {
+	test("throws when a blog post publication timestamp is invalid", function () {
 		const actualCreateFeedOperation = (): void => {
 			createRssFeedItemsForBlogPosts(
 				[
@@ -45,6 +46,6 @@ describe("createRssFeedItemsForBlogPosts()", () => {
 		};
 		const expectedErrorMessage = 'Published at "not-a-date" is not a valid ISO 8601 date-time';
 
-		expect(actualCreateFeedOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualCreateFeedOperation, { message: expectedErrorMessage });
 	});
 });

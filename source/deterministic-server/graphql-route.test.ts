@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { Hono } from "hono";
 import { registerGraphQlRoute } from "./graphql-route.ts";
 
@@ -10,8 +11,8 @@ function createGraphQlTestApplication(): Hono {
 	return application;
 }
 
-describe("graphql route", () => {
-	it("returns a user with a total count of repositories and starred repositories", async () => {
+suite("graphql route", function () {
+	test("returns a user with a total count of repositories and starred repositories", async function () {
 		const application = createGraphQlTestApplication();
 
 		const response = await application.request("/graphql", {
@@ -19,7 +20,7 @@ describe("graphql route", () => {
 			headers: {
 				accept: "application/vnd.github.v3+json",
 				authorization: "token example",
-				"user-agent": "vitest",
+				"user-agent": "mocha",
 				"content-type": "application/json"
 			},
 			body: JSON.stringify({
@@ -47,22 +48,22 @@ describe("graphql route", () => {
 		const actualUsedHeader = response.headers.get("x-ratelimit-used");
 		const expectedUsedHeader = "13";
 
-		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
-		expect(actualRateLimitHeader).toBe(expectedRateLimitHeader);
-		expect(actualRemainingHeader).toBe(expectedRemainingHeader);
-		expect(actualResetHeader).toBe(expectedResetHeader);
-		expect(actualResourceHeader).toBe(expectedResourceHeader);
-		expect(actualUsedHeader).toBe(expectedUsedHeader);
+		assert.deepStrictEqual(actualResponseBody, expectedResponseBody);
+		assert.strictEqual(actualRateLimitHeader, expectedRateLimitHeader);
+		assert.strictEqual(actualRemainingHeader, expectedRemainingHeader);
+		assert.strictEqual(actualResetHeader, expectedResetHeader);
+		assert.strictEqual(actualResourceHeader, expectedResourceHeader);
+		assert.strictEqual(actualUsedHeader, expectedUsedHeader);
 	});
 
-	it("rejects requests when the accept header is missing", async () => {
+	test("rejects requests when the accept header is missing", async function () {
 		const application = createGraphQlTestApplication();
 
 		const response = await application.request("/graphql", {
 			method: "POST",
 			headers: {
 				authorization: "token example",
-				"user-agent": "vitest",
+				"user-agent": "mocha",
 				"content-type": "application/json"
 			},
 			body: JSON.stringify({
@@ -76,11 +77,11 @@ describe("graphql route", () => {
 			error: "The accept header must be application/vnd.github.v3+json."
 		};
 
-		expect(actualResponseStatus).toBe(expectedResponseStatus);
-		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
+		assert.strictEqual(actualResponseStatus, expectedResponseStatus);
+		assert.deepStrictEqual(actualResponseBody, expectedResponseBody);
 	});
 
-	it("rejects requests when the query body field is missing", async () => {
+	test("rejects requests when the query body field is missing", async function () {
 		const application = createGraphQlTestApplication();
 
 		const response = await application.request("/graphql", {
@@ -88,7 +89,7 @@ describe("graphql route", () => {
 			headers: {
 				accept: "application/vnd.github.v3+json",
 				authorization: "token example",
-				"user-agent": "vitest",
+				"user-agent": "mocha",
 				"content-type": "application/json"
 			},
 			body: JSON.stringify({})
@@ -100,7 +101,7 @@ describe("graphql route", () => {
 			error: "The request body must contain a query string."
 		};
 
-		expect(actualResponseStatus).toBe(expectedResponseStatus);
-		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
+		assert.strictEqual(actualResponseStatus, expectedResponseStatus);
+		assert.deepStrictEqual(actualResponseBody, expectedResponseBody);
 	});
 });

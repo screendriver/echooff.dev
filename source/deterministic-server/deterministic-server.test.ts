@@ -1,8 +1,9 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { createDeterministicServerApplication } from "./deterministic-server.ts";
 
-describe("createDeterministicServerApplication()", () => {
-	it("registers the GraphQL route", async () => {
+suite("createDeterministicServerApplication()", function () {
+	test("registers the GraphQL route", async function () {
 		const application = createDeterministicServerApplication();
 
 		const response = await application.request("/graphql", {
@@ -10,7 +11,7 @@ describe("createDeterministicServerApplication()", () => {
 			headers: {
 				accept: "application/vnd.github.v3+json",
 				authorization: "token example",
-				"user-agent": "vitest",
+				"user-agent": "mocha",
 				"content-type": "application/json"
 			},
 			body: JSON.stringify({
@@ -29,11 +30,11 @@ describe("createDeterministicServerApplication()", () => {
 			}
 		};
 
-		expect(actualResponseStatus).toBe(expectedResponseStatus);
-		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
+		assert.strictEqual(actualResponseStatus, expectedResponseStatus);
+		assert.deepStrictEqual(actualResponseBody, expectedResponseBody);
 	});
 
-	it("registers the development API routes", async () => {
+	test("registers the development API routes", async function () {
 		const application = createDeterministicServerApplication();
 		const contactFormBody = new URLSearchParams({
 			message: "hello"
@@ -53,12 +54,12 @@ describe("createDeterministicServerApplication()", () => {
 		const actualWebmentionResponseStatus = webmentionResponse.status;
 		const expectedResponseStatus = 200;
 
-		expect(actualHackerNewsResponseStatus).toBe(expectedResponseStatus);
-		expect(actualContactFormResponseStatus).toBe(expectedResponseStatus);
-		expect(actualWebmentionResponseStatus).toBe(expectedResponseStatus);
+		assert.strictEqual(actualHackerNewsResponseStatus, expectedResponseStatus);
+		assert.strictEqual(actualContactFormResponseStatus, expectedResponseStatus);
+		assert.strictEqual(actualWebmentionResponseStatus, expectedResponseStatus);
 	});
 
-	it("serves the deterministic webmention avatar as SVG", async () => {
+	test("serves the deterministic webmention avatar as SVG", async function () {
 		const application = createDeterministicServerApplication();
 
 		const response = await application.request("/webmention-avatar.svg");
@@ -68,12 +69,12 @@ describe("createDeterministicServerApplication()", () => {
 		const expectedResponseStatus = 200;
 		const expectedContentTypeHeader = "image/svg+xml; charset=utf-8";
 
-		expect(actualResponseStatus).toBe(expectedResponseStatus);
-		expect(actualContentTypeHeader).toBe(expectedContentTypeHeader);
-		expect(actualResponseBody).toContain("<svg");
+		assert.strictEqual(actualResponseStatus, expectedResponseStatus);
+		assert.strictEqual(actualContentTypeHeader, expectedContentTypeHeader);
+		assert.ok(actualResponseBody.includes("<svg"));
 	});
 
-	it("applies CORS headers", async () => {
+	test("applies CORS headers", async function () {
 		const application = createDeterministicServerApplication();
 
 		const response = await application.request("/hacker-news", {
@@ -84,6 +85,6 @@ describe("createDeterministicServerApplication()", () => {
 		const actualCorsHeader = response.headers.get("access-control-allow-origin");
 		const expectedCorsHeader = "*";
 
-		expect(actualCorsHeader).toBe(expectedCorsHeader);
+		assert.strictEqual(actualCorsHeader, expectedCorsHeader);
 	});
 });

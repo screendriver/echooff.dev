@@ -1,10 +1,12 @@
-import { describe, expect, it, vi } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
+import { fake } from "sinon";
 import { createStandardStreamRuntimeLogger } from "./runtime-logger.ts";
 
-describe("standardStreamRuntimeLogger", () => {
-	it("writes structured info messages to standard output", () => {
-		const writeErrorText = vi.fn<(textContent: string) => void>();
-		const writeOutputText = vi.fn<(textContent: string) => void>();
+suite("standardStreamRuntimeLogger", function () {
+	test("writes structured info messages to standard output", function () {
+		const writeErrorText = fake<[string], undefined>();
+		const writeOutputText = fake<[string], undefined>();
 		const standardStreamRuntimeLogger = createStandardStreamRuntimeLogger({ writeErrorText, writeOutputText });
 
 		standardStreamRuntimeLogger.info("Loaded blog post mentions", {
@@ -12,39 +14,39 @@ describe("standardStreamRuntimeLogger", () => {
 			event: "blog_post_mentions_loaded"
 		});
 
-		expect(writeOutputText).toHaveBeenCalledWith(
+		assert.deepStrictEqual(writeOutputText.firstCall.args, [
 			'{"level":"info","message":"Loaded blog post mentions","durationMilliseconds":42,"event":"blog_post_mentions_loaded"}\n'
-		);
-		expect(writeErrorText).not.toHaveBeenCalled();
+		]);
+		assert.strictEqual(writeErrorText.notCalled, true);
 	});
 
-	it("writes Error warning messages to standard error", () => {
-		const writeErrorText = vi.fn<(textContent: string) => void>();
-		const writeOutputText = vi.fn<(textContent: string) => void>();
+	test("writes Error warning messages to standard error", function () {
+		const writeErrorText = fake<[string], undefined>();
+		const writeOutputText = fake<[string], undefined>();
 		const standardStreamRuntimeLogger = createStandardStreamRuntimeLogger({ writeErrorText, writeOutputText });
 
 		standardStreamRuntimeLogger.warn("Unable to load mentions", new Error("service unavailable"), {
 			event: "blog_post_mentions_load_failed"
 		});
 
-		expect(writeErrorText).toHaveBeenCalledWith(
+		assert.deepStrictEqual(writeErrorText.firstCall.args, [
 			'{"level":"warn","message":"Unable to load mentions","event":"blog_post_mentions_load_failed","errorMessage":"service unavailable","errorName":"Error"}\n'
-		);
-		expect(writeOutputText).not.toHaveBeenCalled();
+		]);
+		assert.strictEqual(writeOutputText.notCalled, true);
 	});
 
-	it("writes unknown warning values to standard error", () => {
-		const writeErrorText = vi.fn<(textContent: string) => void>();
-		const writeOutputText = vi.fn<(textContent: string) => void>();
+	test("writes unknown warning values to standard error", function () {
+		const writeErrorText = fake<[string], undefined>();
+		const writeOutputText = fake<[string], undefined>();
 		const standardStreamRuntimeLogger = createStandardStreamRuntimeLogger({ writeErrorText, writeOutputText });
 
 		standardStreamRuntimeLogger.warn("Unable to load mentions", "service unavailable", {
 			event: "blog_post_mentions_load_failed"
 		});
 
-		expect(writeErrorText).toHaveBeenCalledWith(
+		assert.deepStrictEqual(writeErrorText.firstCall.args, [
 			'{"level":"warn","message":"Unable to load mentions","event":"blog_post_mentions_load_failed","errorMessage":"service unavailable","errorName":"UnknownError"}\n'
-		);
-		expect(writeOutputText).not.toHaveBeenCalled();
+		]);
+		assert.strictEqual(writeOutputText.notCalled, true);
 	});
 });

@@ -1,11 +1,12 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { buildHeadingAnchorLinkContent } from "./heading-anchor-link-content.ts";
 
-describe("buildHeadingAnchorLinkContent()", () => {
-	it("keeps the heading anchor marker attached to the heading text", () => {
+suite("buildHeadingAnchorLinkContent()", function () {
+	test("keeps the heading anchor marker attached to the heading text", function () {
 		const actualHeadingAnchorLinkContent = buildHeadingAnchorLinkContent();
 		const expectedHeadingAnchorLinkContent = [{ type: "text", value: "\u{A0}#" }];
 
-		expect(actualHeadingAnchorLinkContent).toStrictEqual(expectedHeadingAnchorLinkContent);
+		assert.deepStrictEqual(actualHeadingAnchorLinkContent, expectedHeadingAnchorLinkContent);
 	});
 });

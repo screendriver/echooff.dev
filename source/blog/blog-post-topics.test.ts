@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { just, nothing } from "true-myth/maybe";
 import {
 	createBlogPostTopicArchiveEntries,
@@ -9,20 +10,24 @@ import {
 } from "./blog-post-topics.ts";
 import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.ts";
 
-describe("getBlogPostTopicDetails()", () => {
-	it("returns the stable display label and URL slug for a topic", () => {
+suite("getBlogPostTopicDetails()", function () {
+	test("returns the stable display label and URL slug for a topic", function () {
 		const actualTopicDetails = getBlogPostTopicDetails("Node.js");
 		const expectedTopicDetails = {
 			label: "Node.js",
 			slug: "nodejs"
 		};
+		const actualPublicTopicDetails = {
+			label: actualTopicDetails.label,
+			slug: actualTopicDetails.slug
+		};
 
-		expect(actualTopicDetails).toMatchObject(expectedTopicDetails);
+		assert.deepStrictEqual(actualPublicTopicDetails, expectedTopicDetails);
 	});
 });
 
-describe("getBlogPostTopicDetailsBySlug()", () => {
-	it("returns a topic details Maybe for a known topic slug", () => {
+suite("getBlogPostTopicDetailsBySlug()", function () {
+	test("returns a topic details Maybe for a known topic slug", function () {
 		const actualTopicDetails = getBlogPostTopicDetailsBySlug("typescript");
 		const expectedTopicDetails = just({
 			description: "TypeScript patterns that make intent, failures, and domain rules explicit.",
@@ -30,19 +35,19 @@ describe("getBlogPostTopicDetailsBySlug()", () => {
 			slug: "typescript"
 		});
 
-		expect(actualTopicDetails).toStrictEqual(expectedTopicDetails);
+		assert.deepStrictEqual(actualTopicDetails, expectedTopicDetails);
 	});
 
-	it("returns Nothing for an unknown topic slug", () => {
+	test("returns Nothing for an unknown topic slug", function () {
 		const actualTopicDetails = getBlogPostTopicDetailsBySlug("unknown");
 		const expectedTopicDetails = nothing();
 
-		expect(actualTopicDetails).toStrictEqual(expectedTopicDetails);
+		assert.deepStrictEqual(actualTopicDetails, expectedTopicDetails);
 	});
 });
 
-describe("groupBlogPostsByTopic()", () => {
-	it("groups blog posts by their configured topic", () => {
+suite("groupBlogPostsByTopic()", function () {
+	test("groups blog posts by their configured topic", function () {
 		const typeScriptBlogPost = createBlogPostCollectionEntry({
 			description: "TypeScript description",
 			id: "typescript-post",
@@ -64,13 +69,13 @@ describe("groupBlogPostsByTopic()", () => {
 		const actualTestingBlogPosts = blogPostsByTopic.get("Testing");
 		const expectedTestingBlogPosts = [testingBlogPost];
 
-		expect(actualTypeScriptBlogPosts).toStrictEqual(expectedTypeScriptBlogPosts);
-		expect(actualTestingBlogPosts).toStrictEqual(expectedTestingBlogPosts);
+		assert.deepStrictEqual(actualTypeScriptBlogPosts, expectedTypeScriptBlogPosts);
+		assert.deepStrictEqual(actualTestingBlogPosts, expectedTestingBlogPosts);
 	});
 });
 
-describe("createBlogPostTopicArchiveEntries()", () => {
-	it("returns populated topics in deterministic display order", () => {
+suite("createBlogPostTopicArchiveEntries()", function () {
+	test("returns populated topics in deterministic display order", function () {
 		const nodeJsBlogPost = createBlogPostCollectionEntry({
 			description: "Node.js description",
 			id: "nodejs-post",
@@ -115,13 +120,20 @@ describe("createBlogPostTopicArchiveEntries()", () => {
 				slug: "testing"
 			}
 		];
+		const actualPublicTopicArchiveEntries = actualTopicArchiveEntries.map((topicArchiveEntry) => {
+			return {
+				label: topicArchiveEntry.label,
+				postCount: topicArchiveEntry.postCount,
+				slug: topicArchiveEntry.slug
+			};
+		});
 
-		expect(actualTopicArchiveEntries).toMatchObject(expectedTopicArchiveEntries);
+		assert.deepStrictEqual(actualPublicTopicArchiveEntries, expectedTopicArchiveEntries);
 	});
 });
 
-describe("createBlogPostTopicArchiveEntryForSlug()", () => {
-	it("returns a populated topic archive entry for a known topic slug", () => {
+suite("createBlogPostTopicArchiveEntryForSlug()", function () {
+	test("returns a populated topic archive entry for a known topic slug", function () {
 		const blogPost = createBlogPostCollectionEntry({
 			description: "TypeScript description",
 			id: "typescript-post",
@@ -138,16 +150,16 @@ describe("createBlogPostTopicArchiveEntryForSlug()", () => {
 			slug: "typescript"
 		});
 
-		expect(actualTopicArchiveEntry).toStrictEqual(expectedTopicArchiveEntry);
+		assert.deepStrictEqual(actualTopicArchiveEntry, expectedTopicArchiveEntry);
 	});
 
-	it("returns Nothing for an unknown or empty topic slug", () => {
+	test("returns Nothing for an unknown or empty topic slug", function () {
 		const actualKnownTopicResult = createBlogPostTopicArchiveEntryForSlug([], "typescript");
 		const expectedKnownTopicResult = nothing();
 		const actualUnknownTopicResult = createBlogPostTopicArchiveEntryForSlug([], "unknown");
 		const expectedUnknownTopicResult = nothing();
 
-		expect(actualKnownTopicResult).toStrictEqual(expectedKnownTopicResult);
-		expect(actualUnknownTopicResult).toStrictEqual(expectedUnknownTopicResult);
+		assert.deepStrictEqual(actualKnownTopicResult, expectedKnownTopicResult);
+		assert.deepStrictEqual(actualUnknownTopicResult, expectedUnknownTopicResult);
 	});
 });

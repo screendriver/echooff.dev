@@ -1,8 +1,9 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { resolveOpenGraphUrl } from "./open-graph-url.ts";
 
-describe("resolveOpenGraphUrl()", () => {
-	it("returns openGraphUrl when it is provided", () => {
+suite("resolveOpenGraphUrl()", function () {
+	test("returns openGraphUrl when it is provided", function () {
 		const actualOpenGraphUrl = resolveOpenGraphUrl({
 			canonicalUrl: "https://www.example.com/",
 			defaultOpenGraphUrl: "https://www.example.com/index.html",
@@ -10,10 +11,10 @@ describe("resolveOpenGraphUrl()", () => {
 		});
 		const expectedOpenGraphUrl = "https://www.example.com/blog";
 
-		expect(actualOpenGraphUrl).toBe(expectedOpenGraphUrl);
+		assert.strictEqual(actualOpenGraphUrl, expectedOpenGraphUrl);
 	});
 
-	it("returns canonicalUrl when openGraphUrl is not provided", () => {
+	test("returns canonicalUrl when openGraphUrl is not provided", function () {
 		const actualOpenGraphUrl = resolveOpenGraphUrl({
 			canonicalUrl: "https://www.example.com/",
 			defaultOpenGraphUrl: "https://www.example.com/index.html",
@@ -21,10 +22,10 @@ describe("resolveOpenGraphUrl()", () => {
 		});
 		const expectedOpenGraphUrl = "https://www.example.com/";
 
-		expect(actualOpenGraphUrl).toBe(expectedOpenGraphUrl);
+		assert.strictEqual(actualOpenGraphUrl, expectedOpenGraphUrl);
 	});
 
-	it("returns defaultOpenGraphUrl when neither openGraphUrl nor canonicalUrl is provided", () => {
+	test("returns defaultOpenGraphUrl when neither openGraphUrl nor canonicalUrl is provided", function () {
 		const actualOpenGraphUrl = resolveOpenGraphUrl({
 			canonicalUrl: undefined,
 			defaultOpenGraphUrl: "https://www.example.com/index.html",
@@ -32,6 +33,6 @@ describe("resolveOpenGraphUrl()", () => {
 		});
 		const expectedOpenGraphUrl = "https://www.example.com/index.html";
 
-		expect(actualOpenGraphUrl).toBe(expectedOpenGraphUrl);
+		assert.strictEqual(actualOpenGraphUrl, expectedOpenGraphUrl);
 	});
 });

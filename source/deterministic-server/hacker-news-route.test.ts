@@ -1,8 +1,9 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { createDeterministicServerApplication } from "./deterministic-server.ts";
 
-describe("hacker news route", () => {
-	it("returns a deterministic mentions payload", async () => {
+suite("hacker news route", function () {
+	test("returns a deterministic mentions payload", async function () {
 		const application = createDeterministicServerApplication();
 
 		const response = await application.request(
@@ -22,6 +23,6 @@ describe("hacker news route", () => {
 			]
 		};
 
-		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
+		assert.deepStrictEqual(actualResponseBody, expectedResponseBody);
 	});
 });

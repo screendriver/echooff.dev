@@ -1,9 +1,10 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.ts";
 import { createBlogRssFeedOptions } from "./blog-rss-feed.ts";
 
-describe("createBlogRssFeedOptions()", () => {
-	it("creates RSS feed options from posts sorted by publication date descending", () => {
+suite("createBlogRssFeedOptions()", function () {
+	test("creates RSS feed options from posts sorted by publication date descending", function () {
 		const configuredSiteUrl = new URL("https://example.com");
 		const actualRssFeedOptions = createBlogRssFeedOptions(
 			[
@@ -45,15 +46,15 @@ describe("createBlogRssFeedOptions()", () => {
 			]
 		};
 
-		expect(actualRssFeedOptions).toStrictEqual(expectedRssFeedOptions);
+		assert.deepStrictEqual(actualRssFeedOptions, expectedRssFeedOptions);
 	});
 
-	it("throws when Astro.site is not configured", () => {
+	test("throws when Astro.site is not configured", function () {
 		const actualOperation = (): void => {
 			createBlogRssFeedOptions([], undefined);
 		};
 		const expectedErrorMessage = "Astro.site must be configured to create absolute blog URLs";
 
-		expect(actualOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualOperation, { message: expectedErrorMessage });
 	});
 });

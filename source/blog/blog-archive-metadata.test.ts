@@ -1,8 +1,9 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { createDefaultBlogArchiveMetadata, createPaginatedBlogArchiveMetadata } from "./blog-archive-metadata.ts";
 
-describe("createDefaultBlogArchiveMetadata()", () => {
-	it("creates first-page blog archive metadata", () => {
+suite("createDefaultBlogArchiveMetadata()", function () {
+	test("creates first-page blog archive metadata", function () {
 		const actualArchiveMetadata = createDefaultBlogArchiveMetadata(21);
 		const expectedArchiveMetadata = {
 			description: "Notes on web technologies, engineering tradeoffs, and front-end architecture.",
@@ -12,19 +13,19 @@ describe("createDefaultBlogArchiveMetadata()", () => {
 			title: "Software Engineering Blog | Christian Rackerseder"
 		};
 
-		expect(actualArchiveMetadata).toStrictEqual(expectedArchiveMetadata);
+		assert.deepStrictEqual(actualArchiveMetadata, expectedArchiveMetadata);
 	});
 
-	it("creates a singular terminal label when only one post exists", () => {
+	test("creates a singular terminal label when only one post exists", function () {
 		const actualTerminalOutput = createDefaultBlogArchiveMetadata(1).terminalOutput;
 		const expectedTerminalOutput = "1 post available";
 
-		expect(actualTerminalOutput).toBe(expectedTerminalOutput);
+		assert.strictEqual(actualTerminalOutput, expectedTerminalOutput);
 	});
 });
 
-describe("createPaginatedBlogArchiveMetadata()", () => {
-	it("creates page-aware metadata for later archive pages", () => {
+suite("createPaginatedBlogArchiveMetadata()", function () {
+	test("creates page-aware metadata for later archive pages", function () {
 		const actualArchiveMetadata = createPaginatedBlogArchiveMetadata({
 			currentPage: 2,
 			lastPage: 4,
@@ -39,10 +40,10 @@ describe("createPaginatedBlogArchiveMetadata()", () => {
 			title: "Software Engineering Blog - Page 2 | Christian Rackerseder"
 		};
 
-		expect(actualArchiveMetadata).toStrictEqual(expectedArchiveMetadata);
+		assert.deepStrictEqual(actualArchiveMetadata, expectedArchiveMetadata);
 	});
 
-	it("creates a singular terminal label for a single-post final page", () => {
+	test("creates a singular terminal label for a single-post final page", function () {
 		const actualTerminalOutput = createPaginatedBlogArchiveMetadata({
 			currentPage: 2,
 			lastPage: 2,
@@ -51,6 +52,6 @@ describe("createPaginatedBlogArchiveMetadata()", () => {
 		}).terminalOutput;
 		const expectedTerminalOutput = "Showing 1 post";
 
-		expect(actualTerminalOutput).toBe(expectedTerminalOutput);
+		assert.strictEqual(actualTerminalOutput, expectedTerminalOutput);
 	});
 });

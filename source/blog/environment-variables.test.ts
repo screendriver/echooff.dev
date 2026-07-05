@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { hackerNewsApiUrlInputSchema, webmentionApiUrlInputSchema } from "./environment-variable-input-schema.ts";
 import {
 	defaultHackerNewsApiUrl,
@@ -9,135 +10,135 @@ import {
 	parseWebmentionApiUrl
 } from "./environment-variables.ts";
 
-describe("hacker news API URL schema", () => {
-	it("does not allow booleans", () => {
+suite("hacker news API URL schema", function () {
+	test("does not allow booleans", function () {
 		const actualAssertionOperation = (): void => {
 			hackerNewsApiUrlInputSchema.assert(true);
 		};
 		const expectedErrorMessage = "must be a string (was boolean)";
 
-		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
 	});
 
-	it("does not allow numbers", () => {
+	test("does not allow numbers", function () {
 		const actualAssertionOperation = (): void => {
 			hackerNewsApiUrlInputSchema.assert(42);
 		};
 		const expectedErrorMessage = "must be a string (was a number)";
 
-		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
 	});
 
-	it("does not allow empty strings", () => {
+	test("does not allow empty strings", function () {
 		const actualAssertionOperation = (): void => {
 			hackerNewsApiUrlInputSchema.assert("");
 		};
 		const expectedErrorMessage = 'must be a URL string (was "")';
 
-		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
 	});
 
-	it("does not allow strings that are not a URL", () => {
+	test("does not allow strings that are not a URL", function () {
 		const actualAssertionOperation = (): void => {
 			hackerNewsApiUrlInputSchema.assert("foo");
 		};
 		const expectedErrorMessage = 'must be a URL string (was "foo")';
 
-		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
 	});
 
-	it("allows a string URL", () => {
+	test("allows a string URL", function () {
 		const actualHackerNewsApiUrl = hackerNewsApiUrlInputSchema.assert(
 			"https://hn.algolia.com/api/v1/search_by_date"
 		);
 		const expectedHackerNewsApiUrl = "https://hn.algolia.com/api/v1/search_by_date";
 
-		expect(actualHackerNewsApiUrl).toBe(expectedHackerNewsApiUrl);
+		assert.strictEqual(actualHackerNewsApiUrl, expectedHackerNewsApiUrl);
 	});
 
-	it("parses a string URL into a URL instance", () => {
+	test("parses a string URL into a URL instance", function () {
 		const hackerNewsApiUrl = parseHackerNewsApiUrl("https://hn.algolia.com/api/v1/search_by_date");
 		const expectedParsedHackerNewsApiUrl = new URL("https://hn.algolia.com/api/v1/search_by_date");
 		const actualHackerNewsApiUrl = hackerNewsApiUrl.href;
 		const expectedHackerNewsApiUrl = expectedParsedHackerNewsApiUrl.href;
 
-		expect(actualHackerNewsApiUrl).toStrictEqual(expectedHackerNewsApiUrl);
+		assert.deepStrictEqual(actualHackerNewsApiUrl, expectedHackerNewsApiUrl);
 	});
 });
 
-describe("webmention API URL schema", () => {
-	it("does not allow booleans", () => {
+suite("webmention API URL schema", function () {
+	test("does not allow booleans", function () {
 		const actualAssertionOperation = (): void => {
 			webmentionApiUrlInputSchema.assert(true);
 		};
 		const expectedErrorMessage = "must be a string (was boolean)";
 
-		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
 	});
 
-	it("does not allow numbers", () => {
+	test("does not allow numbers", function () {
 		const actualAssertionOperation = (): void => {
 			webmentionApiUrlInputSchema.assert(42);
 		};
 		const expectedErrorMessage = "must be a string (was a number)";
 
-		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
 	});
 
-	it("does not allow empty strings", () => {
+	test("does not allow empty strings", function () {
 		const actualAssertionOperation = (): void => {
 			webmentionApiUrlInputSchema.assert("");
 		};
 		const expectedErrorMessage = 'must be a URL string (was "")';
 
-		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
 	});
 
-	it("does not allow strings that are not a URL", () => {
+	test("does not allow strings that are not a URL", function () {
 		const actualAssertionOperation = (): void => {
 			webmentionApiUrlInputSchema.assert("foo");
 		};
 		const expectedErrorMessage = 'must be a URL string (was "foo")';
 
-		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
 	});
 
-	it("allows a string URL", () => {
+	test("allows a string URL", function () {
 		const actualWebmentionApiUrl = webmentionApiUrlInputSchema.assert("https://webmention.io/api/mentions.jf2");
 		const expectedWebmentionApiUrl = "https://webmention.io/api/mentions.jf2";
 
-		expect(actualWebmentionApiUrl).toBe(expectedWebmentionApiUrl);
+		assert.strictEqual(actualWebmentionApiUrl, expectedWebmentionApiUrl);
 	});
 
-	it("parses a string URL into a URL instance", () => {
+	test("parses a string URL into a URL instance", function () {
 		const webmentionApiUrl = parseWebmentionApiUrl("https://webmention.io/api/mentions.jf2");
 		const expectedParsedWebmentionApiUrl = new URL("https://webmention.io/api/mentions.jf2");
 		const actualWebmentionApiUrl = webmentionApiUrl.href;
 		const expectedWebmentionApiUrl = expectedParsedWebmentionApiUrl.href;
 
-		expect(actualWebmentionApiUrl).toStrictEqual(expectedWebmentionApiUrl);
+		assert.deepStrictEqual(actualWebmentionApiUrl, expectedWebmentionApiUrl);
 	});
 });
 
-describe("parseRuntimeHackerNewsApiUrl()", () => {
-	it("uses the default Hacker News API URL when the runtime environment does not define one", () => {
+suite("parseRuntimeHackerNewsApiUrl()", function () {
+	test("uses the default Hacker News API URL when the runtime environment does not define one", function () {
 		const actualHackerNewsApiUrl = parseRuntimeHackerNewsApiUrl({}).href;
 		const expectedParsedHackerNewsApiUrl = new URL(defaultHackerNewsApiUrl);
 		const expectedHackerNewsApiUrl = expectedParsedHackerNewsApiUrl.href;
 
-		expect(actualHackerNewsApiUrl).toBe(expectedHackerNewsApiUrl);
+		assert.strictEqual(actualHackerNewsApiUrl, expectedHackerNewsApiUrl);
 	});
 
-	it("uses the runtime Hacker News API URL when the runtime environment defines one", () => {
+	test("uses the runtime Hacker News API URL when the runtime environment defines one", function () {
 		const actualHackerNewsApiUrl = parseRuntimeHackerNewsApiUrl({
 			HACKER_NEWS_API_URL: "http://127.0.0.1:4321/hacker-news"
 		}).href;
 		const expectedHackerNewsApiUrl = "http://127.0.0.1:4321/hacker-news";
 
-		expect(actualHackerNewsApiUrl).toBe(expectedHackerNewsApiUrl);
+		assert.strictEqual(actualHackerNewsApiUrl, expectedHackerNewsApiUrl);
 	});
 
-	it("rejects invalid runtime Hacker News API URLs", () => {
+	test("rejects invalid runtime Hacker News API URLs", function () {
 		const actualParseOperation = (): void => {
 			parseRuntimeHackerNewsApiUrl({
 				HACKER_NEWS_API_URL: "not a url"
@@ -145,29 +146,29 @@ describe("parseRuntimeHackerNewsApiUrl()", () => {
 		};
 		const expectedErrorMessage = 'HACKER_NEWS_API_URL must be a URL string (was "not a url")';
 
-		expect(actualParseOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualParseOperation, { message: expectedErrorMessage });
 	});
 });
 
-describe("parseRuntimeWebmentionApiUrl()", () => {
-	it("uses the default Webmention API URL when the runtime environment does not define one", () => {
+suite("parseRuntimeWebmentionApiUrl()", function () {
+	test("uses the default Webmention API URL when the runtime environment does not define one", function () {
 		const actualWebmentionApiUrl = parseRuntimeWebmentionApiUrl({}).href;
 		const expectedParsedWebmentionApiUrl = new URL(defaultWebmentionApiUrl);
 		const expectedWebmentionApiUrl = expectedParsedWebmentionApiUrl.href;
 
-		expect(actualWebmentionApiUrl).toBe(expectedWebmentionApiUrl);
+		assert.strictEqual(actualWebmentionApiUrl, expectedWebmentionApiUrl);
 	});
 
-	it("uses the runtime Webmention API URL when the runtime environment defines one", () => {
+	test("uses the runtime Webmention API URL when the runtime environment defines one", function () {
 		const actualWebmentionApiUrl = parseRuntimeWebmentionApiUrl({
 			WEBMENTION_API_URL: "http://127.0.0.1:4321/webmentions"
 		}).href;
 		const expectedWebmentionApiUrl = "http://127.0.0.1:4321/webmentions";
 
-		expect(actualWebmentionApiUrl).toBe(expectedWebmentionApiUrl);
+		assert.strictEqual(actualWebmentionApiUrl, expectedWebmentionApiUrl);
 	});
 
-	it("rejects invalid runtime Webmention API URLs", () => {
+	test("rejects invalid runtime Webmention API URLs", function () {
 		const actualParseOperation = (): void => {
 			parseRuntimeWebmentionApiUrl({
 				WEBMENTION_API_URL: "not a url"
@@ -175,6 +176,6 @@ describe("parseRuntimeWebmentionApiUrl()", () => {
 		};
 		const expectedErrorMessage = 'WEBMENTION_API_URL must be a URL string (was "not a url")';
 
-		expect(actualParseOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualParseOperation, { message: expectedErrorMessage });
 	});
 });

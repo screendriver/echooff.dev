@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { Factory } from "fishery";
 import { gitHubStatisticsResponseSchema } from "./github-statistics-response-schema.ts";
 import { parseGitHubStatistics, type GitHubStatistics } from "./github-statistics.ts";
@@ -16,8 +17,8 @@ const gitHubStatisticsFactory = Factory.define<GitHubStatistics>(() => {
 	};
 });
 
-describe("gitHub statistics schema", () => {
-	it('does allow additional properties in addition to "user" object an strips them out', () => {
+suite("gitHub statistics schema", function () {
+	test('does allow additional properties in addition to "user" object an strips them out', function () {
 		const gitHubStatistics = gitHubStatisticsFactory.build({
 			foo: "bar"
 		} as unknown as GitHubStatistics);
@@ -25,10 +26,10 @@ describe("gitHub statistics schema", () => {
 		const actualGitHubStatistics = gitHubStatisticsResponseSchema.assert(gitHubStatistics);
 		const expectedGitHubStatistics = gitHubStatisticsFactory.build();
 
-		expect(actualGitHubStatistics).toStrictEqual(expectedGitHubStatistics);
+		assert.deepStrictEqual(actualGitHubStatistics, expectedGitHubStatistics);
 	});
 
-	it('does allow additional properties in "user" object and strips them out', () => {
+	test('does allow additional properties in "user" object and strips them out', function () {
 		const gitHubStatistics = gitHubStatisticsFactory.build({
 			user: {
 				foo: "bar"
@@ -38,10 +39,10 @@ describe("gitHub statistics schema", () => {
 		const actualGitHubStatistics = gitHubStatisticsResponseSchema.assert(gitHubStatistics);
 		const expectedGitHubStatistics = gitHubStatisticsFactory.build();
 
-		expect(actualGitHubStatistics).toStrictEqual(expectedGitHubStatistics);
+		assert.deepStrictEqual(actualGitHubStatistics, expectedGitHubStatistics);
 	});
 
-	it('does allow additional properties in "user.repositories" object and strips them out', () => {
+	test('does allow additional properties in "user.repositories" object and strips them out', function () {
 		const gitHubStatistics = gitHubStatisticsFactory.build({
 			user: {
 				repositories: {
@@ -53,10 +54,10 @@ describe("gitHub statistics schema", () => {
 		const actualGitHubStatistics = gitHubStatisticsResponseSchema.assert(gitHubStatistics);
 		const expectedGitHubStatistics = gitHubStatisticsFactory.build();
 
-		expect(actualGitHubStatistics).toStrictEqual(expectedGitHubStatistics);
+		assert.deepStrictEqual(actualGitHubStatistics, expectedGitHubStatistics);
 	});
 
-	it('does allow additional properties in "user.starredRepositories" object and strips them out', () => {
+	test('does allow additional properties in "user.starredRepositories" object and strips them out', function () {
 		const gitHubStatistics = gitHubStatisticsFactory.build({
 			user: {
 				starredRepositories: {
@@ -68,10 +69,10 @@ describe("gitHub statistics schema", () => {
 		const actualGitHubStatistics = gitHubStatisticsResponseSchema.assert(gitHubStatistics);
 		const expectedGitHubStatistics = gitHubStatisticsFactory.build();
 
-		expect(actualGitHubStatistics).toStrictEqual(expectedGitHubStatistics);
+		assert.deepStrictEqual(actualGitHubStatistics, expectedGitHubStatistics);
 	});
 
-	it('does not allow negative numbers for "user.repositories.totalCount"', () => {
+	test('does not allow negative numbers for "user.repositories.totalCount"', function () {
 		const gitHubStatistics = gitHubStatisticsFactory.build({
 			user: {
 				repositories: {
@@ -85,10 +86,10 @@ describe("gitHub statistics schema", () => {
 		};
 		const expectedErrorMessage = "user.repositories.totalCount must be non-negative (was -42)";
 
-		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
 	});
 
-	it('does not allow other types than number for "user.repositories.totalCount"', () => {
+	test('does not allow other types than number for "user.repositories.totalCount"', function () {
 		const gitHubStatistics = gitHubStatisticsFactory.build({
 			user: {
 				repositories: {
@@ -102,10 +103,10 @@ describe("gitHub statistics schema", () => {
 		};
 		const expectedErrorMessage = "user.repositories.totalCount must be a number (was a string)";
 
-		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
 	});
 
-	it('allows 0 for "user.repositories.totalCount"', () => {
+	test('allows 0 for "user.repositories.totalCount"', function () {
 		const gitHubStatistics = gitHubStatisticsFactory.build({
 			user: {
 				repositories: {
@@ -117,10 +118,10 @@ describe("gitHub statistics schema", () => {
 		const actualGitHubStatistics = parseGitHubStatistics(gitHubStatistics);
 		const expectedGitHubStatistics = gitHubStatistics;
 
-		expect(actualGitHubStatistics).toStrictEqual(expectedGitHubStatistics);
+		assert.deepStrictEqual(actualGitHubStatistics, expectedGitHubStatistics);
 	});
 
-	it('does not allow negative numbers for "user.starredRepositories.totalCount"', () => {
+	test('does not allow negative numbers for "user.starredRepositories.totalCount"', function () {
 		const gitHubStatistics = gitHubStatisticsFactory.build({
 			user: {
 				starredRepositories: {
@@ -134,10 +135,10 @@ describe("gitHub statistics schema", () => {
 		};
 		const expectedErrorMessage = "user.starredRepositories.totalCount must be non-negative (was -42)";
 
-		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
 	});
 
-	it('does not allow other types than number for "user.starredRepositories.totalCount"', () => {
+	test('does not allow other types than number for "user.starredRepositories.totalCount"', function () {
 		const gitHubStatistics = gitHubStatisticsFactory.build({
 			user: {
 				starredRepositories: {
@@ -151,10 +152,10 @@ describe("gitHub statistics schema", () => {
 		};
 		const expectedErrorMessage = "user.starredRepositories.totalCount must be a number (was a string)";
 
-		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
 	});
 
-	it('allows 0 for "user.starredRepositories.totalCount"', () => {
+	test('allows 0 for "user.starredRepositories.totalCount"', function () {
 		const gitHubStatistics = gitHubStatisticsFactory.build({
 			user: {
 				starredRepositories: {
@@ -166,6 +167,6 @@ describe("gitHub statistics schema", () => {
 		const actualGitHubStatistics = parseGitHubStatistics(gitHubStatistics);
 		const expectedGitHubStatistics = gitHubStatistics;
 
-		expect(actualGitHubStatistics).toStrictEqual(expectedGitHubStatistics);
+		assert.deepStrictEqual(actualGitHubStatistics, expectedGitHubStatistics);
 	});
 });

@@ -1,17 +1,17 @@
-import assert from "node:assert/strict";
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { isErr, isOk, ok } from "true-myth/result";
 import { Unit } from "true-myth/unit";
 import { validateContactFormRequest, validateGraphQlRequest } from "./request-validation.ts";
 
-describe("request validation", () => {
-	it("returns a Result Ok for a valid GraphQL request", async () => {
+suite("request validation", function () {
+	test("returns a Result Ok for a valid GraphQL request", async function () {
 		const graphQlRequest = new Request("https://example.com/graphql", {
 			method: "POST",
 			headers: {
 				accept: "application/vnd.github.v3+json",
 				authorization: "token example",
-				"user-agent": "vitest",
+				"user-agent": "mocha",
 				"content-type": "application/json"
 			},
 			body: JSON.stringify({
@@ -25,16 +25,16 @@ describe("request validation", () => {
 
 		assert.ok(actualIsOkResult);
 
-		expect(actualValidationResult).toStrictEqual(expectedValidationResult);
+		assert.deepStrictEqual(actualValidationResult, expectedValidationResult);
 	});
 
-	it("returns a Result Err for an invalid GraphQL request body", async () => {
+	test("returns a Result Err for an invalid GraphQL request body", async function () {
 		const graphQlRequest = new Request("https://example.com/graphql", {
 			method: "POST",
 			headers: {
 				accept: "application/vnd.github.v3+json",
 				authorization: "token example",
-				"user-agent": "vitest",
+				"user-agent": "mocha",
 				"content-type": "application/json"
 			},
 			body: JSON.stringify({})
@@ -51,11 +51,11 @@ describe("request validation", () => {
 		const actualErrorMessage = actualError.message;
 		const actualErrorType = actualError;
 
-		expect(actualErrorMessage).toBe(expectedErrorMessage);
-		expect(actualErrorType).toBeInstanceOf(expectedErrorType);
+		assert.strictEqual(actualErrorMessage, expectedErrorMessage);
+		assert.ok(actualErrorType instanceof expectedErrorType);
 	});
 
-	it("returns a Result Ok for a valid contact form request", async () => {
+	test("returns a Result Ok for a valid contact form request", async function () {
 		const formBody = new URLSearchParams({
 			message: "hello"
 		});
@@ -73,10 +73,10 @@ describe("request validation", () => {
 
 		assert.ok(actualIsOkResult);
 
-		expect(actualValidationResult).toStrictEqual(expectedValidationResult);
+		assert.deepStrictEqual(actualValidationResult, expectedValidationResult);
 	});
 
-	it("returns a Result Err for an invalid contact form content type", async () => {
+	test("returns a Result Err for an invalid contact form content type", async function () {
 		const contactFormRequest = new Request("https://example.com/contact-form", {
 			method: "POST",
 			headers: {
@@ -96,7 +96,7 @@ describe("request validation", () => {
 		const actualErrorMessage = actualError.message;
 		const actualErrorType = actualError;
 
-		expect(actualErrorMessage).toBe(expectedErrorMessage);
-		expect(actualErrorType).toBeInstanceOf(expectedErrorType);
+		assert.strictEqual(actualErrorMessage, expectedErrorMessage);
+		assert.ok(actualErrorType instanceof expectedErrorType);
 	});
 });

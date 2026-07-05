@@ -1,8 +1,9 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { hackerNewsApiResponseSchema } from "./hacker-news-response-schema.ts";
 
-describe("hacker news response schema", () => {
-	it("accepts a valid payload", () => {
+suite("hacker news response schema", function () {
+	test("accepts a valid payload", function () {
 		const validatedPayload = hackerNewsApiResponseSchema.assert({
 			hits: [
 				{
@@ -18,10 +19,10 @@ describe("hacker news response schema", () => {
 		const actualObjectIdentifier = validatedPayload.hits?.[0]?.objectID;
 		const expectedObjectIdentifier = "44000001";
 
-		expect(actualObjectIdentifier).toBe(expectedObjectIdentifier);
+		assert.strictEqual(actualObjectIdentifier, expectedObjectIdentifier);
 	});
 
-	it("rejects an invalid payload", () => {
+	test("rejects an invalid payload", function () {
 		const actualAssertionOperation = (): void => {
 			hackerNewsApiResponseSchema.assert({
 				hits: [
@@ -31,8 +32,8 @@ describe("hacker news response schema", () => {
 				]
 			});
 		};
-		const expectedErrorMessage = "hits[0].objectID must be a string";
+		const expectedErrorMessage = "hits[0].objectID must be a string (was a number)";
 
-		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
 	});
 });

@@ -1,8 +1,9 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { createDeterministicServerApplication } from "./deterministic-server.ts";
 
-describe("webmention route", () => {
-	it("returns a deterministic mentions payload", async () => {
+suite("webmention route", function () {
+	test("returns a deterministic mentions payload", async function () {
 		const application = createDeterministicServerApplication();
 
 		const response = await application.request(
@@ -47,10 +48,10 @@ describe("webmention route", () => {
 			]
 		};
 
-		expect(actualResponseBody).toStrictEqual(expectedResponseBody);
+		assert.deepStrictEqual(actualResponseBody, expectedResponseBody);
 	});
 
-	it("returns a deterministic avatar asset", async () => {
+	test("returns a deterministic avatar asset", async function () {
 		const application = createDeterministicServerApplication();
 
 		const response = await application.request("/webmention-avatar.svg");
@@ -60,8 +61,8 @@ describe("webmention route", () => {
 		const expectedSvgMarker = "<svg";
 		const expectedAccentColor = "#8BE9FD";
 
-		expect(actualContentType).toBe(expectedContentType);
-		expect(actualResponseBody).toContain(expectedSvgMarker);
-		expect(actualResponseBody).toContain(expectedAccentColor);
+		assert.strictEqual(actualContentType, expectedContentType);
+		assert.ok(actualResponseBody.includes(expectedSvgMarker));
+		assert.ok(actualResponseBody.includes(expectedAccentColor));
 	});
 });

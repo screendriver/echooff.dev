@@ -1,9 +1,9 @@
 import { baseConfig } from "@enormora/eslint-config-base";
 import { astroConfig as astroTypeScriptConfig } from "@enormora/eslint-config-astro-ts";
 import { browserConfig } from "@enormora/eslint-config-browser";
+import { mochaConfig } from "@enormora/eslint-config-mocha";
 import { typescriptConfig } from "@enormora/eslint-config-typescript";
 import { nodeConfig, nodeConfigFileConfig } from "@enormora/eslint-config-node";
-import { vitestConfig } from "@enormora/eslint-config-vitest";
 import globals from "globals";
 
 const astroAccessibilityRuleNames = [
@@ -144,40 +144,32 @@ export default [
 		files: ["source/**/*.{ts,tsx}"]
 	},
 	{
-		...vitestConfig,
+		...mochaConfig,
 		files: ["**/*.test.ts"],
 		rules: {
-			...vitestConfig.rules,
-			"@vitest/no-alias-methods": "off",
-			"@vitest/no-restricted-vi-methods": [
-				"error",
-				{
-					doMock: "Use explicit fakes instead of Vitest module mocking.",
-					doUnmock: "Use explicit fakes instead of Vitest module mocking.",
-					mock: "Use explicit fakes instead of Vitest module mocking.",
-					mocked: "Use explicit fakes instead of Vitest module mocking.",
-					spyOn: "Use vi.fn() with explicit dependency injection instead of spying on existing objects.",
-					stubEnv: "Use explicit dependency injection instead of mutating environment state.",
-					stubGlobal: "Use explicit dependency injection instead of mutating global state.",
-					unmock: "Use explicit fakes instead of Vitest module mocking.",
-					unstubAllEnvs: "Use explicit dependency injection instead of mutating environment state.",
-					unstubAllGlobals: "Use explicit dependency injection instead of mutating global state."
-				}
-			],
-			"@vitest/prefer-called-with": "off",
-			"@typescript-eslint/no-magic-numbers": "off",
-			"@typescript-eslint/no-shadow": "off",
-			"@typescript-eslint/no-unsafe-type-assertion": "off"
-		}
-	},
-	{
-		files: ["source/statistics/graphql-query.test.ts"],
-		rules: {
-			"@vitest/expect-expect": "off"
+			...mochaConfig.rules,
+			"mocha/max-top-level-suites": "off"
 		}
 	},
 	{
 		...nodeConfigFileConfig,
-		files: ["astro.config.js", "eslint.config.js", "prettier.config.js", "vitest.config.js"]
+		files: [
+			"astro.config.js",
+			"eslint.config.js",
+			"mocha.base.config.cjs",
+			"mocha.config.content-tests.cjs",
+			"mocha.config.unit-tests.cjs",
+			"prettier.config.js"
+		]
+	},
+	{
+		files: ["mocha*.cjs"],
+		languageOptions: {
+			globals: globals.node
+		},
+		rules: {
+			"import/extensions": "off",
+			"import/no-commonjs": "off"
+		}
 	}
 ];

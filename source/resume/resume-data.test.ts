@@ -1,9 +1,10 @@
-import { assert, describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { isErr, isOk } from "true-myth/result";
 import { parseResumeData } from "./resume-data.ts";
 
-describe("resume data parsing", () => {
-	it("returns parsed resume data and strips undeclared keys", () => {
+suite("resume data parsing", function () {
+	test("returns parsed resume data and strips undeclared keys", function () {
 		const actualParseResult = parseResumeData([
 			{
 				since: "2024-01-01",
@@ -38,10 +39,10 @@ describe("resume data parsing", () => {
 			}
 		];
 
-		expect(actualResumeData).toStrictEqual(expectedResumeData);
+		assert.deepStrictEqual(actualResumeData, expectedResumeData);
 	});
 
-	it("returns an error summary for invalid resume data", () => {
+	test("returns an error summary for invalid resume data", function () {
 		const actualParseResult = parseResumeData([]);
 		const expectedErrorMessage = "must be non-empty";
 		const expectedErrorType = TypeError;
@@ -53,7 +54,7 @@ describe("resume data parsing", () => {
 		const actualErrorMessage = actualError.message;
 		const actualErrorType = actualError;
 
-		expect(actualErrorMessage).toBe(expectedErrorMessage);
-		expect(actualErrorType).toBeInstanceOf(expectedErrorType);
+		assert.strictEqual(actualErrorMessage, expectedErrorMessage);
+		assert.ok(actualErrorType instanceof expectedErrorType);
 	});
 });

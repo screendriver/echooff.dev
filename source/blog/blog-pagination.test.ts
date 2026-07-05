@@ -1,9 +1,10 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { err, ok } from "true-myth/result";
 import { blogArchivePageSize, createBlogPaginationModel } from "./blog-pagination.ts";
 
-describe("createBlogPaginationModel()", () => {
-	it("creates first-page navigation details for a multi-page archive", () => {
+suite("createBlogPaginationModel()", function () {
+	test("creates first-page navigation details for a multi-page archive", function () {
 		const actualPaginationModel = createBlogPaginationModel({
 			currentPage: 1,
 			pageSize: blogArchivePageSize,
@@ -30,10 +31,10 @@ describe("createBlogPaginationModel()", () => {
 			resultsLabel: "Posts 1-20 of 21"
 		});
 
-		expect(actualPaginationModel).toStrictEqual(expectedPaginationModel);
+		assert.deepStrictEqual(actualPaginationModel, expectedPaginationModel);
 	});
 
-	it("creates later-page navigation details with previous and next links", () => {
+	test("creates later-page navigation details with previous and next links", function () {
 		const actualPaginationModel = createBlogPaginationModel({
 			currentPage: 2,
 			pageSize: 10,
@@ -70,10 +71,10 @@ describe("createBlogPaginationModel()", () => {
 			resultsLabel: "Posts 11-20 of 35"
 		});
 
-		expect(actualPaginationModel).toStrictEqual(expectedPaginationModel);
+		assert.deepStrictEqual(actualPaginationModel, expectedPaginationModel);
 	});
 
-	it("creates a singular range label for a single-post final page", () => {
+	test("creates a singular range label for a single-post final page", function () {
 		const actualPaginationModel = createBlogPaginationModel({
 			currentPage: 2,
 			pageSize: blogArchivePageSize,
@@ -100,10 +101,10 @@ describe("createBlogPaginationModel()", () => {
 			resultsLabel: "Post 21 of 21"
 		});
 
-		expect(actualPaginationModel).toStrictEqual(expectedPaginationModel);
+		assert.deepStrictEqual(actualPaginationModel, expectedPaginationModel);
 	});
 
-	it("returns a Result Err when the current page exceeds the last page", () => {
+	test("returns a Result Err when the current page exceeds the last page", function () {
 		const actualPaginationModel = createBlogPaginationModel({
 			currentPage: 3,
 			pageSize: blogArchivePageSize,
@@ -111,10 +112,10 @@ describe("createBlogPaginationModel()", () => {
 		});
 		const expectedPaginationModel = err(new RangeError('Current page "3" exceeds last page "2"'));
 
-		expect(actualPaginationModel).toStrictEqual(expectedPaginationModel);
+		assert.deepStrictEqual(actualPaginationModel, expectedPaginationModel);
 	});
 
-	it("returns a Result Err when the total post count is invalid", () => {
+	test("returns a Result Err when the total post count is invalid", function () {
 		const actualPaginationModel = createBlogPaginationModel({
 			currentPage: 1,
 			pageSize: blogArchivePageSize,
@@ -124,6 +125,6 @@ describe("createBlogPaginationModel()", () => {
 			new RangeError('Total post count must be a non-negative integer, received "-1"')
 		);
 
-		expect(actualPaginationModel).toStrictEqual(expectedPaginationModel);
+		assert.deepStrictEqual(actualPaginationModel, expectedPaginationModel);
 	});
 });

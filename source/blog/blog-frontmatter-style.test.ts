@@ -1,8 +1,9 @@
+import assert from "node:assert";
 import { readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { isUndefined } from "@sindresorhus/is";
-import { describe, expect, it } from "vitest";
+import { suite, test } from "mocha";
 
 const repositoryRootDirectoryPath = fileURLToPath(new URL("../../", import.meta.url));
 const blogContentDirectoryPath = join(repositoryRootDirectoryPath, "source/content/blog");
@@ -77,13 +78,13 @@ function findUnquotedFrontmatterStringProperties(
 	});
 }
 
-describe("blog frontmatter style", () => {
-	it("uses quoted strings for reader-facing blog post metadata", async () => {
+suite("blog frontmatter style", function () {
+	test("uses quoted strings for reader-facing blog post metadata", async function () {
 		const blogPostFrontmatterDocuments = await readBlogPostFrontmatterDocuments();
 		const actualUnquotedFrontmatterStringProperties =
 			findUnquotedFrontmatterStringProperties(blogPostFrontmatterDocuments);
 		const expectedUnquotedFrontmatterStringProperties: readonly UnquotedFrontmatterStringProperty[] = [];
 
-		expect(actualUnquotedFrontmatterStringProperties).toStrictEqual(expectedUnquotedFrontmatterStringProperties);
+		assert.deepStrictEqual(actualUnquotedFrontmatterStringProperties, expectedUnquotedFrontmatterStringProperties);
 	});
 });

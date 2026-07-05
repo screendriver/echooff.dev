@@ -1,4 +1,5 @@
-import { describe, it, expect, assert } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { isErr, isOk } from "true-myth/result";
 import { formatSinceDate } from "./date.ts";
 
@@ -15,57 +16,91 @@ type TestFormatSinceDateOkInput = {
 	readonly expectedFormatResult: string;
 };
 
-describe("formatSinceDate()", () => {
-	it.each<TestFormatSinceDateErrorInput>([
-		{
-			since: "",
-			onlyYear: true,
-			expectedErrorMessage: 'Since "" is not a valid date',
-			expectedErrorType: RangeError
-		},
-		{
-			since: "",
-			onlyYear: false,
-			expectedErrorMessage: 'Since "" is not a valid date',
-			expectedErrorType: RangeError
-		},
-		{
-			since: "foo",
-			onlyYear: true,
-			expectedErrorMessage: 'Since "foo" is not a valid date',
-			expectedErrorType: RangeError
-		},
-		{
-			since: "foo",
-			onlyYear: false,
-			expectedErrorMessage: 'Since "foo" is not a valid date',
-			expectedErrorType: RangeError
-		}
-	])("returns a Result Err when 'since' is equals $since and 'onlyYear' is $onlyYear", (input) => {
+function testFormatSinceDateError(input: TestFormatSinceDateErrorInput): () => void {
+	return function () {
 		const { since, onlyYear, expectedErrorMessage, expectedErrorType } = input;
 		const actualFormattedDateResult = formatSinceDate(since, onlyYear);
 
-		assert(isErr(actualFormattedDateResult));
+		assert.ok(isErr(actualFormattedDateResult));
 
 		const actualError = actualFormattedDateResult.error;
 		const actualErrorMessage = actualError.message;
 		const actualErrorType = actualError;
 
-		expect(actualErrorMessage).toBe(expectedErrorMessage);
-		expect(actualErrorType).toBeInstanceOf(expectedErrorType);
-	});
+		assert.strictEqual(actualErrorMessage, expectedErrorMessage);
+		assert.ok(actualErrorType instanceof expectedErrorType);
+	};
+}
 
-	it.each<TestFormatSinceDateOkInput>([
-		{ since: "2022-01-01", onlyYear: true, expectedFormatResult: "2022" },
-		{ since: "2022-01-01", onlyYear: false, expectedFormatResult: "January 2022" }
-	])("returns a Result Ok when 'onlyYear' is $onlyYear", (input) => {
+function testFormatSinceDateOk(input: TestFormatSinceDateOkInput): () => void {
+	return function () {
 		const { since, onlyYear, expectedFormatResult } = input;
 		const actualFormattedDateResult = formatSinceDate(since, onlyYear);
 
-		assert(isOk(actualFormattedDateResult));
+		assert.ok(isOk(actualFormattedDateResult));
 
 		const actualFormatResult = actualFormattedDateResult.value;
 
-		expect(actualFormatResult).toBe(expectedFormatResult);
-	});
+		assert.strictEqual(actualFormatResult, expectedFormatResult);
+	};
+}
+
+suite("formatSinceDate()", function () {
+	test(
+		"returns a Result Err for empty since and onlyYear true",
+		testFormatSinceDateError({
+			since: "",
+			onlyYear: true,
+			expectedErrorMessage: 'Since "" is not a valid date',
+			expectedErrorType: RangeError
+		})
+	);
+
+	test(
+		"returns a Result Err for empty since and onlyYear false",
+		testFormatSinceDateError({
+			since: "",
+			onlyYear: false,
+			expectedErrorMessage: 'Since "" is not a valid date',
+			expectedErrorType: RangeError
+		})
+	);
+
+	test(
+		"returns a Result Err for invalid since and onlyYear true",
+		testFormatSinceDateError({
+			since: "foo",
+			onlyYear: true,
+			expectedErrorMessage: 'Since "foo" is not a valid date',
+			expectedErrorType: RangeError
+		})
+	);
+
+	test(
+		"returns a Result Err for invalid since and onlyYear false",
+		testFormatSinceDateError({
+			since: "foo",
+			onlyYear: false,
+			expectedErrorMessage: 'Since "foo" is not a valid date',
+			expectedErrorType: RangeError
+		})
+	);
+
+	test(
+		"returns a Result Ok when onlyYear is true",
+		testFormatSinceDateOk({
+			since: "2022-01-01",
+			onlyYear: true,
+			expectedFormatResult: "2022"
+		})
+	);
+
+	test(
+		"returns a Result Ok when onlyYear is false",
+		testFormatSinceDateOk({
+			since: "2022-01-01",
+			onlyYear: false,
+			expectedFormatResult: "January 2022"
+		})
+	);
 });

@@ -1,13 +1,14 @@
-import { describe, it, expect, vi, type TestFunction } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
+import { fake } from "sinon";
 import { Factory } from "fishery";
 import { stripIndent } from "common-tags";
 import type { graphql as octokitGraphql, RequestParameters } from "@octokit/graphql/types";
 import { type ExecuteGraphQLQueryOptions, executeGraphQLQuery } from "./graphql-query.ts";
 
 const fetchGitHubStatisticsOptionsFactory = Factory.define<ExecuteGraphQLQueryOptions>(() => {
-	const graphqlImplementation = vi
-		.fn<(requestParameters: RequestParameters) => Promise<unknown>>()
-		.mockResolvedValue(undefined);
+	const graphqlImplementation = fake.resolves(undefined);
+
 	return {
 		graphql: graphqlImplementation as unknown as octokitGraphql,
 		gitHubBaseUrl: new URL("https://example.com/"),
@@ -21,29 +22,31 @@ type TestFetchGitHubStatisticsInput = {
 	readonly expectedRequestParameters: unknown;
 };
 
-function testExecuteGraphQLQuery(testInput: TestFetchGitHubStatisticsInput): TestFunction {
+type ExecuteGraphQLQueryTestFunction = () => Promise<void>;
+
+function testExecuteGraphQLQuery(testInput: TestFetchGitHubStatisticsInput): ExecuteGraphQLQueryTestFunction {
 	const { requestParameter, expectedRequestParameters } = testInput;
 
-	return async () => {
-		const graphqlImplementation = vi
-			.fn<(requestParameters: RequestParameters) => Promise<unknown>>()
-			.mockResolvedValue(undefined);
+	return async function () {
+		const graphqlImplementation = fake.resolves(undefined);
 		const fetchGitHubStatisticsOptions = fetchGitHubStatisticsOptionsFactory.build({
 			graphql: graphqlImplementation as unknown as octokitGraphql
 		});
 
 		await executeGraphQLQuery(fetchGitHubStatisticsOptions);
-		const actualGraphqlCallCount = graphqlImplementation.mock.calls.length;
+		const actualGraphqlCallCount = graphqlImplementation.callCount;
 		const expectedGraphqlCallCount = 1;
-		const actualRequestParameters = graphqlImplementation.mock.calls[0]?.[0]?.[requestParameter];
+		const actualRequestParameters = (graphqlImplementation.firstCall.args[0] as RequestParameters)[
+			requestParameter
+		];
 
-		expect(actualGraphqlCallCount).toBe(expectedGraphqlCallCount);
-		expect(actualRequestParameters).toStrictEqual(expectedRequestParameters);
+		assert.strictEqual(actualGraphqlCallCount, expectedGraphqlCallCount);
+		assert.deepStrictEqual(actualRequestParameters, expectedRequestParameters);
 	};
 }
 
-describe("executeGraphQLQuery()", () => {
-	it(
+suite("executeGraphQLQuery()", function () {
+	test(
 		"uses the correct GraphQL query",
 		testExecuteGraphQLQuery({
 			requestParameter: "query",
@@ -60,7 +63,7 @@ describe("executeGraphQLQuery()", () => {
 		})
 	);
 
-	it(
+	test(
 		"uses the correct GitHub base URL and strips the trailing slash",
 		testExecuteGraphQLQuery({
 			requestParameter: "baseUrl",
@@ -68,7 +71,7 @@ describe("executeGraphQLQuery()", () => {
 		})
 	);
 
-	it(
+	test(
 		"uses the correct GitHub login",
 		testExecuteGraphQLQuery({
 			requestParameter: "login",
@@ -76,7 +79,7 @@ describe("executeGraphQLQuery()", () => {
 		})
 	);
 
-	it(
+	test(
 		"uses the correct GitHub API token",
 		testExecuteGraphQLQuery({
 			requestParameter: "headers",

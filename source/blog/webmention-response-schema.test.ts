@@ -1,8 +1,9 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import { webmentionApiResponseSchema } from "./webmention-response-schema.ts";
 
-describe("webmention response schema", () => {
-	it("accepts a valid payload", () => {
+suite("webmention response schema", function () {
+	test("accepts a valid payload", function () {
 		const validatedPayload = webmentionApiResponseSchema.assert({
 			children: [
 				{
@@ -23,10 +24,10 @@ describe("webmention response schema", () => {
 		const actualAuthorName = validatedPayload.children?.[0]?.author?.name;
 		const expectedAuthorName = "Jane Doe";
 
-		expect(actualAuthorName).toBe(expectedAuthorName);
+		assert.strictEqual(actualAuthorName, expectedAuthorName);
 	});
 
-	it("rejects an invalid payload", () => {
+	test("rejects an invalid payload", function () {
 		const actualAssertionOperation = (): void => {
 			webmentionApiResponseSchema.assert({
 				children: [
@@ -38,8 +39,8 @@ describe("webmention response schema", () => {
 				]
 			});
 		};
-		const expectedErrorMessage = "children[0].author.name must be a string";
+		const expectedErrorMessage = "children[0].author.name must be a string (was a number)";
 
-		expect(actualAssertionOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
 	});
 });

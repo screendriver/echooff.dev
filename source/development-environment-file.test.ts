@@ -1,11 +1,12 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import {
 	createDevelopmentEnvironmentFileContent,
 	createDevelopmentEnvironmentVariables
 } from "./development-environment-file.ts";
 
-describe("createDevelopmentEnvironmentVariables()", () => {
-	it("creates deterministic development environment variables", () => {
+suite("createDevelopmentEnvironmentVariables()", function () {
+	test("creates deterministic development environment variables", function () {
 		const actualEnvironmentVariables = createDevelopmentEnvironmentVariables("http://127.0.0.1:4321");
 		const expectedEnvironmentVariables = {
 			CONTACT_FORM_URL: "http://127.0.0.1:4321/contact-form",
@@ -16,12 +17,12 @@ describe("createDevelopmentEnvironmentVariables()", () => {
 			WEBMENTION_API_URL: "http://127.0.0.1:4321/webmentions"
 		};
 
-		expect(actualEnvironmentVariables).toStrictEqual(expectedEnvironmentVariables);
+		assert.deepStrictEqual(actualEnvironmentVariables, expectedEnvironmentVariables);
 	});
 });
 
-describe("createDevelopmentEnvironmentFileContent()", () => {
-	it("creates the deterministic development environment file content", () => {
+suite("createDevelopmentEnvironmentFileContent()", function () {
+	test("creates the deterministic development environment file content", function () {
 		const actualEnvironmentFileContent = createDevelopmentEnvironmentFileContent("http://127.0.0.1:4321");
 		const expectedEnvironmentFileContent = [
 			"GITHUB_API_BASE_URL=http://127.0.0.1:4321",
@@ -32,10 +33,10 @@ describe("createDevelopmentEnvironmentFileContent()", () => {
 			'CONTACT_FORM_URL="http://127.0.0.1:4321/contact-form"'
 		].join("\n");
 
-		expect(actualEnvironmentFileContent).toBe(expectedEnvironmentFileContent);
+		assert.strictEqual(actualEnvironmentFileContent, expectedEnvironmentFileContent);
 	});
 
-	it("uses the provided line break between entries", () => {
+	test("uses the provided line break between entries", function () {
 		const actualEnvironmentFileContent = createDevelopmentEnvironmentFileContent("http://127.0.0.1:4321", "\r\n");
 		const expectedEnvironmentFileContent = [
 			"GITHUB_API_BASE_URL=http://127.0.0.1:4321",
@@ -46,6 +47,6 @@ describe("createDevelopmentEnvironmentFileContent()", () => {
 			'CONTACT_FORM_URL="http://127.0.0.1:4321/contact-form"'
 		].join("\r\n");
 
-		expect(actualEnvironmentFileContent).toBe(expectedEnvironmentFileContent);
+		assert.strictEqual(actualEnvironmentFileContent, expectedEnvironmentFileContent);
 	});
 });

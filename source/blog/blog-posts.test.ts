@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert";
+import { suite, test } from "mocha";
 import {
 	createLatestBlogIndexEntries,
 	createBlogPostPageTitle,
@@ -9,8 +10,8 @@ import {
 } from "./blog-posts.ts";
 import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.ts";
 
-describe("sortBlogPostsByPublicationDateDescending()", () => {
-	it("sorts newer blog posts before older blog posts", () => {
+suite("sortBlogPostsByPublicationDateDescending()", function () {
+	test("sorts newer blog posts before older blog posts", function () {
 		const olderBlogPost = createBlogPostCollectionEntry({
 			description: "Older blog post description",
 			id: "older-blog-post",
@@ -29,10 +30,10 @@ describe("sortBlogPostsByPublicationDateDescending()", () => {
 		const actualSortedBlogPosts = sortBlogPostsByPublicationDateDescending([olderBlogPost, newerBlogPost]);
 		const expectedSortedBlogPosts = [newerBlogPost, olderBlogPost];
 
-		expect(actualSortedBlogPosts).toStrictEqual(expectedSortedBlogPosts);
+		assert.deepStrictEqual(actualSortedBlogPosts, expectedSortedBlogPosts);
 	});
 
-	it("uses the collection entry id as a deterministic tie breaker", () => {
+	test("uses the collection entry id as a deterministic tie breaker", function () {
 		const blogPostB = createBlogPostCollectionEntry({
 			description: "Zebra blog post description",
 			id: "zebra",
@@ -51,53 +52,53 @@ describe("sortBlogPostsByPublicationDateDescending()", () => {
 		const actualSortedBlogPosts = sortBlogPostsByPublicationDateDescending([blogPostB, blogPostA]);
 		const expectedSortedBlogPosts = [blogPostA, blogPostB];
 
-		expect(actualSortedBlogPosts).toStrictEqual(expectedSortedBlogPosts);
+		assert.deepStrictEqual(actualSortedBlogPosts, expectedSortedBlogPosts);
 	});
 });
 
-describe("formatPublishedAtFallbackDateTime()", () => {
-	it("returns a deterministic readable fallback date", () => {
+suite("formatPublishedAtFallbackDateTime()", function () {
+	test("returns a deterministic readable fallback date", function () {
 		const actualFallbackDateTime = formatPublishedAtFallbackDateTime("2026-02-28T14:30:00+01:00");
 		const expectedFallbackDateTime = "2026-02-28";
 
-		expect(actualFallbackDateTime).toBe(expectedFallbackDateTime);
+		assert.strictEqual(actualFallbackDateTime, expectedFallbackDateTime);
 	});
 
-	it("throws when the timestamp is invalid", () => {
+	test("throws when the timestamp is invalid", function () {
 		const actualFormatOperation = (): void => {
 			formatPublishedAtFallbackDateTime("not-a-date");
 		};
 		const expectedErrorMessage = 'Published at "not-a-date" is not a valid ISO 8601 date-time';
 
-		expect(actualFormatOperation).toThrow(expectedErrorMessage);
+		assert.throws(actualFormatOperation, { message: expectedErrorMessage });
 	});
 });
 
-describe("createBlogPostReadingTimeLabel()", () => {
-	it("returns the reading-time package label for empty content", () => {
+suite("createBlogPostReadingTimeLabel()", function () {
+	test("returns the reading-time package label for empty content", function () {
 		const actualReadingTimeLabel = createBlogPostReadingTimeLabel("");
 		const expectedReadingTimeLabel = "0 min read";
 
-		expect(actualReadingTimeLabel).toBe(expectedReadingTimeLabel);
+		assert.strictEqual(actualReadingTimeLabel, expectedReadingTimeLabel);
 	});
 
-	it("returns a one-minute label for short blog posts", () => {
+	test("returns a one-minute label for short blog posts", function () {
 		const actualReadingTimeLabel = createBlogPostReadingTimeLabel(
 			"Dependency injection keeps side effects explicit."
 		);
 		const expectedReadingTimeLabel = "1 min read";
 
-		expect(actualReadingTimeLabel).toBe(expectedReadingTimeLabel);
+		assert.strictEqual(actualReadingTimeLabel, expectedReadingTimeLabel);
 	});
 
-	it("returns a multi-minute label for longer blog posts", () => {
+	test("returns a multi-minute label for longer blog posts", function () {
 		const actualReadingTimeLabel = createBlogPostReadingTimeLabel("word ".repeat(400));
 		const expectedReadingTimeLabel = "2 min read";
 
-		expect(actualReadingTimeLabel).toBe(expectedReadingTimeLabel);
+		assert.strictEqual(actualReadingTimeLabel, expectedReadingTimeLabel);
 	});
 
-	it("handles markdown syntax and code fences deterministically", () => {
+	test("handles markdown syntax and code fences deterministically", function () {
 		const markdownDocument = [
 			"# Reading Time",
 			"",
@@ -111,12 +112,12 @@ describe("createBlogPostReadingTimeLabel()", () => {
 		const actualReadingTimeLabel = createBlogPostReadingTimeLabel(markdownDocument);
 		const expectedReadingTimeLabel = "1 min read";
 
-		expect(actualReadingTimeLabel).toBe(expectedReadingTimeLabel);
+		assert.strictEqual(actualReadingTimeLabel, expectedReadingTimeLabel);
 	});
 });
 
-describe("createBlogIndexEntries()", () => {
-	it("returns the fields required for rendering the blog index including descriptions", () => {
+suite("createBlogIndexEntries()", function () {
+	test("returns the fields required for rendering the blog index including descriptions", function () {
 		const blogPost = createBlogPostCollectionEntry({
 			body: "word ".repeat(120),
 			description: "Clear descriptions help readers choose what to open",
@@ -139,12 +140,12 @@ describe("createBlogIndexEntries()", () => {
 			}
 		];
 
-		expect(actualBlogIndexEntries).toStrictEqual(expectedBlogIndexEntries);
+		assert.deepStrictEqual(actualBlogIndexEntries, expectedBlogIndexEntries);
 	});
 });
 
-describe("createLatestBlogIndexEntries()", () => {
-	it("returns newest blog index entries first up to the requested maximum", () => {
+suite("createLatestBlogIndexEntries()", function () {
+	test("returns newest blog index entries first up to the requested maximum", function () {
 		const oldestBlogPost = createBlogPostCollectionEntry({
 			description: "Oldest blog post description",
 			id: "oldest-blog-post",
@@ -192,10 +193,10 @@ describe("createLatestBlogIndexEntries()", () => {
 			}
 		];
 
-		expect(actualLatestBlogIndexEntries).toStrictEqual(expectedLatestBlogIndexEntries);
+		assert.deepStrictEqual(actualLatestBlogIndexEntries, expectedLatestBlogIndexEntries);
 	});
 
-	it("returns all available entries when fewer posts exist than the requested maximum", () => {
+	test("returns all available entries when fewer posts exist than the requested maximum", function () {
 		const onlyBlogPost = createBlogPostCollectionEntry({
 			description: "Only blog post description",
 			id: "only-blog-post",
@@ -217,15 +218,15 @@ describe("createLatestBlogIndexEntries()", () => {
 			}
 		];
 
-		expect(actualLatestBlogIndexEntries).toStrictEqual(expectedLatestBlogIndexEntries);
+		assert.deepStrictEqual(actualLatestBlogIndexEntries, expectedLatestBlogIndexEntries);
 	});
 });
 
-describe("createBlogPostPageTitle()", () => {
-	it("places the blog post title before the site owner name", () => {
+suite("createBlogPostPageTitle()", function () {
+	test("places the blog post title before the site owner name", function () {
 		const actualPageTitle = createBlogPostPageTitle("Dependency injection without frameworks in TypeScript");
 		const expectedPageTitle = "Dependency injection without frameworks in TypeScript | Christian Rackerseder";
 
-		expect(actualPageTitle).toBe(expectedPageTitle);
+		assert.strictEqual(actualPageTitle, expectedPageTitle);
 	});
 });
