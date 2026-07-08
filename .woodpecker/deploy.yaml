@@ -20,7 +20,7 @@ steps:
           - npx just build
 
     - name: publish-container-image
-      image: woodpeckerci/plugin-docker-buildx:6.1.0
+      image: woodpeckerci/plugin-docker-buildx:6.1.1
       settings:
           # Dockerfile expects the Astro standalone build in ./target from the previous build step.
           repo:
