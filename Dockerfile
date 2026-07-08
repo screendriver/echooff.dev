@@ -1,4 +1,4 @@
-FROM node:26.4.0-slim AS dependencies
+FROM node:26.5.0-slim AS dependencies
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ RUN apt-get update \
 COPY package.json package-lock.json ./
 RUN npm clean-install --omit=dev --omit=optional
 
-FROM node:26.4.0-slim
+FROM node:26.5.0-slim
 
 WORKDIR /app
 
