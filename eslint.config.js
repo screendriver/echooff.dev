@@ -148,8 +148,7 @@ export default [
 		files: ["**/*.test.ts"],
 		rules: {
 			...mochaNodeAssertConfig.rules,
-			"mocha/max-top-level-suites": "off",
-			"node-assert/require-custom-message": "off"
+			"mocha/max-top-level-suites": "off"
 		}
 	},
 	{
