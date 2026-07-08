@@ -2,7 +2,7 @@ import { isError } from "@sindresorhus/is";
 import type { WallClock } from "@enormora/wall-clock";
 import { match } from "ts-pattern";
 import type { Result } from "true-myth/result";
-import { tryOrElse as tryTaskOrElse } from "true-myth/task";
+import { tryOrElse as tryTaskOrElse, type Task } from "true-myth/task";
 import {
 	createEmptyHackerNewsSectionModel,
 	type HackerNewsSectionModel,
@@ -48,9 +48,14 @@ type MentionLoadingDependencies = {
 };
 type BlogPostMentionsLoadedLogPropertiesInput = {
 	readonly durationMilliseconds: number;
+	readonly hackerNewsDurationMilliseconds: number;
 	readonly hackerNewsState: MentionCacheSectionLoadState;
 	readonly targetPathname: string;
+	readonly webmentionDurationMilliseconds: number;
 	readonly webmentionState: MentionCacheSectionLoadState;
+};
+type TimedMentionCacheSectionLoadingResult<SectionModel> = MentionCacheSectionLoadingResult<SectionModel> & {
+	readonly durationMilliseconds: number;
 };
 
 export const runtimeMentionRequestTimeoutMilliseconds = 5000;
@@ -110,14 +115,23 @@ function createBlogPostMentionsLoadStatus(
 function createBlogPostMentionsLoadedLogProperties(
 	input: BlogPostMentionsLoadedLogPropertiesInput
 ): RuntimeLogProperties {
-	const { durationMilliseconds, hackerNewsState, targetPathname, webmentionState } = input;
+	const {
+		durationMilliseconds,
+		hackerNewsDurationMilliseconds,
+		hackerNewsState,
+		targetPathname,
+		webmentionDurationMilliseconds,
+		webmentionState
+	} = input;
 
 	return {
 		durationMilliseconds,
 		event: "blog_post_mentions_loaded",
+		hackerNewsDurationMilliseconds,
 		hackerNewsState,
 		status: createBlogPostMentionsLoadStatus(webmentionState, hackerNewsState),
 		targetPathname,
+		webmentionDurationMilliseconds,
 		webmentionState
 	};
 }
@@ -130,6 +144,23 @@ function unwrapInfallibleResult<Value>(result: Result<Value, never>): Value {
 	return result.error;
 }
 
+function timeMentionCacheSectionLoad<SectionModel, RejectionReason>(
+	wallClock: WallClock,
+	loadSectionModel: () => Task<MentionCacheSectionLoadingResult<SectionModel>, RejectionReason>
+): Task<TimedMentionCacheSectionLoadingResult<SectionModel>, RejectionReason> {
+	const startedAtMilliseconds = wallClock.currentTimestampInMilliseconds;
+
+	return loadSectionModel().map((loadingResult) => {
+		const finishedAtMilliseconds = wallClock.currentTimestampInMilliseconds;
+		const durationMilliseconds = finishedAtMilliseconds - startedAtMilliseconds;
+
+		return {
+			...loadingResult,
+			durationMilliseconds
+		};
+	});
+}
+
 export async function loadBlogPostMentionsForTargetUrl(
 	dependencies: BlogPostMentionsDependencies,
 	targetUrl: string
@@ -137,52 +168,56 @@ export async function loadBlogPostMentionsForTargetUrl(
 	const startedAtMilliseconds = dependencies.wallClock.currentTimestampInMilliseconds;
 	const mentionLoadingDependencies = createMentionLoadingDependencies(dependencies);
 	const [webmentionTaskResult, hackerNewsTaskResult] = await Promise.all([
-		loadMentionCacheSectionModel({
-			cacheKey: createMentionCacheKey({
+		timeMentionCacheSectionLoad(dependencies.wallClock, () => {
+			return loadMentionCacheSectionModel({
+				cacheKey: createMentionCacheKey({
+					schemaVersion: mentionCacheSchemaVersion,
+					serviceIdentifier: "webmentions",
+					targetUrl
+				}),
+				createEmptySectionModel: createEmptyWebmentionSectionModel,
+				freshMilliseconds: mentionCacheFreshMilliseconds,
+				loadFreshSectionModel() {
+					return tryTaskOrElse(normalizeUnknownError, async () => {
+						return loadWebmentionsForTargetUrl(mentionLoadingDependencies, targetUrl);
+					});
+				},
+				logWarning: dependencies.logWarning,
+				parseSectionModel: parseCachedWebmentionSectionModel,
+				repository: dependencies.mentionCacheRepository,
 				schemaVersion: mentionCacheSchemaVersion,
-				serviceIdentifier: "webmentions",
-				targetUrl
-			}),
-			createEmptySectionModel: createEmptyWebmentionSectionModel,
-			freshMilliseconds: mentionCacheFreshMilliseconds,
-			loadFreshSectionModel() {
-				return tryTaskOrElse(normalizeUnknownError, async () => {
-					return loadWebmentionsForTargetUrl(mentionLoadingDependencies, targetUrl);
-				});
-			},
-			logWarning: dependencies.logWarning,
-			parseSectionModel: parseCachedWebmentionSectionModel,
-			repository: dependencies.mentionCacheRepository,
-			schemaVersion: mentionCacheSchemaVersion,
-			serviceName: "Webmention",
-			usableStaleMilliseconds: mentionCacheUsableStaleMilliseconds,
-			wallClock: dependencies.wallClock
+				serviceName: "Webmention",
+				usableStaleMilliseconds: mentionCacheUsableStaleMilliseconds,
+				wallClock: dependencies.wallClock
+			});
 		}),
-		loadMentionCacheSectionModel({
-			cacheKey: createMentionCacheKey({
+		timeMentionCacheSectionLoad(dependencies.wallClock, () => {
+			return loadMentionCacheSectionModel({
+				cacheKey: createMentionCacheKey({
+					schemaVersion: mentionCacheSchemaVersion,
+					serviceIdentifier: "hacker-news",
+					targetUrl
+				}),
+				createEmptySectionModel: createEmptyHackerNewsSectionModel,
+				freshMilliseconds: mentionCacheFreshMilliseconds,
+				loadFreshSectionModel() {
+					return tryTaskOrElse(normalizeUnknownError, async () => {
+						return loadHackerNewsMentionsForTargetUrl(mentionLoadingDependencies, targetUrl);
+					});
+				},
+				logWarning: dependencies.logWarning,
+				parseSectionModel: parseCachedHackerNewsSectionModel,
+				repository: dependencies.mentionCacheRepository,
 				schemaVersion: mentionCacheSchemaVersion,
-				serviceIdentifier: "hacker-news",
-				targetUrl
-			}),
-			createEmptySectionModel: createEmptyHackerNewsSectionModel,
-			freshMilliseconds: mentionCacheFreshMilliseconds,
-			loadFreshSectionModel() {
-				return tryTaskOrElse(normalizeUnknownError, async () => {
-					return loadHackerNewsMentionsForTargetUrl(mentionLoadingDependencies, targetUrl);
-				});
-			},
-			logWarning: dependencies.logWarning,
-			parseSectionModel: parseCachedHackerNewsSectionModel,
-			repository: dependencies.mentionCacheRepository,
-			schemaVersion: mentionCacheSchemaVersion,
-			serviceName: "Hacker News",
-			usableStaleMilliseconds: mentionCacheUsableStaleMilliseconds,
-			wallClock: dependencies.wallClock
+				serviceName: "Hacker News",
+				usableStaleMilliseconds: mentionCacheUsableStaleMilliseconds,
+				wallClock: dependencies.wallClock
+			});
 		})
 	]);
-	const webmentionLoadingResult: MentionCacheSectionLoadingResult<WebmentionSectionModel> =
+	const webmentionLoadingResult: TimedMentionCacheSectionLoadingResult<WebmentionSectionModel> =
 		unwrapInfallibleResult(webmentionTaskResult);
-	const hackerNewsLoadingResult: MentionCacheSectionLoadingResult<HackerNewsSectionModel> =
+	const hackerNewsLoadingResult: TimedMentionCacheSectionLoadingResult<HackerNewsSectionModel> =
 		unwrapInfallibleResult(hackerNewsTaskResult);
 	const finishedAtMilliseconds = dependencies.wallClock.currentTimestampInMilliseconds;
 	const targetUrlValue = new URL(targetUrl);
@@ -192,8 +227,10 @@ export async function loadBlogPostMentionsForTargetUrl(
 		"Loaded blog post mentions",
 		createBlogPostMentionsLoadedLogProperties({
 			durationMilliseconds: finishedAtMilliseconds - startedAtMilliseconds,
+			hackerNewsDurationMilliseconds: hackerNewsLoadingResult.durationMilliseconds,
 			hackerNewsState: hackerNewsLoadingResult.state,
 			targetPathname,
+			webmentionDurationMilliseconds: webmentionLoadingResult.durationMilliseconds,
 			webmentionState: webmentionLoadingResult.state
 		})
 	);

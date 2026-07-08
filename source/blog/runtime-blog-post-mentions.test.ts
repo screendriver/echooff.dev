@@ -132,9 +132,11 @@ suite("loadBlogPostMentionsForTargetUrl()", function () {
 			{
 				durationMilliseconds: 0,
 				event: "blog_post_mentions_loaded",
+				hackerNewsDurationMilliseconds: 0,
 				hackerNewsState: "refreshed",
 				status: "ok",
 				targetPathname: "/blog/runtime-log-test",
+				webmentionDurationMilliseconds: 0,
 				webmentionState: "refreshed"
 			}
 		]);
@@ -212,9 +214,11 @@ suite("loadBlogPostMentionsForTargetUrl()", function () {
 			{
 				durationMilliseconds: 0,
 				event: "blog_post_mentions_loaded",
+				hackerNewsDurationMilliseconds: 0,
 				hackerNewsState: "fresh",
 				status: "ok",
 				targetPathname: "/blog/cached-runtime-log-test",
+				webmentionDurationMilliseconds: 0,
 				webmentionState: "fresh"
 			}
 		]);
