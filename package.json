@@ -43,7 +43,7 @@
 		"@types/feather-icons": "4.29.4",
 		"@types/gsap": "1.20.2",
 		"@types/mocha": "10.0.10",
-		"@types/node": "26.1.0",
+		"@types/node": "26.1.1",
 		"@types/sinon": "22.0.0",
 		"astro-seo-schema": "7.0.0",
 		"common-tags": "1.8.2",
