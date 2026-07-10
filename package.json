@@ -12,7 +12,7 @@
 	"scripts": {},
 	"dependencies": {
 		"@astrojs/node": "11.0.2",
-		"@enormora/wall-clock": "0.0.2",
+		"@enormora/wall-clock": "0.0.3",
 		"@sindresorhus/is": "8.1.0",
 		"arktype": "2.2.3",
 		"astro": "7.0.7",
