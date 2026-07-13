@@ -17,8 +17,8 @@ function createOpenGraphUrlResolutionInput(
 ): NormalizedOpenGraphUrlResolutionInput {
 	return {
 		defaultOpenGraphUrl: parameters.defaultOpenGraphUrl,
-		...(isString(parameters.canonicalUrl) && { canonicalUrl: parameters.canonicalUrl }),
-		...(isString(parameters.openGraphUrl) && { openGraphUrl: parameters.openGraphUrl })
+		...(isString(parameters.canonicalUrl) ? { canonicalUrl: parameters.canonicalUrl } : {}),
+		...(isString(parameters.openGraphUrl) ? { openGraphUrl: parameters.openGraphUrl } : {})
 	};
 }
 
