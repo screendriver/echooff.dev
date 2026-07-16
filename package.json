@@ -36,7 +36,7 @@
 		"@enormora/eslint-config-typescript": "0.0.58",
 		"@fontsource/jetbrains-mono": "5.2.8",
 		"@fontsource/source-sans-pro": "5.2.5",
-		"@hono/node-server": "2.0.9",
+		"@hono/node-server": "2.0.10",
 		"@octokit/graphql": "9.0.3",
 		"@types/better-sqlite3": "7.6.13",
 		"@types/common-tags": "1.8.4",
