@@ -16,6 +16,14 @@ const { href } = Astro.props;
 		text-decoration: none;
 	}
 
+	@media (min-width: variables.$small-width) {
+		.blog-archive-link::before {
+			color: variables.$foreground;
+			content: "·";
+			margin-inline-end: 0.75rem;
+		}
+	}
+
 	.blog-archive-link:hover,
 	.blog-archive-link:focus-visible {
 		color: variables.$pink;
