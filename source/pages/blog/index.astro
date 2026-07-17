@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import { isErr } from "true-myth/result";
+import BlogArchiveLink from "../../blog/BlogArchiveLink.astro";
 import BlogArchiveList from "../../blog/BlogArchiveList.astro";
 import BlogArchiveNavigation from "../../blog/BlogArchiveNavigation.astro";
 import BlogArchiveSection from "../../blog/BlogArchiveSection.astro";
@@ -67,6 +68,8 @@ const blogPaginationModel = blogPaginationModelResult.value;
 	<BlogArchiveSection label="Blog posts">
 		<BlogArchiveNavigation label="Blog topic archive">
 			<BlogTopicLink href="/blog/topics">Browse posts by topic</BlogTopicLink>
+			{" · "}
+			<BlogArchiveLink href="/blog/search">Search all posts</BlogArchiveLink>
 		</BlogArchiveNavigation>
 
 		{
