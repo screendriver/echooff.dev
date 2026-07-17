@@ -54,6 +54,10 @@ export function createBlogTopicIndexAbsoluteUrl(configuredSiteUrl: URL | undefin
 	return createAbsoluteUrl(getConfiguredSiteUrlOrThrow(configuredSiteUrl), "/blog/topics");
 }
 
+export function createBlogSearchAbsoluteUrl(configuredSiteUrl: URL): string {
+	return createAbsoluteUrl(configuredSiteUrl, "/blog/search");
+}
+
 export function createBlogTopicPath(topicSlug: string): string {
 	return `/blog/topics/${topicSlug}`;
 }

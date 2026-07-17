@@ -1,8 +1,22 @@
 import assert from "node:assert";
 import { suite, test } from "mocha";
-import { validateInternalBlogPostLinks, type BlogPostMarkdownDocument } from "./blog-link-validation.ts";
+import {
+	readBlogPostMarkdownDocuments,
+	validateInternalBlogPostLinks,
+	type BlogPostMarkdownDocument
+} from "./blog-link-validation.ts";
 
 suite("validateInternalBlogPostLinks()", function () {
+	test("keeps the search route available for the dedicated search page", async function () {
+		const reservedBlogPostSlug = "search";
+		const blogPostMarkdownDocuments = await readBlogPostMarkdownDocuments();
+		const hasReservedBlogPostSlug = blogPostMarkdownDocuments.some((blogPostMarkdownDocument) => {
+			return blogPostMarkdownDocument.blogPostSlug === reservedBlogPostSlug;
+		});
+
+		assert.strictEqual(hasReservedBlogPostSlug, false);
+	});
+
 	test("reports a missing internal route target", async function () {
 		const blogPostMarkdownDocuments: readonly BlogPostMarkdownDocument[] = [
 			{

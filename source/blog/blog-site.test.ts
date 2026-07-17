@@ -8,6 +8,7 @@ import {
 	createBlogIndexPagePath,
 	createBlogPostAbsoluteUrl,
 	createBlogRssFeedAbsoluteUrl,
+	createBlogSearchAbsoluteUrl,
 	createBlogTopicAbsoluteUrl,
 	createBlogTopicIndexAbsoluteUrl,
 	createBlogTopicPath,
@@ -126,6 +127,15 @@ suite("createBlogTopicIndexAbsoluteUrl()", function () {
 		const expectedBlogTopicIndexAbsoluteUrl = "https://example.com/blog/topics";
 
 		assert.strictEqual(actualBlogTopicIndexAbsoluteUrl, expectedBlogTopicIndexAbsoluteUrl);
+	});
+});
+
+suite("createBlogSearchAbsoluteUrl()", function () {
+	test("creates the absolute URL for blog search", function () {
+		const actualBlogSearchAbsoluteUrl = createBlogSearchAbsoluteUrl(new URL("https://example.com"));
+		const expectedBlogSearchAbsoluteUrl = "https://example.com/blog/search";
+
+		assert.strictEqual(actualBlogSearchAbsoluteUrl, expectedBlogSearchAbsoluteUrl);
 	});
 });
 
