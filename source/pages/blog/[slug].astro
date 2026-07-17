@@ -95,14 +95,14 @@ const siteUrl = configuredSiteUrl.toString();
 		/>
 	</Fragment>
 
-	<article class="blog-post-article h-entry">
+	<article class="blog-post-article h-entry" data-pagefind-body>
 		<header class="blog-post-article-header">
 			<nav aria-label="Blog" class="blog-post-article-navigation">
 				<BlogBackLink href="/blog" includeIcon>Back to Blog</BlogBackLink>
 			</nav>
 			<section class="blog-post-article-heading-group" aria-label="Article title and author">
 				<h1 class="p-name">{blogPost.data.title}</h1>
-				<div class="blog-post-article-author-row">
+				<div class="blog-post-article-author-row" data-pagefind-ignore="all">
 					<figure class="blog-post-article-avatar h-card">
 						<a class="u-url" href={siteUrl} rel="author">
 							<Image
@@ -137,7 +137,7 @@ const siteUrl = configuredSiteUrl.toString();
 					</div>
 				</div>
 			</section>
-			<a class="u-url blog-post-screen-reader-only" href={blogPostUrl}> Permalink </a>
+			<a class="u-url blog-post-screen-reader-only" data-pagefind-ignore="all" href={blogPostUrl}> Permalink </a>
 		</header>
 
 		<section class="blog-post-article-body" aria-label="Article content">
@@ -145,11 +145,13 @@ const siteUrl = configuredSiteUrl.toString();
 				<Content />
 			</BlogPostContent>
 
-			<BlogPostMentions blogPostId={blogPost.id} server:defer>
-				<section class="blog-post-mentions-loading" aria-live="polite" slot="fallback">
-					<p>Loading mentions...</p>
-				</section>
-			</BlogPostMentions>
+			<div data-pagefind-ignore="all">
+				<BlogPostMentions blogPostId={blogPost.id} server:defer>
+					<section class="blog-post-mentions-loading" aria-live="polite" slot="fallback">
+						<p>Loading mentions...</p>
+					</section>
+				</BlogPostMentions>
+			</div>
 		</section>
 	</article>
 
