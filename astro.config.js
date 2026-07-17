@@ -37,6 +37,7 @@ export default defineConfig({
 						properties: {
 							ariaLabel: "Copy link to this section",
 							className: ["blog-heading-anchor-link"],
+							dataPagefindIgnore: "all",
 							title: "Copy link to this section"
 						}
 					}
