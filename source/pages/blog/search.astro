@@ -1,4 +1,6 @@
 ---
+import BlogArchiveNavigation from "../../blog/BlogArchiveNavigation.astro";
+import BlogBackLink from "../../blog/BlogBackLink.astro";
 import BlogShell from "../../blog/BlogShell.astro";
 import {
 	createAbsoluteAssetUrl,
@@ -44,6 +46,10 @@ const searchDescription = "Search all published echooff.dev blog posts.";
 	</Fragment>
 
 	<section aria-label="Blog search" class="blog-search-page">
+		<BlogArchiveNavigation label="Blog">
+			<BlogBackLink href="/blog">Back to Blog</BlogBackLink>
+		</BlogArchiveNavigation>
+
 		{
 			import.meta.env.PROD ? (
 				<div class="blog-search-pagefind">
