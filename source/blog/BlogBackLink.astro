@@ -19,13 +19,14 @@ const { href } = Astro.props;
 		display: inline-flex;
 		font-size: 0.9rem;
 		gap: 0.45rem;
-		text-decoration: underline;
-		text-decoration-color: rgba(variables.$cyan, 0.5);
-		text-underline-offset: 0.2rem;
+		text-decoration: none;
 	}
 
 	.blog-back-link:hover,
 	.blog-back-link:focus-visible {
 		color: variables.$pink;
+		text-decoration: underline;
+		text-decoration-color: rgba(variables.$pink, 0.55);
+		text-underline-offset: 0.2rem;
 	}
 </style>

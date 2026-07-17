@@ -96,9 +96,7 @@ const { paginationModel } = Astro.props;
 	.blog-pagination-navigation-link,
 	.blog-pagination-navigation-page-link {
 		color: variables.$cyan;
-		text-decoration: underline;
-		text-decoration-color: rgba(variables.$cyan, 0.5);
-		text-underline-offset: 0.18rem;
+		text-decoration: none;
 	}
 
 	.blog-pagination-navigation-link:hover,
@@ -106,6 +104,9 @@ const { paginationModel } = Astro.props;
 	.blog-pagination-navigation-page-link:hover,
 	.blog-pagination-navigation-page-link:focus-visible {
 		color: variables.$pink;
+		text-decoration: underline;
+		text-decoration-color: rgba(variables.$pink, 0.55);
+		text-underline-offset: 0.18rem;
 	}
 
 	.blog-pagination-navigation-link.is-disabled {
