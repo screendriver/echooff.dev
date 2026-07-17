@@ -30,8 +30,7 @@ const searchDescription = "Search all published echooff.dev blog posts.";
 	twitterCardType="summary_large_image"
 	pageTitle="Search"
 	intro={searchDescription}
-	terminalCommand="$ pagefind --site target/client"
-	terminalOutput="Search generated during the production build"
+	terminalCommand="$ search /blog"
 >
 	<Fragment slot="head">
 		{
@@ -55,7 +54,7 @@ const searchDescription = "Search all published echooff.dev blog posts.";
 				</div>
 			) : (
 				<p class="blog-search-development-message">
-					Search is generated during the production build. Run <code>just build</code> followed by
+					Search is generated during the production build. Run <code>just build</code> followed by{" "}
 					<code>just preview</code> to test it.
 				</p>
 			)
