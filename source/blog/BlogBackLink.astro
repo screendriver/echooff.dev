@@ -1,16 +1,12 @@
 ---
-import { icons } from "feather-icons";
-
 export interface Props {
 	readonly href: string;
-	readonly includeIcon?: boolean;
 }
 
-const { href, includeIcon = false } = Astro.props;
+const { href } = Astro.props;
 ---
 
 <a class="blog-back-link" href={href}>
-	{includeIcon && <Fragment set:html={icons["arrow-left"]?.toSvg({ class: "blog-back-link-icon" })} />}
 	<span><slot /></span>
 </a>
 
@@ -26,11 +22,6 @@ const { href, includeIcon = false } = Astro.props;
 		text-decoration: underline;
 		text-decoration-color: rgba(variables.$cyan, 0.5);
 		text-underline-offset: 0.2rem;
-	}
-
-	.blog-back-link :global(.blog-back-link-icon) {
-		height: 1rem;
-		width: 1rem;
 	}
 
 	.blog-back-link:hover,
