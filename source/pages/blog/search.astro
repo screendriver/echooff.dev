@@ -96,6 +96,11 @@ const searchDescription = "Search all published echooff.dev blog posts.";
 		gap: 1rem;
 	}
 
+	:global(.blog-search-pagefind .pf-result-link:hover),
+	:global(.blog-search-pagefind .pf-heading-link:hover) {
+		text-decoration: none !important;
+	}
+
 	.blog-search-development-message {
 		color: variables.$comment;
 		line-height: 1.7;
