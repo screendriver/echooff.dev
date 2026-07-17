@@ -16,28 +16,14 @@ const { href, label } = Astro.props;
 
 	.blog-topic-link {
 		color: variables.$cyan;
-		display: inline-block;
-		position: relative;
 		text-decoration: none;
-	}
-
-	.blog-topic-link::after {
-		background-color: rgba(variables.$cyan, 0.5);
-		bottom: 0.05em;
-		content: "";
-		height: 1px;
-		left: 0.12em;
-		position: absolute;
-		right: 0.12em;
 	}
 
 	.blog-topic-link:hover,
 	.blog-topic-link:focus-visible {
 		color: variables.$pink;
-	}
-
-	.blog-topic-link:hover::after,
-	.blog-topic-link:focus-visible::after {
-		background-color: rgba(variables.$pink, 0.55);
+		text-decoration: underline;
+		text-decoration-color: rgba(variables.$pink, 0.55);
+		text-underline-offset: 0.2rem;
 	}
 </style>

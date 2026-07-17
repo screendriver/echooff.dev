@@ -6,24 +6,18 @@ export interface Props {
 const { href } = Astro.props;
 ---
 
-<a class="blog-back-link" href={href}>
-	<span><slot /></span>
-</a>
+<a class="blog-archive-link" href={href}><slot /></a>
 
 <style lang="scss">
 	@use "../styles/variables";
 
-	.blog-back-link {
-		align-items: center;
+	.blog-archive-link {
 		color: variables.$cyan;
-		display: inline-flex;
-		font-size: 0.9rem;
-		gap: 0.45rem;
 		text-decoration: none;
 	}
 
-	.blog-back-link:hover,
-	.blog-back-link:focus-visible {
+	.blog-archive-link:hover,
+	.blog-archive-link:focus-visible {
 		color: variables.$pink;
 		text-decoration: underline;
 		text-decoration-color: rgba(variables.$pink, 0.55);

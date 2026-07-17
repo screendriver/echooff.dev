@@ -1,0 +1,124 @@
+---
+import BlogArchiveNavigation from "../../blog/BlogArchiveNavigation.astro";
+import BlogBackLink from "../../blog/BlogBackLink.astro";
+import BlogShell from "../../blog/BlogShell.astro";
+import {
+	createAbsoluteAssetUrl,
+	createBlogRssFeedAbsoluteUrl,
+	createBlogSearchAbsoluteUrl,
+	getConfiguredSiteUrlOrThrow
+} from "../../blog/blog-site.js";
+import headerImage from "../../assets/images/header-01.jpg";
+
+const configuredSiteUrl = getConfiguredSiteUrlOrThrow(Astro.site);
+const blogSearchUrl = createBlogSearchAbsoluteUrl(configuredSiteUrl);
+const blogRssFeedUrl = createBlogRssFeedAbsoluteUrl(configuredSiteUrl);
+const openGraphImageUrl = createAbsoluteAssetUrl(configuredSiteUrl, headerImage.src);
+const openGraphImageAlternativeText = "echooff.dev header illustration";
+const searchDescription = "Search all published echooff.dev blog posts.";
+---
+
+<BlogShell
+	canonicalUrl={blogSearchUrl}
+	description={searchDescription}
+	openGraphImageAlternativeText={openGraphImageAlternativeText}
+	openGraphImageUrl={openGraphImageUrl}
+	openGraphPublishedTime=""
+	openGraphType="website"
+	openGraphUrl={blogSearchUrl}
+	rssFeedUrl={blogRssFeedUrl}
+	robots="noindex,follow"
+	title="Search the Blog | Christian Rackerseder"
+	twitterCardType="summary_large_image"
+	pageTitle="Search"
+	intro={searchDescription}
+	terminalCommand="$ search /blog"
+>
+	<Fragment slot="head">
+		{
+			import.meta.env.PROD && (
+				<Fragment>
+					<link href="/pagefind/pagefind-component-ui.css" rel="stylesheet" />
+					<script is:inline src="/pagefind/pagefind-component-ui.js" type="module" />
+				</Fragment>
+			)
+		}
+	</Fragment>
+
+	<section aria-label="Blog search" class="blog-search-page">
+		<BlogArchiveNavigation label="Blog">
+			<BlogBackLink href="/blog">Back to Blog</BlogBackLink>
+		</BlogArchiveNavigation>
+
+		{
+			import.meta.env.PROD ? (
+				<div class="blog-search-pagefind">
+					<pagefind-config base-url="/" />
+					<pagefind-input placeholder="Search all blog posts" />
+					<pagefind-summary default-message="Enter a search term to search all blog posts." />
+					<pagefind-results />
+				</div>
+			) : (
+				<p class="blog-search-development-message">
+					Search is generated during the production build. Run <code>just build</code> followed by{" "}
+					<code>just preview</code> to test it.
+				</p>
+			)
+		}
+	</section>
+</BlogShell>
+
+<style lang="scss">
+	@use "../../styles/variables";
+
+	.blog-search-page {
+		padding: 1.5rem;
+	}
+
+	.blog-search-pagefind {
+		--pf-background: #{variables.$background};
+		--pf-border: #{variables.$selection};
+		--pf-border-focus: #{variables.$cyan};
+		--pf-border-radius: 0.375rem;
+		--pf-error-bg: #{variables.$background};
+		--pf-error-border: #{variables.$red};
+		--pf-error-text: #{variables.$red};
+		--pf-font: "JetBrains Mono", sans-serif;
+		--pf-hover: #{variables.$selection};
+		--pf-input-font-size: 1rem;
+		--pf-input-height: 3rem;
+		--pf-mark: #{variables.$yellow};
+		--pf-outline-focus: #{variables.$cyan};
+		--pf-result-excerpt-font-size: 0.9rem;
+		--pf-result-title-font-size: 1rem;
+		--pf-results-gap: 1rem;
+		--pf-summary-font-size: 0.85rem;
+		--pf-text: #{variables.$foreground};
+		--pf-text-muted: #{rgba(variables.$foreground, 0.68)};
+		--pf-text-secondary: #{rgba(variables.$foreground, 0.74)};
+
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	:global(.blog-search-pagefind .pf-result-link:hover),
+	:global(.blog-search-pagefind .pf-heading-link:hover) {
+		text-decoration: none !important;
+	}
+
+	.blog-search-development-message {
+		color: variables.$comment;
+		line-height: 1.7;
+	}
+
+	.blog-search-development-message code {
+		color: variables.$yellow;
+	}
+
+	@media (min-width: variables.$small-width) {
+		.blog-search-page {
+			padding: 2rem;
+		}
+	}
+</style>

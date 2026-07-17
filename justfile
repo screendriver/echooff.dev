@@ -24,6 +24,7 @@ lint-fix:
 
 @build:
 	astro build
+	pagefind --site target/client
 
 @preview:
 	astro preview

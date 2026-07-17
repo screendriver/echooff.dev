@@ -60,6 +60,7 @@ const {
 			title={title}
 			twitterCardType={twitterCardType}
 		>
+			<slot name="head" slot="head" />
 			{showReadingProgressIndicator && <BlogReadingProgressIndicator />}
 			<Header />
 
