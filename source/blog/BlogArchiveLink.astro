@@ -6,7 +6,7 @@ export interface Props {
 const { href } = Astro.props;
 ---
 
-<a class="blog-archive-link" href={href}><slot /></a>
+<a class="blog-archive-link" href={href}><span><slot /></span></a>
 
 <style lang="scss">
 	@use "../styles/variables";
@@ -27,6 +27,10 @@ const { href } = Astro.props;
 	.blog-archive-link:hover,
 	.blog-archive-link:focus-visible {
 		color: variables.$pink;
+	}
+
+	.blog-archive-link:hover > span,
+	.blog-archive-link:focus-visible > span {
 		text-decoration: underline;
 		text-decoration-color: rgba(variables.$pink, 0.55);
 		text-underline-offset: 0.2rem;
