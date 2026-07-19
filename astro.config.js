@@ -1,9 +1,17 @@
+import { URL } from "node:url";
 import { defineConfig } from "astro/config";
 import { rehypeHeadingIds, unified } from "@astrojs/markdown-remark";
 import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { buildHeadingAnchorLinkContent } from "./source/blog/heading-anchor-link-content.js";
+
+function shouldIncludePageInSitemap(absolutePageUrl) {
+	const parsedPageUrl = new URL(absolutePageUrl);
+	const pagePathname = parsedPageUrl.pathname;
+
+	return pagePathname !== "/blog/search";
+}
 
 export default defineConfig({
 	srcDir: "source",
@@ -13,7 +21,11 @@ export default defineConfig({
 	adapter: node({
 		mode: "standalone"
 	}),
-	integrations: [sitemap()],
+	integrations: [
+		sitemap({
+			filter: shouldIncludePageInSitemap
+		})
+	],
 	vite: {
 		css: {
 			devSourcemap: true
