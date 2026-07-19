@@ -34,7 +34,7 @@
 		"@enormora/eslint-config-mocha-node-assert": "0.0.7",
 		"@enormora/eslint-config-node": "0.0.39",
 		"@enormora/eslint-config-typescript": "0.0.60",
-		"@fontsource/jetbrains-mono": "5.2.8",
+		"@fontsource/jetbrains-mono": "5.3.0",
 		"@fontsource/source-sans-pro": "5.2.5",
 		"@hono/node-server": "2.0.10",
 		"@octokit/graphql": "9.0.3",
