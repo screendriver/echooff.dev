@@ -4,6 +4,9 @@ when:
       branch: main
     - event: manual
 
+labels:
+    platform: linux/arm64
+
 steps:
     - name: build
       image: node:26.5.0

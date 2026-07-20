@@ -2,6 +2,9 @@
 when:
     - event: [push, manual]
 
+labels:
+    platform: linux/amd64
+
 steps:
     - name: install
       image: node:26.5.0
