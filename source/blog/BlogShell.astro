@@ -1,5 +1,6 @@
 ---
 import BlogReadingProgressIndicator from "./BlogReadingProgressIndicator.astro";
+import { nothing, type Maybe } from "true-myth/maybe";
 import PageShell from "../layouts/PageShell.astro";
 import Header from "../layouts/Header.astro";
 import Footer from "../layouts/Footer.astro";
@@ -9,6 +10,7 @@ export interface Props {
 	readonly description: string;
 	readonly openGraphImageAlternativeText: string;
 	readonly openGraphImageUrl: string;
+	readonly openGraphModifiedTime?: Maybe<string>;
 	readonly openGraphPublishedTime: string;
 	readonly openGraphType: string;
 	readonly openGraphUrl: string;
@@ -30,6 +32,7 @@ const {
 	intro,
 	openGraphImageAlternativeText,
 	openGraphImageUrl,
+	openGraphModifiedTime = nothing<string>(),
 	openGraphPublishedTime,
 	openGraphType,
 	openGraphUrl,
@@ -52,6 +55,7 @@ const {
 			description={description}
 			openGraphImageAlternativeText={openGraphImageAlternativeText}
 			openGraphImageUrl={openGraphImageUrl}
+			openGraphModifiedTime={openGraphModifiedTime}
 			openGraphPublishedTime={openGraphPublishedTime}
 			openGraphType={openGraphType}
 			openGraphUrl={openGraphUrl}
@@ -61,6 +65,7 @@ const {
 			twitterCardType={twitterCardType}
 		>
 			<slot name="head" slot="head" />
+			<slot name="search-engine-optimization-schema" slot="search-engine-optimization-schema" />
 			{showReadingProgressIndicator && <BlogReadingProgressIndicator />}
 			<Header />
 

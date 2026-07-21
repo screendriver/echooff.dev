@@ -5,7 +5,7 @@ import {
 	createBlogPostPageTitle,
 	createBlogPostReadingTimeLabel,
 	createBlogIndexEntries,
-	formatPublishedAtFallbackDateTime,
+	formatDateTimeFallback,
 	sortBlogPostsByPublicationDateDescending
 } from "./blog-posts.ts";
 import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.ts";
@@ -17,6 +17,29 @@ suite("sortBlogPostsByPublicationDateDescending()", function () {
 			id: "older-blog-post",
 			title: "Older Blog Post",
 			publishedAt: "2026-02-01T10:00:00+01:00",
+			topic: "Writing"
+		});
+		const newerBlogPost = createBlogPostCollectionEntry({
+			description: "Newer blog post description",
+			id: "newer-blog-post",
+			title: "Newer Blog Post",
+			publishedAt: "2026-02-28T10:00:00+01:00",
+			topic: "Writing"
+		});
+
+		const actualSortedBlogPosts = sortBlogPostsByPublicationDateDescending([olderBlogPost, newerBlogPost]);
+		const expectedSortedBlogPosts = [newerBlogPost, olderBlogPost];
+
+		assert.deepStrictEqual(actualSortedBlogPosts, expectedSortedBlogPosts);
+	});
+
+	test("keeps publication chronology when a blog post has been updated", function () {
+		const olderBlogPost = createBlogPostCollectionEntry({
+			description: "Older blog post description",
+			id: "older-blog-post",
+			title: "Older Blog Post",
+			publishedAt: "2026-02-01T10:00:00+01:00",
+			updatedAt: "2026-07-21T15:59:00+02:00",
 			topic: "Writing"
 		});
 		const newerBlogPost = createBlogPostCollectionEntry({
@@ -56,9 +79,9 @@ suite("sortBlogPostsByPublicationDateDescending()", function () {
 	});
 });
 
-suite("formatPublishedAtFallbackDateTime()", function () {
+suite("formatDateTimeFallback()", function () {
 	test("returns a deterministic readable fallback date", function () {
-		const actualFallbackDateTime = formatPublishedAtFallbackDateTime("2026-02-28T14:30:00+01:00");
+		const actualFallbackDateTime = formatDateTimeFallback("2026-02-28T14:30:00+01:00");
 		const expectedFallbackDateTime = "2026-02-28";
 
 		assert.strictEqual(actualFallbackDateTime, expectedFallbackDateTime);
@@ -66,9 +89,9 @@ suite("formatPublishedAtFallbackDateTime()", function () {
 
 	test("throws when the timestamp is invalid", function () {
 		const actualFormatOperation = (): void => {
-			formatPublishedAtFallbackDateTime("not-a-date");
+			formatDateTimeFallback("not-a-date");
 		};
-		const expectedErrorMessage = 'Published at "not-a-date" is not a valid ISO 8601 date-time';
+		const expectedErrorMessage = 'Date-time "not-a-date" is not a valid ISO 8601 date-time';
 
 		assert.throws(actualFormatOperation, { message: expectedErrorMessage });
 	});

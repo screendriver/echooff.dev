@@ -14,6 +14,7 @@ const blogCollection = defineCollection({
 		title: z.string().min(1),
 		description: z.string().min(1),
 		publishedAt: z.iso.datetime({ offset: true }),
+		updatedAt: z.iso.datetime({ offset: true }).optional(),
 		topic: z.enum(blogPostTopics)
 	})
 });

@@ -106,7 +106,7 @@ const blogArchiveMetadata = createPaginatedBlogArchiveMetadata({
 									title={blogIndexEntry.title}
 								>
 									<Fragment slot="footer">
-										Published <LocalizedDateTime publishedAt={blogIndexEntry.publishedAt} /> in{" "}
+										Published <LocalizedDateTime dateTime={blogIndexEntry.publishedAt} /> in{" "}
 										<BlogTopicLink href={createBlogTopicPath(blogIndexEntry.topicSlug)}>
 											{blogIndexEntry.topic}
 										</BlogTopicLink>

@@ -12,21 +12,21 @@
 	});
 
 	for (const localizedDateTimeElement of document.querySelectorAll("[data-localized-date-time]")) {
-		const publishedAt = localizedDateTimeElement.getAttribute("datetime");
+		const dateTimeValue = localizedDateTimeElement.getAttribute("datetime");
 
-		if (!isString(publishedAt)) {
+		if (!isString(dateTimeValue)) {
 			localizedDateTimeElement.classList.remove("localized-date-time-pending");
 			continue;
 		}
 
-		const publishedAtDate = new Date(publishedAt);
+		const dateTimeDate = new Date(dateTimeValue);
 
-		if (!isValidDate(publishedAtDate)) {
+		if (!isValidDate(dateTimeDate)) {
 			localizedDateTimeElement.classList.remove("localized-date-time-pending");
 			continue;
 		}
 
-		localizedDateTimeElement.textContent = browserDateTimeFormatter.format(publishedAtDate);
+		localizedDateTimeElement.textContent = browserDateTimeFormatter.format(dateTimeDate);
 		localizedDateTimeElement.classList.remove("localized-date-time-pending");
 	}
 </script>

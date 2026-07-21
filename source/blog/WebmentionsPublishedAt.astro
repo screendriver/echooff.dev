@@ -13,7 +13,7 @@ const { webmentionReply } = Astro.props;
 	webmentionReply.visiblePublishedAt.isJust && (
 		<span>
 			{" · "}
-			<LocalizedDateTime publishedAt={webmentionReply.visiblePublishedAt.value} />
+			<LocalizedDateTime dateTime={webmentionReply.visiblePublishedAt.value} />
 		</span>
 	)
 }

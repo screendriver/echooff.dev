@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { Schema } from "astro-seo-schema";
 import { getCollection, render } from "astro:content";
+import { of } from "true-myth/maybe";
 import BlogArticleByline from "../../blog/BlogArticleByline.astro";
 import BlogBackLink from "../../blog/BlogBackLink.astro";
 import BlogPostContent from "../../blog/BlogPostContent.astro";
@@ -51,6 +52,7 @@ const topicDetails = getBlogPostTopicDetails(blogPost.data.topic);
 const blogPostReadingTimeLabel = createBlogPostReadingTimeLabel(blogPost.body ?? "");
 const blogPostAuthorName = "Christian Rackerseder";
 const siteUrl = configuredSiteUrl.toString();
+const blogPostUpdatedAt = of(blogPost.data.updatedAt);
 ---
 
 <BlogShell
@@ -58,6 +60,7 @@ const siteUrl = configuredSiteUrl.toString();
 	description={blogPost.data.description}
 	openGraphImageAlternativeText={openGraphImageAlternativeText}
 	openGraphImageUrl={openGraphImageUrl}
+	openGraphModifiedTime={blogPostUpdatedAt}
 	openGraphPublishedTime={blogPost.data.publishedAt}
 	openGraphType="article"
 	openGraphUrl={blogPostUrl}
@@ -80,6 +83,11 @@ const siteUrl = configuredSiteUrl.toString();
 					url: siteUrl
 				},
 				datePublished: blogPost.data.publishedAt,
+				...blogPostUpdatedAt
+					.map((updatedAt) => {
+						return { dateModified: updatedAt };
+					})
+					.unwrapOr({}),
 				description: blogPost.data.description,
 				headline: blogPost.data.title,
 				image: openGraphImageUrl,
@@ -118,13 +126,30 @@ const siteUrl = configuredSiteUrl.toString();
 					</figure>
 					<div class="blog-post-article-author-copy">
 						<BlogArticleByline authorName={blogPostAuthorName} authorUrl={siteUrl} />
-						<p class="blog-post-article-metadata">
-							<span class="blog-post-article-metadata-item">
+						<p
+							class:list={[
+								"blog-post-article-metadata",
+								{ "blog-post-article-metadata-with-update": blogPostUpdatedAt.isJust }
+							]}
+						>
+							<span class="blog-post-article-metadata-item blog-post-article-date-metadata-item">
 								Published <LocalizedDateTime
 									className="dt-published"
-									publishedAt={blogPost.data.publishedAt}
+									dateTime={blogPost.data.publishedAt}
 								/>
 							</span>
+							{
+								blogPostUpdatedAt
+									.map((updatedAt) => {
+										return (
+											<span class="blog-post-article-metadata-item blog-post-article-date-metadata-item">
+												Updated{" "}
+												<LocalizedDateTime className="dt-updated" dateTime={updatedAt} />
+											</span>
+										);
+									})
+									.unwrapOr("")
+							}
 							<span class="blog-post-article-metadata-item">
 								in <BlogTopicLink href={`/blog/topics/${topicDetails.slug}`}
 									>{topicDetails.label}</BlogTopicLink
@@ -245,18 +270,13 @@ const siteUrl = configuredSiteUrl.toString();
 		font-size: 0.82rem;
 	}
 
-	.blog-post-article-metadata-item + .blog-post-article-metadata-item::before {
+	.blog-post-article-date-metadata-item {
+		white-space: nowrap;
+	}
+
+	.blog-post-article-metadata-item:not(:last-child)::after {
 		color: rgba(variables.$foreground, 0.3);
 		content: " · ";
-	}
-
-	.blog-post-article-metadata-item:first-child::before {
-		content: none;
-	}
-
-	.blog-post-article-metadata-item:first-child,
-	.blog-post-article-metadata-item:nth-child(2) {
-		white-space: nowrap;
 	}
 
 	.blog-post-article-reading-time {
@@ -340,8 +360,12 @@ const siteUrl = configuredSiteUrl.toString();
 			white-space: nowrap;
 		}
 
-		.blog-post-article-metadata-item + .blog-post-article-metadata-item::before {
+		.blog-post-article-metadata-item:not(:last-child)::after {
 			content: none;
+		}
+
+		.blog-post-article-metadata-with-update .blog-post-article-date-metadata-item {
+			flex-basis: 100%;
 		}
 	}
 </style>

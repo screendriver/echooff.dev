@@ -39,9 +39,7 @@ const { hackerNewsSectionModel } = Astro.props;
 									<Fragment>
 										<dt class="meta-date-label">Published</dt>
 										<dd class="meta-date-value">
-											<LocalizedDateTime
-												publishedAt={hackerNewsMention.visiblePublishedAt.value}
-											/>
+											<LocalizedDateTime dateTime={hackerNewsMention.visiblePublishedAt.value} />
 										</dd>
 									</Fragment>
 								)}

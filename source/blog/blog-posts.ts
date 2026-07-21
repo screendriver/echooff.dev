@@ -61,12 +61,12 @@ export function createBlogPostPageTitle(blogPostTitle: string): string {
 	return `${blogPostTitle} | ${siteOwnerName}`;
 }
 
-export function formatPublishedAtFallbackDateTime(publishedAt: string): string {
-	const publishedAtDate = new Date(publishedAt);
+export function formatDateTimeFallback(dateTime: string): string {
+	const dateTimeValue = new Date(dateTime);
 
-	if (!isValidDate(publishedAtDate)) {
-		throw new TypeError(`Published at "${publishedAt}" is not a valid ISO 8601 date-time`);
+	if (!isValidDate(dateTimeValue)) {
+		throw new TypeError(`Date-time "${dateTime}" is not a valid ISO 8601 date-time`);
 	}
 
-	return publishedAt.slice(0, 10);
+	return dateTime.slice(0, 10);
 }
