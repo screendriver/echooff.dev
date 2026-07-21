@@ -2,287 +2,124 @@
 title: "Application performance is a product requirement"
 description: "Application performance is not something engineers can optimize in isolation. It is a product decision, a requirement and a trade-off that has to be made explicit."
 publishedAt: "2026-05-10T09:10:00+02:00"
+updatedAt: "2026-07-21T20:51:00+02:00"
 topic: "Architecture"
 ---
 
-## This is a follow-up
+In [Developer experience is a performance feature](/blog/developer-experience-is-a-performance-feature), I argued that the speed at which engineers can understand, test and safely change a system matters. A fast user interface does not compensate for a codebase in which every improvement is slow and risky.
 
-In my previous post, [Developer experience is a performance feature](/blog/developer-experience-is-a-performance-feature), I argued that optimizing for change often matters more than optimizing rendering benchmarks, bundle size or another few milliseconds in isolation.
+The opposite is also true. A changeable codebase does not compensate for slow software.
 
-This post looks at the other side of that argument.
+Users experience loading, rendering, responsiveness, network delays and long-running operations directly. They do not care how safely the system can be changed when an important screen freezes or a primary workflow becomes unusable on the devices the product claims to support.
 
-Application performance matters.
+Developer experience and application performance are not opposites. A mature engineering organization has to care about both, but they are not the same kind of decision. Engineering owns the technical consequences; product owns the promise made to users.
 
-Developer experience matters. But it does not make slow software acceptable.
-
-Rendering performance, network performance, responsiveness and bundle size still matter.
-
-Developer experience and application performance are not opposites.
-
-You can care about both.
-
-You have to care about both.
-
-But they are not the same kind of decision.
-
-Developer experience is mostly an engineering responsibility.
-
-Application performance is also an engineering responsibility, but it is not only an engineering responsibility.
-
-**Application performance is a product decision.**
-
-Without any doubt.
-
-It is a requirement.
-
-It is a trade-off that has to be named before engineers can optimize for it in a meaningful way.
+**Application performance is a product requirement.**
 
 ## Blazing fast is not a requirement
 
-Every product has performance needs.
+Every product has performance needs, but not every product has the same needs. A drawing tool has different constraints than an admin dashboard. A payment flow has different expectations than a static marketing page. A video editor has to make different trade-offs than a settings screen.
 
-But not every product has the same performance needs.
+The environment matters as well. Software used on old devices, unreliable networks and accounts containing years of data has different requirements than software demonstrated by three people on new laptops.
 
-A drawing tool has different performance requirements than an admin dashboard.
+This is why "make it fast" is not a useful requirement. "Blazing fast" is not one either. It is a slogan until someone explains what must be fast, under which conditions and how much delay is acceptable.
 
-A payment flow has different performance requirements than a static marketing page.
-
-A video editor has different performance requirements than a settings screen.
-
-A product used on slow devices, bad networks and large accounts has different performance requirements than a product used by three people in a demo environment on brand new laptops.
-
-This is why "make it fast" is not a requirement.
-
-"Blazing fast" is not a requirement either.
-
-It is a slogan.
-
-A requirement is more concrete:
+A useful requirement is concrete enough to guide a decision:
 
 - Loading a report with 10,000 rows must not block basic input.
-- Filtering a large table must return useful feedback within a defined time budget.
-- Saving a form must not freeze the user interface while validation and server requests are running.
-- The primary workflow must stay usable on the supported low-end device class.
+- Filtering a large table must update the visible results within a defined time budget.
+- Saving a form must not freeze the user interface while validation and network requests are running.
+- The primary workflow must remain usable on the supported low-end device class.
 - Background synchronization, import or export must not block navigation.
 
-Now engineering can work with it.
+These statements still need engineering work before they become measurements, but they identify the behavior that matters. They give the team something to observe, test and discuss.
 
-Now we can measure it.
-
-Now we can test it.
-
-Now we can decide whether a solution is good enough or not.
-
-Without that, performance discussions easily become taste, fear or folklore.
+Without that clarity, performance discussions become taste, fear or folklore. One engineer worries about allocations. Another worries about bundle size. Someone else proposes a worker, a cache or a rewrite. All of them may have valid concerns, but nobody can decide whether the additional cost is justified because the product expectation was never made explicit.
 
 ## Product decides what fast enough means
 
-Engineers can explain consequences.
+Engineers can explain the consequences of a design. We can identify scaling limits, expose the complexity a choice introduces and show which choices make future optimization easier or harder. We can measure a user journey and explain why it behaves differently with 100 records than it does with 100,000. What we should not do is silently invent the product's performance requirements.
 
-Engineers can explain implementation cost.
+When a product needs to support large datasets, long-running sessions, slow machines or unreliable networks, that should be part of the requirement before the feature is considered complete. It should not arrive three months later as a surprise in a bug report, nor should engineers be expected to infer it from a vague promise of "quality."
 
-Engineers can explain risk.
+That does not mean a product manager must choose a main-thread budget or understand browser scheduling. Product should name the journey, the users and the conditions that matter. Engineering can then translate that expectation into a measurement and explain the available trade-offs.
 
-Engineers can explain which design choices make future optimization easier or harder.
+The work is shared, but the promise belongs to product.
 
-But engineers should not silently invent the product's performance requirements.
+That distinction matters because "fast enough" always has a cost. Reaching a lower latency may require additional implementation work, more infrastructure, less scope or additional complexity. Supporting a larger data set may change the architecture of the feature. Supporting weaker devices may rule out an otherwise attractive interaction. Engineering makes those consequences visible so that product can decide whether the result is worth the cost.
 
-If a product needs to support large datasets, long-running sessions, slow machines or unreliable networks, that needs to be a product requirement.
+## Performance-aware design is not premature optimization
 
-Not a surprise discovered after the feature is already shipped.
+There is an important difference between [premature optimization](https://en.wikipedia.org/wiki/Program_optimization#When_to_optimize) and performance-aware design.
 
-Not something hidden in a bug report three months later.
+[YAGNI](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it) remains useful. We should not build caches, worker abstractions or generalized processing platforms for imaginary workloads. We should not make every feature more complicated because it might need to scale one day.
 
-Not something engineers are expected to magically infer from the word "quality".
+But YAGNI does not mean ignoring a known requirement. Premature optimization does not mean waiting until users complain before discussing performance.
 
-Performance is part of the product experience.
+Premature optimization changes code before we know whether the improvement matters. Performance-aware design avoids choices that make an already known requirement prohibitively expensive or impossible to meet later.
 
-Bad performance is not only a technical problem.
+That often has less to do with clever algorithms than with ordinary architecture. Expensive work should be isolated so it can be measured. Dependencies should be explicit so an implementation can be replaced. Side effects should not be hidden throughout the call hierarchy. External APIs and browser behavior should not leak into every part of the application.
 
-It is a product problem.
+This is where application performance connects back to developer experience. A codebase that is easy to change is usually easier to make faster because the team can locate the slow path, reproduce its behavior and replace one decision without disturbing everything around it.
 
-That means product needs to decide what level of performance matters for which user journey.
+That is also why topics such as [fragile unit tests](/blog/why-your-unit-tests-feel-fragile), [direct browser globals](/blog/avoid-direct-browser-globals) and [Clean Architecture](/blog/clean-architecture-protects-the-happy-zone) are relevant to performance. They are not isolated preferences about code style. They determine whether the team can respond when a real performance requirement becomes visible.
 
-Engineering then needs to make the cost visible.
+Good developer experience does not make application performance irrelevant. It makes application performance changeable.
 
-## Optimizing early and designing for performance are different things
+## Performance without changeability becomes expensive
 
-There is a difference between [premature optimization](https://en.wikipedia.org/wiki/Program_optimization#When_to_optimize) and performance-aware design.
+Optimization is not free. It introduces assumptions about data size, access patterns, device capabilities, concurrency and the behavior of surrounding systems. Some of those assumptions are necessary. The problem begins when they are hidden inside code that nobody can safely change.
 
-[YAGNI](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it) is still a useful principle.
+An implementation may reduce allocations and still obscure the business rule. A custom cache may improve one benchmark while making invalidation failures much harder to understand. A tightly coupled rendering optimization may make today's screen faster while turning the next product change into a system-wide negotiation.
 
-Do not build for imaginary performance needs.
+The benchmark can be correct and the design can still be too expensive. This is not an argument against sophisticated performance work. Some problems are genuinely difficult and require specialized solutions. But the reason for the complexity, the behavior it protects and the measurement that justified it should remain visible.
 
-Do not turn every feature into a platform before there is a real requirement.
+This connects to a point I explore in [Boring code is a feature](/blog/boring-code-is-a-feature): complexity is a budget. Performance may be exactly where some of that budget should be spent. Spending it deliberately is different from allowing an optimization to become a private mechanism that only its author understands.
 
-But YAGNI does not mean "ignore known requirements".
+Fast code that cannot adapt has only moved the cost. The current workflow may be quick, but every future change pays for the assumptions that were embedded in it.
 
-And premature optimization does not mean "never talk about performance until users complain".
+The useful question is therefore not whether we should optimize for change or for performance. It is which product behavior must be fast, and how we can meet that requirement without destroying our ability to change the system when the product evolves.
 
-Premature optimization is when we optimize code before we know whether it matters.
+## A performance budget is an agreement
 
-Performance-aware design is when we avoid choices that make necessary performance impossible later.
+A performance budget is more than a frontend metric. It is an agreement that a particular user journey matters enough for the organization to spend engineering effort, complexity and possibly product scope on it.
 
-Those are not the same thing.
+Product identifies the journey and the conditions that matter. Engineering decides how to measure them and explains the technical options. Together, product and engineering agree on an acceptable threshold. When meeting that threshold has a meaningful cost, product decides whether that cost is justified.
 
-A codebase that is easy to change can often become faster later.
+This is why a performance budget cannot belong to engineering alone. The work competes with feature development, reliability, accessibility, security, refactoring and support for edge cases. Improving one threshold may be valuable, but it is never free of opportunity cost.
 
-A codebase that is tangled, implicit and full of hidden side effects is hard to optimize because nobody knows where the cost actually comes from.
+Pretending that performance is always the highest priority is not serious engineering. Pretending that it does not matter until users complain is not serious product work.
 
-That is the connection to developer experience.
+A shared budget prevents both mistakes. It turns an abstract desire for speed into a visible product decision. It also gives engineering a boundary. Once the agreed behavior is met, further optimization needs new evidence rather than personal preference.
 
-Good developer experience does not mean we ignore application performance.
+The budget may change as the product changes. Data grows, supported devices change and previously secondary workflows become central. That is normal. A performance requirement is not a permanent truth about the codebase. It is a current promise about the product.
 
-Good developer experience means we can improve application performance without being terrified of the codebase.
+## Engineering must make the trade-off visible
 
-It means we can isolate slow paths.
+Engineers should not wait silently for a perfect requirement. We should recognize technical consequences early and express them in language that product can act on.
 
-It means we can measure real user journeys.
+When we know that a design will not scale to the expected data size, we should say it. When a shortcut will hurt responsiveness or make later optimization disproportionately expensive, we should explain that before the decision becomes difficult to reverse.
 
-It means we can refactor safely.
+But we should describe a trade-off, not issue an absolute technical verdict. A useful statement sounds like this:
 
-It means we can replace one implementation with another because dependencies are explicit and behavior is testable.
+> This approach is probably fine for small datasets, but it will block the main thread for large datasets. If large datasets are part of the product requirement, we should solve that now. If they are not, we can accept the limitation and make it visible.
 
-This is also why I keep writing about topics like [fragile unit tests](/blog/why-your-unit-tests-feel-fragile) and [avoiding direct browser globals](/blog/avoid-direct-browser-globals).
+That statement does not invent a requirement. It exposes a decision.
 
-These are not isolated opinions about code style.
+It gives product a concrete choice and gives engineering a clear boundary. If the larger workload matters, the team can spend the necessary effort deliberately. If it does not, the team can choose the simpler implementation without pretending that it has no limits.
 
-They are about changeability.
+The responsibility of engineering is not to optimize everything. It is to ensure that important consequences are not hidden.
 
-And changeability is what gives us the ability to respond when product performance requirements become clear.
+## Application performance is product quality
 
-## Performance without changeability gets expensive
+Developer experience determines how safely and quickly a product can change. Application performance determines how the product behaves for the people using it now.
 
-Highly optimized code can be great.
+A product can fail in both directions. It can be responsive today but too rigid to improve tomorrow, or easy to change while remaining painfully slow for the people using it.
 
-It can also become a trap.
+Both application performance and changeability matter. Treating either one as a universal default makes the other an afterthought.
 
-If a piece of code is fast but nobody can change it safely, the team has only moved the cost somewhere else.
+**Application performance is a product decision. It is also a product requirement.**
 
-Maybe the current feature is fast.
+Product must define the experience it promises. Engineering must make the cost and consequences visible, then build a system capable of meeting that promise.
 
-But the next feature becomes risky.
-
-Maybe the current path avoids allocations.
-
-But the next engineer cannot understand the assumptions.
-
-Maybe a clever optimization wins a benchmark.
-
-But the product requirement changes and now the code is too rigid to adapt.
-
-Performance is valuable when it supports the product.
-
-It is less valuable when it makes the product harder to evolve.
-
-This is why the useful question is not:
-
-Should we optimize for change or performance?
-
-The useful question is:
-
-What product behavior must be fast, and how do we design the system so that this performance can be achieved without destroying our ability to change it?
-
-## Performance budgets should belong to product and engineering
-
-A performance budget is not only a frontend metric.
-
-It is an agreement.
-
-It says: this user journey matters enough that we are willing to spend engineering effort, complexity budget and product scope on it.
-
-That agreement should be shared between product and engineering.
-
-For example:
-
-- Product defines the user journey that matters.
-- Engineering defines what needs to be measured.
-- Product and engineering agree on the acceptable threshold.
-- Engineering explains the trade-offs.
-- Product decides whether the cost is worth it.
-
-That last part matters.
-
-Because performance work always competes with something else.
-
-It competes with features.
-
-It competes with reliability work.
-
-It competes with accessibility.
-
-It competes with security.
-
-It competes with refactoring.
-
-It competes with support for edge cases.
-
-Pretending that performance is always the highest priority is not serious engineering.
-
-Pretending that performance does not matter until users complain is not serious product work.
-
-## Engineers should not hide the trade-off
-
-Engineering still has responsibility here.
-
-We should not wait until product writes a perfect requirement before we say anything.
-
-If we know that a design will not scale to the expected data size, we should say it.
-
-If we know that a feature will hurt responsiveness, we should say it.
-
-If we know that a shortcut will make later optimization painful, we should say it.
-
-But we should say it as a trade-off.
-
-Not as an absolute rule.
-
-Not as "this is bad engineering".
-
-Not as "we need to rewrite everything".
-
-A useful engineering statement sounds more like this:
-
-"This approach is probably fine for small datasets, but it will block the main thread for large datasets. If large datasets are part of the product requirement, we should solve that now. If not, we can accept the limitation and make it visible."
-
-That is a much better discussion.
-
-It turns performance from an opinion into a decision.
-
-## Application performance is part of product quality
-
-Developer experience is a performance feature because slow teams produce slow product learning.
-
-If every change is risky, the product gets slower to evolve.
-
-If every test is fragile, the product gets slower to improve.
-
-If every local feedback loop is painful, the product gets slower to fix.
-
-But application performance is also product quality.
-
-Users do not care that the codebase is beautifully changeable if the product freezes every time they open an important screen.
-
-They also do not care that a microbenchmark looks great if the product never improves because every change takes forever.
-
-Both things matter.
-
-The mistake is treating one as a universal default and the other as an afterthought.
-
-## The better framing
-
-So yes, optimize for change.
-
-But do not use that as an excuse to ignore application performance.
-
-And yes, optimize application performance.
-
-But do not use that as an excuse to make the system impossible to change.
-
-The better framing is this:
-
-**Application performance is a product decision.**
-
-It is also a product requirement.
-
-Changeability is what allows engineering to meet that requirement repeatedly without turning the codebase into concrete.
+Changeability is what allows us to meet it repeatedly without turning the codebase into concrete.
