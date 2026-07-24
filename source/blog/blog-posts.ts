@@ -11,6 +11,7 @@ export type BlogIndexEntry = {
 	readonly title: string;
 	readonly topic: string;
 	readonly topicSlug: string;
+	readonly updatedAt?: string;
 };
 
 const siteOwnerName = "Christian Rackerseder";
@@ -45,7 +46,8 @@ export function createBlogIndexEntries(blogPosts: readonly CollectionEntry<"blog
 			slug: blogPost.id,
 			title: blogPost.data.title,
 			topic: topicDetails.label,
-			topicSlug: topicDetails.slug
+			topicSlug: topicDetails.slug,
+			...(blogPost.data.updatedAt === undefined ? {} : { updatedAt: blogPost.data.updatedAt })
 		};
 	});
 }

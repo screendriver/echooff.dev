@@ -1,0 +1,104 @@
+---
+import BlogTopicLink from "./BlogTopicLink.astro";
+import LocalizedDateTime from "./LocalizedDateTime.astro";
+import { createBlogTopicPath } from "./blog-site.js";
+
+interface BlogEntryMetadataTopic {
+	readonly label: string;
+	readonly slug: string;
+}
+
+export interface Props {
+	readonly publishedAt: string;
+	readonly readingTimeLabel?: string;
+	readonly topic?: BlogEntryMetadataTopic;
+	readonly updatedAt?: string | undefined;
+}
+
+const { publishedAt, readingTimeLabel, topic, updatedAt } = Astro.props;
+---
+
+<p class="blog-entry-metadata">
+	<span class="blog-entry-metadata-group blog-entry-date-metadata-group">
+		<span class="blog-entry-metadata-item blog-entry-date-metadata-item">
+			Published <LocalizedDateTime dateTime={publishedAt} />
+		</span>
+		{
+			updatedAt && (
+				<span class="blog-entry-metadata-item blog-entry-date-metadata-item">
+					Updated <LocalizedDateTime dateTime={updatedAt} />
+				</span>
+			)
+		}
+	</span>
+	{
+		(topic || readingTimeLabel) && (
+			<span class="blog-entry-metadata-group blog-entry-context-metadata-group">
+				{topic && (
+					<span class="blog-entry-metadata-item">
+						in{" "}
+						<BlogTopicLink href={createBlogTopicPath(topic.slug)} label={topic.label}>
+							{topic.label}
+						</BlogTopicLink>
+					</span>
+				)}
+				{readingTimeLabel && (
+					<span class="blog-entry-metadata-item blog-entry-reading-time">{readingTimeLabel}</span>
+				)}
+			</span>
+		)
+	}
+</p>
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	.blog-entry-metadata {
+		margin: 0;
+	}
+
+	.blog-entry-metadata-group {
+		display: inline;
+	}
+
+	.blog-entry-metadata-item {
+		display: inline;
+	}
+
+	.blog-entry-date-metadata-group,
+	.blog-entry-context-metadata-group {
+		white-space: nowrap;
+	}
+
+	.blog-entry-metadata-item + .blog-entry-metadata-item::before,
+	.blog-entry-context-metadata-group::before {
+		color: rgba(variables.$foreground, 0.3);
+		content: " · ";
+	}
+
+	.blog-entry-reading-time {
+		letter-spacing: -0.01em;
+	}
+
+	@media (max-width: calc(variables.$small-width - 0.02rem)) {
+		.blog-entry-date-metadata-group {
+			white-space: normal;
+		}
+
+		.blog-entry-date-metadata-item {
+			display: block;
+		}
+
+		.blog-entry-date-metadata-group > .blog-entry-metadata-item + .blog-entry-metadata-item::before {
+			content: none;
+		}
+
+		.blog-entry-context-metadata-group {
+			display: block;
+		}
+
+		.blog-entry-context-metadata-group::before {
+			content: none;
+		}
+	}
+</style>

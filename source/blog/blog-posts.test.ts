@@ -140,7 +140,7 @@ suite("createBlogPostReadingTimeLabel()", function () {
 });
 
 suite("createBlogIndexEntries()", function () {
-	test("returns the fields required for rendering the blog index including descriptions", function () {
+	test("returns the fields required for rendering an entry without an update", function () {
 		const blogPost = createBlogPostCollectionEntry({
 			body: "word ".repeat(120),
 			description: "Clear descriptions help readers choose what to open",
@@ -160,6 +160,33 @@ suite("createBlogIndexEntries()", function () {
 				title: "Blog index entry",
 				topic: "TypeScript",
 				topicSlug: "typescript"
+			}
+		];
+
+		assert.deepStrictEqual(actualBlogIndexEntries, expectedBlogIndexEntries);
+	});
+
+	test("includes the update timestamp when a blog post has been updated", function () {
+		const blogPost = createBlogPostCollectionEntry({
+			description: "Updated descriptions explain the current article",
+			id: "updated-blog-index-entry",
+			title: "Updated blog index entry",
+			publishedAt: "2026-03-14T07:22:00+01:00",
+			updatedAt: "2026-07-21T15:59:00+02:00",
+			topic: "TypeScript"
+		});
+
+		const actualBlogIndexEntries = createBlogIndexEntries([blogPost]);
+		const expectedBlogIndexEntries = [
+			{
+				description: "Updated descriptions explain the current article",
+				publishedAt: "2026-03-14T07:22:00+01:00",
+				readingTimeLabel: "0 min read",
+				slug: "updated-blog-index-entry",
+				title: "Updated blog index entry",
+				topic: "TypeScript",
+				topicSlug: "typescript",
+				updatedAt: "2026-07-21T15:59:00+02:00"
 			}
 		];
 

@@ -5,9 +5,9 @@ import BlogArchiveNavigation from "../../../blog/BlogArchiveNavigation.astro";
 import BlogArchiveSection from "../../../blog/BlogArchiveSection.astro";
 import BlogBackLink from "../../../blog/BlogBackLink.astro";
 import BlogEmptyState from "../../../blog/BlogEmptyState.astro";
+import BlogEntryMetadata from "../../../blog/BlogEntryMetadata.astro";
 import BlogIndexEntry from "../../../blog/BlogIndexEntry.astro";
 import BlogShell from "../../../blog/BlogShell.astro";
-import LocalizedDateTime from "../../../blog/LocalizedDateTime.astro";
 import LocalizedDateTimeScript from "../../../blog/LocalizedDateTimeScript.astro";
 import { createBlogIndexEntries, sortBlogPostsByPublicationDateDescending } from "../../../blog/blog-posts.js";
 import { createBlogPostTopicArchiveEntries, groupBlogPostsByTopic } from "../../../blog/blog-post-topics.js";
@@ -82,7 +82,10 @@ const postCountLabel =
 								title={blogIndexEntry.title}
 							>
 								<Fragment slot="footer">
-									Published <LocalizedDateTime dateTime={blogIndexEntry.publishedAt} />
+									<BlogEntryMetadata
+										publishedAt={blogIndexEntry.publishedAt}
+										updatedAt={blogIndexEntry.updatedAt}
+									/>
 								</Fragment>
 							</BlogIndexEntry>
 						</li>

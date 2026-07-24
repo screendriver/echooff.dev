@@ -6,12 +6,12 @@ import BlogArchiveList from "../../blog/BlogArchiveList.astro";
 import BlogArchiveNavigation from "../../blog/BlogArchiveNavigation.astro";
 import BlogArchiveSection from "../../blog/BlogArchiveSection.astro";
 import BlogEmptyState from "../../blog/BlogEmptyState.astro";
+import BlogEntryMetadata from "../../blog/BlogEntryMetadata.astro";
 import BlogIndexEntry from "../../blog/BlogIndexEntry.astro";
 import BlogPaginationNavigation from "../../blog/BlogPaginationNavigation.astro";
 import BlogRssFeedLink from "../../blog/BlogRssFeedLink.astro";
 import BlogShell from "../../blog/BlogShell.astro";
 import BlogTopicLink from "../../blog/BlogTopicLink.astro";
-import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
 import LocalizedDateTimeScript from "../../blog/LocalizedDateTimeScript.astro";
 import { createDefaultBlogArchiveMetadata } from "../../blog/blog-archive-metadata.js";
 import { blogArchivePageSize, createBlogPaginationModel } from "../../blog/blog-pagination.js";
@@ -19,8 +19,7 @@ import { createBlogIndexEntries, sortBlogPostsByPublicationDateDescending } from
 import {
 	createAbsoluteAssetUrl,
 	createBlogIndexAbsoluteUrl,
-	createBlogRssFeedAbsoluteUrl,
-	createBlogTopicPath
+	createBlogRssFeedAbsoluteUrl
 } from "../../blog/blog-site.js";
 import headerImage from "../../assets/images/header-01.jpg";
 
@@ -83,12 +82,12 @@ const blogPaginationModel = blogPaginationModelResult.value;
 									title={blogIndexEntry.title}
 								>
 									<Fragment slot="footer">
-										Published <LocalizedDateTime dateTime={blogIndexEntry.publishedAt} /> in{" "}
-										<BlogTopicLink href={createBlogTopicPath(blogIndexEntry.topicSlug)}>
-											{blogIndexEntry.topic}
-										</BlogTopicLink>
-										{" · "}
-										<span>{blogIndexEntry.readingTimeLabel}</span>
+										<BlogEntryMetadata
+											publishedAt={blogIndexEntry.publishedAt}
+											readingTimeLabel={blogIndexEntry.readingTimeLabel}
+											topic={{ label: blogIndexEntry.topic, slug: blogIndexEntry.topicSlug }}
+											updatedAt={blogIndexEntry.updatedAt}
+										/>
 									</Fragment>
 								</BlogIndexEntry>
 							</li>

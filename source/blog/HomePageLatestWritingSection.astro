@@ -1,11 +1,9 @@
 ---
 import { icons } from "feather-icons";
 import BlogEmptyState from "./BlogEmptyState.astro";
+import BlogEntryMetadata from "./BlogEntryMetadata.astro";
 import LocalizedDateTimeScript from "./LocalizedDateTimeScript.astro";
 import type { BlogIndexEntry as BlogIndexEntryDetails } from "./blog-posts.js";
-import BlogTopicLink from "./BlogTopicLink.astro";
-import LocalizedDateTime from "./LocalizedDateTime.astro";
-import { createBlogTopicPath } from "./blog-site.js";
 
 export interface Props {
 	readonly blogIndexEntries: readonly BlogIndexEntryDetails[];
@@ -34,13 +32,11 @@ const featuredBlogIndexEntry = blogIndexEntries[0];
 					</a>
 
 					<footer class="featured-blog-post-metadata">
-						Published <LocalizedDateTime dateTime={featuredBlogIndexEntry.publishedAt} /> in{" "}
-						<BlogTopicLink
-							href={createBlogTopicPath(featuredBlogIndexEntry.topicSlug)}
-							label={featuredBlogIndexEntry.topic}
-						>
-							{featuredBlogIndexEntry.topic}
-						</BlogTopicLink>
+						<BlogEntryMetadata
+							publishedAt={featuredBlogIndexEntry.publishedAt}
+							topic={{ label: featuredBlogIndexEntry.topic, slug: featuredBlogIndexEntry.topicSlug }}
+							updatedAt={featuredBlogIndexEntry.updatedAt}
+						/>
 					</footer>
 				</article>
 			) : (
