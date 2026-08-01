@@ -106,7 +106,7 @@ That is the point of a unit test.
 
 Now compare that to a typical Testing Library test:
 
-```typescript
+```tsx
 import assert from "node:assert/strict";
 import test from "node:test";
 import type { FunctionComponent } from "react";
@@ -129,7 +129,7 @@ test("calls onSave when the user clicks the button", async () => {
       onSave={() => {
         saved = true;
       }}
-    />,
+    />
   );
 
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
