@@ -117,7 +117,7 @@ The vendor is abstracted.
 
 The policy is not.
 
-This is the same mistake as injecting a translation function into a use case. The dependency is explicit, but the use case still knows about presentation.
+This is the same mistake as [injecting a translation function into a use case](/blog/translations-belong-to-the-user-interface). The dependency is explicit, but the use case still knows about presentation.
 
 A logger is operational presentation.
 

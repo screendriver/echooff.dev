@@ -202,7 +202,7 @@ That is exactly what I want from important code.
 
 ## Translations belong to the UI
 
-Translations are a good example because they look harmless.
+Translations are a good example because they look harmless. I explore this boundary in more detail in [Translations belong to the user interface](/blog/translations-belong-to-the-user-interface).
 
 It is tempting to return translated strings from application code. The code already knows what failed, so why not return the message directly?
 
