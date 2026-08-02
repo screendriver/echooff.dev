@@ -2,6 +2,7 @@ import { isDirectInstanceOf, isError } from "@sindresorhus/is";
 import { type } from "arktype";
 import { just, nothing, type Maybe } from "true-myth/maybe";
 import { tryOrElse, type Task } from "true-myth/task";
+import type { PublishedBlogPostCatalogue } from "../../published-blog-post-catalogue.ts";
 import {
 	createBlogReactionApplicationService,
 	type BlogReactionApplicationService,
@@ -14,7 +15,6 @@ import {
 	blogReactionRuntimeEnvironmentSchema,
 	type BlogReactionRuntimeEnvironment
 } from "./blog-reaction-runtime-configuration-schema.ts";
-import type { PublishedBlogPostCatalogue } from "./published-blog-post-catalogue.ts";
 
 export type RuntimeBlogReactionApplicationServiceOptions = {
 	readonly blogReactionRateLimiter: BlogReactionRateLimiter;

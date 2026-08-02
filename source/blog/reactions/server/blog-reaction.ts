@@ -1,6 +1,6 @@
 import type { Maybe } from "true-myth/maybe";
 import type { Task } from "true-myth/task";
-import type { PublishedBlogPostSlug } from "./published-blog-post-catalogue.ts";
+import type { PublishedBlogPostSlug } from "../../published-blog-post-catalogue.ts";
 
 export type BlogReactionSnapshot = {
 	readonly count: number;

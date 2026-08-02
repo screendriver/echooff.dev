@@ -2,8 +2,9 @@ import assert from "node:assert";
 import { isUndefined } from "@sindresorhus/is";
 import { suite, test } from "mocha";
 import { just, nothing, type Maybe } from "true-myth/maybe";
-import { err, ok, type Result } from "true-myth/result";
+import { err } from "true-myth/result";
 import { resolve as resolveTask, type Task } from "true-myth/task";
+import type { PublishedBlogPostCatalogue, PublishedBlogPostSlug } from "../../published-blog-post-catalogue.ts";
 import {
 	createBlogReactionApplicationService,
 	type BlogReactionApplicationService,
@@ -12,7 +13,6 @@ import {
 import type { BlogReactionRepository, BlogReactionSnapshot } from "./blog-reaction.ts";
 import type { BlogReactionRateLimiter, BlogReactionRateLimitDecision } from "./blog-reaction-rate-limiter.ts";
 import type { AnonymousReactorIdentifier } from "./blog-reaction-identity-schema.ts";
-import type { PublishedBlogPostCatalogue, PublishedBlogPostSlug } from "./published-blog-post-catalogue.ts";
 
 const validExistingAnonymousReactorIdentifier = "B".repeat(43);
 const generatedAnonymousReactorIdentifier = "A".repeat(43);
@@ -203,22 +203,16 @@ function readFirstRepositoryCall(blogReactionRepository: TestBlogReactionReposit
 	return firstRepositoryCall;
 }
 
-async function unwrapTestTask<Value>(task: Task<Value, Error>): Promise<Value> {
+async function unwrapTestTask<Value, Failure>(task: Task<Value, Failure>): Promise<Value> {
 	const taskResult = await task;
 
 	if (taskResult.isErr) {
-		throw taskResult.error;
+		throw new Error("Expected the application task to resolve successfully.", {
+			cause: taskResult.error
+		});
 	}
 
 	return taskResult.value;
-}
-
-function unwrapApplicationResult<Value, ErrorType>(result: Result<Value, ErrorType>): Value {
-	if (result.isErr) {
-		throw new Error("Expected a successful application result.");
-	}
-
-	return result.value;
 }
 
 suite("createBlogReactionApplicationService()", function () {
@@ -233,7 +227,7 @@ suite("createBlogReactionApplicationService()", function () {
 			})
 		);
 
-		assert.deepStrictEqual(actualResult, ok({ count: 1, reacted: true }));
+		assert.deepStrictEqual(actualResult, { count: 1, reacted: true });
 		assert.strictEqual(readAnonymousReactorIdentifierGenerationCount(), 0);
 		assert.partialDeepStrictEqual(readFirstRepositoryCall(blogReactionRepository), {
 			kind: "read",
@@ -264,12 +258,10 @@ suite("createBlogReactionApplicationService()", function () {
 	test("returns not_found without reaching the repository for an unknown post", async function () {
 		const { blogReactionRepository, service } = createTestApplicationService();
 
-		const actualResult = await unwrapTestTask(
-			service.readReaction({
-				anonymousReactorCookieValue: nothing(),
-				postSlug: "unknown-post"
-			})
-		);
+		const actualResult = await service.readReaction({
+			anonymousReactorCookieValue: nothing(),
+			postSlug: "unknown-post"
+		});
 
 		assert.deepStrictEqual(actualResult, err({ kind: "not_found" }));
 		assert.strictEqual(blogReactionRepository.calls.length, 0);
@@ -287,16 +279,13 @@ suite("createBlogReactionApplicationService()", function () {
 			})
 		);
 
-		assert.deepStrictEqual(
-			actualResult,
-			ok({
-				createdAnonymousReactorIdentifier: just(generatedAnonymousReactorIdentifier),
-				snapshot: {
-					count: 1,
-					reacted: true
-				}
-			})
-		);
+		assert.deepStrictEqual(actualResult, {
+			createdAnonymousReactorIdentifier: just(generatedAnonymousReactorIdentifier),
+			snapshot: {
+				count: 1,
+				reacted: true
+			}
+		});
 		assert.strictEqual(readAnonymousReactorIdentifierGenerationCount(), 1);
 		assert.strictEqual(blogReactionRepository.calls.length, 1);
 	});
@@ -312,7 +301,7 @@ suite("createBlogReactionApplicationService()", function () {
 			})
 		);
 
-		const actualOutcome = unwrapApplicationResult(actualResult);
+		const actualOutcome = actualResult;
 
 		assert.strictEqual(readAnonymousReactorIdentifierGenerationCount(), 0);
 		assert.strictEqual(actualOutcome.createdAnonymousReactorIdentifier.isNothing, true);
@@ -329,7 +318,7 @@ suite("createBlogReactionApplicationService()", function () {
 			})
 		);
 
-		const actualOutcome = unwrapApplicationResult(actualResult);
+		const actualOutcome = actualResult;
 
 		assert.deepStrictEqual(
 			actualOutcome.createdAnonymousReactorIdentifier,
@@ -349,7 +338,7 @@ suite("createBlogReactionApplicationService()", function () {
 			})
 		);
 
-		const actualOutcome = unwrapApplicationResult(actualResult);
+		const actualOutcome = actualResult;
 
 		assert.strictEqual(actualOutcome.createdAnonymousReactorIdentifier.isNothing, true);
 		assert.strictEqual(readAnonymousReactorIdentifierGenerationCount(), 0);
@@ -368,7 +357,7 @@ suite("createBlogReactionApplicationService()", function () {
 			})
 		);
 
-		const actualOutcome = unwrapApplicationResult(actualResult);
+		const actualOutcome = actualResult;
 
 		assert.strictEqual(actualOutcome.createdAnonymousReactorIdentifier.isNothing, true);
 		assert.strictEqual(readAnonymousReactorIdentifierGenerationCount(), 0);
@@ -385,13 +374,11 @@ suite("createBlogReactionApplicationService()", function () {
 			}
 		});
 
-		const actualResult = await unwrapTestTask(
-			service.addReaction({
-				anonymousReactorCookieValue: nothing(),
-				clientAddress: just("192.0.2.1"),
-				postSlug: "quiet-post"
-			})
-		);
+		const actualResult = await service.addReaction({
+			anonymousReactorCookieValue: nothing(),
+			clientAddress: just("192.0.2.1"),
+			postSlug: "quiet-post"
+		});
 
 		assert.deepStrictEqual(
 			actualResult,
@@ -404,7 +391,7 @@ suite("createBlogReactionApplicationService()", function () {
 		assert.strictEqual(readAnonymousReactorIdentifierGenerationCount(), 0);
 	});
 
-	test("normalizes repository failures as rejected tasks", async function () {
+	test("normalizes repository failures as infrastructure failures", async function () {
 		const expectedError = new Error("database unavailable");
 		const blogReactionRepository = createTestBlogReactionRepository({ error: expectedError });
 		const { service } = createTestApplicationService({ blogReactionRepository });
@@ -413,16 +400,7 @@ suite("createBlogReactionApplicationService()", function () {
 			anonymousReactorCookieValue: nothing(),
 			postSlug: "quiet-post"
 		});
-		const actualError = actualTaskResult.match({
-			Err(error) {
-				return error;
-			},
-			Ok() {
-				throw new Error("Expected the application task to reject.");
-			}
-		});
-
-		assert.strictEqual(actualError, expectedError);
+		assert.deepStrictEqual(actualTaskResult, err({ kind: "infrastructure_failure", cause: expectedError }));
 	});
 
 	test("generates the identity before reaching the repository", async function () {

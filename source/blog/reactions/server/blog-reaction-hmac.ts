@@ -1,7 +1,7 @@
 import { createHmac } from "node:crypto";
+import type { PublishedBlogPostSlug } from "../../published-blog-post-catalogue.ts";
 import type { AnonymousReactorIdentifier } from "./blog-reaction-identity-schema.ts";
 import type { BlogReactionHmacSecret } from "./blog-reaction-runtime-configuration-schema.ts";
-import type { PublishedBlogPostSlug } from "./published-blog-post-catalogue.ts";
 
 export type CreateBlogReactionHashOptions = {
 	readonly anonymousReactorIdentifier: AnonymousReactorIdentifier;

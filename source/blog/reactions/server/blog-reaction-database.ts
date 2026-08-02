@@ -1,10 +1,10 @@
 import type { Kysely, Transaction } from "kysely";
 import type { Maybe } from "true-myth/maybe";
 import { tryOrElse } from "true-myth/task";
-import type { ApplicationDatabase } from "./application-database.ts";
+import type { ApplicationDatabase } from "../../../database/application-database.ts";
+import type { PublishedBlogPostSlug } from "../../published-blog-post-catalogue.ts";
+import { normalizeSqliteDatabaseError } from "../../../database/sqlite-database-error.ts";
 import type { BlogReactionRepository, BlogReactionSnapshot } from "./blog-reaction.ts";
-import type { PublishedBlogPostSlug } from "./published-blog-post-catalogue.ts";
-import { normalizeSqliteDatabaseError } from "./sqlite-database-error.ts";
 
 type ApplicationDatabaseTransaction = Transaction<ApplicationDatabase>;
 

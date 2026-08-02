@@ -1,4 +1,4 @@
-import type { PublishedBlogPostCatalogue, PublishedBlogPostSlug } from "./published-blog-post-catalogue.ts";
+import type { PublishedBlogPostCatalogue, PublishedBlogPostSlug } from "../../published-blog-post-catalogue.ts";
 
 export function createTestPublishedBlogPostSlug(postSlug: string): PublishedBlogPostSlug {
 	const testPublishedBlogPostCatalogue: PublishedBlogPostCatalogue = {

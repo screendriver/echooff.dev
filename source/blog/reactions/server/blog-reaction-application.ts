@@ -1,7 +1,8 @@
 import { isError } from "@sindresorhus/is";
-import { err, ok, type Result } from "true-myth/result";
 import { just, nothing, type Maybe } from "true-myth/maybe";
-import { tryOrElse, type Task } from "true-myth/task";
+import { err, ok, type Result } from "true-myth/result";
+import { reject as rejectTask, tryOrElse, type Task } from "true-myth/task";
+import type { PublishedBlogPostCatalogue, PublishedBlogPostSlug } from "../../published-blog-post-catalogue.ts";
 import {
 	parseAnonymousReactorIdentifier,
 	type AnonymousReactorIdentifierParseResult
@@ -11,18 +12,28 @@ import { createBlogReactionHash } from "./blog-reaction-hmac.ts";
 import type { BlogReactionHmacSecret } from "./blog-reaction-runtime-configuration-schema.ts";
 import type { BlogReactionRateLimiter, BlogReactionRateLimitDecision } from "./blog-reaction-rate-limiter.ts";
 import type { BlogReactionRepository, BlogReactionSnapshot } from "./blog-reaction.ts";
-import type { PublishedBlogPostCatalogue, PublishedBlogPostSlug } from "./published-blog-post-catalogue.ts";
 
-export type BlogReactionNotFoundError = {
+type BlogReactionInfrastructureFailure = {
+	readonly cause: Error;
+	readonly kind: "infrastructure_failure";
+};
+
+type BlogReactionNotFoundFailure = {
 	readonly kind: "not_found";
 };
 
-export type BlogReactionRateLimitedError = {
+type BlogReactionRateLimitedFailure = {
 	readonly kind: "rate_limited";
 	readonly retryAfterMilliseconds: number;
 };
 
-export type BlogReactionApplicationError = BlogReactionNotFoundError | BlogReactionRateLimitedError;
+type BlogReactionFailureByKind = {
+	readonly infrastructure_failure: BlogReactionInfrastructureFailure;
+	readonly not_found: BlogReactionNotFoundFailure;
+	readonly rate_limited: BlogReactionRateLimitedFailure;
+};
+
+export type BlogReactionFailure = BlogReactionFailureByKind[keyof BlogReactionFailureByKind];
 
 export type BlogReactionMutationOutcome = {
 	readonly createdAnonymousReactorIdentifier: Maybe<AnonymousReactorIdentifier>;
@@ -40,18 +51,16 @@ export type MutateBlogReactionOptions = {
 	readonly postSlug: string;
 };
 
-export type BlogReactionApplicationTaskResult<Value> = Task<Result<Value, BlogReactionApplicationError>, Error>;
-
 export type BlogReactionApplicationService = {
 	readonly addReaction: (
 		mutateBlogReactionOptions: MutateBlogReactionOptions
-	) => BlogReactionApplicationTaskResult<BlogReactionMutationOutcome>;
+	) => Task<BlogReactionMutationOutcome, BlogReactionFailure>;
 	readonly readReaction: (
 		readBlogReactionOptions: ReadBlogReactionOptions
-	) => BlogReactionApplicationTaskResult<BlogReactionSnapshot>;
+	) => Task<BlogReactionSnapshot, BlogReactionFailure>;
 	readonly removeReaction: (
 		mutateBlogReactionOptions: MutateBlogReactionOptions
-	) => BlogReactionApplicationTaskResult<BlogReactionMutationOutcome>;
+	) => Task<BlogReactionMutationOutcome, BlogReactionFailure>;
 };
 
 export type BlogReactionApplicationServiceOptions = {
@@ -67,7 +76,7 @@ type ResolvedAnonymousReactorIdentity = {
 	readonly createdAnonymousReactorIdentifier: Maybe<AnonymousReactorIdentifier>;
 };
 
-function normalizeBlogReactionApplicationError(error: unknown): Error {
+function normalizeBlogReactionError(error: unknown): Error {
 	if (isError(error)) {
 		return error;
 	}
@@ -75,10 +84,17 @@ function normalizeBlogReactionApplicationError(error: unknown): Error {
 	return new Error("The blog reaction application operation failed.");
 }
 
+function normalizeBlogReactionInfrastructureFailure(error: unknown): BlogReactionFailure {
+	return {
+		cause: normalizeBlogReactionError(error),
+		kind: "infrastructure_failure"
+	};
+}
+
 function resolvePublishedBlogPostSlug(
 	publishedBlogPostCatalogue: PublishedBlogPostCatalogue,
 	postSlug: string
-): Result<PublishedBlogPostSlug, BlogReactionApplicationError> {
+): Result<PublishedBlogPostSlug, Extract<BlogReactionFailure, { readonly kind: "not_found" }>> {
 	if (!publishedBlogPostCatalogue.hasPublishedBlogPost(postSlug)) {
 		return err({
 			kind: "not_found"
@@ -91,7 +107,7 @@ function resolvePublishedBlogPostSlug(
 function readRateLimitError(
 	blogReactionRateLimiter: BlogReactionRateLimiter,
 	clientAddress: Maybe<string>
-): Maybe<BlogReactionApplicationError> {
+): Maybe<Extract<BlogReactionFailure, { readonly kind: "rate_limited" }>> {
 	const rateLimitDecision: BlogReactionRateLimitDecision = blogReactionRateLimiter.checkMutation(clientAddress);
 
 	if (rateLimitDecision.allowed) {
@@ -156,20 +172,20 @@ export function createBlogReactionApplicationService(
 
 	return {
 		addReaction(mutateBlogReactionOptions) {
-			return tryOrElse(normalizeBlogReactionApplicationError, async () => {
-				const { anonymousReactorCookieValue, clientAddress, postSlug } = mutateBlogReactionOptions;
-				const publishedBlogPostSlugResult = resolvePublishedBlogPostSlug(publishedBlogPostCatalogue, postSlug);
+			const { anonymousReactorCookieValue, clientAddress, postSlug } = mutateBlogReactionOptions;
+			const publishedBlogPostSlugResult = resolvePublishedBlogPostSlug(publishedBlogPostCatalogue, postSlug);
 
-				if (publishedBlogPostSlugResult.isErr) {
-					return err(publishedBlogPostSlugResult.error);
-				}
+			if (publishedBlogPostSlugResult.isErr) {
+				return rejectTask<BlogReactionMutationOutcome, BlogReactionFailure>(publishedBlogPostSlugResult.error);
+			}
 
-				const rateLimitError = readRateLimitError(blogReactionRateLimiter, clientAddress);
+			const rateLimitError = readRateLimitError(blogReactionRateLimiter, clientAddress);
 
-				if (rateLimitError.isJust) {
-					return err(rateLimitError.value);
-				}
+			if (rateLimitError.isJust) {
+				return rejectTask<BlogReactionMutationOutcome, BlogReactionFailure>(rateLimitError.value);
+			}
 
+			return tryOrElse(normalizeBlogReactionInfrastructureFailure, async () => {
 				const resolvedAnonymousReactorIdentity = resolveAnonymousReactorIdentity(
 					anonymousReactorCookieValue,
 					createAnonymousReactorIdentifier
@@ -185,25 +201,25 @@ export function createBlogReactionApplicationService(
 				);
 
 				if (repositoryResult.isErr) {
-					throw repositoryResult.error;
+					throw normalizeBlogReactionError(repositoryResult.error);
 				}
 
-				return ok({
+				return {
 					createdAnonymousReactorIdentifier:
 						resolvedAnonymousReactorIdentity.createdAnonymousReactorIdentifier,
 					snapshot: repositoryResult.value
-				});
+				};
 			});
 		},
 		readReaction(readBlogReactionOptions) {
-			return tryOrElse(normalizeBlogReactionApplicationError, async () => {
-				const { anonymousReactorCookieValue, postSlug } = readBlogReactionOptions;
-				const publishedBlogPostSlugResult = resolvePublishedBlogPostSlug(publishedBlogPostCatalogue, postSlug);
+			const { anonymousReactorCookieValue, postSlug } = readBlogReactionOptions;
+			const publishedBlogPostSlugResult = resolvePublishedBlogPostSlug(publishedBlogPostCatalogue, postSlug);
 
-				if (publishedBlogPostSlugResult.isErr) {
-					return err(publishedBlogPostSlugResult.error);
-				}
+			if (publishedBlogPostSlugResult.isErr) {
+				return rejectTask<BlogReactionSnapshot, BlogReactionFailure>(publishedBlogPostSlugResult.error);
+			}
 
+			return tryOrElse(normalizeBlogReactionInfrastructureFailure, async () => {
 				const anonymousReactorIdentifier = treatMalformedAnonymousReactorIdentifierAsAbsent(
 					parseAnonymousReactorIdentifier(anonymousReactorCookieValue)
 				);
@@ -220,27 +236,27 @@ export function createBlogReactionApplicationService(
 				);
 
 				if (repositoryResult.isErr) {
-					throw repositoryResult.error;
+					throw normalizeBlogReactionError(repositoryResult.error);
 				}
 
-				return ok(repositoryResult.value);
+				return repositoryResult.value;
 			});
 		},
 		removeReaction(mutateBlogReactionOptions) {
-			return tryOrElse(normalizeBlogReactionApplicationError, async () => {
-				const { anonymousReactorCookieValue, clientAddress, postSlug } = mutateBlogReactionOptions;
-				const publishedBlogPostSlugResult = resolvePublishedBlogPostSlug(publishedBlogPostCatalogue, postSlug);
+			const { anonymousReactorCookieValue, clientAddress, postSlug } = mutateBlogReactionOptions;
+			const publishedBlogPostSlugResult = resolvePublishedBlogPostSlug(publishedBlogPostCatalogue, postSlug);
 
-				if (publishedBlogPostSlugResult.isErr) {
-					return err(publishedBlogPostSlugResult.error);
-				}
+			if (publishedBlogPostSlugResult.isErr) {
+				return rejectTask<BlogReactionMutationOutcome, BlogReactionFailure>(publishedBlogPostSlugResult.error);
+			}
 
-				const rateLimitError = readRateLimitError(blogReactionRateLimiter, clientAddress);
+			const rateLimitError = readRateLimitError(blogReactionRateLimiter, clientAddress);
 
-				if (rateLimitError.isJust) {
-					return err(rateLimitError.value);
-				}
+			if (rateLimitError.isJust) {
+				return rejectTask<BlogReactionMutationOutcome, BlogReactionFailure>(rateLimitError.value);
+			}
 
+			return tryOrElse(normalizeBlogReactionInfrastructureFailure, async () => {
 				const anonymousReactorIdentifier = treatMalformedAnonymousReactorIdentifierAsAbsent(
 					parseAnonymousReactorIdentifier(anonymousReactorCookieValue)
 				);
@@ -252,13 +268,13 @@ export function createBlogReactionApplicationService(
 					);
 
 					if (repositoryResult.isErr) {
-						throw repositoryResult.error;
+						throw normalizeBlogReactionError(repositoryResult.error);
 					}
 
-					return ok({
+					return {
 						createdAnonymousReactorIdentifier: nothing(),
 						snapshot: repositoryResult.value
-					});
+					};
 				}
 
 				const reactorHash = createBlogReactionHash({
@@ -272,13 +288,13 @@ export function createBlogReactionApplicationService(
 				);
 
 				if (repositoryResult.isErr) {
-					throw repositoryResult.error;
+					throw normalizeBlogReactionError(repositoryResult.error);
 				}
 
-				return ok({
+				return {
 					createdAnonymousReactorIdentifier: nothing(),
 					snapshot: repositoryResult.value
-				});
+				};
 			});
 		}
 	};

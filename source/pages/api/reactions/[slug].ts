@@ -7,11 +7,11 @@ import {
 	handleBlogReactionRequest,
 	type BlogReactionHttpMethod,
 	type BlogReactionHttpResponse
-} from "../../../blog/blog-reaction-http.ts";
-import { blogReactionErrorResponseSchema } from "../../../blog/blog-reaction-schema.ts";
-import { isSqliteBusyError } from "../../../blog/sqlite-database-error.ts";
+} from "../../../blog/reactions/server/blog-reaction-http.ts";
+import { blogReactionErrorResponseSchema } from "../../../blog/reactions/blog-reaction-schema.ts";
+import { isSqliteBusyError } from "../../../database/sqlite-database-error.ts";
 import { standardStreamRuntimeLogger } from "../../../blog/runtime-logger.ts";
-import { readRuntimeBlogReactionApplicationServiceTask } from "../../../blog/runtime-blog-reaction-composition.ts";
+import { readRuntimeBlogReactionApplicationServiceTask } from "../../../blog/reactions/server/runtime-composition.ts";
 
 export const prerender = false;
 

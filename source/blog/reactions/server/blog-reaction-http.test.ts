@@ -2,14 +2,10 @@ import assert from "node:assert";
 import Database from "better-sqlite3";
 import { suite, test } from "mocha";
 import { just, nothing, type Maybe } from "true-myth/maybe";
-import { err, ok } from "true-myth/result";
 import { reject as rejectTask, resolve as resolveTask } from "true-myth/task";
-import type {
-	BlogReactionApplicationService,
-	BlogReactionApplicationTaskResult,
-	BlogReactionMutationOutcome
-} from "./blog-reaction-application.ts";
-import { blogReactionErrorResponseSchema, blogReactionResponseSchema } from "./blog-reaction-schema.ts";
+import { blogReactionErrorResponseSchema, blogReactionResponseSchema } from "../blog-reaction-schema.ts";
+import { normalizeSqliteDatabaseError } from "../../../database/sqlite-database-error.ts";
+import type { BlogReactionApplicationService } from "./blog-reaction-application.ts";
 import {
 	blogReactionBusyRetryAfterSeconds,
 	blogReactionCookieMaxAgeSeconds,
@@ -18,16 +14,15 @@ import {
 	type BlogReactionHttpMethod,
 	type BlogReactionHttpRequest
 } from "./blog-reaction-http.ts";
-import { normalizeSqliteDatabaseError } from "./sqlite-database-error.ts";
 import type { BlogReactionSnapshot } from "./blog-reaction.ts";
 
 const validPostSlug = "quiet-post";
 const validAnonymousReactorIdentifier = "A".repeat(43);
 
 type TestApplicationServiceOptions = {
-	readonly addReactionTask?: BlogReactionApplicationTaskResult<BlogReactionMutationOutcome>;
-	readonly readReactionTask?: BlogReactionApplicationTaskResult<BlogReactionSnapshot>;
-	readonly removeReactionTask?: BlogReactionApplicationTaskResult<BlogReactionMutationOutcome>;
+	readonly addReactionTask?: ReturnType<BlogReactionApplicationService["addReaction"]>;
+	readonly readReactionTask?: ReturnType<BlogReactionApplicationService["readReaction"]>;
+	readonly removeReactionTask?: ReturnType<BlogReactionApplicationService["removeReaction"]>;
 };
 
 type TestApplicationService = BlogReactionApplicationService & {
@@ -55,25 +50,21 @@ function createTestApplicationService(
 	testApplicationServiceOptions: TestApplicationServiceOptions = {}
 ): TestApplicationService {
 	const {
-		addReactionTask = resolveTask(
-			ok({
-				createdAnonymousReactorIdentifier: just(validAnonymousReactorIdentifier),
-				snapshot: {
-					count: 1,
-					reacted: true
-				}
-			})
-		),
-		readReactionTask = resolveTask(ok({ count: 3, reacted: false })),
-		removeReactionTask = resolveTask(
-			ok({
-				createdAnonymousReactorIdentifier: nothing(),
-				snapshot: {
-					count: 0,
-					reacted: false
-				}
-			})
-		)
+		addReactionTask = resolveTask({
+			createdAnonymousReactorIdentifier: just(validAnonymousReactorIdentifier),
+			snapshot: {
+				count: 1,
+				reacted: true
+			}
+		}),
+		readReactionTask = resolveTask({ count: 3, reacted: false }),
+		removeReactionTask = resolveTask({
+			createdAnonymousReactorIdentifier: nothing(),
+			snapshot: {
+				count: 0,
+				reacted: false
+			}
+		})
 	} = testApplicationServiceOptions;
 	const calls: BlogReactionHttpMethod[] = [];
 
@@ -167,7 +158,7 @@ suite("handleBlogReactionRequest()", function () {
 
 	test("maps an unknown published post to 404", async function () {
 		const testApplicationService = createTestApplicationService({
-			readReactionTask: resolveTask(err({ kind: "not_found" }))
+			readReactionTask: rejectTask({ kind: "not_found" })
 		});
 		const unexpectedFailureRecorder = createUnexpectedFailureRecorder();
 		const response = await handleBlogReactionRequest({
@@ -187,7 +178,7 @@ suite("handleBlogReactionRequest()", function () {
 
 	test("returns a validated GET response without creating a cookie", async function () {
 		const testApplicationService = createTestApplicationService({
-			readReactionTask: resolveTask(ok({ count: 0, reacted: false }))
+			readReactionTask: resolveTask({ count: 0, reacted: false })
 		});
 		const unexpectedFailureRecorder = createUnexpectedFailureRecorder();
 		const response = await handleBlogReactionRequest({
@@ -255,15 +246,13 @@ suite("handleBlogReactionRequest()", function () {
 		const unexpectedFailureRecorder = createUnexpectedFailureRecorder();
 		const response = await handleBlogReactionRequest({
 			blogReactionApplicationService: createTestApplicationService({
-				addReactionTask: resolveTask(
-					ok({
-						createdAnonymousReactorIdentifier: nothing(),
-						snapshot: {
-							count: 1,
-							reacted: true
-						}
-					})
-				)
+				addReactionTask: resolveTask({
+					createdAnonymousReactorIdentifier: nothing(),
+					snapshot: {
+						count: 1,
+						reacted: true
+					}
+				})
 			}),
 			logUnexpectedFailure: unexpectedFailureRecorder.logUnexpectedFailure,
 			request: createTestRequest({
@@ -299,12 +288,10 @@ suite("handleBlogReactionRequest()", function () {
 
 	test("maps rate limiting to 429 with Retry-After", async function () {
 		const testApplicationService = createTestApplicationService({
-			addReactionTask: resolveTask(
-				err({
-					kind: "rate_limited",
-					retryAfterMilliseconds: 12_345
-				})
-			)
+			addReactionTask: rejectTask({
+				kind: "rate_limited",
+				retryAfterMilliseconds: 12_345
+			})
 		});
 		const unexpectedFailureRecorder = createUnexpectedFailureRecorder();
 		const response = await handleBlogReactionRequest({
@@ -327,7 +314,10 @@ suite("handleBlogReactionRequest()", function () {
 	test("maps SQLITE_BUSY to 503 with a conservative Retry-After and logs once", async function () {
 		const sqliteBusyError = normalizeSqliteDatabaseError(new Database.SqliteError("database busy", "SQLITE_BUSY"));
 		const testApplicationService = createTestApplicationService({
-			addReactionTask: rejectTask(sqliteBusyError)
+			addReactionTask: rejectTask({
+				cause: sqliteBusyError,
+				kind: "infrastructure_failure"
+			})
 		});
 		const unexpectedFailureRecorder = createUnexpectedFailureRecorder();
 		const response = await handleBlogReactionRequest({
@@ -355,7 +345,10 @@ suite("handleBlogReactionRequest()", function () {
 	test("maps unexpected failures to generic 500 without exposing details", async function () {
 		const unexpectedError = new Error("SQL statement and filesystem path must remain private");
 		const testApplicationService = createTestApplicationService({
-			readReactionTask: rejectTask(unexpectedError)
+			readReactionTask: rejectTask({
+				cause: unexpectedError,
+				kind: "infrastructure_failure"
+			})
 		});
 		const unexpectedFailureRecorder = createUnexpectedFailureRecorder();
 		const response = await handleBlogReactionRequest({

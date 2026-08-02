@@ -3,8 +3,8 @@ import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { Hono } from "hono";
 import { suite, test } from "mocha";
-import { blogReactionCookieName } from "../blog/blog-reaction-http.ts";
-import { blogReactionErrorResponseSchema, blogReactionResponseSchema } from "../blog/blog-reaction-schema.ts";
+import { blogReactionCookieName } from "../blog/reactions/server/blog-reaction-http.ts";
+import { blogReactionErrorResponseSchema, blogReactionResponseSchema } from "../blog/reactions/blog-reaction-schema.ts";
 import { registerBlogReactionRoute } from "./blog-reaction-route.ts";
 
 type BlogReactionRequestOptions = {

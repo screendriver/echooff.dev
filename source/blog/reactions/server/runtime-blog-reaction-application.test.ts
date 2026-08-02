@@ -1,12 +1,12 @@
 import assert from "node:assert";
 import { suite, test } from "mocha";
 import { reject as rejectTask, resolve as resolveTask, type Task } from "true-myth/task";
+import type { PublishedBlogPostCatalogue, PublishedBlogPostSlug } from "../../published-blog-post-catalogue.ts";
 import {
 	createRuntimeBlogReactionApplicationServiceTaskReader,
 	type RuntimeBlogReactionApplicationServiceOptions
 } from "./runtime-blog-reaction-application.ts";
 import type { BlogReactionRepository } from "./blog-reaction.ts";
-import type { PublishedBlogPostCatalogue, PublishedBlogPostSlug } from "./published-blog-post-catalogue.ts";
 
 const validBlogReactionHmacSecret = "a".repeat(64);
 

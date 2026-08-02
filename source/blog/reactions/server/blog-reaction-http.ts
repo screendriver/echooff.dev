@@ -1,8 +1,8 @@
 import { isDirectInstanceOf, isError } from "@sindresorhus/is";
 import { type } from "arktype";
-import { match } from "ts-pattern";
 import { nothing, type Maybe } from "true-myth/maybe";
 import { err, ok, type Result } from "true-myth/result";
+import type { Task } from "true-myth/task";
 import type { Unit } from "true-myth/unit";
 import {
 	blogReactionErrorResponseSchema,
@@ -11,14 +11,16 @@ import {
 	type BlogReactionErrorResponse,
 	type BlogReactionResponse,
 	type BlogReactionRouteParameters
-} from "./blog-reaction-schema.ts";
+} from "../blog-reaction-schema.ts";
+import { isSqliteBusyError } from "../../../database/sqlite-database-error.ts";
 import type {
-	BlogReactionApplicationError,
 	BlogReactionApplicationService,
-	BlogReactionApplicationTaskResult
+	BlogReactionFailure,
+	BlogReactionMutationOutcome,
+	MutateBlogReactionOptions,
+	ReadBlogReactionOptions
 } from "./blog-reaction-application.ts";
 import type { AnonymousReactorIdentifier } from "./blog-reaction-identity-schema.ts";
-import { isSqliteBusyError } from "./sqlite-database-error.ts";
 import type { BlogReactionSnapshot } from "./blog-reaction.ts";
 
 export const blogReactionCookieName = "echooff_blog_reactor";
@@ -68,7 +70,7 @@ export type BlogReactionHttpHandlerOptions = {
 	readonly secureCookies: boolean;
 };
 
-type BlogReactionApplicationTaskResolution<Value> = Error | Result<Value, BlogReactionApplicationError>;
+type BlogReactionApplicationSuccess = BlogReactionMutationOutcome | BlogReactionSnapshot;
 
 type CreateBlogReactionErrorResponseOptions = {
 	readonly errorCode: BlogReactionErrorCode;
@@ -85,12 +87,6 @@ type CreateBlogReactionSuccessResponseOptions = {
 	readonly blogReactionSnapshot: BlogReactionSnapshot;
 	readonly createdAnonymousReactorIdentifier: Maybe<AnonymousReactorIdentifier>;
 	readonly secureCookies: boolean;
-};
-
-type CreateResponseForApplicationTaskResolutionOptions<Value> = {
-	readonly blogReactionApplicationTaskResolution: BlogReactionApplicationTaskResolution<Value>;
-	readonly createSuccessResponse: (value: Value) => BlogReactionHttpResponse;
-	readonly logUnexpectedFailure: LogUnexpectedBlogReactionFailure;
 };
 
 const noStoreResponseHeaders: BlogReactionHttpResponseHeaders = {
@@ -163,14 +159,6 @@ function createRateLimitedResponse(retryAfterMilliseconds: number): BlogReaction
 	});
 }
 
-function createApplicationErrorResponse(error: BlogReactionApplicationError): BlogReactionHttpResponse {
-	if (error.kind === "not_found") {
-		return createNotFoundResponse();
-	}
-
-	return createRateLimitedResponse(error.retryAfterMilliseconds);
-}
-
 function createBlogReactionCookie(
 	anonymousReactorIdentifier: AnonymousReactorIdentifier,
 	secureCookies: boolean
@@ -214,117 +202,76 @@ function parseBlogReactionRouteParameters(routeParameters: unknown): Result<Blog
 	return ok(parsedRouteParameters);
 }
 
-async function resolveBlogReactionApplicationTask<Value>(
-	blogReactionApplicationTask: BlogReactionApplicationTaskResult<Value>
-): Promise<BlogReactionApplicationTaskResolution<Value>> {
-	const taskResult = await blogReactionApplicationTask;
+function createApplicationTask(
+	blogReactionHttpHandlerOptions: BlogReactionHttpHandlerOptions,
+	postSlug: string
+): Task<BlogReactionApplicationSuccess, BlogReactionFailure> {
+	const { blogReactionApplicationService, request } = blogReactionHttpHandlerOptions;
 
-	if (taskResult.isErr) {
-		return taskResult.error;
+	if (request.method === "GET") {
+		const readBlogReactionOptions: ReadBlogReactionOptions = {
+			anonymousReactorCookieValue: request.anonymousReactorCookieValue,
+			postSlug
+		};
+
+		return blogReactionApplicationService.readReaction(readBlogReactionOptions).map((snapshot) => {
+			return snapshot;
+		});
 	}
 
-	return taskResult.value;
+	const mutateBlogReactionOptions: MutateBlogReactionOptions = {
+		anonymousReactorCookieValue: request.anonymousReactorCookieValue,
+		clientAddress: request.clientAddress,
+		postSlug
+	};
+
+	if (request.method === "PUT") {
+		return blogReactionApplicationService.addReaction(mutateBlogReactionOptions);
+	}
+
+	return blogReactionApplicationService.removeReaction(mutateBlogReactionOptions);
 }
 
-function createResponseForApplicationTaskResolution<Value>(
-	createResponseForApplicationTaskResolutionOptions: CreateResponseForApplicationTaskResolutionOptions<Value>
+function isBlogReactionMutationOutcome(
+	blogReactionApplicationSuccess: BlogReactionApplicationSuccess
+): blogReactionApplicationSuccess is BlogReactionMutationOutcome {
+	return Object.hasOwn(blogReactionApplicationSuccess, "snapshot");
+}
+
+function createResponseForApplicationFailure(
+	blogReactionFailure: BlogReactionFailure,
+	logUnexpectedFailure: LogUnexpectedBlogReactionFailure
 ): BlogReactionHttpResponse {
-	const { blogReactionApplicationTaskResolution, createSuccessResponse, logUnexpectedFailure } =
-		createResponseForApplicationTaskResolutionOptions;
-
-	if (isError(blogReactionApplicationTaskResolution)) {
-		const normalizedError = normalizeUnexpectedBlogReactionHttpError(blogReactionApplicationTaskResolution);
-		const statusCode = isSqliteBusyError(blogReactionApplicationTaskResolution) ? 503 : 500;
-
-		logUnexpectedFailure(normalizedError, statusCode);
-
-		return createUnexpectedBlogReactionHttpResponse(blogReactionApplicationTaskResolution);
+	if (blogReactionFailure.kind === "not_found") {
+		return createNotFoundResponse();
 	}
 
-	if (blogReactionApplicationTaskResolution.isErr) {
-		return createApplicationErrorResponse(blogReactionApplicationTaskResolution.error);
+	if (blogReactionFailure.kind === "rate_limited") {
+		return createRateLimitedResponse(blogReactionFailure.retryAfterMilliseconds);
 	}
 
-	return createSuccessResponse(blogReactionApplicationTaskResolution.value);
+	const statusCode = isSqliteBusyError(blogReactionFailure.cause) ? 503 : 500;
+	logUnexpectedFailure(blogReactionFailure.cause, statusCode);
+
+	return createUnexpectedBlogReactionHttpResponse(blogReactionFailure.cause);
 }
 
-async function handleGetBlogReactionRequest(
-	blogReactionHttpHandlerOptions: BlogReactionHttpHandlerOptions,
-	postSlug: string
-): Promise<BlogReactionHttpResponse> {
-	const { blogReactionApplicationService, logUnexpectedFailure, request, secureCookies } =
-		blogReactionHttpHandlerOptions;
-	const applicationTaskResolution = await resolveBlogReactionApplicationTask(
-		blogReactionApplicationService.readReaction({
-			anonymousReactorCookieValue: request.anonymousReactorCookieValue,
-			postSlug
-		})
-	);
+function createResponseForApplicationResult(
+	applicationResult: Result<BlogReactionApplicationSuccess, BlogReactionFailure>,
+	secureCookies: boolean,
+	logUnexpectedFailure: LogUnexpectedBlogReactionFailure
+): BlogReactionHttpResponse {
+	if (applicationResult.isErr) {
+		return createResponseForApplicationFailure(applicationResult.error, logUnexpectedFailure);
+	}
 
-	return createResponseForApplicationTaskResolution({
-		blogReactionApplicationTaskResolution: applicationTaskResolution,
-		createSuccessResponse(blogReactionSnapshot) {
-			return createBlogReactionSuccessResponse({
-				blogReactionSnapshot,
-				createdAnonymousReactorIdentifier: nothing(),
-				secureCookies
-			});
-		},
-		logUnexpectedFailure
-	});
-}
+	const successValue = applicationResult.value;
+	const mutationOutcome = isBlogReactionMutationOutcome(successValue);
 
-async function handlePutBlogReactionRequest(
-	blogReactionHttpHandlerOptions: BlogReactionHttpHandlerOptions,
-	postSlug: string
-): Promise<BlogReactionHttpResponse> {
-	const { blogReactionApplicationService, logUnexpectedFailure, request, secureCookies } =
-		blogReactionHttpHandlerOptions;
-	const applicationTaskResolution = await resolveBlogReactionApplicationTask(
-		blogReactionApplicationService.addReaction({
-			anonymousReactorCookieValue: request.anonymousReactorCookieValue,
-			clientAddress: request.clientAddress,
-			postSlug
-		})
-	);
-
-	return createResponseForApplicationTaskResolution({
-		blogReactionApplicationTaskResolution: applicationTaskResolution,
-		createSuccessResponse(mutationOutcome) {
-			return createBlogReactionSuccessResponse({
-				blogReactionSnapshot: mutationOutcome.snapshot,
-				createdAnonymousReactorIdentifier: mutationOutcome.createdAnonymousReactorIdentifier,
-				secureCookies
-			});
-		},
-		logUnexpectedFailure
-	});
-}
-
-async function handleDeleteBlogReactionRequest(
-	blogReactionHttpHandlerOptions: BlogReactionHttpHandlerOptions,
-	postSlug: string
-): Promise<BlogReactionHttpResponse> {
-	const { blogReactionApplicationService, logUnexpectedFailure, request, secureCookies } =
-		blogReactionHttpHandlerOptions;
-	const applicationTaskResolution = await resolveBlogReactionApplicationTask(
-		blogReactionApplicationService.removeReaction({
-			anonymousReactorCookieValue: request.anonymousReactorCookieValue,
-			clientAddress: request.clientAddress,
-			postSlug
-		})
-	);
-
-	return createResponseForApplicationTaskResolution({
-		blogReactionApplicationTaskResolution: applicationTaskResolution,
-		createSuccessResponse(mutationOutcome) {
-			return createBlogReactionSuccessResponse({
-				blogReactionSnapshot: mutationOutcome.snapshot,
-				createdAnonymousReactorIdentifier: mutationOutcome.createdAnonymousReactorIdentifier,
-				secureCookies
-			});
-		},
-		logUnexpectedFailure
+	return createBlogReactionSuccessResponse({
+		blogReactionSnapshot: mutationOutcome ? successValue.snapshot : successValue,
+		createdAnonymousReactorIdentifier: mutationOutcome ? successValue.createdAnonymousReactorIdentifier : nothing(),
+		secureCookies
 	});
 }
 
@@ -338,19 +285,14 @@ async function handleBlogReactionRequestWithoutUnexpectedFailure(
 		return createNotFoundResponse();
 	}
 
-	const { slug } = routeParametersResult.value;
+	const applicationTask = createApplicationTask(blogReactionHttpHandlerOptions, routeParametersResult.value.slug);
+	const applicationResult = await applicationTask;
 
-	return match(request.method)
-		.with("GET", async () => {
-			return handleGetBlogReactionRequest(blogReactionHttpHandlerOptions, slug);
-		})
-		.with("DELETE", async () => {
-			return handleDeleteBlogReactionRequest(blogReactionHttpHandlerOptions, slug);
-		})
-		.with("PUT", async () => {
-			return handlePutBlogReactionRequest(blogReactionHttpHandlerOptions, slug);
-		})
-		.exhaustive();
+	return createResponseForApplicationResult(
+		applicationResult,
+		blogReactionHttpHandlerOptions.secureCookies,
+		blogReactionHttpHandlerOptions.logUnexpectedFailure
+	);
 }
 
 export async function handleBlogReactionRequest(

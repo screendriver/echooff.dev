@@ -3,8 +3,11 @@ import type { Context, Hono } from "hono";
 import { isDirectInstanceOf } from "@sindresorhus/is";
 import { type } from "arktype";
 import { match } from "ts-pattern";
-import { blogReactionCookieName } from "../blog/blog-reaction-http.ts";
-import { blogReactionResponseSchema, blogReactionRouteParametersSchema } from "../blog/blog-reaction-schema.ts";
+import { blogReactionCookieName } from "../blog/reactions/server/blog-reaction-http.ts";
+import {
+	blogReactionResponseSchema,
+	blogReactionRouteParametersSchema
+} from "../blog/reactions/blog-reaction-schema.ts";
 
 const deterministicBlogReactionCookieValue = "A".repeat(43);
 const noStoreHeaderName = "Cache-Control";
