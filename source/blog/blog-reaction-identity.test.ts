@@ -1,12 +1,15 @@
 import assert from "node:assert";
 import { Buffer } from "node:buffer";
 import { suite, test } from "mocha";
+import { just, nothing } from "true-myth/maybe";
+import { err, ok } from "true-myth/result";
 import {
 	anonymousReactorIdentifierByteCount,
 	anonymousReactorIdentifierSchema
 } from "./blog-reaction-identity-schema.ts";
 import {
 	createAnonymousReactorIdentifier,
+	parseAnonymousReactorIdentifier,
 	productionAnonymousReactorIdentityOptions,
 	type AnonymousReactorIdentityOptions
 } from "./blog-reaction-identity.ts";
@@ -41,6 +44,32 @@ suite("anonymous reactor identifier schema", function () {
 				anonymousReactorIdentifierSchema.assert(invalidIdentifier);
 			}, Error);
 		}
+	});
+});
+
+suite("parseAnonymousReactorIdentifier()", function () {
+	test("returns an absent identity when the cookie is absent", function () {
+		const actualResult = parseAnonymousReactorIdentifier(nothing());
+
+		assert.deepStrictEqual(actualResult, ok(nothing()));
+	});
+
+	test("returns a validated identity when the cookie is valid", function () {
+		const validAnonymousReactorIdentifier = "A".repeat(43);
+		const actualResult = parseAnonymousReactorIdentifier(just(validAnonymousReactorIdentifier));
+
+		assert.deepStrictEqual(actualResult, ok(just(validAnonymousReactorIdentifier)));
+	});
+
+	test("returns an explicit error when the cookie is malformed", function () {
+		const actualResult = parseAnonymousReactorIdentifier(just("malformed-cookie"));
+
+		assert.deepStrictEqual(
+			actualResult,
+			err({
+				kind: "malformed_anonymous_reactor_identifier"
+			})
+		);
 	});
 });
 
