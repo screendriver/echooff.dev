@@ -18,6 +18,7 @@ steps:
               from_secret: github_login
           ASTRO_KEY:
               from_secret: astro_key
+          PUBLIC_BUGSINK_RELEASE: ${CI_COMMIT_SHA}
       commands:
           - npm clean-install
           - npx just build

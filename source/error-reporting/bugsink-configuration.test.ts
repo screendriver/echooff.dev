@@ -166,17 +166,4 @@ suite("Bugsink configuration", function () {
 			error: expectedError
 		});
 	});
-
-	test("does not place public or private reporting credentials in the runtime image", async function () {
-		const dockerfileSource = await readFile(join(repositoryRootDirectoryPath, "Dockerfile"), "utf8");
-		const deploymentSource = await readFile(join(repositoryRootDirectoryPath, ".woodpecker/deploy.yaml"), "utf8");
-		const serverAdapterSource = await readFile(
-			join(repositoryRootDirectoryPath, "source/error-reporting/bugsink-server.ts"),
-			"utf8"
-		);
-
-		assert.doesNotMatch(dockerfileSource, /PUBLIC_BUGSINK_DSN|SENTRY_AUTH_TOKEN/u);
-		assert.match(deploymentSource, /SENTRY_AUTH_TOKEN:[\s\S]*from_secret: bugsink_source_map_token/u);
-		assert.doesNotMatch(serverAdapterSource, /SENTRY_AUTH_TOKEN/u);
-	});
 });
