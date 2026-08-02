@@ -7,10 +7,14 @@ import {
 	withTemporaryApplicationDatabase
 } from "./application-database-test-support.ts";
 
+type ApplicationDatabaseTableRow = {
+	readonly name: string;
+};
+
 function readApplicationDatabaseTableNames(applicationDatabaseConnection: ApplicationDatabaseConnection): string[] {
 	const tableRows = applicationDatabaseConnection.sqliteDatabase
 		.prepare("SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name")
-		.all() as { readonly name: string }[];
+		.all() as ApplicationDatabaseTableRow[];
 
 	return tableRows.map((tableRow) => {
 		return tableRow.name;
