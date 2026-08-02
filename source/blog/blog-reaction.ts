@@ -1,5 +1,6 @@
 import type { Maybe } from "true-myth/maybe";
 import type { Task } from "true-myth/task";
+import type { PublishedBlogPostSlug } from "./published-blog-post-catalogue.ts";
 
 export type BlogReactionSnapshot = {
 	readonly count: number;
@@ -7,10 +8,16 @@ export type BlogReactionSnapshot = {
 };
 
 export type BlogReactionRepository = {
-	readonly addReactionAndReadSnapshot: (postSlug: string, reactorHash: string) => Task<BlogReactionSnapshot, Error>;
-	readonly readSnapshot: (postSlug: string, reactorHash: Maybe<string>) => Task<BlogReactionSnapshot, Error>;
+	readonly addReactionAndReadSnapshot: (
+		postSlug: PublishedBlogPostSlug,
+		reactorHash: string
+	) => Task<BlogReactionSnapshot, Error>;
+	readonly readSnapshot: (
+		postSlug: PublishedBlogPostSlug,
+		reactorHash: Maybe<string>
+	) => Task<BlogReactionSnapshot, Error>;
 	readonly removeReactionAndReadSnapshot: (
-		postSlug: string,
+		postSlug: PublishedBlogPostSlug,
 		reactorHash: string
 	) => Task<BlogReactionSnapshot, Error>;
 };

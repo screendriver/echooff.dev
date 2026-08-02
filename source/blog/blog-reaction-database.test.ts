@@ -7,6 +7,7 @@ import type { Task } from "true-myth/task";
 import type { ApplicationDatabase, ApplicationDatabaseConnection } from "./application-database.ts";
 import { withTemporaryApplicationDatabase } from "./application-database-test-support.ts";
 import { createBlogReactionRepository } from "./blog-reaction-database.ts";
+import { createTestPublishedBlogPostSlug } from "./blog-reaction-test-support.ts";
 import type { BlogReactionRepository, BlogReactionSnapshot } from "./blog-reaction.ts";
 
 type RecordedQueryOperation = "DeleteQueryNode" | "InsertQueryNode" | "SelectQueryNode";
@@ -15,6 +16,10 @@ type QueryOperationRecorder = {
 	readonly operationKinds: readonly RecordedQueryOperation[];
 	readonly recordOperationKind: (operationKind: RecordedQueryOperation) => void;
 };
+
+const firstPostSlug = createTestPublishedBlogPostSlug("first-post");
+const quietPostSlug = createTestPublishedBlogPostSlug("quiet-post");
+const secondPostSlug = createTestPublishedBlogPostSlug("second-post");
 
 function unwrapTestResult<Value>(result: Result<Value, Error>): Value {
 	if (isOk(result)) {
@@ -68,7 +73,7 @@ suite("blog reaction database repository", function () {
 		withTemporaryApplicationDatabase(async (applicationDatabaseConnection) => {
 			const blogReactionRepository = createTestBlogReactionRepository(applicationDatabaseConnection);
 
-			const actualSnapshot = await unwrapTestTask(blogReactionRepository.readSnapshot("quiet-post", nothing()));
+			const actualSnapshot = await unwrapTestTask(blogReactionRepository.readSnapshot(quietPostSlug, nothing()));
 
 			assertSnapshot(actualSnapshot, {
 				count: 0,
@@ -83,7 +88,7 @@ suite("blog reaction database repository", function () {
 			const blogReactionRepository = createTestBlogReactionRepository(applicationDatabaseConnection);
 
 			const actualSnapshot = await unwrapTestTask(
-				blogReactionRepository.addReactionAndReadSnapshot("quiet-post", "reactor-hash-one")
+				blogReactionRepository.addReactionAndReadSnapshot(quietPostSlug, "reactor-hash-one")
 			);
 
 			assertSnapshot(actualSnapshot, {
@@ -98,9 +103,9 @@ suite("blog reaction database repository", function () {
 		withTemporaryApplicationDatabase(async (applicationDatabaseConnection) => {
 			const blogReactionRepository = createTestBlogReactionRepository(applicationDatabaseConnection);
 
-			await unwrapTestTask(blogReactionRepository.addReactionAndReadSnapshot("quiet-post", "reactor-hash-one"));
+			await unwrapTestTask(blogReactionRepository.addReactionAndReadSnapshot(quietPostSlug, "reactor-hash-one"));
 			const actualSnapshot = await unwrapTestTask(
-				blogReactionRepository.addReactionAndReadSnapshot("quiet-post", "reactor-hash-one")
+				blogReactionRepository.addReactionAndReadSnapshot(quietPostSlug, "reactor-hash-one")
 			);
 
 			assertSnapshot(actualSnapshot, {
@@ -115,9 +120,9 @@ suite("blog reaction database repository", function () {
 		withTemporaryApplicationDatabase(async (applicationDatabaseConnection) => {
 			const blogReactionRepository = createTestBlogReactionRepository(applicationDatabaseConnection);
 
-			await unwrapTestTask(blogReactionRepository.addReactionAndReadSnapshot("quiet-post", "reactor-hash-one"));
+			await unwrapTestTask(blogReactionRepository.addReactionAndReadSnapshot(quietPostSlug, "reactor-hash-one"));
 			const actualSnapshot = await unwrapTestTask(
-				blogReactionRepository.addReactionAndReadSnapshot("quiet-post", "reactor-hash-two")
+				blogReactionRepository.addReactionAndReadSnapshot(quietPostSlug, "reactor-hash-two")
 			);
 
 			assertSnapshot(actualSnapshot, {
@@ -132,9 +137,9 @@ suite("blog reaction database repository", function () {
 		withTemporaryApplicationDatabase(async (applicationDatabaseConnection) => {
 			const blogReactionRepository = createTestBlogReactionRepository(applicationDatabaseConnection);
 
-			await unwrapTestTask(blogReactionRepository.addReactionAndReadSnapshot("first-post", "reactor-hash-one"));
+			await unwrapTestTask(blogReactionRepository.addReactionAndReadSnapshot(firstPostSlug, "reactor-hash-one"));
 			const actualSnapshot = await unwrapTestTask(
-				blogReactionRepository.readSnapshot("second-post", just("reactor-hash-one"))
+				blogReactionRepository.readSnapshot(secondPostSlug, just("reactor-hash-one"))
 			);
 
 			assertSnapshot(actualSnapshot, {
@@ -149,12 +154,12 @@ suite("blog reaction database repository", function () {
 		withTemporaryApplicationDatabase(async (applicationDatabaseConnection) => {
 			const blogReactionRepository = createTestBlogReactionRepository(applicationDatabaseConnection);
 
-			await unwrapTestTask(blogReactionRepository.addReactionAndReadSnapshot("quiet-post", "reactor-hash-one"));
+			await unwrapTestTask(blogReactionRepository.addReactionAndReadSnapshot(quietPostSlug, "reactor-hash-one"));
 			const actualMatchingSnapshot = await unwrapTestTask(
-				blogReactionRepository.readSnapshot("quiet-post", just("reactor-hash-one"))
+				blogReactionRepository.readSnapshot(quietPostSlug, just("reactor-hash-one"))
 			);
 			const actualNonMatchingSnapshot = await unwrapTestTask(
-				blogReactionRepository.readSnapshot("quiet-post", just("reactor-hash-two"))
+				blogReactionRepository.readSnapshot(quietPostSlug, just("reactor-hash-two"))
 			);
 
 			assertSnapshot(actualMatchingSnapshot, {
@@ -173,12 +178,12 @@ suite("blog reaction database repository", function () {
 		withTemporaryApplicationDatabase(async (applicationDatabaseConnection) => {
 			const blogReactionRepository = createTestBlogReactionRepository(applicationDatabaseConnection);
 
-			await unwrapTestTask(blogReactionRepository.addReactionAndReadSnapshot("quiet-post", "reactor-hash-one"));
+			await unwrapTestTask(blogReactionRepository.addReactionAndReadSnapshot(quietPostSlug, "reactor-hash-one"));
 			const actualFirstRemovalSnapshot = await unwrapTestTask(
-				blogReactionRepository.removeReactionAndReadSnapshot("quiet-post", "reactor-hash-one")
+				blogReactionRepository.removeReactionAndReadSnapshot(quietPostSlug, "reactor-hash-one")
 			);
 			const actualSecondRemovalSnapshot = await unwrapTestTask(
-				blogReactionRepository.removeReactionAndReadSnapshot("quiet-post", "reactor-hash-one")
+				blogReactionRepository.removeReactionAndReadSnapshot(quietPostSlug, "reactor-hash-one")
 			);
 
 			assertSnapshot(actualFirstRemovalSnapshot, {
@@ -205,7 +210,7 @@ suite("blog reaction database repository", function () {
 			const recordingDatabase = createRecordingDatabase(applicationDatabaseConnection, queryOperationRecorder);
 			const blogReactionRepository = createBlogReactionRepository(recordingDatabase);
 
-			await unwrapTestTask(blogReactionRepository.addReactionAndReadSnapshot("quiet-post", "reactor-hash-one"));
+			await unwrapTestTask(blogReactionRepository.addReactionAndReadSnapshot(quietPostSlug, "reactor-hash-one"));
 
 			assert.deepStrictEqual(queryOperationRecorder.operationKinds, ["InsertQueryNode", "SelectQueryNode"]);
 		})
@@ -215,7 +220,7 @@ suite("blog reaction database repository", function () {
 		"executes the delete before the count query for removals",
 		withTemporaryApplicationDatabase(async (applicationDatabaseConnection) => {
 			const blogReactionRepository = createTestBlogReactionRepository(applicationDatabaseConnection);
-			await unwrapTestTask(blogReactionRepository.addReactionAndReadSnapshot("quiet-post", "reactor-hash-one"));
+			await unwrapTestTask(blogReactionRepository.addReactionAndReadSnapshot(quietPostSlug, "reactor-hash-one"));
 			const operationKinds: RecordedQueryOperation[] = [];
 			const queryOperationRecorder: QueryOperationRecorder = {
 				operationKinds,
@@ -227,7 +232,7 @@ suite("blog reaction database repository", function () {
 			const recordingBlogReactionRepository = createBlogReactionRepository(recordingDatabase);
 
 			await unwrapTestTask(
-				recordingBlogReactionRepository.removeReactionAndReadSnapshot("quiet-post", "reactor-hash-one")
+				recordingBlogReactionRepository.removeReactionAndReadSnapshot(quietPostSlug, "reactor-hash-one")
 			);
 
 			assert.deepStrictEqual(queryOperationRecorder.operationKinds, ["DeleteQueryNode", "SelectQueryNode"]);

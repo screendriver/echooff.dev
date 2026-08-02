@@ -1,14 +1,20 @@
 import assert from "node:assert";
 import { suite, test } from "mocha";
 import { createBlogReactionHash } from "./blog-reaction-hmac.ts";
+import { createTestPublishedBlogPostSlug } from "./blog-reaction-test-support.ts";
 
 const deterministicHmacSecret = "a".repeat(64);
+const quietPostSlug = createTestPublishedBlogPostSlug("quiet-post");
+const postCSlug = createTestPublishedBlogPostSlug("c");
+const postBcSlug = createTestPublishedBlogPostSlug("bc");
+const postOneSlug = createTestPublishedBlogPostSlug("post-one");
+const postTwoSlug = createTestPublishedBlogPostSlug("post-two");
 
 suite("createBlogReactionHash()", function () {
 	test("creates a deterministic SHA-256 hash for the identity and post", function () {
 		const actualHash = createBlogReactionHash({
 			anonymousReactorIdentifier: "identity-one",
-			postSlug: "quiet-post",
+			postSlug: quietPostSlug,
 			secret: deterministicHmacSecret
 		});
 		const expectedHash = "7182fd127d23d50127c6617b0df76a2186d038e8f83a6a23ffc26b02df700e1c";
@@ -19,12 +25,12 @@ suite("createBlogReactionHash()", function () {
 	test("separates the identity and slug so ambiguous concatenations cannot collide", function () {
 		const firstHash = createBlogReactionHash({
 			anonymousReactorIdentifier: "ab",
-			postSlug: "c",
+			postSlug: postCSlug,
 			secret: deterministicHmacSecret
 		});
 		const secondHash = createBlogReactionHash({
 			anonymousReactorIdentifier: "a",
-			postSlug: "bc",
+			postSlug: postBcSlug,
 			secret: deterministicHmacSecret
 		});
 
@@ -34,17 +40,17 @@ suite("createBlogReactionHash()", function () {
 	test("changes for different identities and different posts", function () {
 		const identityOnePostOneHash = createBlogReactionHash({
 			anonymousReactorIdentifier: "identity-one",
-			postSlug: "post-one",
+			postSlug: postOneSlug,
 			secret: deterministicHmacSecret
 		});
 		const identityTwoPostOneHash = createBlogReactionHash({
 			anonymousReactorIdentifier: "identity-two",
-			postSlug: "post-one",
+			postSlug: postOneSlug,
 			secret: deterministicHmacSecret
 		});
 		const identityOnePostTwoHash = createBlogReactionHash({
 			anonymousReactorIdentifier: "identity-one",
-			postSlug: "post-two",
+			postSlug: postTwoSlug,
 			secret: deterministicHmacSecret
 		});
 
@@ -55,7 +61,7 @@ suite("createBlogReactionHash()", function () {
 	test("does not include the raw identity or slug in the stored hash", function () {
 		const actualHash = createBlogReactionHash({
 			anonymousReactorIdentifier: "identity-one",
-			postSlug: "quiet-post",
+			postSlug: quietPostSlug,
 			secret: deterministicHmacSecret
 		});
 

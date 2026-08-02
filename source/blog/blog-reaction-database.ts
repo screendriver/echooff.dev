@@ -3,29 +3,33 @@ import type { Maybe } from "true-myth/maybe";
 import { tryOrElse } from "true-myth/task";
 import type { ApplicationDatabase } from "./application-database.ts";
 import type { BlogReactionRepository, BlogReactionSnapshot } from "./blog-reaction.ts";
+import type { PublishedBlogPostSlug } from "./published-blog-post-catalogue.ts";
 import { normalizeSqliteDatabaseError } from "./sqlite-database-error.ts";
 
 type ApplicationDatabaseTransaction = Transaction<ApplicationDatabase>;
 
 type ReadReactionSnapshotOptions = {
 	readonly database: ApplicationDatabaseTransaction;
-	readonly postSlug: string;
+	readonly postSlug: PublishedBlogPostSlug;
 	readonly reactorHash: Maybe<string>;
 };
 
 type AddReactionAndReadSnapshotOptions = {
 	readonly database: Kysely<ApplicationDatabase>;
-	readonly postSlug: string;
+	readonly postSlug: PublishedBlogPostSlug;
 	readonly reactorHash: string;
 };
 
 type RemoveReactionAndReadSnapshotOptions = {
 	readonly database: Kysely<ApplicationDatabase>;
-	readonly postSlug: string;
+	readonly postSlug: PublishedBlogPostSlug;
 	readonly reactorHash: string;
 };
 
-async function readReactionCountForPost(database: Kysely<ApplicationDatabase>, postSlug: string): Promise<number> {
+async function readReactionCountForPost(
+	database: Kysely<ApplicationDatabase>,
+	postSlug: PublishedBlogPostSlug
+): Promise<number> {
 	const reactionCountRow = await database
 		.selectFrom("blog_reactions")
 		.select((expressionBuilder) => {
