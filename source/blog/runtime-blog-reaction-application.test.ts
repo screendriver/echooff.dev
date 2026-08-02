@@ -13,7 +13,7 @@ const validBlogReactionHmacSecret = "a".repeat(64);
 type TestRuntimeApplicationDependencies = {
 	loadPublishedBlogPostCatalogue: () => Task<PublishedBlogPostCatalogue, Error>;
 	readBlogReactionRepository: () => Task<BlogReactionRepository, Error>;
-	readRuntimeEnvironment: () => unknown;
+	readRuntimeEnvironment: () => Task<unknown, Error>;
 };
 
 function createTestPublishedBlogPostCatalogue(): PublishedBlogPostCatalogue {
@@ -39,8 +39,8 @@ function createTestBlogReactionRepository(): BlogReactionRepository {
 }
 
 function createTestRuntimeApplicationDependencies(
-	readEnvironment: () => unknown = () => {
-		return { BLOG_REACTION_HMAC_SECRET: validBlogReactionHmacSecret };
+	readEnvironment: () => Task<unknown, Error> = () => {
+		return resolveTask({ BLOG_REACTION_HMAC_SECRET: validBlogReactionHmacSecret });
 	}
 ): TestRuntimeApplicationDependencies {
 	return {
@@ -83,7 +83,7 @@ suite("createRuntimeBlogReactionApplicationServiceTaskReader()", function () {
 		const runtimeApplicationDependencies = createTestRuntimeApplicationDependencies(() => {
 			environmentReadCount += 1;
 
-			return { BLOG_REACTION_HMAC_SECRET: validBlogReactionHmacSecret };
+			return resolveTask({ BLOG_REACTION_HMAC_SECRET: validBlogReactionHmacSecret });
 		});
 		runtimeApplicationDependencies.loadPublishedBlogPostCatalogue = () => {
 			catalogueLoadCount += 1;
@@ -112,7 +112,7 @@ suite("createRuntimeBlogReactionApplicationServiceTaskReader()", function () {
 		const runtimeApplicationDependencies = createTestRuntimeApplicationDependencies(() => {
 			environmentReadCount += 1;
 
-			return { BLOG_REACTION_HMAC_SECRET: validBlogReactionHmacSecret };
+			return resolveTask({ BLOG_REACTION_HMAC_SECRET: validBlogReactionHmacSecret });
 		});
 		runtimeApplicationDependencies.loadPublishedBlogPostCatalogue = () => {
 			catalogueLoadCount += 1;
@@ -145,7 +145,7 @@ suite("createRuntimeBlogReactionApplicationServiceTaskReader()", function () {
 		let catalogueLoadCount = 0;
 		let repositoryReadCount = 0;
 		const runtimeApplicationDependencies = createTestRuntimeApplicationDependencies(() => {
-			return {};
+			return resolveTask({});
 		});
 		runtimeApplicationDependencies.loadPublishedBlogPostCatalogue = () => {
 			catalogueLoadCount += 1;

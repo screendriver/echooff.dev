@@ -1,3 +1,4 @@
+import { readFile } from "node:fs/promises";
 import process from "node:process";
 import { isError } from "@sindresorhus/is";
 import { createWallClock } from "@enormora/wall-clock";
@@ -10,6 +11,7 @@ import {
 } from "./blog-reaction-identity.ts";
 import { createBlogReactionRateLimiter, type BlogReactionRateLimiter } from "./blog-reaction-rate-limiter.ts";
 import type { BlogReactionRepository } from "./blog-reaction.ts";
+import { createRuntimeBlogReactionEnvironmentReader } from "./runtime-blog-reaction-environment.ts";
 import { readRuntimeApplicationDatabaseTask } from "./runtime-application-database.ts";
 import { createRuntimeBlogReactionApplicationServiceTaskReader } from "./runtime-blog-reaction-application.ts";
 import { createPublishedBlogPostCatalogue, type PublishedBlogPostCatalogue } from "./published-blog-post-catalogue.ts";
@@ -34,9 +36,16 @@ function readRuntimeBlogReactionRepository(): Task<BlogReactionRepository, Error
 	});
 }
 
-function readRuntimeEnvironment(): unknown {
-	return process.env;
-}
+const readRuntimeEnvironment = createRuntimeBlogReactionEnvironmentReader({
+	readEnvironmentVariable(environmentVariableName) {
+		return process.env[environmentVariableName];
+	},
+	readSecretFile(secretFilePath) {
+		return tryOrElse(normalizeRuntimeBlogReactionApplicationError, async () => {
+			return readFile(secretFilePath, "utf8");
+		});
+	}
+});
 
 function createRuntimeBlogReactionRateLimiter(): BlogReactionRateLimiter {
 	return createBlogReactionRateLimiter({

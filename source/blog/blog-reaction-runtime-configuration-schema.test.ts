@@ -1,6 +1,7 @@
 import assert from "node:assert";
 import { suite, test } from "mocha";
 import {
+	blogReactionHmacSecretFilePathSchema,
 	blogReactionHmacSecretSchema,
 	blogReactionRuntimeEnvironmentSchema
 } from "./blog-reaction-runtime-configuration-schema.ts";
@@ -45,5 +46,23 @@ suite("blogReactionRuntimeEnvironmentSchema", function () {
 		assert.deepStrictEqual(actualEnvironment, {
 			BLOG_REACTION_HMAC_SECRET: "a".repeat(64)
 		});
+	});
+});
+
+suite("blogReactionHmacSecretFilePathSchema", function () {
+	test("accepts a non-empty secret file path", function () {
+		const actualSecretFilePath = blogReactionHmacSecretFilePathSchema.assert(
+			"/run/secrets/blog_reaction_hmac_secret"
+		);
+
+		assert.strictEqual(actualSecretFilePath, "/run/secrets/blog_reaction_hmac_secret");
+	});
+
+	test("rejects an empty or non-string secret file path", function () {
+		for (const invalidSecretFilePath of ["", undefined, 42]) {
+			assert.throws(() => {
+				blogReactionHmacSecretFilePathSchema.assert(invalidSecretFilePath);
+			}, Error);
+		}
 	});
 });

@@ -21,7 +21,7 @@ export type RuntimeBlogReactionApplicationServiceOptions = {
 	readonly createAnonymousReactorIdentifier: () => AnonymousReactorIdentifier;
 	readonly loadPublishedBlogPostCatalogue: () => Task<PublishedBlogPostCatalogue, Error>;
 	readonly readBlogReactionRepository: () => Task<BlogReactionRepository, Error>;
-	readonly readRuntimeEnvironment: () => unknown;
+	readonly readRuntimeEnvironment: () => Task<unknown, Error>;
 };
 
 function normalizeRuntimeBlogReactionApplicationError(error: unknown): Error {
@@ -52,7 +52,13 @@ async function loadRuntimeBlogReactionApplicationService(
 		readBlogReactionRepository,
 		readRuntimeEnvironment
 	} = runtimeBlogReactionApplicationServiceOptions;
-	const runtimeEnvironment = parseRuntimeBlogReactionEnvironment(readRuntimeEnvironment());
+	const runtimeEnvironmentResult = await readRuntimeEnvironment();
+
+	if (runtimeEnvironmentResult.isErr) {
+		throw runtimeEnvironmentResult.error;
+	}
+
+	const runtimeEnvironment = parseRuntimeBlogReactionEnvironment(runtimeEnvironmentResult.value);
 	const [publishedBlogPostCatalogueResult, blogReactionRepositoryResult] = await Promise.all([
 		loadPublishedBlogPostCatalogue(),
 		readBlogReactionRepository()
