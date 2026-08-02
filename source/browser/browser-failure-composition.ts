@@ -1,4 +1,9 @@
-import { bugsinkIsProductionBuild, readBuildBugsinkConfiguration } from "../error-reporting/bugsink-configuration.ts";
+import { nothing } from "true-myth/maybe";
+import {
+	bugsinkIsProductionBuild,
+	readBuildBugsinkConfiguration,
+	type BugsinkConfiguration
+} from "../error-reporting/bugsink-configuration.ts";
 import {
 	createBrowserFailureBootstrap,
 	type BrowserFailureBootstrapCapabilities
@@ -12,7 +17,7 @@ if (bugsinkIsProductionBuild && buildBugsinkConfigurationResult.isErr) {
 	throw new TypeError("The production Bugsink browser configuration is invalid.");
 }
 
-const browserBugsinkConfiguration = buildBugsinkConfigurationResult.unwrapOr(undefined);
+const browserBugsinkConfiguration = buildBugsinkConfigurationResult.unwrapOr(nothing<BugsinkConfiguration>());
 
 function createWindowBrowserFailureCapabilities(): BrowserFailureBootstrapCapabilities {
 	function readBrowserWindow(): Window {

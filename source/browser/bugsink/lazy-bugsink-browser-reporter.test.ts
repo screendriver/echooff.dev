@@ -1,5 +1,6 @@
 import assert from "node:assert";
 import { suite, test } from "mocha";
+import { just, nothing } from "true-myth/maybe";
 import type { UnexpectedFailureContext, UnexpectedFailureReporter } from "../report-unexpected-browser-failure.ts";
 import { createLazyBugsinkBrowserReporter, type BrowserBugsinkSdkModule } from "./lazy-bugsink-browser-reporter.ts";
 
@@ -70,7 +71,8 @@ function createReporter(options: CreateReporterOptions = {}): CreatedReporter {
 		options.terminalFailures === undefined ? [] : Array.from(options.terminalFailures);
 	const fakeSdk = createFakeBrowserBugsinkSdk();
 	const reporter = createLazyBugsinkBrowserReporter({
-		configuration: options.configuration,
+		configuration:
+			options.configuration === undefined ? nothing<typeof testConfiguration>() : just(options.configuration),
 		loadSdk:
 			options.loadSdk ??
 			async function loadFakeSdk(): Promise<BrowserBugsinkSdkModule> {

@@ -1,4 +1,5 @@
 import { err, ok, type Result } from "true-myth/result";
+import { just, nothing, type Maybe } from "true-myth/maybe";
 
 export const bugsinkHost = "https://bugsink.82r.de";
 export const bugsinkDsn = "https://9611ae13522c41d8a36a3edfc702ba8b@bugsink.82r.de/2";
@@ -61,9 +62,9 @@ function readBugsinkRelease(configuredRelease: unknown): Result<string, Error> {
 
 export function readBugsinkConfiguration(
 	bugsinkBuildEnvironment: BugsinkBuildEnvironment
-): Result<BugsinkConfiguration | undefined, Error> {
+): Result<Maybe<BugsinkConfiguration>, Error> {
 	if (bugsinkBuildEnvironment.PROD !== true) {
-		return ok(undefined);
+		return ok(nothing<BugsinkConfiguration>());
 	}
 
 	const parsedDsnResult = parseBugsinkDsn(bugsinkDsn);
@@ -78,13 +79,15 @@ export function readBugsinkConfiguration(
 		return err(releaseResult.error);
 	}
 
-	return ok({
-		dsn: parsedDsnResult.value,
-		release: releaseResult.value
-	});
+	return ok(
+		just<BugsinkConfiguration>({
+			dsn: parsedDsnResult.value,
+			release: releaseResult.value
+		})
+	);
 }
 
-export function readBuildBugsinkConfiguration(): Result<BugsinkConfiguration | undefined, Error> {
+export function readBuildBugsinkConfiguration(): Result<Maybe<BugsinkConfiguration>, Error> {
 	return readBugsinkConfiguration(readAstroBuildEnvironment());
 }
 

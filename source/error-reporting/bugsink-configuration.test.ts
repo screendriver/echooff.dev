@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { suite, test } from "mocha";
+import { just, nothing } from "true-myth/maybe";
 import { isOk } from "true-myth/result";
 import {
 	bugsinkApplication,
@@ -36,7 +37,10 @@ suite("Bugsink configuration", function () {
 		});
 
 		assert.strictEqual(isOk(configurationResult), true);
-		assert.deepStrictEqual(configurationResult.unwrapOr(undefined), testBugsinkConfiguration);
+		assert.deepStrictEqual(
+			configurationResult.unwrapOr(nothing<BugsinkConfiguration>()),
+			just(testBugsinkConfiguration)
+		);
 		assert.strictEqual(bugsinkHost, "https://bugsink.82r.de");
 	});
 
@@ -53,7 +57,7 @@ suite("Bugsink configuration", function () {
 		});
 
 		assert.strictEqual(isOk(configurationResult), true);
-		assert.strictEqual(configurationResult.unwrapOr(undefined), undefined);
+		assert.strictEqual(configurationResult.unwrapOr(nothing<BugsinkConfiguration>()).isNothing, true);
 	});
 
 	test("defines the public DSN in one source configuration module", async function () {
@@ -128,7 +132,7 @@ suite("Bugsink configuration", function () {
 		};
 
 		const wasInitialized = initializeBugsinkServer({
-			configuration: testBugsinkConfiguration,
+			configuration: just(testBugsinkConfiguration),
 			isProductionApplicationRuntime: false,
 			sdk: fakeServerSdk
 		});

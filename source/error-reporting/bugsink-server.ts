@@ -1,4 +1,5 @@
 import process from "node:process";
+import { nothing, type Maybe } from "true-myth/maybe";
 import {
 	captureException,
 	dedupeIntegration,
@@ -29,7 +30,7 @@ const productionBugsinkServerSdk: BugsinkServerSdk = {
 
 export type InitializeBugsinkServerOptions = {
 	readonly isProductionApplicationRuntime: boolean;
-	readonly configuration: BugsinkConfiguration | undefined;
+	readonly configuration: Maybe<BugsinkConfiguration>;
 	readonly sdk: BugsinkServerSdk;
 };
 
@@ -64,8 +65,8 @@ export function createBugsinkServerOptions(configuration: BugsinkConfiguration):
 export function initializeBugsinkServer(initializeBugsinkServerOptions: InitializeBugsinkServerOptions): boolean {
 	const { configuration, isProductionApplicationRuntime, sdk } = initializeBugsinkServerOptions;
 
-	if (configuration !== undefined && isProductionApplicationRuntime) {
-		sdk.init(createBugsinkServerOptions(configuration));
+	if (isProductionApplicationRuntime && configuration.isJust) {
+		sdk.init(createBugsinkServerOptions(configuration.value));
 		return true;
 	}
 
@@ -98,7 +99,7 @@ if (isProductionApplicationRuntime && buildBugsinkConfigurationResult.isErr) {
 }
 
 initializeBugsinkServer({
-	configuration: buildBugsinkConfigurationResult.unwrapOr(undefined),
+	configuration: buildBugsinkConfigurationResult.unwrapOr(nothing<BugsinkConfiguration>()),
 	isProductionApplicationRuntime,
 	sdk: productionBugsinkServerSdk
 });

@@ -1,5 +1,6 @@
 import type { CaptureContext, Integration } from "@sentry/core";
 import type { BrowserOptions } from "@sentry/browser";
+import type { Maybe } from "true-myth/maybe";
 import {
 	bugsinkEnvironment,
 	createBugsinkDataCollection,
@@ -22,7 +23,7 @@ type BrowserBugsinkCaptureContext = CaptureContext;
 export type BrowserBugsinkModuleLoader = () => Promise<BrowserBugsinkSdkModule>;
 
 export type LazyBugsinkBrowserReporterDependencies = {
-	readonly configuration: BugsinkConfiguration | undefined;
+	readonly configuration: Maybe<BugsinkConfiguration>;
 	readonly loadSdk?: BrowserBugsinkModuleLoader;
 	readonly readPathname: () => string;
 	readonly terminalFallback: (error: unknown) => void;
@@ -109,7 +110,7 @@ export function createLazyBugsinkBrowserReporter(
 		terminalFallback
 	} = lazyBugsinkBrowserReporterDependencies;
 
-	if (configuration === undefined) {
+	if (configuration.isNothing) {
 		return {
 			report(error): void {
 				terminalFallback(error);
@@ -117,7 +118,7 @@ export function createLazyBugsinkBrowserReporter(
 		};
 	}
 
-	const configuredBugsinkConfiguration = configuration;
+	const configuredBugsinkConfiguration = configuration.value;
 	const browserBugsinkClientTask = {
 		task: undefined as Promise<BrowserBugsinkSdkModule> | undefined
 	};
