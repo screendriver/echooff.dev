@@ -3,6 +3,7 @@ import { URL } from "node:url";
 import { defineConfig } from "astro/config";
 import { rehypeHeadingIds, unified } from "@astrojs/markdown-remark";
 import node from "@astrojs/node";
+import preact from "@astrojs/preact";
 import sitemap from "@astrojs/sitemap";
 import { Maybe } from "true-myth/maybe";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -29,6 +30,7 @@ export default defineConfig({
 		mode: "standalone"
 	}),
 	integrations: [
+		preact(),
 		sitemap({
 			filter: shouldIncludePageInSitemap
 		})

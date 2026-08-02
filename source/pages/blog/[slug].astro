@@ -7,7 +7,7 @@ import BlogArticleByline from "../../blog/BlogArticleByline.astro";
 import BlogBackLink from "../../blog/BlogBackLink.astro";
 import BlogPostContent from "../../blog/BlogPostContent.astro";
 import BlogPostMentions from "../../blog/BlogPostMentions.astro";
-import BlogPostReaction from "../../blog/BlogPostReaction.astro";
+import { BlogPostReaction } from "../../blog/BlogPostReaction.tsx";
 import BlogShell from "../../blog/BlogShell.astro";
 import BlogTopicLink from "../../blog/BlogTopicLink.astro";
 import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
@@ -170,7 +170,7 @@ const blogPostUpdatedAt = of(blogPost.data.updatedAt);
 			<BlogPostContent>
 				<Content />
 			</BlogPostContent>
-			<BlogPostReaction postSlug={blogPost.id} />
+			<BlogPostReaction client:visible={{ rootMargin: "300px" }} postSlug={blogPost.id} />
 
 			<div data-pagefind-ignore="all">
 				<BlogPostMentions blogPostId={blogPost.id} server:defer>

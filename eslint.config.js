@@ -59,7 +59,7 @@ export default [
 	},
 	{
 		...javaScriptAndTypeScriptBaseConfig,
-		files: ["**/*.{js,cjs,mjs,ts,mts,cts}"],
+		files: ["**/*.{js,cjs,mjs,ts,mts,cts,tsx}"],
 		rules: {
 			...javaScriptAndTypeScriptBaseConfig.rules,
 
@@ -84,10 +84,10 @@ export default [
 	},
 	{
 		...typescriptConfig,
-		files: ["**/*.ts"]
+		files: ["**/*.{ts,tsx}"]
 	},
 	{
-		files: ["**/*.ts"],
+		files: ["**/*.{ts,tsx}"],
 		rules: {
 			"@typescript-eslint/no-magic-numbers": "off",
 			"@stylistic/indent-binary-ops": "off",
@@ -136,7 +136,7 @@ export default [
 		}
 	},
 	{
-		files: ["source/**/*.ts"],
+		files: ["source/**/*.{ts,tsx}"],
 		languageOptions: { globals: globals["shared-node-browser"] }
 	},
 	{
@@ -145,7 +145,7 @@ export default [
 	},
 	{
 		...mochaNodeAssertConfig,
-		files: ["**/*.test.ts"],
+		files: ["**/*.test.{ts,tsx}"],
 		rules: {
 			...mochaNodeAssertConfig.rules,
 			"mocha/max-top-level-suites": "off"
@@ -161,6 +161,18 @@ export default [
 			"mocha.config.unit-tests.cjs",
 			"prettier.config.js"
 		]
+	},
+	{
+		files: ["astro.config.js"],
+		rules: {
+			"import/max-dependencies": ["error", { max: 11 }]
+		}
+	},
+	{
+		files: ["**/*.test.tsx"],
+		rules: {
+			"mocha/no-hooks": "off"
+		}
 	},
 	{
 		files: ["mocha*.cjs"],
