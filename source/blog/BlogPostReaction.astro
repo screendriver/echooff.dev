@@ -1,0 +1,173 @@
+---
+export interface Props {
+	readonly postSlug: string;
+}
+
+const { postSlug } = Astro.props;
+---
+
+<section
+	aria-label="Did this make you think?"
+	class="blog-post-reaction"
+	data-blog-post-reaction
+	data-post-slug={postSlug}
+	data-pagefind-ignore="all"
+>
+	<h2>Did this make you think?</h2>
+	<div class="blog-post-reaction-control-row">
+		<button
+			aria-pressed="false"
+			class="blog-post-reaction-button"
+			data-blog-post-reaction-button
+			disabled
+			type="button"
+		>
+			👍 Yes
+		</button>
+		<span class="blog-post-reaction-count" data-blog-post-reaction-count>No reactions yet</span>
+	</div>
+	<p aria-live="polite" class="blog-post-reaction-status" data-blog-post-reaction-status></p>
+	<p class="blog-post-reaction-disclosure">
+		Your reaction is remembered in this browser so it can be counted once and removed later.
+	</p>
+</section>
+
+<script>
+	import { isHtmlElement } from "@sindresorhus/is";
+	import ky from "ky";
+	import { createKyBlogReactionClient } from "./blog-reaction-client.js";
+	import { readBlogPostReactionBrowserElements } from "./blog-post-reaction-browser.js";
+	import { initializeBlogPostReaction } from "./blog-reaction-interaction.js";
+	import {
+		initializeVisibleBlogPostReaction,
+		type BlogPostReactionVisibilityEntry,
+		type BlogPostReactionVisibilityObserver
+	} from "./blog-reaction-visibility.js";
+
+	const reactionRootElements = document.querySelectorAll("[data-blog-post-reaction]");
+	const blogReactionClient = createKyBlogReactionClient({ kyInstance: ky });
+
+	function supportsIntersectionObserver(): boolean {
+		return typeof IntersectionObserver !== "undefined";
+	}
+
+	function createIntersectionObserver(
+		callback: (entries: readonly BlogPostReactionVisibilityEntry[]) => void,
+		options: IntersectionObserverInit
+	): BlogPostReactionVisibilityObserver {
+		const intersectionObserver = new IntersectionObserver((entries) => {
+			callback(
+				entries.map((entry) => {
+					return {
+						isIntersecting: entry.isIntersecting,
+						target: entry.target
+					};
+				})
+			);
+		}, options);
+
+		return {
+			disconnect() {
+				intersectionObserver.disconnect();
+			},
+			observe(target) {
+				if (isHtmlElement(target)) {
+					intersectionObserver.observe(target);
+				}
+			}
+		};
+	}
+
+	for (const reactionRootElement of reactionRootElements) {
+		if (!isHtmlElement(reactionRootElement)) {
+			continue;
+		}
+
+		const reactionBrowserElements = readBlogPostReactionBrowserElements(reactionRootElement);
+
+		if (reactionBrowserElements.isNothing) {
+			continue;
+		}
+
+		initializeVisibleBlogPostReaction({
+			initializeBlogPostReaction() {
+				return initializeBlogPostReaction({
+					blogReactionClient,
+					postSlug: reactionBrowserElements.value.postSlug,
+					view: reactionBrowserElements.value.view
+				});
+			},
+			reactionRoot: reactionRootElement,
+			visibilityDependencies: {
+				createIntersectionObserver,
+				supportsIntersectionObserver
+			}
+		});
+	}
+</script>
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	.blog-post-reaction {
+		border-top: 1px solid rgba(variables.$selection, 0.8);
+		margin-top: 2.5rem;
+		padding: 1.5rem 0 0.75rem;
+	}
+
+	.blog-post-reaction h2 {
+		color: variables.$purple;
+		font-size: 1rem;
+		font-weight: 700;
+		margin: 0 0 0.75rem;
+	}
+
+	.blog-post-reaction-control-row {
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.blog-post-reaction-button {
+		background: transparent;
+		border: 1px solid variables.$comment;
+		border-radius: 0.35rem;
+		color: variables.$foreground;
+		cursor: pointer;
+		font: inherit;
+		padding: 0.4rem 0.7rem;
+	}
+
+	.blog-post-reaction-button:hover:not(:disabled) {
+		border-color: variables.$cyan;
+		color: variables.$cyan;
+	}
+
+	.blog-post-reaction-button:focus-visible {
+		outline: 2px solid variables.$cyan;
+		outline-offset: 2px;
+	}
+
+	.blog-post-reaction-button:disabled {
+		cursor: wait;
+		opacity: 0.65;
+	}
+
+	.blog-post-reaction-count,
+	.blog-post-reaction-disclosure,
+	.blog-post-reaction-status {
+		color: variables.$comment;
+		font-size: 0.875rem;
+	}
+
+	.blog-post-reaction-status {
+		min-height: 1.25rem;
+		margin: 0.65rem 0 0;
+	}
+
+	.blog-post-reaction-disclosure {
+		line-height: 1.5;
+		margin: 0.25rem 0 0;
+	}
+</style>

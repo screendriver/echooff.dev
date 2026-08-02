@@ -1,4 +1,5 @@
-import { isError } from "@sindresorhus/is";
+import { isDirectInstanceOf, isError } from "@sindresorhus/is";
+import { type } from "arktype";
 import { just, nothing, type Maybe } from "true-myth/maybe";
 import { tryOrElse, type Task } from "true-myth/task";
 import {
@@ -31,6 +32,16 @@ function normalizeRuntimeBlogReactionApplicationError(error: unknown): Error {
 	return new Error("The runtime blog reaction application setup failed.");
 }
 
+function parseRuntimeBlogReactionEnvironment(runtimeEnvironmentInput: unknown): BlogReactionRuntimeEnvironment {
+	const runtimeEnvironment = blogReactionRuntimeEnvironmentSchema(runtimeEnvironmentInput);
+
+	if (isDirectInstanceOf(runtimeEnvironment, type.errors)) {
+		throw new Error("The blog reaction runtime configuration is invalid.");
+	}
+
+	return runtimeEnvironment;
+}
+
 async function loadRuntimeBlogReactionApplicationService(
 	runtimeBlogReactionApplicationServiceOptions: RuntimeBlogReactionApplicationServiceOptions
 ): Promise<BlogReactionApplicationService> {
@@ -41,8 +52,7 @@ async function loadRuntimeBlogReactionApplicationService(
 		readBlogReactionRepository,
 		readRuntimeEnvironment
 	} = runtimeBlogReactionApplicationServiceOptions;
-	const runtimeEnvironment: BlogReactionRuntimeEnvironment =
-		blogReactionRuntimeEnvironmentSchema.assert(readRuntimeEnvironment());
+	const runtimeEnvironment = parseRuntimeBlogReactionEnvironment(readRuntimeEnvironment());
 	const [publishedBlogPostCatalogueResult, blogReactionRepositoryResult] = await Promise.all([
 		loadPublishedBlogPostCatalogue(),
 		readBlogReactionRepository()
