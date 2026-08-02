@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "preact/hooks";
 import type { ComponentChildren } from "preact";
 import type { FireAndForgetInvoker } from "../../browser/fire-and-forget-invoker.ts";
-import type { BlogReactionClient } from "./blog-reaction-client.ts";
+import { isBlogReactionClientFailure, type BlogReactionClient } from "./blog-reaction-client.ts";
 import type { BlogReactionResponse } from "./blog-reaction-schema.ts";
 
 export type Properties = {
@@ -38,6 +38,12 @@ type BlogPostReactionStateByStatus = {
 
 type BlogPostReactionState = BlogPostReactionStateByStatus[keyof BlogPostReactionStateByStatus];
 
+type BlogPostReactionStateSetter = (blogPostReactionState: BlogPostReactionState) => void;
+
+type BlogPostReactionMountReference = {
+	readonly current: boolean;
+};
+
 type BlogPostReactionView = {
 	readonly buttonDisabled: boolean;
 	readonly buttonPressed: boolean;
@@ -59,13 +65,58 @@ function createBlogReactionCountLabel(reactionCount: number): string {
 	return `${reactionCount} reactions`;
 }
 
+function applyBlogPostReactionMutationResponse(
+	componentIsMountedReference: BlogPostReactionMountReference,
+	setBlogPostReactionState: BlogPostReactionStateSetter,
+	currentReactionSnapshot: BlogReactionResponse,
+	blogReactionResponse: BlogReactionResponse | undefined
+): boolean {
+	if (!componentIsMountedReference.current) {
+		return false;
+	}
+
+	if (blogReactionResponse === undefined) {
+		setBlogPostReactionState({
+			snapshot: currentReactionSnapshot,
+			status: "unavailable"
+		});
+		return true;
+	}
+
+	setBlogPostReactionState({
+		snapshot: blogReactionResponse,
+		status: "ready"
+	});
+	return true;
+}
+
+function restoreBlogPostReactionSnapshotAfterUnexpectedFailure(
+	componentIsMountedReference: BlogPostReactionMountReference,
+	setBlogPostReactionState: BlogPostReactionStateSetter,
+	currentReactionSnapshot: BlogReactionResponse,
+	hasAppliedExpectedReactionState: boolean
+): void {
+	if (hasAppliedExpectedReactionState || !componentIsMountedReference.current) {
+		return;
+	}
+
+	setBlogPostReactionState({
+		snapshot: currentReactionSnapshot,
+		status: "ready"
+	});
+}
+
 async function resolveBlogReactionResponse(
 	readBlogReactionResponse: () => Promise<BlogReactionResponse>
 ): Promise<BlogReactionResponse | undefined> {
 	try {
 		return await readBlogReactionResponse();
-	} catch {
-		return undefined;
+	} catch (error) {
+		if (isBlogReactionClientFailure(error)) {
+			return undefined;
+		}
+
+		throw error;
 	}
 }
 
@@ -172,30 +223,31 @@ export function BlogPostReaction(properties: Properties): ComponentChildren {
 			status: "mutating"
 		});
 
-		const blogReactionResponse = await resolveBlogReactionResponse(
-			async function readBlogReactionResponse(): Promise<BlogReactionResponse> {
-				return requestReactionMutation(reactionClient, currentReactionSnapshot, postSlug);
-			}
-		);
+		let hasAppliedExpectedReactionState = false;
 
-		Object.assign(mutationInFlightReference, { current: false });
-
-		if (!componentIsMountedReference.current) {
-			return;
+		try {
+			const blogReactionResponse = await resolveBlogReactionResponse(
+				async function readBlogReactionResponse(): Promise<BlogReactionResponse> {
+					return requestReactionMutation(reactionClient, currentReactionSnapshot, postSlug);
+				}
+			);
+			hasAppliedExpectedReactionState = applyBlogPostReactionMutationResponse(
+				componentIsMountedReference,
+				setBlogPostReactionState,
+				currentReactionSnapshot,
+				blogReactionResponse
+			);
+		} finally {
+			// Preact refs are the intentional mutable seam for this in-flight guard.
+			// eslint-disable-next-line require-atomic-updates -- Preact refs are the intentional mutable seam for this in-flight guard.
+			mutationInFlightReference.current = false;
+			restoreBlogPostReactionSnapshotAfterUnexpectedFailure(
+				componentIsMountedReference,
+				setBlogPostReactionState,
+				currentReactionSnapshot,
+				hasAppliedExpectedReactionState
+			);
 		}
-
-		if (blogReactionResponse === undefined) {
-			setBlogPostReactionState({
-				snapshot: currentReactionSnapshot,
-				status: "unavailable"
-			});
-			return;
-		}
-
-		setBlogPostReactionState({
-			snapshot: blogReactionResponse,
-			status: "ready"
-		});
 	}
 
 	function handleReactionButtonActivation(): void {

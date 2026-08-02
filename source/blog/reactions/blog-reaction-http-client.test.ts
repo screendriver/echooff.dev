@@ -1,8 +1,7 @@
 import assert from "node:assert";
-import { isError } from "@sindresorhus/is";
 import { suite, test } from "mocha";
 import ky from "ky";
-import type { BlogReactionClient, BlogReactionClientFailure } from "./blog-reaction-client.ts";
+import { isBlogReactionClientFailure, type BlogReactionClient } from "./blog-reaction-client.ts";
 import { blogReactionRequestTimeoutMilliseconds, createKyBlogReactionClient } from "./blog-reaction-http-client.ts";
 
 type RecordedFetchRequest = {
@@ -57,21 +56,36 @@ function createClientWithResponse(response: Response): TestClient {
 	};
 }
 
-function isBlogReactionClientFailure(error: unknown): error is BlogReactionClientFailure {
-	if (!isError(error)) {
-		return false;
+async function readRejectedBlogReactionClientFailure(reactionClient: BlogReactionClient): Promise<unknown> {
+	try {
+		await reactionClient.loadReaction("first-post");
+	} catch (error) {
+		return error;
 	}
 
-	const kindPropertyDescriptor = Object.getOwnPropertyDescriptor(error, "kind");
-
-	if (kindPropertyDescriptor === undefined) {
-		return false;
-	}
-
-	return kindPropertyDescriptor.value === "blog_reaction_client_failure";
+	throw new Error("Expected the reaction client to reject.");
 }
 
 suite("createKyBlogReactionClient()", function () {
+	test("recognizes only tagged client failures", async function () {
+		const testFetch = createTestFetch({
+			response: Response.json({ count: 0, reacted: false }),
+			throwError: new Error("network failure")
+		});
+		const reactionClient = createKyBlogReactionClient({
+			kyInstance: ky.create({ baseUrl: "http://localhost/", fetch: testFetch.fetch })
+		});
+		const clientFailure = await readRejectedBlogReactionClientFailure(reactionClient);
+
+		assert.strictEqual(isBlogReactionClientFailure(clientFailure), true);
+		assert.strictEqual(isBlogReactionClientFailure(new Error("The blog reaction request failed.")), false);
+		assert.strictEqual(isBlogReactionClientFailure(undefined), false);
+		assert.strictEqual(isBlogReactionClientFailure(null), false);
+		assert.strictEqual(isBlogReactionClientFailure("blog_reaction_client_failure"), false);
+		assert.strictEqual(isBlogReactionClientFailure({ kind: "unrelated_failure" }), false);
+		assert.strictEqual(isBlogReactionClientFailure({ message: "The blog reaction request failed." }), false);
+	});
+
 	test("uses GET with same-origin credentials and a finite timeout", async function () {
 		const { client, requests } = createClientWithResponse(Response.json({ count: 0, reacted: false }));
 
@@ -193,6 +207,22 @@ suite("createKyBlogReactionClient()", function () {
 		const testFetch = createTestFetch({
 			response: Response.json({ count: 0, reacted: false }),
 			throwError: new Error("network failure")
+		});
+		const client = createKyBlogReactionClient({
+			kyInstance: ky.create({ baseUrl: "http://localhost/", fetch: testFetch.fetch })
+		});
+
+		await assert.rejects(async function () {
+			await client.loadReaction("first-post");
+		}, isBlogReactionClientFailure);
+
+		assert.strictEqual(testFetch.requests.length, 1);
+	});
+
+	test("translates an injected lower-level timeout failure into a client failure", async function () {
+		const testFetch = createTestFetch({
+			response: Response.json({ count: 0, reacted: false }),
+			throwError: new Error("The request timed out.")
 		});
 		const client = createKyBlogReactionClient({
 			kyInstance: ky.create({ baseUrl: "http://localhost/", fetch: testFetch.fetch })

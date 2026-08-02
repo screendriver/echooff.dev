@@ -1,181 +1,214 @@
 import assert from "node:assert";
-import { act, cleanup, fireEvent, render, type RenderResult, waitFor } from "@testing-library/preact";
+import { act, cleanup, fireEvent, waitFor } from "@testing-library/preact";
 import { setup, suite, teardown, test } from "mocha";
-import type { FireAndForgetInvoker, FireAndForgetOperation } from "../../browser/fire-and-forget-invoker.ts";
 import { createJsdomTestEnvironment, type JsdomTestEnvironment } from "../../test-support/jsdom-test-environment.ts";
-import type { BlogReactionClient } from "./blog-reaction-client.ts";
 import type { BlogReactionResponse } from "./blog-reaction-schema.ts";
-import { BlogPostReaction, blogReactionUnavailableMessage } from "./BlogPostReaction.tsx";
+import { blogReactionUnavailableMessage } from "./BlogPostReaction.tsx";
 
-type TestBlogReactionClientOptions = {
-	readonly addReaction?: BlogReactionClient["addReaction"];
-	readonly loadReaction?: BlogReactionClient["loadReaction"];
-	readonly removeReaction?: BlogReactionClient["removeReaction"];
-};
+import {
+	createExpectedBlogReactionClientFailure,
+	createExpectedReactionCountLabel,
+	createTestBlogReactionClient,
+	createTestFireAndForgetInvoker,
+	readReactionButton,
+	readReactionCountLabel,
+	renderBlogPostReaction,
+	renderLoadedReaction,
+	type TestBlogReactionClientOptions
+} from "./BlogPostReaction.test-support.tsx";
 
-type TestBlogReactionClient = {
-	readonly client: BlogReactionClient;
-	readonly addedPostSlugs: readonly string[];
-	readonly loadedPostSlugs: readonly string[];
-	readonly removedPostSlugs: readonly string[];
-};
+type BlogReactionMutationKind = "add" | "remove";
 
-type TestFireAndForgetInvoker = {
-	readonly escapedFailures: readonly unknown[];
-	readonly executeNextOperation: () => Promise<void>;
-	readonly invocationCount: number;
-	readonly invoker: FireAndForgetInvoker;
-	readonly invokedOperations: readonly FireAndForgetOperation[];
-};
-
-type LoadedReaction = {
-	readonly renderedReaction: RenderResult;
-	readonly testBlogReactionClient: TestBlogReactionClient;
-	readonly testFireAndForgetInvoker: TestFireAndForgetInvoker;
-};
-
-async function createDefaultAddedReaction(): Promise<BlogReactionResponse> {
-	return { count: 1, reacted: true };
-}
-
-async function createDefaultLoadedReaction(): Promise<BlogReactionResponse> {
-	return { count: 0, reacted: false };
-}
-
-async function createDefaultRemovedReaction(): Promise<BlogReactionResponse> {
-	return { count: 0, reacted: false };
-}
-
-function createTestBlogReactionClient(
-	testBlogReactionClientOptions: TestBlogReactionClientOptions = {}
-): TestBlogReactionClient {
-	const {
-		addReaction = createDefaultAddedReaction,
-		loadReaction = createDefaultLoadedReaction,
-		removeReaction = createDefaultRemovedReaction
-	} = testBlogReactionClientOptions;
-	const addedPostSlugs: string[] = [];
-	const loadedPostSlugs: string[] = [];
-	const removedPostSlugs: string[] = [];
-
-	return {
-		addedPostSlugs,
-		client: {
-			async addReaction(postSlug) {
-				addedPostSlugs.push(postSlug);
-				return addReaction(postSlug);
-			},
-			async loadReaction(postSlug) {
-				loadedPostSlugs.push(postSlug);
-				return loadReaction(postSlug);
-			},
-			async removeReaction(postSlug) {
-				removedPostSlugs.push(postSlug);
-				return removeReaction(postSlug);
-			}
-		},
-		loadedPostSlugs,
-		removedPostSlugs
+function createExpectedMutationFailureClientOptions(
+	initialReactionResponse: BlogReactionResponse,
+	blogReactionMutationKind: BlogReactionMutationKind
+): TestBlogReactionClientOptions {
+	const loadReaction = async function loadExpectedMutationFailureReaction(): Promise<BlogReactionResponse> {
+		return initialReactionResponse;
 	};
-}
 
-function createTestFireAndForgetInvoker(): TestFireAndForgetInvoker {
-	const escapedFailures: unknown[] = [];
-	const invokedOperations: FireAndForgetOperation[] = [];
-	let nextOperationIndex = 0;
+	if (blogReactionMutationKind === "add") {
+		return {
+			addReaction: async function failExpectedAddReaction(): Promise<BlogReactionResponse> {
+				throw createExpectedBlogReactionClientFailure();
+			},
+			loadReaction
+		};
+	}
 
 	return {
-		escapedFailures,
-		async executeNextOperation(): Promise<void> {
-			const operation = invokedOperations[nextOperationIndex];
-
-			if (operation === undefined) {
-				throw new Error("Expected a recorded fire-and-forget operation.");
-			}
-
-			nextOperationIndex += 1;
-
-			try {
-				await operation();
-			} catch (error) {
-				escapedFailures.push(error);
-			}
-		},
-		get invocationCount(): number {
-			return invokedOperations.length;
-		},
-		invokedOperations,
-		invoker: {
-			invoke(operation): void {
-				invokedOperations.push(operation);
-			}
+		loadReaction,
+		removeReaction: async function failExpectedRemoveReaction(): Promise<BlogReactionResponse> {
+			throw createExpectedBlogReactionClientFailure();
 		}
 	};
 }
 
-function renderBlogPostReaction(
-	testBlogReactionClient: TestBlogReactionClient,
-	testFireAndForgetInvoker: TestFireAndForgetInvoker
-): RenderResult {
-	return render(
-		<BlogPostReaction
-			fireAndForgetInvoker={testFireAndForgetInvoker.invoker}
-			postSlug="first-post"
-			reactionClient={testBlogReactionClient.client}
-		/>
+async function exerciseExpectedMutationFailure(
+	initialReactionResponse: BlogReactionResponse,
+	blogReactionMutationKind: BlogReactionMutationKind
+): Promise<void> {
+	const testBlogReactionClientOptions = createExpectedMutationFailureClientOptions(
+		initialReactionResponse,
+		blogReactionMutationKind
 	);
+	const testBlogReactionClient = createTestBlogReactionClient(testBlogReactionClientOptions);
+	const testFireAndForgetInvoker = createTestFireAndForgetInvoker();
+	const renderedReaction = renderBlogPostReaction(testBlogReactionClient, testFireAndForgetInvoker);
+
+	await testFireAndForgetInvoker.executeNextOperation();
+	await waitFor(() => {
+		assert.strictEqual(
+			readReactionCountLabel(renderedReaction).textContent,
+			createExpectedReactionCountLabel(initialReactionResponse.count)
+		);
+	});
+	await act(() => {
+		fireEvent.click(readReactionButton(renderedReaction));
+	});
+	await testFireAndForgetInvoker.executeNextOperation();
+	await waitFor(() => {
+		assert.strictEqual(renderedReaction.getByRole("status").textContent, blogReactionUnavailableMessage);
+	});
+
+	assert.strictEqual(
+		readReactionCountLabel(renderedReaction).textContent,
+		createExpectedReactionCountLabel(initialReactionResponse.count)
+	);
+	assert.strictEqual(
+		readReactionButton(renderedReaction).getAttribute("aria-pressed"),
+		String(initialReactionResponse.reacted)
+	);
+	assert.strictEqual(readReactionButton(renderedReaction).disabled, false);
+	assert.deepStrictEqual(testFireAndForgetInvoker.escapedFailures, []);
 }
 
-function readReactionButton(renderedReaction: RenderResult): HTMLButtonElement {
-	const reactionButton = renderedReaction.getByRole("button", { name: "Yes" });
+async function exerciseUnexpectedMutationFailureRecovery(
+	initialReactionResponse: BlogReactionResponse,
+	blogReactionMutationKind: BlogReactionMutationKind,
+	unexpectedFailure: Error,
+	successfulReactionResponse: BlogReactionResponse
+): Promise<void> {
+	let mutationAttemptCount = 0;
+	const mutationOperation = async function attemptReactionMutation(): Promise<BlogReactionResponse> {
+		mutationAttemptCount += 1;
 
-	if (!(reactionButton instanceof HTMLButtonElement)) {
-		throw new TypeError("Expected the reaction control to be a button.");
-	}
+		if (mutationAttemptCount === 1) {
+			throw unexpectedFailure;
+		}
 
-	return reactionButton;
+		return successfulReactionResponse;
+	};
+	const testBlogReactionClientOptions: TestBlogReactionClientOptions = {
+		loadReaction: async function loadUnexpectedMutationFailureReaction(): Promise<BlogReactionResponse> {
+			return initialReactionResponse;
+		},
+		...(blogReactionMutationKind === "add"
+			? { addReaction: mutationOperation }
+			: { removeReaction: mutationOperation })
+	};
+	const testBlogReactionClient = createTestBlogReactionClient(testBlogReactionClientOptions);
+	const testFireAndForgetInvoker = createTestFireAndForgetInvoker();
+	const renderedReaction = renderBlogPostReaction(testBlogReactionClient, testFireAndForgetInvoker);
+
+	await testFireAndForgetInvoker.executeNextOperation();
+	await waitFor(() => {
+		assert.strictEqual(
+			readReactionCountLabel(renderedReaction).textContent,
+			createExpectedReactionCountLabel(initialReactionResponse.count)
+		);
+	});
+	await act(() => {
+		fireEvent.click(readReactionButton(renderedReaction));
+	});
+	await testFireAndForgetInvoker.executeNextOperation();
+	await waitFor(() => {
+		assert.strictEqual(readReactionButton(renderedReaction).disabled, false);
+	});
+
+	assert.strictEqual(renderedReaction.getByRole("status").textContent, "");
+	assert.strictEqual(
+		readReactionCountLabel(renderedReaction).textContent,
+		createExpectedReactionCountLabel(initialReactionResponse.count)
+	);
+	assert.strictEqual(
+		readReactionButton(renderedReaction).getAttribute("aria-pressed"),
+		String(initialReactionResponse.reacted)
+	);
+	assert.deepStrictEqual(testFireAndForgetInvoker.escapedFailures, [unexpectedFailure]);
+
+	await act(() => {
+		fireEvent.click(readReactionButton(renderedReaction));
+	});
+	await testFireAndForgetInvoker.executeNextOperation();
+	await waitFor(() => {
+		assert.strictEqual(
+			readReactionCountLabel(renderedReaction).textContent,
+			createExpectedReactionCountLabel(successfulReactionResponse.count)
+		);
+	});
+
+	assert.strictEqual(mutationAttemptCount, 2);
+	assert.deepStrictEqual(testFireAndForgetInvoker.escapedFailures, [unexpectedFailure]);
 }
 
-function readReactionCountLabel(renderedReaction: RenderResult): HTMLElement {
-	const reactionCountLabel = renderedReaction.getByText(/^(?:No reactions yet|\d+ reactions?)$/u);
-
-	if (!(reactionCountLabel instanceof HTMLElement)) {
-		throw new TypeError("Expected the reaction count label to be an HTML element.");
-	}
-
-	return reactionCountLabel;
-}
-
-function createExpectedReactionCountLabel(reactionCount: number): string {
-	if (reactionCount === 0) {
-		return "No reactions yet";
-	}
-
-	if (reactionCount === 1) {
-		return "1 reaction";
-	}
-
-	return `${reactionCount} reactions`;
-}
-
-async function renderLoadedReaction(reactionResponse: BlogReactionResponse): Promise<LoadedReaction> {
+async function exerciseInitialUnmountFailure(
+	failure: unknown,
+	expectedEscapedFailures: readonly unknown[]
+): Promise<void> {
+	const deferredLoadReaction = Promise.withResolvers<BlogReactionResponse>();
 	const testBlogReactionClient = createTestBlogReactionClient({
 		async loadReaction() {
-			return reactionResponse;
+			return deferredLoadReaction.promise;
 		}
 	});
 	const testFireAndForgetInvoker = createTestFireAndForgetInvoker();
-
 	const renderedReaction = renderBlogPostReaction(testBlogReactionClient, testFireAndForgetInvoker);
-	await testFireAndForgetInvoker.executeNextOperation();
-	await waitFor(() => {
-		assert.deepStrictEqual(testBlogReactionClient.loadedPostSlugs, ["first-post"]);
-		const expectedReactionCountLabel = createExpectedReactionCountLabel(reactionResponse.count);
+	const loadingOperation = testFireAndForgetInvoker.executeNextOperation();
 
-		assert.strictEqual(readReactionCountLabel(renderedReaction).textContent, expectedReactionCountLabel);
+	renderedReaction.unmount();
+	await act(async () => {
+		deferredLoadReaction.reject(failure);
+		await loadingOperation;
 	});
 
-	return { renderedReaction, testBlogReactionClient, testFireAndForgetInvoker };
+	assert.strictEqual(renderedReaction.container.innerHTML, "");
+	assert.deepStrictEqual(testFireAndForgetInvoker.escapedFailures, expectedEscapedFailures);
+}
+
+async function exerciseMutationUnmountFailure(
+	failure: unknown,
+	expectedEscapedFailures: readonly unknown[]
+): Promise<void> {
+	const deferredAddReaction = Promise.withResolvers<BlogReactionResponse>();
+	const testBlogReactionClient = createTestBlogReactionClient({
+		async addReaction() {
+			return deferredAddReaction.promise;
+		},
+		async loadReaction() {
+			return { count: 0, reacted: false };
+		}
+	});
+	const testFireAndForgetInvoker = createTestFireAndForgetInvoker();
+	const renderedReaction = renderBlogPostReaction(testBlogReactionClient, testFireAndForgetInvoker);
+
+	await testFireAndForgetInvoker.executeNextOperation();
+	await waitFor(() => {
+		assert.strictEqual(readReactionCountLabel(renderedReaction).textContent, "No reactions yet");
+	});
+	await act(() => {
+		fireEvent.click(readReactionButton(renderedReaction));
+	});
+	const mutationOperation = testFireAndForgetInvoker.executeNextOperation();
+
+	renderedReaction.unmount();
+	await act(async () => {
+		deferredAddReaction.reject(failure);
+		await mutationOperation;
+	});
+
+	assert.strictEqual(renderedReaction.container.innerHTML, "");
+	assert.deepStrictEqual(testFireAndForgetInvoker.escapedFailures, expectedEscapedFailures);
 }
 
 const jsdomTestEnvironment: JsdomTestEnvironment = createJsdomTestEnvironment();
@@ -251,10 +284,10 @@ suite("BlogPostReaction component integration", function () {
 		assert.strictEqual(readReactionCountLabel(renderedReaction).textContent, "7 reactions");
 	});
 
-	test("renders the unavailable state when initial loading fails", async function () {
+	test("renders the unavailable state for an expected initial loading failure", async function () {
 		const testBlogReactionClient = createTestBlogReactionClient({
 			async loadReaction() {
-				throw new Error("network failure");
+				throw createExpectedBlogReactionClientFailure();
 			}
 		});
 		const testFireAndForgetInvoker = createTestFireAndForgetInvoker();
@@ -267,6 +300,24 @@ suite("BlogPostReaction component integration", function () {
 
 		assert.strictEqual(readReactionButton(renderedReaction).disabled, true);
 		assert.deepStrictEqual(testFireAndForgetInvoker.escapedFailures, []);
+	});
+
+	test("escapes an unexpected initial loading failure to the invoker", async function () {
+		const unexpectedFailure = new Error("unexpected initial loading failure");
+		const testBlogReactionClient = createTestBlogReactionClient({
+			async loadReaction() {
+				throw unexpectedFailure;
+			}
+		});
+		const testFireAndForgetInvoker = createTestFireAndForgetInvoker();
+
+		const renderedReaction = renderBlogPostReaction(testBlogReactionClient, testFireAndForgetInvoker);
+		await testFireAndForgetInvoker.executeNextOperation();
+
+		assert.deepStrictEqual(testBlogReactionClient.loadedPostSlugs, ["first-post"]);
+		assert.strictEqual(renderedReaction.getByRole("status").textContent, "");
+		assert.strictEqual(readReactionButton(renderedReaction).disabled, true);
+		assert.deepStrictEqual(testFireAndForgetInvoker.escapedFailures, [unexpectedFailure]);
 	});
 
 	test("adds an unpressed reaction with the supplied post slug", async function () {
@@ -343,84 +394,47 @@ suite("BlogPostReaction component integration", function () {
 		assert.strictEqual(readReactionButton(renderedReaction).disabled, false);
 	});
 
-	test("preserves the valid snapshot and re-enables the button after mutation failure", async function () {
-		const testBlogReactionClient = createTestBlogReactionClient({
-			async loadReaction() {
-				return { count: 2, reacted: true };
-			},
-			async removeReaction() {
-				throw new Error("network failure");
-			}
-		});
-		const testFireAndForgetInvoker = createTestFireAndForgetInvoker();
-
-		const renderedReaction = renderBlogPostReaction(testBlogReactionClient, testFireAndForgetInvoker);
-		await testFireAndForgetInvoker.executeNextOperation();
-		await waitFor(() => {
-			assert.strictEqual(readReactionCountLabel(renderedReaction).textContent, "2 reactions");
-		});
-		await act(() => {
-			fireEvent.click(readReactionButton(renderedReaction));
-		});
-		await testFireAndForgetInvoker.executeNextOperation();
-		await waitFor(() => {
-			assert.strictEqual(renderedReaction.getByRole("status").textContent, blogReactionUnavailableMessage);
-		});
-
-		assert.strictEqual(readReactionCountLabel(renderedReaction).textContent, "2 reactions");
-		assert.strictEqual(readReactionButton(renderedReaction).getAttribute("aria-pressed"), "true");
-		assert.strictEqual(readReactionButton(renderedReaction).disabled, false);
-		assert.strictEqual(renderedReaction.getByRole("status").textContent, blogReactionUnavailableMessage);
-		assert.deepStrictEqual(testFireAndForgetInvoker.escapedFailures, []);
+	test("preserves the valid snapshot after an expected add failure", async function () {
+		await exerciseExpectedMutationFailure({ count: 3, reacted: false }, "add");
 	});
 
-	test("does not update state after unmount during initial loading", async function () {
-		const deferredLoadReaction = Promise.withResolvers<BlogReactionResponse>();
-		const testBlogReactionClient = createTestBlogReactionClient({
-			async loadReaction() {
-				return deferredLoadReaction.promise;
-			}
-		});
-		const testFireAndForgetInvoker = createTestFireAndForgetInvoker();
-		const renderedReaction = renderBlogPostReaction(testBlogReactionClient, testFireAndForgetInvoker);
-		const loadingOperation = testFireAndForgetInvoker.executeNextOperation();
-
-		renderedReaction.unmount();
-		await act(async () => {
-			deferredLoadReaction.resolve({ count: 1, reacted: true });
-			await loadingOperation;
-		});
-
-		assert.strictEqual(renderedReaction.container.innerHTML, "");
+	test("preserves the valid snapshot after an expected remove failure", async function () {
+		await exerciseExpectedMutationFailure({ count: 2, reacted: true }, "remove");
 	});
 
-	test("does not update state after unmount during mutation", async function () {
-		const deferredAddReaction = Promise.withResolvers<BlogReactionResponse>();
-		const testBlogReactionClient = createTestBlogReactionClient({
-			async addReaction() {
-				return deferredAddReaction.promise;
-			},
-			async loadReaction() {
-				return { count: 0, reacted: false };
-			}
-		});
-		const testFireAndForgetInvoker = createTestFireAndForgetInvoker();
-		const renderedReaction = renderBlogPostReaction(testBlogReactionClient, testFireAndForgetInvoker);
-		await testFireAndForgetInvoker.executeNextOperation();
-		await waitFor(() => {
-			assert.strictEqual(readReactionCountLabel(renderedReaction).textContent, "No reactions yet");
-		});
-		await act(() => {
-			fireEvent.click(readReactionButton(renderedReaction));
-		});
-		const mutationOperation = testFireAndForgetInvoker.executeNextOperation();
+	test("escapes an unexpected add failure and permits a later activation", async function () {
+		await exerciseUnexpectedMutationFailureRecovery(
+			{ count: 3, reacted: false },
+			"add",
+			new Error("unexpected add failure"),
+			{ count: 4, reacted: true }
+		);
+	});
 
-		renderedReaction.unmount();
-		await act(async () => {
-			deferredAddReaction.resolve({ count: 1, reacted: true });
-			await mutationOperation;
-		});
+	test("escapes an unexpected remove failure and permits a later activation", async function () {
+		await exerciseUnexpectedMutationFailureRecovery(
+			{ count: 3, reacted: true },
+			"remove",
+			new Error("unexpected remove failure"),
+			{ count: 2, reacted: false }
+		);
+	});
 
-		assert.strictEqual(renderedReaction.container.innerHTML, "");
+	test("does not update state after unmount during an expected initial loading failure", async function () {
+		await exerciseInitialUnmountFailure(createExpectedBlogReactionClientFailure(), []);
+	});
+
+	test("does not update state after unmount during an unexpected initial loading failure", async function () {
+		const unexpectedFailure = new Error("unexpected initial loading failure after unmount");
+		await exerciseInitialUnmountFailure(unexpectedFailure, [unexpectedFailure]);
+	});
+
+	test("does not update state after unmount during an expected mutation failure", async function () {
+		await exerciseMutationUnmountFailure(createExpectedBlogReactionClientFailure(), []);
+	});
+
+	test("does not update state after unmount during an unexpected mutation failure", async function () {
+		const unexpectedFailure = new Error("unexpected mutation failure after unmount");
+		await exerciseMutationUnmountFailure(unexpectedFailure, [unexpectedFailure]);
 	});
 });
