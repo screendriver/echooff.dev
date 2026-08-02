@@ -10,6 +10,7 @@ suite("createDevelopmentEnvironmentVariables()", function () {
 		const actualEnvironmentVariables = createDevelopmentEnvironmentVariables("http://127.0.0.1:4321");
 		const expectedEnvironmentVariables = {
 			CONTACT_FORM_URL: "http://127.0.0.1:4321/contact-form",
+			DETERMINISTIC_SERVER_URL: "http://127.0.0.1:4321",
 			GITHUB_API_BASE_URL: "http://127.0.0.1:4321",
 			GITHUB_LOGIN: "foo",
 			GITHUB_TOKEN: "foo",
@@ -25,6 +26,7 @@ suite("createDevelopmentEnvironmentFileContent()", function () {
 	test("creates the deterministic development environment file content", function () {
 		const actualEnvironmentFileContent = createDevelopmentEnvironmentFileContent("http://127.0.0.1:4321");
 		const expectedEnvironmentFileContent = [
+			"DETERMINISTIC_SERVER_URL=http://127.0.0.1:4321",
 			"GITHUB_API_BASE_URL=http://127.0.0.1:4321",
 			'GITHUB_LOGIN="foo"',
 			'GITHUB_TOKEN="foo"',
@@ -39,6 +41,7 @@ suite("createDevelopmentEnvironmentFileContent()", function () {
 	test("uses the provided line break between entries", function () {
 		const actualEnvironmentFileContent = createDevelopmentEnvironmentFileContent("http://127.0.0.1:4321", "\r\n");
 		const expectedEnvironmentFileContent = [
+			"DETERMINISTIC_SERVER_URL=http://127.0.0.1:4321",
 			"GITHUB_API_BASE_URL=http://127.0.0.1:4321",
 			'GITHUB_LOGIN="foo"',
 			'GITHUB_TOKEN="foo"',

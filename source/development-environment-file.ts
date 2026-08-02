@@ -1,5 +1,6 @@
 export type DevelopmentEnvironmentVariables = {
 	readonly CONTACT_FORM_URL: string;
+	readonly DETERMINISTIC_SERVER_URL: string;
 	readonly GITHUB_API_BASE_URL: string;
 	readonly GITHUB_LOGIN: string;
 	readonly GITHUB_TOKEN: string;
@@ -10,6 +11,7 @@ export type DevelopmentEnvironmentVariables = {
 export function createDevelopmentEnvironmentVariables(listeningAddress: string): DevelopmentEnvironmentVariables {
 	return {
 		CONTACT_FORM_URL: `${listeningAddress}/contact-form`,
+		DETERMINISTIC_SERVER_URL: listeningAddress,
 		GITHUB_API_BASE_URL: listeningAddress,
 		GITHUB_LOGIN: "foo",
 		GITHUB_TOKEN: "foo",
@@ -22,6 +24,7 @@ export function createDevelopmentEnvironmentFileContent(listeningAddress: string
 	const developmentEnvironmentVariables = createDevelopmentEnvironmentVariables(listeningAddress);
 
 	return [
+		`DETERMINISTIC_SERVER_URL=${developmentEnvironmentVariables.DETERMINISTIC_SERVER_URL}`,
 		`GITHUB_API_BASE_URL=${developmentEnvironmentVariables.GITHUB_API_BASE_URL}`,
 		`GITHUB_LOGIN="${developmentEnvironmentVariables.GITHUB_LOGIN}"`,
 		`GITHUB_TOKEN="${developmentEnvironmentVariables.GITHUB_TOKEN}"`,

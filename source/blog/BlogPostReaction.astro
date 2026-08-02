@@ -27,9 +27,6 @@ const { postSlug } = Astro.props;
 		<span class="blog-post-reaction-count" data-blog-post-reaction-count>No reactions yet</span>
 	</div>
 	<p aria-live="polite" class="blog-post-reaction-status" data-blog-post-reaction-status></p>
-	<p class="blog-post-reaction-disclosure">
-		Your reaction is remembered in this browser so it can be counted once and removed later.
-	</p>
 </section>
 
 <script>
@@ -155,19 +152,16 @@ const { postSlug } = Astro.props;
 	}
 
 	.blog-post-reaction-count,
-	.blog-post-reaction-disclosure,
 	.blog-post-reaction-status {
 		color: variables.$comment;
 		font-size: 0.875rem;
 	}
 
 	.blog-post-reaction-status {
-		min-height: 1.25rem;
-		margin: 0.65rem 0 0;
+		margin: 0;
 	}
 
-	.blog-post-reaction-disclosure {
-		line-height: 1.5;
-		margin: 0.25rem 0 0;
+	.blog-post-reaction-status:not(:empty) {
+		margin-top: 0.65rem;
 	}
 </style>

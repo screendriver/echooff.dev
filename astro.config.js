@@ -1,10 +1,17 @@
+import process from "node:process";
 import { URL } from "node:url";
 import { defineConfig } from "astro/config";
 import { rehypeHeadingIds, unified } from "@astrojs/markdown-remark";
 import node from "@astrojs/node";
 import sitemap from "@astrojs/sitemap";
+import { Maybe } from "true-myth/maybe";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { buildHeadingAnchorLinkContent } from "./source/blog/heading-anchor-link-content.js";
+import { createDevelopmentServerProxy } from "./source/development-proxy.js";
+
+const developmentServerProxy = createDevelopmentServerProxy({
+	deterministicServerUrl: Maybe.of(process.env.DETERMINISTIC_SERVER_URL)
+});
 
 function shouldIncludePageInSitemap(absolutePageUrl) {
 	const parsedPageUrl = new URL(absolutePageUrl);
@@ -27,6 +34,9 @@ export default defineConfig({
 		})
 	],
 	vite: {
+		server: {
+			proxy: developmentServerProxy.unwrapOr(undefined)
+		},
 		css: {
 			devSourcemap: true
 		},

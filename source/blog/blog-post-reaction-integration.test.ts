@@ -35,10 +35,8 @@ suite("BlogPostReaction integration", function () {
 		assert.match(blogPostReactionComponent, /data-post-slug=\{postSlug\}/u);
 		assert.match(blogPostReactionComponent, /data-blog-post-reaction-count>No reactions yet/u);
 		assert.match(blogPostReactionComponent, /aria-live="polite"/u);
-		assert.match(
-			blogPostReactionComponent,
-			/Your reaction is remembered in this browser so it can be counted once and removed later\./u
-		);
+		assert.doesNotMatch(blogPostReactionComponent, /Your reaction is remembered in this browser/u);
+		assert.doesNotMatch(blogPostReactionComponent, /blog-post-reaction-disclosure/u);
 		assert.match(blogPostReactionComponent, /data-pagefind-ignore="all"/u);
 		assert.match(blogPostReactionComponent, /document\.querySelectorAll\("\[data-blog-post-reaction\]"\)/u);
 		assert.match(blogPostReactionBrowserModule, /reactionRootElement\.querySelector\(/u);
