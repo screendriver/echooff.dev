@@ -134,7 +134,7 @@ suite("Preact blog island integration", function () {
 		assert.match(blogPostReactionIsland, /createKyBlogReactionClient\(\)/u);
 		assert.match(blogPostReactionIsland, /reactionClient=\{blogReactionClient\}/u);
 		assert.match(blogPostReactionIsland, /createFireAndForgetInvoker/u);
-		assert.match(blogPostReactionIsland, /reportUnexpectedBrowserFailure/u);
+		assert.match(blogPostReactionIsland, /browserUnexpectedFailureReporter/u);
 		assert.match(blogPostReactionIsland, /fireAndForgetInvoker=\{fireAndForgetInvoker\}/u);
 		assert.match(blogPostReactionComponent, /fireAndForgetInvoker: FireAndForgetInvoker/u);
 		assert.match(blogPostReactionComponent, /fireAndForgetInvoker\.invoke\(loadReaction\)/u);
@@ -153,7 +153,8 @@ suite("Preact blog island integration", function () {
 			fireAndForgetInvoker,
 			/Preact|preact|Ky|ky|Astro|blog-reaction|globalThis|window|document|console/u
 		);
-		assert.match(unexpectedBrowserFailureReporter, /globalThis\.reportError/u);
+		assert.match(unexpectedBrowserFailureReporter, /UnexpectedFailureReporter/u);
+		assert.doesNotMatch(unexpectedBrowserFailureReporter, /@sentry\/browser|@sentry\/node|Bugsink/u);
 	});
 
 	test("contains no obsolete imperative island or CSS-module test plumbing", async function () {

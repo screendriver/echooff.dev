@@ -171,6 +171,24 @@ suite("createKyBlogReactionClient()", function () {
 		assert.strictEqual(testFetch.requests.length, 1);
 	});
 
+	test("preserves HTTP 403 status for the reporting decorator", async function () {
+		const testFetch = createTestFetch({
+			response: Response.json({ error: "forbidden" }, { status: 403 })
+		});
+		const client = createKyBlogReactionClient({
+			kyInstance: ky.create({ baseUrl: "http://localhost/", fetch: testFetch.fetch })
+		});
+
+		await assert.rejects(
+			async function () {
+				await client.addReaction("first-post");
+			},
+			function assertForbiddenFailure(error: unknown): boolean {
+				return isBlogReactionClientFailure(error) && error.statusCode === 403;
+			}
+		);
+	});
+
 	test("does not retry failed DELETE requests", async function () {
 		const testFetch = createTestFetch({
 			response: Response.json({ error: "temporarily_unavailable" }, { status: 503 })

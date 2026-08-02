@@ -44,10 +44,16 @@ export async function createDefaultRemovedReaction(): Promise<BlogReactionRespon
 	return { count: 0, reacted: false };
 }
 
-export function createExpectedBlogReactionClientFailure(): BlogReactionClientFailure {
-	return Object.assign(new Error("expected blog reaction client failure"), {
+export function createExpectedBlogReactionClientFailure(statusCode?: number): BlogReactionClientFailure {
+	const failure = Object.assign(new Error("expected blog reaction client failure"), {
 		kind: "blog_reaction_client_failure" as const
 	});
+
+	if (statusCode === undefined) {
+		return failure;
+	}
+
+	return Object.assign(failure, { statusCode });
 }
 
 export function createTestBlogReactionClient(

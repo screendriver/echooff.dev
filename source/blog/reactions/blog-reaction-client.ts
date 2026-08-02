@@ -9,6 +9,7 @@ export type BlogReactionClient = {
 
 export type BlogReactionClientFailure = Error & {
 	readonly kind: "blog_reaction_client_failure";
+	readonly statusCode?: number;
 };
 
 export function isBlogReactionClientFailure(error: unknown): error is BlogReactionClientFailure {
