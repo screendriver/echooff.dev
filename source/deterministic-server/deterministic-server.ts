@@ -4,6 +4,7 @@ import { cors } from "hono/cors";
 import { serve } from "@hono/node-server";
 import { serveStatic } from "@hono/node-server/serve-static";
 import { registerContactFormRoute } from "./contact-form-route.ts";
+import { registerBlogReactionRoute } from "./blog-reaction-route.ts";
 import { registerGraphQlRoute } from "./graphql-route.ts";
 import { registerHackerNewsRoute } from "./hacker-news-route.ts";
 import { registerWebmentionRoute } from "./webmention-route.ts";
@@ -24,6 +25,7 @@ export function createDeterministicServerApplication(): Hono {
 	);
 	registerGraphQlRoute(application);
 	registerContactFormRoute(application);
+	registerBlogReactionRoute(application);
 	registerHackerNewsRoute(application);
 	registerWebmentionRoute(application);
 

@@ -49,14 +49,17 @@ suite("createDeterministicServerApplication()", function () {
 			body: contactFormBody.toString()
 		});
 		const webmentionResponse = await application.request("http://127.0.0.1/webmentions");
+		const blogReactionResponse = await application.request("/api/reactions/example-post");
 		const actualHackerNewsResponseStatus = hackerNewsResponse.status;
 		const actualContactFormResponseStatus = contactFormResponse.status;
 		const actualWebmentionResponseStatus = webmentionResponse.status;
+		const actualBlogReactionResponseStatus = blogReactionResponse.status;
 		const expectedResponseStatus = 200;
 
 		assert.strictEqual(actualHackerNewsResponseStatus, expectedResponseStatus);
 		assert.strictEqual(actualContactFormResponseStatus, expectedResponseStatus);
 		assert.strictEqual(actualWebmentionResponseStatus, expectedResponseStatus);
+		assert.strictEqual(actualBlogReactionResponseStatus, expectedResponseStatus);
 	});
 
 	test("serves the deterministic webmention avatar as SVG", async function () {

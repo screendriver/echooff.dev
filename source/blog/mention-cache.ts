@@ -3,7 +3,7 @@ import { isError } from "@sindresorhus/is";
 import type { WallClock } from "@enormora/wall-clock";
 import { differenceInMilliseconds, isValid, parseISO, subDays } from "date-fns";
 import { nothing, type Maybe } from "true-myth/maybe";
-import { resolve as resolveTask, tryOrElse as tryTaskOrElse, type Task } from "true-myth/task";
+import { resolve as resolveTask, tryOrElse, type Task } from "true-myth/task";
 import type { Unit } from "true-myth/unit";
 import type { RuntimeLogProperties } from "./runtime-logger.ts";
 
@@ -265,98 +265,33 @@ async function refreshMentionSectionModel<SectionModel extends MentionCacheSecti
 export function loadMentionCacheSectionModel<SectionModel extends MentionCacheSectionModel>(
 	loadMentionCacheSectionModelInput: LoadMentionCacheSectionModelInput<SectionModel>
 ): Task<MentionCacheSectionLoadingResult<SectionModel>, never> {
-	return tryTaskOrElse(
-		normalizeMentionCacheError,
-		async (): Promise<MentionCacheSectionLoadingResult<SectionModel>> => {
-			const {
-				cacheKey,
-				createEmptySectionModel,
-				freshMilliseconds,
-				loadFreshSectionModel,
-				logWarning,
-				parseSectionModel,
-				repository,
-				schemaVersion,
-				serviceName,
-				usableStaleMilliseconds,
-				wallClock
-			} = loadMentionCacheSectionModelInput;
-			const requestedAt = wallClock.currentDate;
-			const cacheReadResult = await repository.readEntry(cacheKey);
+	return tryOrElse(normalizeMentionCacheError, async (): Promise<MentionCacheSectionLoadingResult<SectionModel>> => {
+		const {
+			cacheKey,
+			createEmptySectionModel,
+			freshMilliseconds,
+			loadFreshSectionModel,
+			logWarning,
+			parseSectionModel,
+			repository,
+			schemaVersion,
+			serviceName,
+			usableStaleMilliseconds,
+			wallClock
+		} = loadMentionCacheSectionModelInput;
+		const requestedAt = wallClock.currentDate;
+		const cacheReadResult = await repository.readEntry(cacheKey);
 
-			if (cacheReadResult.isErr) {
-				logWarning(
-					`Unable to read ${serviceName} mentions cache`,
-					cacheReadResult.error,
-					createMentionCacheWarningProperties({
-						cacheKey,
-						eventName: "mention_cache_read_failed",
-						serviceName
-					})
-				);
-
-				return refreshMentionSectionModel({
+		if (cacheReadResult.isErr) {
+			logWarning(
+				`Unable to read ${serviceName} mentions cache`,
+				cacheReadResult.error,
+				createMentionCacheWarningProperties({
 					cacheKey,
-					createEmptySectionModel,
-					loadFreshSectionModel,
-					logWarning,
-					repository,
-					requestedAt,
-					retentionDays: mentionCacheCleanupAgeDays,
-					schemaVersion,
-					serviceName,
-					staleSectionModel: nothing<SectionModel>()
-				});
-			}
-
-			if (cacheReadResult.value.isNothing) {
-				return refreshMentionSectionModel({
-					cacheKey,
-					createEmptySectionModel,
-					loadFreshSectionModel,
-					logWarning,
-					repository,
-					requestedAt,
-					retentionDays: mentionCacheCleanupAgeDays,
-					schemaVersion,
-					serviceName,
-					staleSectionModel: nothing<SectionModel>()
-				});
-			}
-
-			const cachedSectionModel = readMentionCacheEntrySectionModel(
-				cacheReadResult.value.value,
-				parseSectionModel
+					eventName: "mention_cache_read_failed",
+					serviceName
+				})
 			);
-
-			if (cachedSectionModel.isNothing) {
-				return refreshMentionSectionModel({
-					cacheKey,
-					createEmptySectionModel,
-					loadFreshSectionModel,
-					logWarning,
-					repository,
-					requestedAt,
-					retentionDays: mentionCacheCleanupAgeDays,
-					schemaVersion,
-					serviceName,
-					staleSectionModel: nothing<SectionModel>()
-				});
-			}
-
-			const freshness = readMentionCacheFreshness({
-				fetchedAt: cacheReadResult.value.value.fetchedAt,
-				freshMilliseconds,
-				currentDate: requestedAt,
-				usableStaleMilliseconds
-			});
-
-			if (freshness === "fresh") {
-				return {
-					sectionModel: cachedSectionModel.value,
-					state: "fresh" as const
-				};
-			}
 
 			return refreshMentionSectionModel({
 				cacheKey,
@@ -368,10 +303,69 @@ export function loadMentionCacheSectionModel<SectionModel extends MentionCacheSe
 				retentionDays: mentionCacheCleanupAgeDays,
 				schemaVersion,
 				serviceName,
-				staleSectionModel: freshness === "stale" ? cachedSectionModel : nothing<SectionModel>()
+				staleSectionModel: nothing<SectionModel>()
 			});
 		}
-	).orElse((error) => {
+
+		if (cacheReadResult.value.isNothing) {
+			return refreshMentionSectionModel({
+				cacheKey,
+				createEmptySectionModel,
+				loadFreshSectionModel,
+				logWarning,
+				repository,
+				requestedAt,
+				retentionDays: mentionCacheCleanupAgeDays,
+				schemaVersion,
+				serviceName,
+				staleSectionModel: nothing<SectionModel>()
+			});
+		}
+
+		const cachedSectionModel = readMentionCacheEntrySectionModel(cacheReadResult.value.value, parseSectionModel);
+
+		if (cachedSectionModel.isNothing) {
+			return refreshMentionSectionModel({
+				cacheKey,
+				createEmptySectionModel,
+				loadFreshSectionModel,
+				logWarning,
+				repository,
+				requestedAt,
+				retentionDays: mentionCacheCleanupAgeDays,
+				schemaVersion,
+				serviceName,
+				staleSectionModel: nothing<SectionModel>()
+			});
+		}
+
+		const freshness = readMentionCacheFreshness({
+			fetchedAt: cacheReadResult.value.value.fetchedAt,
+			freshMilliseconds,
+			currentDate: requestedAt,
+			usableStaleMilliseconds
+		});
+
+		if (freshness === "fresh") {
+			return {
+				sectionModel: cachedSectionModel.value,
+				state: "fresh" as const
+			};
+		}
+
+		return refreshMentionSectionModel({
+			cacheKey,
+			createEmptySectionModel,
+			loadFreshSectionModel,
+			logWarning,
+			repository,
+			requestedAt,
+			retentionDays: mentionCacheCleanupAgeDays,
+			schemaVersion,
+			serviceName,
+			staleSectionModel: freshness === "stale" ? cachedSectionModel : nothing<SectionModel>()
+		});
+	}).orElse((error) => {
 		const { cacheKey, createEmptySectionModel, logWarning, serviceName } = loadMentionCacheSectionModelInput;
 
 		logWarning(

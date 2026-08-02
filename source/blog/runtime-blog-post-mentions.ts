@@ -2,7 +2,7 @@ import { isError } from "@sindresorhus/is";
 import type { WallClock } from "@enormora/wall-clock";
 import { match } from "ts-pattern";
 import type { Result } from "true-myth/result";
-import { tryOrElse as tryTaskOrElse, type Task } from "true-myth/task";
+import { tryOrElse, type Task } from "true-myth/task";
 import {
 	createEmptyHackerNewsSectionModel,
 	type HackerNewsSectionModel,
@@ -178,7 +178,7 @@ export async function loadBlogPostMentionsForTargetUrl(
 				createEmptySectionModel: createEmptyWebmentionSectionModel,
 				freshMilliseconds: mentionCacheFreshMilliseconds,
 				loadFreshSectionModel() {
-					return tryTaskOrElse(normalizeUnknownError, async () => {
+					return tryOrElse(normalizeUnknownError, async () => {
 						return loadWebmentionsForTargetUrl(mentionLoadingDependencies, targetUrl);
 					});
 				},
@@ -201,7 +201,7 @@ export async function loadBlogPostMentionsForTargetUrl(
 				createEmptySectionModel: createEmptyHackerNewsSectionModel,
 				freshMilliseconds: mentionCacheFreshMilliseconds,
 				loadFreshSectionModel() {
-					return tryTaskOrElse(normalizeUnknownError, async () => {
+					return tryOrElse(normalizeUnknownError, async () => {
 						return loadHackerNewsMentionsForTargetUrl(mentionLoadingDependencies, targetUrl);
 					});
 				},
