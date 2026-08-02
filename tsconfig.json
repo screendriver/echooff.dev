@@ -3,6 +3,8 @@
 	"extends": ["astro/tsconfigs/strictest"],
 	"compilerOptions": {
 		"erasableSyntaxOnly": true,
+		"jsx": "react-jsx",
+		"jsxImportSource": "preact",
 		"noEmit": true,
 		"allowImportingTsExtensions": true
 	},

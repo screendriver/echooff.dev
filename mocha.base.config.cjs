@@ -1,7 +1,7 @@
 module.exports = {
 	diff: true,
 	"forbid-pending": true,
-	extension: ["ts"],
+	extension: ["ts", "tsx"],
 	ignore: [],
 	jobs: 1,
 	parallel: false,
@@ -9,5 +9,9 @@ module.exports = {
 	slow: 75,
 	timeout: 2000,
 	ui: "tdd",
-	"node-option": ["enable-source-maps"]
+	"node-option": [
+		"enable-source-maps",
+		"import=tsx",
+		"import=./source/test-support/scss-module-loader.mjs"
+	]
 };
