@@ -167,18 +167,20 @@ const blogPostUpdatedAt = of(blogPost.data.updatedAt);
 			<a class="u-url blog-post-screen-reader-only" data-pagefind-ignore="all" href={blogPostUrl}> Permalink </a>
 		</header>
 
-		<BlogPostContent>
-			<Content />
-		</BlogPostContent>
+		<div class="blog-post-article-body">
+			<BlogPostContent>
+				<Content />
+			</BlogPostContent>
 
-		<footer class="blog-post-article-footer" data-pagefind-ignore="all">
-			<BlogPostReactionIsland client:idle={{ timeout: 1000 }} postSlug={blogPost.id} />
-			<BlogPostMentions blogPostId={blogPost.id} server:defer>
-				<section class="blog-post-mentions-loading" aria-live="polite" slot="fallback">
-					<p>Loading mentions...</p>
-				</section>
-			</BlogPostMentions>
-		</footer>
+			<footer class="blog-post-article-footer" data-pagefind-ignore="all">
+				<BlogPostReactionIsland client:idle={{ timeout: 1000 }} postSlug={blogPost.id} />
+				<BlogPostMentions blogPostId={blogPost.id} server:defer>
+					<section class="blog-post-mentions-loading" aria-live="polite" slot="fallback">
+						<p>Loading mentions...</p>
+					</section>
+				</BlogPostMentions>
+			</footer>
+		</div>
 	</article>
 
 	<LocalizedDateTimeScript />
@@ -292,12 +294,8 @@ const blogPostUpdatedAt = of(blogPost.data.updatedAt);
 		line-height: 1.1;
 	}
 
-	.blog-post-article > .blog-prose {
+	.blog-post-article-body {
 		padding: 1rem 1.5rem 1.5rem;
-	}
-
-	.blog-post-article-footer {
-		padding: 0 1.5rem 1.5rem;
 	}
 
 	@media (min-width: variables.$small-width) {
@@ -315,8 +313,7 @@ const blogPostUpdatedAt = of(blogPost.data.updatedAt);
 			width: 4.75rem;
 		}
 
-		.blog-post-article > .blog-prose,
-		.blog-post-article-footer {
+		.blog-post-article-body {
 			padding-left: 2rem;
 			padding-right: 2rem;
 		}

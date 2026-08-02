@@ -46,22 +46,41 @@ suite("Preact blog island integration", function () {
 		assert.doesNotMatch(blogPostRoute, /<BlogPostReaction client:/u);
 	});
 
-	test("keeps reactions and mentions as separate siblings in the article footer", async function () {
+	test("keeps reactions and mentions inside a neutral article-body wrapper", async function () {
 		const blogPostRoute = await readFile(blogPostRoutePath, "utf8");
+		const articleBodyWrapperStart = blogPostRoute.indexOf('<div class="blog-post-article-body">');
+		const articleEnd = blogPostRoute.indexOf("\n\t</article>", articleBodyWrapperStart);
 		const reactionComponentUsage =
 			"<BlogPostReactionIsland client:idle={{ timeout: 1000 }} postSlug={blogPost.id} />";
 		const mentionsComponentUsage = "<BlogPostMentions blogPostId={blogPost.id} server:defer>";
 
+		assert.notStrictEqual(articleBodyWrapperStart, -1);
+		assert.notStrictEqual(articleEnd, -1);
+
+		const articleBodyWrapperMarkup = blogPostRoute.slice(articleBodyWrapperStart, articleEnd);
+		const contentStart = articleBodyWrapperMarkup.indexOf("<BlogPostContent>");
+		const footerStart = articleBodyWrapperMarkup.indexOf(
+			'<footer class="blog-post-article-footer" data-pagefind-ignore="all">'
+		);
+		const footerMarkup = articleBodyWrapperMarkup.slice(footerStart);
+
+		assert.notStrictEqual(contentStart, -1);
+		assert.notStrictEqual(footerStart, -1);
 		assert.match(blogPostRoute, /import \{ BlogPostReactionIsland \} from/u);
 		assert.doesNotMatch(blogPostRoute, /import \{ BlogPostReaction \}/u);
-		assert.match(blogPostRoute, /<footer class="blog-post-article-footer" data-pagefind-ignore="all">/u);
-		assert.match(blogPostRoute, /<BlogPostContent>[\s\S]*<Content \/>[\s\S]*<\/BlogPostContent>/u);
-		assert.match(blogPostRoute, /<BlogPostMentions blogPostId=\{blogPost\.id\} server:defer>/u);
-		assert.doesNotMatch(blogPostRoute, /class="blog-post-article-body"/u);
-		assert.strictEqual(
-			blogPostRoute.indexOf(reactionComponentUsage) < blogPostRoute.indexOf(mentionsComponentUsage),
-			true
-		);
+		assert.match(articleBodyWrapperMarkup, /<div class="blog-post-article-body">/u);
+		assert.doesNotMatch(articleBodyWrapperMarkup, /<section class="blog-post-article-body"/u);
+		assert.doesNotMatch(articleBodyWrapperMarkup, /<div class="blog-post-article-body"[^>]*aria-label=/u);
+		assert.match(articleBodyWrapperMarkup, /<BlogPostContent>/u);
+		assert.match(articleBodyWrapperMarkup, /<Content \/>/u);
+		assert.match(articleBodyWrapperMarkup, /<\/BlogPostContent>/u);
+		assert.match(footerMarkup, /<footer class="blog-post-article-footer" data-pagefind-ignore="all">/u);
+		assert.strictEqual(contentStart < footerStart, true);
+		assert.match(footerMarkup, /<BlogPostReactionIsland client:idle=\{\{ timeout: 1000 \}\}/u);
+		assert.match(footerMarkup, /<BlogPostMentions blogPostId=\{blogPost\.id\} server:defer>/u);
+		assert.strictEqual(footerMarkup.includes(reactionComponentUsage), true);
+		assert.strictEqual(footerMarkup.includes(mentionsComponentUsage), true);
+		assert.match(footerMarkup, /<\/BlogPostMentions>[\s\S]*<\/footer>\s*<\/div>\s*$/u);
 	});
 
 	test("keeps the reaction markup semantic and excludes the removed disclosure", async function () {
@@ -80,6 +99,25 @@ suite("Preact blog island integration", function () {
 		assert.match(blogPostReactionComponent, /data-pagefind-ignore="all"/u);
 	});
 
+	test("restores shared article-body padding", async function () {
+		const blogPostRoute = await readFile(blogPostRoutePath, "utf8");
+		const articleBodyStyleStart = blogPostRoute.indexOf(".blog-post-article-body {");
+		const desktopMediaQueryStart = blogPostRoute.indexOf("@media (min-width: variables.$small-width)");
+
+		assert.notStrictEqual(articleBodyStyleStart, -1);
+		assert.notStrictEqual(desktopMediaQueryStart, -1);
+
+		const articleBodyStyles = blogPostRoute.slice(articleBodyStyleStart, desktopMediaQueryStart);
+		const desktopStyles = blogPostRoute.slice(desktopMediaQueryStart);
+
+		assert.match(articleBodyStyles, /padding: 1rem 1\.5rem 1\.5rem/u);
+		assert.match(
+			desktopStyles,
+			/\.blog-post-article-body\s*\{[\s\S]*padding-left: 2rem;[\s\S]*padding-right: 2rem;/u
+		);
+		assert.doesNotMatch(blogPostRoute, /:global\(\.blog-prose\)/u);
+	});
+
 	test("makes the island the explicit Ky composition root", async function () {
 		const blogPostReactionComponent = await readFile(blogPostReactionComponentPath, "utf8");
 		const blogPostReactionIsland = await readFile(blogPostReactionIslandPath, "utf8");
@@ -88,6 +126,8 @@ suite("Preact blog island integration", function () {
 			blogPostReactionComponent,
 			/from ["']ky["']|blog-reaction-http-client|createKyBlogReactionClient/u
 		);
+		assert.match(blogPostReactionComponent, /isBlogReactionClientFailure/u);
+		assert.match(blogPostReactionComponent, /isBlogReactionClientFailure\(error\)/u);
 		assert.match(blogPostReactionComponent, /reactionClient: BlogReactionClient/u);
 		assert.doesNotMatch(blogPostReactionComponent, /reactionClient\?/u);
 		assert.match(blogPostReactionIsland, /from ["']\.\/blog-reaction-http-client\.tsx?["']/u);
@@ -97,6 +137,8 @@ suite("Preact blog island integration", function () {
 		assert.match(blogPostReactionIsland, /reportUnexpectedBrowserFailure/u);
 		assert.match(blogPostReactionIsland, /fireAndForgetInvoker=\{fireAndForgetInvoker\}/u);
 		assert.match(blogPostReactionComponent, /fireAndForgetInvoker: FireAndForgetInvoker/u);
+		assert.match(blogPostReactionComponent, /fireAndForgetInvoker\.invoke\(loadReaction\)/u);
+		assert.match(blogPostReactionComponent, /fireAndForgetInvoker\.invoke\(updateReaction\)/u);
 		assert.doesNotMatch(blogPostReactionComponent, /createFireAndForgetInvoker|reportUnexpectedBrowserFailure/u);
 		assert.doesNotMatch(blogPostReactionComponent, /void (?:updateReaction|loadReaction)\(\)/u);
 	});
