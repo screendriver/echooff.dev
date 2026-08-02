@@ -59,7 +59,7 @@ function createBlogReactionMutationRequest(
 ): Maybe<BlogReactionMutationRequest> {
 	return match(blogPostReactionState)
 		.with({ status: "ready" }, (currentState) => {
-			return just(async function requestReadyReactionMutation(): Promise<BlogReactionResponse> {
+			return just(async (): Promise<BlogReactionResponse> => {
 				return await (currentState.snapshot.reacted
 					? blogReactionClient.removeReaction(postSlug)
 					: blogReactionClient.addReaction(postSlug));
@@ -72,7 +72,7 @@ function createBlogReactionMutationRequest(
 				return nothing<BlogReactionMutationRequest>();
 			}
 
-			return just(async function requestUnavailableReactionMutation(): Promise<BlogReactionResponse> {
+			return just(async (): Promise<BlogReactionResponse> => {
 				return await (reactionSnapshot.reacted
 					? blogReactionClient.removeReaction(postSlug)
 					: blogReactionClient.addReaction(postSlug));
@@ -99,12 +99,12 @@ export const BlogPostReaction: FunctionComponent<Properties> = (properties) => {
 	const mutationInFlightReference = useRef(false);
 	const reactionSnapshot = readReactionSnapshot(blogPostReactionState);
 	const reactionCountLabel = reactionSnapshot
-		.map(function createReactionCountLabel(reactionSnapshotValue) {
+		.map((reactionSnapshotValue) => {
 			return createBlogReactionCountLabel(reactionSnapshotValue.count);
 		})
 		.unwrapOr("No reactions yet");
 	const buttonPressed = reactionSnapshot
-		.map(function readReactedState(reactionSnapshotValue) {
+		.map((reactionSnapshotValue) => {
 			return reactionSnapshotValue.reacted;
 		})
 		.unwrapOr(false);
@@ -117,7 +117,7 @@ export const BlogPostReaction: FunctionComponent<Properties> = (properties) => {
 		blogReactionClientReference.current = currentBlogReactionClient;
 
 		async function loadReaction(): Promise<void> {
-			const operationResult = await resolveBlogReactionOperation(async function loadReactionFromClient() {
+			const operationResult = await resolveBlogReactionOperation(async () => {
 				return await currentBlogReactionClient.loadReaction(postSlug);
 			});
 
@@ -137,7 +137,7 @@ export const BlogPostReaction: FunctionComponent<Properties> = (properties) => {
 
 		void loadReaction();
 
-		return function cleanupReactionEffect(): void {
+		return (): void => {
 			componentIsMountedReference.current = false;
 			setMutationInFlight(mutationInFlightReference, false);
 		};
