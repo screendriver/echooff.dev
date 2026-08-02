@@ -3,9 +3,18 @@ import { registerHooks } from "node:module";
 import { fileURLToPath } from "node:url";
 
 function readCssModuleClassNames(sourceCode) {
-	const classNames = [...sourceCode.matchAll(/^\s*\.([A-Za-z_][A-Za-z0-9_-]*)/gmu)].map((match) => match[1]);
+	return Array.from(
+		sourceCode.split("\n").reduce((classNames, sourceLine) => {
+			const className = sourceLine.trimStart().slice(1).split(/[\s{]/u, 1)[0];
 
-	return [...new Set(classNames)];
+			if (className === undefined || !/^[A-Za-z_][A-Za-z0-9_-]*$/u.test(className)) {
+				return classNames;
+			}
+
+			classNames.add(className);
+			return classNames;
+		}, new Set())
+	);
 }
 
 registerHooks({
@@ -16,7 +25,11 @@ registerHooks({
 
 		const sourceCode = readFileSync(fileURLToPath(url), "utf8");
 		const classNames = readCssModuleClassNames(sourceCode);
-		const cssModuleExports = Object.fromEntries(classNames.map((className) => [className, className]));
+		const cssModuleExports = Object.fromEntries(
+			classNames.map((className) => {
+				return [className, className];
+			})
+		);
 
 		return {
 			format: "module",

@@ -136,7 +136,7 @@ export default [
 		}
 	},
 	{
-	files: ["source/**/*.{ts,tsx}"],
+		files: ["source/**/*.{ts,tsx}"],
 		languageOptions: { globals: globals["shared-node-browser"] }
 	},
 	{
@@ -161,6 +161,18 @@ export default [
 			"mocha.config.unit-tests.cjs",
 			"prettier.config.js"
 		]
+	},
+	{
+		files: ["astro.config.js"],
+		rules: {
+			"import/max-dependencies": ["error", { max: 11 }]
+		}
+	},
+	{
+		files: ["**/*.test.tsx"],
+		rules: {
+			"mocha/no-hooks": "off"
+		}
 	},
 	{
 		files: ["mocha*.cjs"],
