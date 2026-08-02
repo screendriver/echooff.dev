@@ -1,4 +1,4 @@
-import { isNonEmptyString, isUndefined } from "@sindresorhus/is";
+import { isError, isNonEmptyString, isUndefined } from "@sindresorhus/is";
 import type { APIContext } from "astro";
 import { just, nothing, type Maybe } from "true-myth/maybe";
 import {
@@ -12,6 +12,7 @@ import { blogReactionErrorResponseSchema } from "../../../blog/reactions/blog-re
 import { isSqliteBusyError } from "../../../database/sqlite-database-error.ts";
 import { standardStreamRuntimeLogger } from "../../../blog/runtime-logger.ts";
 import { readRuntimeBlogReactionApplicationServiceTask } from "../../../blog/reactions/server/runtime-composition.ts";
+import * as BugsinkServerReporting from "../../../error-reporting/bugsink-server.ts";
 
 export const prerender = false;
 
@@ -43,6 +44,14 @@ function readClientAddress(context: APIContext): Maybe<string> {
 	return just(context.clientAddress);
 }
 
+function normalizeUnexpectedRuntimeFailure(error: unknown): Error {
+	if (isError(error)) {
+		return error;
+	}
+
+	return new Error("The blog reaction runtime failed unexpectedly.");
+}
+
 function createAstroBlogReactionResponse(
 	createAstroBlogReactionResponseOptions: CreateAstroBlogReactionResponseOptions
 ): Response {
@@ -63,7 +72,7 @@ function createAstroBlogReactionResponse(
 	});
 }
 
-function createRuntimeUnavailableResponse(error: unknown): Response {
+function createRuntimeUnavailableResponse(error: unknown, method: BlogReactionHttpMethod, pathname: string): Response {
 	const statusCode = isSqliteBusyError(error) ? 503 : 500;
 	const responseHeaders = new Headers({
 		"Cache-Control": "no-store",
@@ -79,6 +88,15 @@ function createRuntimeUnavailableResponse(error: unknown): Response {
 		statusCode
 	});
 
+	if (statusCode === 500) {
+		BugsinkServerReporting.reportUnexpectedServerFailure({
+			error: normalizeUnexpectedRuntimeFailure(error),
+			method,
+			pathname,
+			statusCode
+		});
+	}
+
 	return Response.json(blogReactionErrorResponseSchema.assert({ error: "temporarily_unavailable" }), {
 		headers: responseHeaders,
 		status: statusCode
@@ -92,7 +110,7 @@ async function handleAstroBlogReactionRequest(
 	const applicationServiceResult = await readRuntimeBlogReactionApplicationServiceTask();
 
 	if (applicationServiceResult.isErr) {
-		return createRuntimeUnavailableResponse(applicationServiceResult.error);
+		return createRuntimeUnavailableResponse(applicationServiceResult.error, method, context.url.pathname);
 	}
 
 	const blogReactionHttpResponse = await handleBlogReactionRequest({
@@ -101,6 +119,13 @@ async function handleAstroBlogReactionRequest(
 			standardStreamRuntimeLogger.warn("Unable to handle blog reaction request", error, {
 				event: "blog_reaction_request_failed",
 				method,
+				statusCode
+			});
+
+			BugsinkServerReporting.reportUnexpectedServerFailure({
+				error,
+				method,
+				pathname: context.url.pathname,
 				statusCode
 			});
 		},
