@@ -87,6 +87,16 @@ export default [
 		files: ["**/*.{ts,tsx}"]
 	},
 	{
+		files: ["source/blog/reactions/BlogPostReaction.tsx"],
+		rules: {
+			complexity: ["error", { max: 8 }],
+			"require-atomic-updates": "off",
+			"@typescript-eslint/no-unnecessary-boolean-literal-compare": "off",
+			"unicorn/no-unnecessary-boolean-comparison": "off",
+			"unicorn/try-complexity": ["error", { max: 3 }]
+		}
+	},
+	{
 		files: ["**/*.{ts,tsx}"],
 		rules: {
 			"@typescript-eslint/no-magic-numbers": "off",
