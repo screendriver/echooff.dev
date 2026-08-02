@@ -3,9 +3,10 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { suite, test } from "mocha";
-import { isErr, isOk } from "true-myth/result";
+import { isOk } from "true-myth/result";
 import {
 	bugsinkApplication,
+	bugsinkDsn,
 	bugsinkEnvironment,
 	bugsinkHost,
 	createBugsinkDataCollection,
@@ -23,14 +24,14 @@ import {
 const repositoryRootDirectoryPath = fileURLToPath(new URL("../../", import.meta.url));
 
 const testBugsinkConfiguration: BugsinkConfiguration = {
-	dsn: "https://public-key@bugsink.82r.de/2",
+	dsn: bugsinkDsn,
 	release: "release-test"
 };
 
 suite("Bugsink configuration", function () {
 	test("accepts the public project DSN only when it uses the Bugsink origin", function () {
 		const configurationResult = readBugsinkConfiguration({
-			PUBLIC_BUGSINK_DSN: testBugsinkConfiguration.dsn,
+			PROD: true,
 			PUBLIC_BUGSINK_RELEASE: testBugsinkConfiguration.release
 		});
 
@@ -39,30 +40,29 @@ suite("Bugsink configuration", function () {
 		assert.strictEqual(bugsinkHost, "https://bugsink.82r.de");
 	});
 
-	test("rejects a configured DSN from another origin", function () {
-		const configurationResult = readBugsinkConfiguration({
-			PUBLIC_BUGSINK_DSN: "https://public-key@other.example/2",
-			PUBLIC_BUGSINK_RELEASE: testBugsinkConfiguration.release
-		});
+	test("validates the source-controlled DSN against the configured origin", function () {
+		const parsedBugsinkDsn = new URL(bugsinkDsn);
 
-		assert.strictEqual(isErr(configurationResult), true);
+		assert.strictEqual(parsedBugsinkDsn.origin, bugsinkHost);
 	});
 
-	test("allows local builds to continue without a DSN", function () {
-		const configurationResult = readBugsinkConfiguration({});
+	test("allows local builds to continue without initializing reporting", function () {
+		const configurationResult = readBugsinkConfiguration({
+			PROD: false,
+			PUBLIC_BUGSINK_RELEASE: testBugsinkConfiguration.release
+		});
 
 		assert.strictEqual(isOk(configurationResult), true);
 		assert.strictEqual(configurationResult.unwrapOr(undefined), undefined);
 	});
 
-	test("defines the public DSN as build configuration rather than a source literal", async function () {
+	test("defines the public DSN in one source configuration module", async function () {
 		const configurationSource = await readFile(
 			join(repositoryRootDirectoryPath, "source/error-reporting/bugsink-configuration.ts"),
 			"utf8"
 		);
 
-		assert.match(configurationSource, /PUBLIC_BUGSINK_DSN/u);
-		assert.doesNotMatch(configurationSource, /https:\/\/[^\s"]+@bugsink\.82r\.de/u);
+		assert.strictEqual(configurationSource.match(/https:\/\/[^\s"]+@bugsink\.82r\.de/gu)?.length, 1);
 	});
 
 	test("uses the shared production tags and privacy policy", function () {

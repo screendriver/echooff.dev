@@ -1,6 +1,7 @@
 import { err, ok, type Result } from "true-myth/result";
 
 export const bugsinkHost = "https://bugsink.82r.de";
+export const bugsinkDsn = "https://9611ae13522c41d8a36a3edfc702ba8b@bugsink.82r.de/2";
 export const bugsinkApplication = "echooff.dev";
 export const bugsinkEnvironment = "production";
 
@@ -15,7 +16,6 @@ export type BugsinkConfiguration = {
 
 export type BugsinkBuildEnvironment = {
 	readonly PROD?: boolean;
-	readonly PUBLIC_BUGSINK_DSN?: unknown;
 	readonly PUBLIC_BUGSINK_RELEASE?: unknown;
 };
 
@@ -33,7 +33,7 @@ function parseBugsinkUrl(configuredDsn: string): Result<URL, Error> {
 	try {
 		return ok(new URL(configuredDsn));
 	} catch {
-		return err(new TypeError("PUBLIC_BUGSINK_DSN must be a valid URL."));
+		return err(new TypeError("The Bugsink project DSN must be a valid URL."));
 	}
 }
 
@@ -45,7 +45,7 @@ function parseBugsinkDsn(configuredDsn: string): Result<string, Error> {
 	}
 
 	if (parsedUrlResult.value.origin !== bugsinkHost) {
-		return err(new RangeError("PUBLIC_BUGSINK_DSN must use the configured Bugsink origin."));
+		return err(new RangeError("The Bugsink project DSN must use the configured origin."));
 	}
 
 	return ok(configuredDsn);
@@ -62,17 +62,11 @@ function readBugsinkRelease(configuredRelease: unknown): Result<string, Error> {
 export function readBugsinkConfiguration(
 	bugsinkBuildEnvironment: BugsinkBuildEnvironment
 ): Result<BugsinkConfiguration | undefined, Error> {
-	const configuredDsn = bugsinkBuildEnvironment.PUBLIC_BUGSINK_DSN;
-
-	if (configuredDsn === undefined || configuredDsn === "") {
+	if (bugsinkBuildEnvironment.PROD !== true) {
 		return ok(undefined);
 	}
 
-	if (typeof configuredDsn !== "string") {
-		return err(new TypeError("PUBLIC_BUGSINK_DSN must be a string."));
-	}
-
-	const parsedDsnResult = parseBugsinkDsn(configuredDsn);
+	const parsedDsnResult = parseBugsinkDsn(bugsinkDsn);
 
 	if (parsedDsnResult.isErr) {
 		return err(parsedDsnResult.error);
