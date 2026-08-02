@@ -1,4 +1,4 @@
-import ky, { type KyInstance, type Options } from "ky";
+import ky, { isHTTPError, type KyInstance, type Options } from "ky";
 import type { BlogReactionClient, BlogReactionClientFailure } from "./blog-reaction-client.ts";
 import { blogReactionResponseSchema, type BlogReactionResponse } from "./blog-reaction-schema.ts";
 
@@ -19,10 +19,16 @@ const blogReactionRequestOptions: Options = {
 
 type BlogReactionRequestMethod = "DELETE" | "GET" | "PUT";
 
-function createBlogReactionClientFailure(): BlogReactionClientFailure {
-	return Object.assign(new Error("The blog reaction request failed."), {
+function createBlogReactionClientFailure(statusCode: number | undefined): BlogReactionClientFailure {
+	const failure = Object.assign(new Error("The blog reaction request failed."), {
 		kind: "blog_reaction_client_failure" as const
 	});
+
+	if (statusCode === undefined) {
+		return failure;
+	}
+
+	return Object.assign(failure, { statusCode });
 }
 
 function createBlogReactionUrl(reactionEndpointPrefix: string, postSlug: string): string {
@@ -42,8 +48,8 @@ async function requestBlogReaction(
 			...blogReactionRequestOptions,
 			method
 		}).json(blogReactionResponseSchema);
-	} catch {
-		throw createBlogReactionClientFailure();
+	} catch (error) {
+		throw createBlogReactionClientFailure(isHTTPError(error) ? error.response.status : undefined);
 	}
 }
 

@@ -14,6 +14,7 @@ FROM node:26.5.0-slim
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV ECHOOFF_APPLICATION_RUNTIME=server
 
 RUN apt-get update \
 	&& apt-get install --yes --no-install-recommends libstdc++6 \

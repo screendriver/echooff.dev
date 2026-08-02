@@ -99,7 +99,13 @@ const resolvedOpenGraphUrl = resolveOpenGraphUrl({
 		<link rel="icon" type="image/png" href="/favicon.png" />
 		{
 			import.meta.env.PROD && (
-				<script is:inline defer={true} data-site-id="8b1ea0efa11c" src="/_runtime/script.js" />
+				<>
+					<script is:inline defer={true} data-site-id="8b1ea0efa11c" src="/_runtime/script.js" />
+					<script>
+						import {initializeBrowserFailureReporting} from "../browser/browser-failure-composition.ts";
+						initializeBrowserFailureReporting();
+					</script>
+				</>
 			)
 		}
 		<slot name="head" />

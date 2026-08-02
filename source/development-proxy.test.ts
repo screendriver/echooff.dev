@@ -41,7 +41,7 @@ suite("createDevelopmentServerProxy()", function () {
 			/server:\s*\{\s*proxy: developmentServerProxy\.unwrapOr\(undefined\)\s*\}/u
 		);
 		assert.match(astroConfigurationSource, /css:\s*\{\s*devSourcemap: true\s*\}/u);
-		assert.match(astroConfigurationSource, /build:\s*\{\s*sourcemap: false\s*\}/u);
+		assert.match(astroConfigurationSource, /build:\s*\{\s*manifest: true\s*\}/u);
 		assert.match(astroConfigurationSource, /esbuild:\s*\{\s*legalComments: "none"\s*\}/u);
 		assert.doesNotMatch(astroConfigurationSource, /PUBLIC_DETERMINISTIC_SERVER_URL/u);
 	});
