@@ -1,5 +1,5 @@
 ---
-import BlogReadingProgressIndicator from "./BlogReadingProgressIndicator.astro";
+import { BlogReadingProgressIndicator } from "./BlogReadingProgressIndicator.tsx";
 import { nothing, type Maybe } from "true-myth/maybe";
 import PageShell from "../layouts/PageShell.astro";
 import Header from "../layouts/Header.astro";
@@ -66,7 +66,7 @@ const {
 		>
 			<slot name="head" slot="head" />
 			<slot name="search-engine-optimization-schema" slot="search-engine-optimization-schema" />
-			{showReadingProgressIndicator && <BlogReadingProgressIndicator />}
+			{showReadingProgressIndicator && <BlogReadingProgressIndicator client:load />}
 			<Header />
 
 			<main class="blog-shell-main">

@@ -4,15 +4,6 @@ export type ReadingProgressSnapshot = {
 	readonly viewportHeight: number;
 };
 
-export type ReadingProgressIndicatorDependencies = {
-	readonly readDocumentScrollHeight: () => number;
-	readonly readVerticalScrollOffset: () => number;
-	readonly readViewportHeight: () => number;
-	readonly registerResizeListener: (listener: () => void) => void;
-	readonly registerScrollListener: (listener: () => void) => void;
-	readonly writeProgressPercentage: (progressPercentage: number) => void;
-};
-
 const minimumProgressPercentage = 0;
 const maximumProgressPercentage = 100;
 
@@ -34,22 +25,4 @@ export function calculateReadingProgressPercentage(readingProgressSnapshot: Read
 		(readingProgressSnapshot.verticalScrollOffset / scrollableDistance) * maximumProgressPercentage;
 
 	return clampProgressPercentage(rawProgressPercentage);
-}
-
-export function initializeReadingProgressIndicator(
-	readingProgressIndicatorDependencies: ReadingProgressIndicatorDependencies
-): void {
-	function updateReadingProgressIndicator(): void {
-		readingProgressIndicatorDependencies.writeProgressPercentage(
-			calculateReadingProgressPercentage({
-				documentScrollHeight: readingProgressIndicatorDependencies.readDocumentScrollHeight(),
-				verticalScrollOffset: readingProgressIndicatorDependencies.readVerticalScrollOffset(),
-				viewportHeight: readingProgressIndicatorDependencies.readViewportHeight()
-			})
-		);
-	}
-
-	updateReadingProgressIndicator();
-	readingProgressIndicatorDependencies.registerScrollListener(updateReadingProgressIndicator);
-	readingProgressIndicatorDependencies.registerResizeListener(updateReadingProgressIndicator);
 }

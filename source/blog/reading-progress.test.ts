@@ -1,11 +1,6 @@
 import assert from "node:assert";
 import { suite, test } from "mocha";
-import { fake } from "sinon";
-import { calculateReadingProgressPercentage, initializeReadingProgressIndicator } from "./reading-progress.ts";
-
-function failWhenListenerWasNotRegistered(): void {
-	throw new Error("Expected the reading progress listener to be registered before invocation");
-}
+import { calculateReadingProgressPercentage } from "./reading-progress.ts";
 
 suite("calculateReadingProgressPercentage()", function () {
 	test("returns zero percent at the top of the page", function () {
@@ -26,6 +21,17 @@ suite("calculateReadingProgressPercentage()", function () {
 			viewportHeight: 800
 		});
 		const expectedProgressPercentage = 100;
+
+		assert.strictEqual(actualProgressPercentage, expectedProgressPercentage);
+	});
+
+	test("returns fifty percent in the middle of a scrollable page", function () {
+		const actualProgressPercentage = calculateReadingProgressPercentage({
+			documentScrollHeight: 2400,
+			verticalScrollOffset: 800,
+			viewportHeight: 800
+		});
+		const expectedProgressPercentage = 50;
 
 		assert.strictEqual(actualProgressPercentage, expectedProgressPercentage);
 	});
@@ -62,86 +68,15 @@ suite("calculateReadingProgressPercentage()", function () {
 
 		assert.strictEqual(actualProgressPercentage, expectedProgressPercentage);
 	});
-});
 
-suite("initializeReadingProgressIndicator()", function () {
-	test("writes the initial progress immediately and updates on scroll and resize", function () {
-		let verticalScrollOffset = 0;
-		const recordedProgressPercentages: number[] = [];
-		let registeredScrollListener = failWhenListenerWasNotRegistered;
-		let registeredResizeListener = failWhenListenerWasNotRegistered;
-
-		initializeReadingProgressIndicator({
-			readDocumentScrollHeight() {
-				return 2400;
-			},
-			readVerticalScrollOffset() {
-				return verticalScrollOffset;
-			},
-			readViewportHeight() {
-				return 800;
-			},
-			registerResizeListener(listener) {
-				registeredResizeListener = listener;
-			},
-			registerScrollListener(listener) {
-				registeredScrollListener = listener;
-			},
-			writeProgressPercentage(progressPercentage) {
-				recordedProgressPercentages.push(progressPercentage);
-			}
+	test("preserves fractional numeric boundary values", function () {
+		const actualProgressPercentage = calculateReadingProgressPercentage({
+			documentScrollHeight: 1000,
+			verticalScrollOffset: 333.333333,
+			viewportHeight: 400
 		});
+		const expectedProgressPercentage = 55.5555555;
 
-		verticalScrollOffset = 400;
-		registeredScrollListener();
-
-		verticalScrollOffset = 1200;
-		registeredResizeListener();
-
-		const actualProgressPercentages = recordedProgressPercentages;
-		const expectedProgressPercentages = [0, 25, 75];
-
-		assert.deepStrictEqual(actualProgressPercentages, expectedProgressPercentages);
-	});
-
-	test("registers one scroll listener and one resize listener", function () {
-		let recordedProgressWriteCount = 0;
-		const registerScrollListener = fake(function (listener: () => void): void {
-			const actualListenerType = typeof listener;
-			const expectedListenerType = "function";
-
-			assert.strictEqual(actualListenerType, expectedListenerType);
-		});
-		const registerResizeListener = fake(function (listener: () => void): void {
-			const actualListenerType = typeof listener;
-			const expectedListenerType = "function";
-
-			assert.strictEqual(actualListenerType, expectedListenerType);
-		});
-
-		initializeReadingProgressIndicator({
-			readDocumentScrollHeight() {
-				return 2400;
-			},
-			readVerticalScrollOffset() {
-				return 0;
-			},
-			readViewportHeight() {
-				return 800;
-			},
-			registerResizeListener,
-			registerScrollListener,
-			writeProgressPercentage() {
-				recordedProgressWriteCount += 1;
-			}
-		});
-
-		const actualProgressWriteCount = recordedProgressWriteCount;
-		const expectedProgressWriteCount = 1;
-
-		assert.strictEqual(actualProgressWriteCount, expectedProgressWriteCount);
-
-		assert.strictEqual(registerScrollListener.calledOnce, true);
-		assert.strictEqual(registerResizeListener.calledOnce, true);
+		assert.ok(Math.abs(actualProgressPercentage - expectedProgressPercentage) < 0.000001);
 	});
 });
