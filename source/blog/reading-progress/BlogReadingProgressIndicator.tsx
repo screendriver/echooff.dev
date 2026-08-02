@@ -1,14 +1,13 @@
 import { useEffect, useState } from "preact/hooks";
 import { just, nothing, type Maybe } from "true-myth/maybe";
-import type { FunctionComponent } from "preact";
+import type { ComponentChildren } from "preact";
 import { calculateReadingProgressPercentage } from "./reading-progress.ts";
 import {
 	createReadingProgressBrowserDependencies,
 	readReadingProgressSnapshot,
 	type ReadingProgressBrowserDependencies,
 	type ReadingProgressEventListenerOptions
-} from "./reading-progress-browser.ts";
-import styles from "./BlogReadingProgressIndicator.module.scss";
+} from "./reading-progress-browser-adapter.ts";
 
 export type Properties = {
 	readonly browserDependencies?: ReadingProgressBrowserDependencies;
@@ -16,7 +15,7 @@ export type Properties = {
 
 const passiveListenerOptions: ReadingProgressEventListenerOptions = { passive: true };
 
-export const BlogReadingProgressIndicator: FunctionComponent<Properties> = (properties) => {
+export function BlogReadingProgressIndicator(properties: Properties): ComponentChildren {
 	const [progressPercentage, setProgressPercentage] = useState(0);
 
 	useEffect(() => {
@@ -70,8 +69,8 @@ export const BlogReadingProgressIndicator: FunctionComponent<Properties> = (prop
 	}, [properties.browserDependencies]);
 
 	return (
-		<div aria-hidden="true" className={styles.blogReadingProgressIndicator}>
-			<div className={styles.blogReadingProgressIndicatorFill} style={{ width: `${progressPercentage}%` }} />
+		<div aria-hidden="true" className="blog-reading-progress-indicator">
+			<div className="blog-reading-progress-indicator-fill" style={{ width: `${progressPercentage}%` }} />
 		</div>
 	);
-};
+}

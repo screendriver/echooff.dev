@@ -1,11 +1,11 @@
 import assert from "node:assert";
 import { act, cleanup, render } from "@testing-library/preact";
 import { setup, suite, teardown, test } from "mocha";
-import { createJsdomTestEnvironment, type JsdomTestEnvironment } from "../test-support/jsdom-test-environment.ts";
+import { createJsdomTestEnvironment, type JsdomTestEnvironment } from "../../test-support/jsdom-test-environment.ts";
 import type {
 	ReadingProgressBrowserDependencies,
 	ReadingProgressEventListenerOptions
-} from "./reading-progress-browser.ts";
+} from "./reading-progress-browser-adapter.ts";
 import { BlogReadingProgressIndicator } from "./BlogReadingProgressIndicator.tsx";
 
 type TestAnimationFrame = {
