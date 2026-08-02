@@ -1,62 +1,17 @@
-import { mkdir } from "node:fs/promises";
-import { dirname } from "node:path";
-import { isError, isSafeInteger } from "@sindresorhus/is";
-import Database from "better-sqlite3";
-import { Kysely, sql, SqliteDialect, type Selectable } from "kysely";
+import { isError } from "@sindresorhus/is";
+import { sql, type Kysely, type Selectable } from "kysely";
 import { just, nothing, type Maybe } from "true-myth/maybe";
-import { tryOrElse as tryTaskOrElse, type Task } from "true-myth/task";
-import { Unit, type Unit as UnitType } from "true-myth/unit";
+import { tryOrElse } from "true-myth/task";
+import { Unit } from "true-myth/unit";
+import type { ApplicationDatabase, MentionCacheTable } from "./application-database.ts";
+import type { MentionCacheEntry, MentionCacheRepository } from "./mention-cache.ts";
 
-export const mentionCacheSchemaVersion = 1;
-
-export type MentionCacheTable = {
-	readonly cache_key: string;
-	readonly fetched_at: string;
-	readonly schema_version: number;
-	readonly value: string;
-};
-
-export type MentionCacheDatabase = {
-	readonly mention_cache: MentionCacheTable;
-};
-
-export type MentionCacheEntry = {
-	readonly cacheKey: string;
-	readonly fetchedAt: string;
-	readonly schemaVersion: number;
-	readonly value: string;
-};
-
-export type MentionCacheDatabaseConnection = {
-	readonly database: Kysely<MentionCacheDatabase>;
-	readonly sqliteDatabase: Database.Database;
-};
-
-export type MentionCacheRepository = {
-	readonly close: () => Task<UnitType, Error>;
-	readonly deleteEntriesFetchedBefore: (fetchedBefore: string) => Task<UnitType, Error>;
-	readonly readEntry: (cacheKey: string) => Task<Maybe<MentionCacheEntry>, Error>;
-	readonly writeEntry: (mentionCacheEntry: MentionCacheEntry) => Task<UnitType, Error>;
-};
-
-type OpenMentionCacheDatabaseInput = {
-	readonly busyTimeoutMilliseconds: number;
-	readonly databasePath: string;
-};
-
-type CreateMentionCacheRepositoryInput = {
-	readonly busyTimeoutMilliseconds: number;
-	readonly databasePath: string;
-};
-
-async function createMentionCacheDirectory(databasePath: string): Promise<void> {
-	if (databasePath === ":memory:") {
-		return;
+function normalizeMentionCacheDatabaseError(error: unknown): Error {
+	if (isError(error)) {
+		return error;
 	}
 
-	await mkdir(dirname(databasePath), {
-		recursive: true
-	});
+	return new Error(String(error));
 }
 
 function mapMentionCacheRow(mentionCacheRow: Selectable<MentionCacheTable>): MentionCacheEntry {
@@ -68,73 +23,8 @@ function mapMentionCacheRow(mentionCacheRow: Selectable<MentionCacheTable>): Men
 	};
 }
 
-function formatBusyTimeoutPragma(busyTimeoutMilliseconds: number): string {
-	if (!isSafeInteger(busyTimeoutMilliseconds) || busyTimeoutMilliseconds < 0) {
-		throw new RangeError("SQLite busy timeout must be a non-negative safe integer.");
-	}
-
-	return `PRAGMA busy_timeout = ${busyTimeoutMilliseconds}`;
-}
-
-function normalizeMentionCacheDatabaseError(error: unknown): Error {
-	if (isError(error)) {
-		return error;
-	}
-
-	return new Error(String(error));
-}
-
-async function openMentionCacheDatabase(
-	openMentionCacheDatabaseInput: OpenMentionCacheDatabaseInput
-): Promise<MentionCacheDatabaseConnection> {
-	const { busyTimeoutMilliseconds, databasePath } = openMentionCacheDatabaseInput;
-
-	await createMentionCacheDirectory(databasePath);
-
-	const sqliteDatabase = new Database(databasePath);
-	const database = new Kysely<MentionCacheDatabase>({
-		dialect: new SqliteDialect({
-			database: sqliteDatabase
-		})
-	});
-
-	await sql`PRAGMA journal_mode = WAL`.execute(database);
-	await sql.raw(formatBusyTimeoutPragma(busyTimeoutMilliseconds)).execute(database);
-
-	return {
-		database,
-		sqliteDatabase
-	};
-}
-
-async function createMentionCacheTable(database: Kysely<MentionCacheDatabase>): Promise<void> {
-	await database.schema
-		.createTable("mention_cache")
-		.ifNotExists()
-		.addColumn("cache_key", "text", (column) => {
-			return column.primaryKey();
-		})
-		.addColumn("fetched_at", "text", (column) => {
-			return column.notNull();
-		})
-		.addColumn("value", "text", (column) => {
-			return column.notNull();
-		})
-		.addColumn("schema_version", "integer", (column) => {
-			return column.notNull();
-		})
-		.execute();
-}
-
-async function closeMentionCacheDatabase(
-	mentionCacheDatabaseConnection: MentionCacheDatabaseConnection
-): Promise<void> {
-	await mentionCacheDatabaseConnection.database.destroy();
-	mentionCacheDatabaseConnection.sqliteDatabase.close();
-}
-
 async function readMentionCacheEntry(
-	database: Kysely<MentionCacheDatabase>,
+	database: Kysely<ApplicationDatabase>,
 	cacheKey: string
 ): Promise<Maybe<MentionCacheEntry>> {
 	const mentionCacheRow = await database
@@ -151,7 +41,7 @@ async function readMentionCacheEntry(
 }
 
 async function writeMentionCacheEntry(
-	database: Kysely<MentionCacheDatabase>,
+	database: Kysely<ApplicationDatabase>,
 	mentionCacheEntry: MentionCacheEntry
 ): Promise<void> {
 	await sql`
@@ -171,54 +61,32 @@ async function writeMentionCacheEntry(
 }
 
 async function deleteMentionCacheEntriesFetchedBefore(
-	database: Kysely<MentionCacheDatabase>,
+	database: Kysely<ApplicationDatabase>,
 	fetchedBefore: string
 ): Promise<void> {
 	await database.deleteFrom("mention_cache").where("fetched_at", "<", fetchedBefore).execute();
 }
 
-async function createMentionCacheRepositoryUnsafe(
-	createMentionCacheRepositoryInput: CreateMentionCacheRepositoryInput
-): Promise<MentionCacheRepository> {
-	const mentionCacheDatabaseConnection = await openMentionCacheDatabase(createMentionCacheRepositoryInput);
-	const { database } = mentionCacheDatabaseConnection;
-
-	await createMentionCacheTable(database);
-
+export function createMentionCacheRepository(database: Kysely<ApplicationDatabase>): MentionCacheRepository {
 	return {
-		close() {
-			return tryTaskOrElse(normalizeMentionCacheDatabaseError, async () => {
-				await closeMentionCacheDatabase(mentionCacheDatabaseConnection);
-
-				return Unit;
-			});
-		},
 		deleteEntriesFetchedBefore(fetchedBefore) {
-			return tryTaskOrElse(normalizeMentionCacheDatabaseError, async () => {
+			return tryOrElse(normalizeMentionCacheDatabaseError, async () => {
 				await deleteMentionCacheEntriesFetchedBefore(database, fetchedBefore);
 
 				return Unit;
 			});
 		},
 		readEntry(cacheKey) {
-			return tryTaskOrElse(normalizeMentionCacheDatabaseError, async () => {
+			return tryOrElse(normalizeMentionCacheDatabaseError, async () => {
 				return readMentionCacheEntry(database, cacheKey);
 			});
 		},
 		writeEntry(mentionCacheEntry) {
-			return tryTaskOrElse(normalizeMentionCacheDatabaseError, async () => {
+			return tryOrElse(normalizeMentionCacheDatabaseError, async () => {
 				await writeMentionCacheEntry(database, mentionCacheEntry);
 
 				return Unit;
 			});
 		}
 	};
-}
-
-export function createMentionCacheRepository(
-	createMentionCacheRepositoryInput: CreateMentionCacheRepositoryInput
-): Task<MentionCacheRepository, Error> {
-	return tryTaskOrElse(normalizeMentionCacheDatabaseError, async () => {
-		return createMentionCacheRepositoryUnsafe(createMentionCacheRepositoryInput);
-	});
 }

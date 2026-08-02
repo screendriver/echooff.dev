@@ -1,20 +1,9 @@
-import { isError } from "@sindresorhus/is";
 import { just, nothing, type Maybe } from "true-myth/maybe";
-import { resolve as resolveTask, tryOrElse as tryTaskOrElse, type Task } from "true-myth/task";
+import { resolve as resolveTask, type Task } from "true-myth/task";
 import { Unit } from "true-myth/unit";
-import type { MentionCacheRepository as SqliteMentionCacheRepository } from "./mention-cache-database.ts";
+import { createMentionCacheRepository } from "./mention-cache-database.ts";
 import type { MentionCacheEntry, MentionCacheRepository } from "./mention-cache.ts";
-
-const mentionCacheDatabaseBusyTimeoutMilliseconds = 5000;
-const productionMentionCacheDatabasePath = "/data/echooff-cache.sqlite";
-
-function normalizeDynamicImportError(error: unknown): Error {
-	if (isError(error)) {
-		return error;
-	}
-
-	return new Error(String(error));
-}
+import { readRuntimeApplicationDatabaseTask } from "./runtime-application-database.ts";
 
 export function createDisabledMentionCacheRepository(): MentionCacheRepository {
 	return {
@@ -30,8 +19,8 @@ export function createDisabledMentionCacheRepository(): MentionCacheRepository {
 	};
 }
 
-function createRuntimeMentionCacheRepositoryTaskReader(): () => Task<SqliteMentionCacheRepository, Error> {
-	let createdMentionCacheRepositoryTask: Maybe<Task<SqliteMentionCacheRepository, Error>> = nothing();
+function createRuntimeMentionCacheRepositoryTaskReader(): () => Task<MentionCacheRepository, Error> {
+	let createdMentionCacheRepositoryTask: Maybe<Task<MentionCacheRepository, Error>> = nothing();
 
 	return () => {
 		return createdMentionCacheRepositoryTask.match({
@@ -39,13 +28,10 @@ function createRuntimeMentionCacheRepositoryTaskReader(): () => Task<SqliteMenti
 				return mentionCacheRepositoryTask;
 			},
 			Nothing() {
-				const mentionCacheRepositoryTask = tryTaskOrElse(normalizeDynamicImportError, async () => {
-					return import("./mention-cache-database.ts");
-				}).andThen((mentionCacheDatabaseModule) => {
-					return mentionCacheDatabaseModule.createMentionCacheRepository({
-						busyTimeoutMilliseconds: mentionCacheDatabaseBusyTimeoutMilliseconds,
-						databasePath: productionMentionCacheDatabasePath
-					});
+				const mentionCacheRepositoryTask = readRuntimeApplicationDatabaseTask().map((applicationDatabase) => {
+					const { database } = applicationDatabase;
+
+					return createMentionCacheRepository(database);
 				});
 
 				createdMentionCacheRepositoryTask = just(mentionCacheRepositoryTask);
