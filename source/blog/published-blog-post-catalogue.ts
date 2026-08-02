@@ -1,7 +1,11 @@
 import type { CollectionEntry } from "astro:content";
 
+export type PublishedBlogPostSlug = string & {
+	readonly publishedBlogPostSlugBrand: "PublishedBlogPostSlug";
+};
+
 export type PublishedBlogPostCatalogue = {
-	readonly hasPublishedBlogPost: (postSlug: string) => boolean;
+	readonly hasPublishedBlogPost: (postSlug: string) => postSlug is PublishedBlogPostSlug;
 };
 
 export function createPublishedBlogPostCatalogue(
@@ -14,7 +18,7 @@ export function createPublishedBlogPostCatalogue(
 	);
 
 	return {
-		hasPublishedBlogPost(postSlug) {
+		hasPublishedBlogPost(postSlug): postSlug is PublishedBlogPostSlug {
 			return publishedBlogPostSlugs.has(postSlug);
 		}
 	};

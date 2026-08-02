@@ -1,7 +1,11 @@
 import assert from "node:assert";
 import { suite, test } from "mocha";
 import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.ts";
-import { createPublishedBlogPostCatalogue } from "./published-blog-post-catalogue.ts";
+import { createPublishedBlogPostCatalogue, type PublishedBlogPostSlug } from "./published-blog-post-catalogue.ts";
+
+function readPublishedBlogPostSlug(postSlug: PublishedBlogPostSlug): string {
+	return postSlug;
+}
 
 suite("createPublishedBlogPostCatalogue()", function () {
 	test("recognizes every blog post exposed by the blog collection", function () {
@@ -36,5 +40,25 @@ suite("createPublishedBlogPostCatalogue()", function () {
 		const publishedBlogPostCatalogue = createPublishedBlogPostCatalogue([blogPost]);
 
 		assert.strictEqual(publishedBlogPostCatalogue.hasPublishedBlogPost("unknown-blog-post"), false);
+	});
+
+	test("narrows a known string to a published blog post slug", function () {
+		const blogPost = createBlogPostCollectionEntry({
+			description: "Known blog post",
+			id: "known-blog-post",
+			title: "Known blog post",
+			publishedAt: "2026-07-01T10:00:00+00:00",
+			topic: "Writing"
+		});
+		const publishedBlogPostCatalogue = createPublishedBlogPostCatalogue([blogPost]);
+		const candidateSlug: string = blogPost.id;
+
+		if (!publishedBlogPostCatalogue.hasPublishedBlogPost(candidateSlug)) {
+			throw new Error("Expected the test blog post to be published.");
+		}
+
+		const actualSlug = readPublishedBlogPostSlug(candidateSlug);
+
+		assert.strictEqual(actualSlug, blogPost.id);
 	});
 });
