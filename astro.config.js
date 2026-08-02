@@ -29,6 +29,15 @@ export default defineConfig({
 	adapter: node({
 		mode: "standalone"
 	}),
+	security: {
+		checkOrigin: true,
+		allowedDomains: [
+			{
+				hostname: "www.echooff.dev",
+				protocol: "https"
+			}
+		]
+	},
 	integrations: [
 		preact(),
 		sitemap({
