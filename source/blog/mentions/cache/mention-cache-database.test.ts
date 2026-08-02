@@ -3,8 +3,11 @@ import { suite, test } from "mocha";
 import { just, nothing } from "true-myth/maybe";
 import { isOk, ok, type Result } from "true-myth/result";
 import { Unit } from "true-myth/unit";
-import { mentionCacheSchemaVersion, type ApplicationDatabaseConnection } from "./application-database.ts";
-import { withTemporaryApplicationDatabase } from "./application-database-test-support.ts";
+import {
+	mentionCacheSchemaVersion,
+	type ApplicationDatabaseConnection
+} from "../../../database/application-database.ts";
+import { withTemporaryApplicationDatabase } from "../../../database/application-database-test-support.ts";
 import { createMentionCacheRepository } from "./mention-cache-database.ts";
 import type { MentionCacheEntry, MentionCacheRepository } from "./mention-cache.ts";
 

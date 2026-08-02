@@ -1,14 +1,9 @@
 import assert from "node:assert";
 import { isError } from "@sindresorhus/is";
 import { suite, test } from "mocha";
-import ky, { type Input } from "ky";
-import {
-	blogReactionRequestTimeoutMilliseconds,
-	createKyBlogReactionClient,
-	type BlogReactionClient,
-	type BlogReactionClientFetch,
-	type BlogReactionClientFailure
-} from "./blog-reaction-client.ts";
+import ky from "ky";
+import type { BlogReactionClient, BlogReactionClientFailure } from "./blog-reaction-client.ts";
+import { blogReactionRequestTimeoutMilliseconds, createKyBlogReactionClient } from "./blog-reaction-http-client.ts";
 
 type RecordedFetchRequest = {
 	readonly request: Request;
@@ -21,7 +16,7 @@ type CreateTestFetchOptions = {
 };
 
 type TestFetch = {
-	readonly fetch: BlogReactionClientFetch;
+	readonly fetch: typeof fetch;
 	readonly requests: readonly RecordedFetchRequest[];
 };
 
@@ -33,8 +28,8 @@ function createTestFetch(createTestFetchOptions: CreateTestFetchOptions): TestFe
 	const { response, throwError } = createTestFetchOptions;
 	const requests: RecordedFetchRequest[] = [];
 
-	const testFetchImplementation: BlogReactionClientFetch = async function (
-		input: Input,
+	const testFetchImplementation: typeof fetch = async function (
+		input: RequestInfo | URL,
 		init?: RequestInit
 	): Promise<Response> {
 		const request = new Request(input, init);

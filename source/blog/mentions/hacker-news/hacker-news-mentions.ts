@@ -2,9 +2,12 @@ import process from "node:process";
 import { isNull, isNumber, isString, isUndefined, isValidDate } from "@sindresorhus/is";
 import { just, nothing, type Maybe } from "true-myth/maybe";
 import { err, ok, type Result } from "true-myth/result";
-import { cachedHackerNewsSectionModelSchema, type CachedHackerNewsMention } from "./cached-mention-section-schema.ts";
-import { parseCachedMaybeString } from "./cached-maybe.ts";
-import { parseRuntimeHackerNewsApiUrl } from "./environment-variables.ts";
+import {
+	cachedHackerNewsSectionModelSchema,
+	type CachedHackerNewsMention
+} from "../cache/cached-mention-section-schema.ts";
+import { parseCachedMaybeString } from "../cache/cached-maybe.ts";
+import { parseRuntimeHackerNewsApiUrl } from "../../environment-variables.ts";
 import { hackerNewsApiResponseSchema } from "./hacker-news-response-schema.ts";
 
 export type HackerNewsMention = {

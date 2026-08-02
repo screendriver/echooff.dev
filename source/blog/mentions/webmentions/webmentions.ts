@@ -7,9 +7,9 @@ import {
 	cachedWebmentionSectionModelSchema,
 	type CachedWebmentionAuthor,
 	type CachedWebmentionReply
-} from "./cached-mention-section-schema.ts";
-import { parseCachedMaybeString } from "./cached-maybe.ts";
-import { parseRuntimeWebmentionApiUrl } from "./environment-variables.ts";
+} from "../cache/cached-mention-section-schema.ts";
+import { parseCachedMaybeString } from "../cache/cached-maybe.ts";
+import { parseRuntimeWebmentionApiUrl } from "../../environment-variables.ts";
 import { webmentionApiResponseSchema } from "./webmention-response-schema.ts";
 
 export type WebmentionAuthor = {

@@ -3,7 +3,7 @@ import { sql, type Kysely, type Selectable } from "kysely";
 import { just, nothing, type Maybe } from "true-myth/maybe";
 import { tryOrElse } from "true-myth/task";
 import { Unit } from "true-myth/unit";
-import type { ApplicationDatabase, MentionCacheTable } from "./application-database.ts";
+import type { ApplicationDatabase, MentionCacheTable } from "../../../database/application-database.ts";
 import type { MentionCacheEntry, MentionCacheRepository } from "./mention-cache.ts";
 
 function normalizeMentionCacheDatabaseError(error: unknown): Error {

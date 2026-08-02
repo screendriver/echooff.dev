@@ -1,5 +1,5 @@
 ---
-import BlogEmptyState from "./BlogEmptyState.astro";
+import BlogEmptyState from "../../BlogEmptyState.astro";
 import WebmentionsAuthorPhoto from "./WebmentionsAuthorPhoto.astro";
 import WebmentionsPublishedAt from "./WebmentionsPublishedAt.astro";
 import WebmentionsReplyContent from "./WebmentionsReplyContent.astro";
@@ -44,7 +44,7 @@ const { webmentionSectionModel } = Astro.props;
 }
 
 <style lang="scss">
-	@use "../styles/variables";
+	@use "../../../styles/variables";
 
 	.webmention-reply-list {
 		display: flex;

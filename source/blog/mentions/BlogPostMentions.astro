@@ -1,8 +1,8 @@
 ---
 import { createWallClock } from "@enormora/wall-clock";
-import HackerNewsMentions from "./HackerNewsMentions.astro";
-import Webmentions from "./Webmentions.astro";
-import { createBlogPostAbsoluteUrl } from "./blog-site.js";
+import HackerNewsMentions from "./hacker-news/HackerNewsMentions.astro";
+import Webmentions from "./webmentions/Webmentions.astro";
+import { createBlogPostAbsoluteUrl } from "../blog-site.js";
 import {
 	loadBlogPostMentionsForTargetUrl,
 	runtimeMentionRequestTimeoutMilliseconds
@@ -10,8 +10,8 @@ import {
 import {
 	createDisabledMentionCacheRepository,
 	readRuntimeMentionCacheRepositoryTask
-} from "./runtime-mention-cache-repository.js";
-import { standardStreamRuntimeLogger } from "./runtime-logger.js";
+} from "./cache/runtime-mention-cache-repository.js";
+import { standardStreamRuntimeLogger } from "../runtime-logger.js";
 
 export interface Props {
 	readonly blogPostId: string;

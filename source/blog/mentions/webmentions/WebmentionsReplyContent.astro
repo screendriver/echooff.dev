@@ -11,7 +11,7 @@ const { webmentionReply } = Astro.props;
 {webmentionReply.content.isJust && <p class="webmention-reply-content">{webmentionReply.content.value}</p>}
 
 <style lang="scss">
-	@use "../styles/variables";
+	@use "../../../styles/variables";
 	@use "sass:color";
 
 	.webmention-reply-content {

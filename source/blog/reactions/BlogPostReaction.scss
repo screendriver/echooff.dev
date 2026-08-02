@@ -1,26 +1,26 @@
-@use "../styles/variables";
+@use "../../styles/variables";
 
-.blogPostReaction {
+.blog-post-reaction {
 	border-top: 1px solid rgba(variables.$selection, 0.8);
 	margin-top: 2.5rem;
 	padding: 1.5rem 0 0.75rem;
 }
 
-.blogPostReaction h2 {
+.blog-post-reaction h2 {
 	color: variables.$purple;
 	font-size: 1rem;
 	font-weight: 700;
 	margin: 0 0 0.75rem;
 }
 
-.blogPostReactionControlRow {
+.blog-post-reaction-control-row {
 	align-items: center;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.75rem;
 }
 
-.blogPostReactionButton {
+.blog-post-reaction-button {
 	background: transparent;
 	border: 1px solid variables.$comment;
 	border-radius: 0.35rem;
@@ -30,33 +30,27 @@
 	padding: 0.4rem 0.7rem;
 }
 
-.blogPostReactionButton:hover:not(:disabled) {
+.blog-post-reaction-button:hover:not(:disabled) {
 	border-color: variables.$cyan;
 	color: variables.$cyan;
 }
 
-.blogPostReactionButton:focus-visible {
+.blog-post-reaction-button:focus-visible {
 	outline: 2px solid variables.$cyan;
 	outline-offset: 2px;
 }
 
-.blogPostReactionButton:disabled {
+.blog-post-reaction-button:disabled {
 	cursor: wait;
 	opacity: 0.65;
 }
 
-.blogPostReactionCount,
-.blogPostReactionStatus,
-.blogPostReactionDisclosure {
+.blog-post-reaction-count,
+.blog-post-reaction-status {
 	color: variables.$comment;
 	font-size: 0.875rem;
 }
 
-.blogPostReactionStatus {
+.blog-post-reaction-status {
 	margin: 0;
-	min-height: 1.3em;
-}
-
-.blogPostReactionDisclosure {
-	margin: 0.65rem 0 0;
 }

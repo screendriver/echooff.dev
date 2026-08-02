@@ -3,12 +3,13 @@ import type { WallClock } from "@enormora/wall-clock";
 import { match } from "ts-pattern";
 import type { Result } from "true-myth/result";
 import { tryOrElse, type Task } from "true-myth/task";
+import type { RuntimeLogProperties } from "../runtime-logger.ts";
 import {
 	createEmptyHackerNewsSectionModel,
 	type HackerNewsSectionModel,
 	loadHackerNewsMentionsForTargetUrl,
 	parseCachedHackerNewsSectionModel
-} from "./hacker-news-mentions.ts";
+} from "./hacker-news/hacker-news-mentions.ts";
 import {
 	createMentionCacheKey,
 	loadMentionCacheSectionModel,
@@ -18,14 +19,13 @@ import {
 	type MentionCacheRepository,
 	type MentionCacheSectionLoadingResult,
 	type MentionCacheSectionLoadState
-} from "./mention-cache.ts";
+} from "./cache/mention-cache.ts";
 import {
 	createEmptyWebmentionSectionModel,
 	loadWebmentionsForTargetUrl,
 	parseCachedWebmentionSectionModel,
 	type WebmentionSectionModel
-} from "./webmentions.ts";
-import type { RuntimeLogProperties } from "./runtime-logger.ts";
+} from "./webmentions/webmentions.ts";
 
 export type BlogPostMentionsModel = {
 	readonly hackerNewsSectionModel: HackerNewsSectionModel;

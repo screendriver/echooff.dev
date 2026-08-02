@@ -5,7 +5,7 @@ import { differenceInMilliseconds, isValid, parseISO, subDays } from "date-fns";
 import { nothing, type Maybe } from "true-myth/maybe";
 import { resolve as resolveTask, tryOrElse, type Task } from "true-myth/task";
 import type { Unit } from "true-myth/unit";
-import type { RuntimeLogProperties } from "./runtime-logger.ts";
+import type { RuntimeLogProperties } from "../../runtime-logger.ts";
 
 export const mentionCacheFreshMilliseconds = 8 * 60 * 60 * 1000;
 export const mentionCacheCleanupAgeDays = 90;

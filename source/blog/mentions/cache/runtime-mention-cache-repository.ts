@@ -1,9 +1,9 @@
 import { just, nothing, type Maybe } from "true-myth/maybe";
 import { resolve as resolveTask, type Task } from "true-myth/task";
 import { Unit } from "true-myth/unit";
+import { readRuntimeApplicationDatabaseTask } from "../../../database/runtime-application-database.ts";
 import { createMentionCacheRepository } from "./mention-cache-database.ts";
 import type { MentionCacheEntry, MentionCacheRepository } from "./mention-cache.ts";
-import { readRuntimeApplicationDatabaseTask } from "./runtime-application-database.ts";
 
 export function createDisabledMentionCacheRepository(): MentionCacheRepository {
 	return {

@@ -6,8 +6,9 @@ import { of } from "true-myth/maybe";
 import BlogArticleByline from "../../blog/BlogArticleByline.astro";
 import BlogBackLink from "../../blog/BlogBackLink.astro";
 import BlogPostContent from "../../blog/BlogPostContent.astro";
-import BlogPostMentions from "../../blog/BlogPostMentions.astro";
-import { BlogPostReaction } from "../../blog/BlogPostReaction.tsx";
+import "../../blog/reactions/BlogPostReaction.scss";
+import { BlogPostReactionIsland } from "../../blog/reactions/BlogPostReactionIsland.tsx";
+import BlogPostMentions from "../../blog/mentions/BlogPostMentions.astro";
 import BlogShell from "../../blog/BlogShell.astro";
 import BlogTopicLink from "../../blog/BlogTopicLink.astro";
 import LocalizedDateTime from "../../blog/LocalizedDateTime.astro";
@@ -166,20 +167,18 @@ const blogPostUpdatedAt = of(blogPost.data.updatedAt);
 			<a class="u-url blog-post-screen-reader-only" data-pagefind-ignore="all" href={blogPostUrl}> Permalink </a>
 		</header>
 
-		<section class="blog-post-article-body" aria-label="Article content">
-			<BlogPostContent>
-				<Content />
-			</BlogPostContent>
-			<BlogPostReaction client:visible={{ rootMargin: "300px" }} postSlug={blogPost.id} />
+		<BlogPostContent>
+			<Content />
+		</BlogPostContent>
 
-			<div data-pagefind-ignore="all">
-				<BlogPostMentions blogPostId={blogPost.id} server:defer>
-					<section class="blog-post-mentions-loading" aria-live="polite" slot="fallback">
-						<p>Loading mentions...</p>
-					</section>
-				</BlogPostMentions>
-			</div>
-		</section>
+		<footer class="blog-post-article-footer" data-pagefind-ignore="all">
+			<BlogPostReactionIsland client:idle={{ timeout: 1000 }} postSlug={blogPost.id} />
+			<BlogPostMentions blogPostId={blogPost.id} server:defer>
+				<section class="blog-post-mentions-loading" aria-live="polite" slot="fallback">
+					<p>Loading mentions...</p>
+				</section>
+			</BlogPostMentions>
+		</footer>
 	</article>
 
 	<LocalizedDateTimeScript />
@@ -293,8 +292,12 @@ const blogPostUpdatedAt = of(blogPost.data.updatedAt);
 		line-height: 1.1;
 	}
 
-	.blog-post-article-body {
+	.blog-post-article > .blog-prose {
 		padding: 1rem 1.5rem 1.5rem;
+	}
+
+	.blog-post-article-footer {
+		padding: 0 1.5rem 1.5rem;
 	}
 
 	@media (min-width: variables.$small-width) {
@@ -312,7 +315,8 @@ const blogPostUpdatedAt = of(blogPost.data.updatedAt);
 			width: 4.75rem;
 		}
 
-		.blog-post-article-body {
+		.blog-post-article > .blog-prose,
+		.blog-post-article-footer {
 			padding-left: 2rem;
 			padding-right: 2rem;
 		}

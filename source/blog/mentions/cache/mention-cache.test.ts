@@ -7,6 +7,7 @@ import { just, nothing, of as maybeOf, type Maybe } from "true-myth/maybe";
 import { isOk } from "true-myth/result";
 import { reject as rejectTask, resolve as resolveTask, type Task } from "true-myth/task";
 import { Unit } from "true-myth/unit";
+import type { RuntimeLogProperties } from "../../runtime-logger.ts";
 import {
 	createMentionCacheKey,
 	loadMentionCacheSectionModel,
@@ -20,7 +21,6 @@ import {
 	type MentionCacheEntry,
 	type MentionCacheRepository
 } from "./mention-cache.ts";
-import type { RuntimeLogProperties } from "./runtime-logger.ts";
 
 type TestMentionSectionModel = Record<string, unknown> & {
 	readonly text: string;

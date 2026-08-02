@@ -6,14 +6,14 @@ import { createDeterministicWallClock } from "@enormora/wall-clock";
 import { nothing, of as maybeOf, type Maybe } from "true-myth/maybe";
 import { resolve as resolveTask, type Task } from "true-myth/task";
 import { Unit } from "true-myth/unit";
+import type { RuntimeLogProperties } from "../runtime-logger.ts";
 import {
 	createMentionCacheKey,
 	mentionCacheSchemaVersion,
 	type MentionCacheEntry,
 	type MentionCacheRepository
-} from "./mention-cache.ts";
+} from "./cache/mention-cache.ts";
 import { loadBlogPostMentionsForTargetUrl } from "./runtime-blog-post-mentions.ts";
-import type { RuntimeLogProperties } from "./runtime-logger.ts";
 
 type TestRuntimeWarningLogger = (message: string, error: unknown, properties: RuntimeLogProperties) => void;
 type TestRuntimeInfoLogger = (message: string, properties: RuntimeLogProperties) => void;
