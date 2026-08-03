@@ -9,6 +9,7 @@ const repositoryRootDirectoryPath = fileURLToPath(new URL("../../../", import.me
 const astroConfigurationPath = join(repositoryRootDirectoryPath, "astro.config.js");
 const blogPostRoutePath = join(repositoryRootDirectoryPath, "source/pages/blog/[slug].astro");
 const blogShellPath = join(repositoryRootDirectoryPath, "source/blog/BlogShell.astro");
+const pageShellPath = join(repositoryRootDirectoryPath, "source/layouts/PageShell.astro");
 const fireAndForgetInvokerPath = join(repositoryRootDirectoryPath, "source/browser/fire-and-forget-invoker.ts");
 const unexpectedBrowserFailureReporterPath = join(
 	repositoryRootDirectoryPath,
@@ -18,6 +19,15 @@ const blogPostReactionComponentPath = join(repositoryRootDirectoryPath, "source/
 const blogPostReactionIslandPath = join(
 	repositoryRootDirectoryPath,
 	"source/blog/reactions/BlogPostReactionIsland.tsx"
+);
+const rybbitAnalyticsAdapterPath = join(
+	repositoryRootDirectoryPath,
+	"source/blog/reactions/rybbit-blog-reaction-analytics.ts"
+);
+const rybbitBrowserAdapterPath = join(repositoryRootDirectoryPath, "source/blog/reactions/rybbit-browser-adapter.ts");
+const trackedBlogReactionClientPath = join(
+	repositoryRootDirectoryPath,
+	"source/blog/reactions/tracked-blog-reaction-client.ts"
 );
 const readingProgressComponentPath = join(
 	repositoryRootDirectoryPath,
@@ -141,6 +151,48 @@ suite("Preact blog island integration", function () {
 		assert.match(blogPostReactionComponent, /fireAndForgetInvoker\.invoke\(updateReaction\)/u);
 		assert.doesNotMatch(blogPostReactionComponent, /createFireAndForgetInvoker|reportUnexpectedBrowserFailure/u);
 		assert.doesNotMatch(blogPostReactionComponent, /void (?:updateReaction|loadReaction)\(\)/u);
+	});
+
+	test("keeps the reaction component independent from tracking", async function () {
+		const blogPostReactionComponent = await readFile(blogPostReactionComponentPath, "utf8");
+		const blogPostReactionIsland = await readFile(blogPostReactionIslandPath, "utf8");
+		const pageShell = await readFile(pageShellPath, "utf8");
+		const blogPostRoute = await readFile(blogPostRoutePath, "utf8");
+
+		assert.doesNotMatch(
+			blogPostReactionComponent,
+			/Rybbit|rybbit|analytics|trackEvent|globalThis|window|document|tracked-blog-reaction-client/u
+		);
+		assert.match(blogPostReactionIsland, /createRybbitBlogReactionAnalytics/u);
+		assert.match(blogPostReactionIsland, /readRybbitBrowserApi/u);
+		assert.match(blogPostReactionIsland, /createTrackedBlogReactionClient/u);
+		assert.match(blogPostReactionIsland, /client: trackedReactionClient/u);
+		assert.strictEqual(
+			blogPostReactionIsland.indexOf("const reactionHttpClient = createKyBlogReactionClient()") <
+				blogPostReactionIsland.indexOf("const trackedReactionClient = createTrackedBlogReactionClient"),
+			true
+		);
+		assert.strictEqual(
+			blogPostReactionIsland.indexOf("const trackedReactionClient = createTrackedBlogReactionClient") <
+				blogPostReactionIsland.indexOf("client: trackedReactionClient"),
+			true
+		);
+		assert.match(
+			blogPostRoute,
+			/<BlogPostReactionIsland client:idle=\{\{ timeout: 1000 \}\} postSlug=\{blogPost\.id\} \/>/u
+		);
+		assert.doesNotMatch(blogPostRoute, /Rybbit|analytics|trackEvent/u);
+		assert.strictEqual((pageShell.match(/src="\/_runtime\/script\.js"/gu) ?? []).length, 1);
+		assert.strictEqual((blogPostReactionIsland.match(/script\.js/gu) ?? []).length, 0);
+
+		const rybbitAnalyticsAdapter = await readFile(rybbitAnalyticsAdapterPath, "utf8");
+		const rybbitBrowserAdapter = await readFile(rybbitBrowserAdapterPath, "utf8");
+		const trackedBlogReactionClient = await readFile(trackedBlogReactionClientPath, "utf8");
+
+		assert.doesNotMatch(rybbitAnalyticsAdapter, /globalThis|window|document/u);
+		assert.doesNotMatch(trackedBlogReactionClient, /globalThis|window|document/u);
+		assert.match(rybbitBrowserAdapter, /globalThis/u);
+		assert.doesNotMatch(rybbitBrowserAdapter, /window\.rybbit/u);
 	});
 
 	test("keeps the fire-and-forget port independent from browser and feature infrastructure", async function () {

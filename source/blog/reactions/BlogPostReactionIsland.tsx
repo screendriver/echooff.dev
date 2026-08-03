@@ -4,13 +4,24 @@ import { createFireAndForgetInvoker } from "../../browser/fire-and-forget-invoke
 import { createReportingBlogReactionClient } from "../../browser/reporting-blog-reaction-client.ts";
 import { BlogPostReaction } from "./BlogPostReaction.tsx";
 import { createKyBlogReactionClient } from "./blog-reaction-http-client.ts";
+import { createRybbitBlogReactionAnalytics } from "./rybbit-blog-reaction-analytics.ts";
+import { readRybbitBrowserApi } from "./rybbit-browser-adapter.ts";
+import { createTrackedBlogReactionClient } from "./tracked-blog-reaction-client.ts";
 
 export type Properties = {
 	readonly postSlug: string;
 };
 
+const reactionHttpClient = createKyBlogReactionClient();
+const reactionAnalytics = createRybbitBlogReactionAnalytics({
+	readRybbitBrowserApi
+});
+const trackedReactionClient = createTrackedBlogReactionClient({
+	analytics: reactionAnalytics,
+	client: reactionHttpClient
+});
 const blogReactionClient = createReportingBlogReactionClient({
-	client: createKyBlogReactionClient(),
+	client: trackedReactionClient,
 	reporter: browserUnexpectedFailureReporter
 });
 const fireAndForgetInvoker = createFireAndForgetInvoker({
