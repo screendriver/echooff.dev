@@ -1,43 +1,40 @@
-import { isFunction, isPlainObject } from "@sindresorhus/is";
+import { isFunction, isObject } from "@sindresorhus/is";
 import type { RybbitBrowserApi } from "./rybbit-blog-reaction-analytics.ts";
 
-type RybbitGlobal = {
-	readonly event: unknown;
-};
-
-type RybbitEvent = (eventName: string, properties: Readonly<Record<string, string>>) => void;
-
-function isRybbitGlobal(value: unknown): value is RybbitGlobal {
-	return isPlainObject(value) && Object.hasOwn(value, "event");
-}
-
-function isRybbitEvent(value: unknown): value is RybbitEvent {
-	return isFunction(value) && isFunction(value.call);
-}
-
-function readRybbitGlobal(): RybbitGlobal | undefined {
+function readRybbitGlobal(): unknown {
 	const browserGlobal = globalThis as typeof globalThis & {
 		readonly rybbit?: unknown;
 	};
 
-	if (!isRybbitGlobal(browserGlobal.rybbit)) {
-		return undefined;
-	}
-
 	return browserGlobal.rybbit;
 }
 
-export function readRybbitBrowserApi(): RybbitBrowserApi | undefined {
-	const rybbitGlobal = readRybbitGlobal();
-	const rybbitEvent = rybbitGlobal?.event;
+function readRybbitEventProperty(rybbitGlobal: unknown): unknown {
+	if (!isObject(rybbitGlobal)) {
+		return undefined;
+	}
 
-	if (!isRybbitEvent(rybbitEvent)) {
+	try {
+		return Reflect.get(rybbitGlobal, "event");
+	} catch {
+		return undefined;
+	}
+}
+
+export function readRybbitBrowserApiFromGlobal(rybbitGlobal: unknown): RybbitBrowserApi | undefined {
+	const rybbitEvent = readRybbitEventProperty(rybbitGlobal);
+
+	if (!isFunction(rybbitEvent)) {
 		return undefined;
 	}
 
 	return {
 		trackEvent(eventName, properties): void {
-			rybbitEvent.call(rybbitGlobal, eventName, properties);
+			Reflect.apply(rybbitEvent, rybbitGlobal, [eventName, properties]);
 		}
 	};
+}
+
+export function readRybbitBrowserApi(): RybbitBrowserApi | undefined {
+	return readRybbitBrowserApiFromGlobal(readRybbitGlobal());
 }
