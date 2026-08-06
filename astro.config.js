@@ -46,7 +46,10 @@ export default defineConfig({
 	],
 	vite: {
 		server: {
-			proxy: developmentServerProxy.unwrapOr(undefined)
+			proxy: developmentServerProxy.unwrapOr(undefined),
+			watch: {
+				ignored: ["**/target/**"]
+			}
 		},
 		css: {
 			devSourcemap: true

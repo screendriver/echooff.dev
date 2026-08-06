@@ -32,7 +32,7 @@ suite("Astro security configuration", function () {
 
 		assert.match(
 			normalizedAstroConfigurationSource,
-			/vite:\{server:\{proxy:developmentServerProxy\.unwrapOr\(undefined\)\}/u
+			/vite:\{server:\{proxy:developmentServerProxy\.unwrapOr\(undefined\),/u
 		);
 	});
 });

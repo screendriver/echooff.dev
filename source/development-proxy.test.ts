@@ -36,10 +36,7 @@ suite("createDevelopmentServerProxy()", function () {
 	test("keeps the proxy target server-only and preserves existing Vite settings", async function () {
 		const astroConfigurationSource = await readFile(astroConfigurationPath, "utf8");
 
-		assert.match(
-			astroConfigurationSource,
-			/server:\s*\{\s*proxy: developmentServerProxy\.unwrapOr\(undefined\)\s*\}/u
-		);
+		assert.match(astroConfigurationSource, /server:\s*\{\s*proxy: developmentServerProxy\.unwrapOr\(undefined\),/u);
 		assert.match(astroConfigurationSource, /css:\s*\{\s*devSourcemap: true\s*\}/u);
 		assert.match(astroConfigurationSource, /build:\s*\{\s*manifest: true\s*\}/u);
 		assert.match(astroConfigurationSource, /esbuild:\s*\{\s*legalComments: "none"\s*\}/u);
