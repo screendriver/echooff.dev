@@ -69,6 +69,17 @@ suite("Bugsink configuration", function () {
 		assert.strictEqual(configurationSource.match(/https:\/\/[^\s"]+@bugsink\.82r\.de/gu)?.length, 1);
 	});
 
+	test("keeps Astro environment reads statically analyzable for Vite", async function () {
+		const configurationSource = await readFile(
+			join(repositoryRootDirectoryPath, "source/error-reporting/bugsink-configuration.ts"),
+			"utf8"
+		);
+
+		assert.match(configurationSource, /import\.meta\.env\.PROD/u);
+		assert.match(configurationSource, /import\.meta\.env\.PUBLIC_BUGSINK_RELEASE/u);
+		assert.doesNotMatch(configurationSource, /importMetaWithOptionalEnvironment/u);
+	});
+
 	test("uses the shared production tags and privacy policy", function () {
 		const actualBugsinkEventTags = createBugsinkEventTags("browser", testBugsinkConfiguration.release);
 

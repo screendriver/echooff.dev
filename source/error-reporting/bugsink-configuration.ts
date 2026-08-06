@@ -20,14 +20,15 @@ export type BugsinkBuildEnvironment = {
 	readonly PUBLIC_BUGSINK_RELEASE?: unknown;
 };
 
-type ImportMetaWithOptionalEnvironment = {
-	readonly env?: BugsinkBuildEnvironment;
-};
-
 function readAstroBuildEnvironment(): BugsinkBuildEnvironment {
-	const importMetaWithOptionalEnvironment: ImportMetaWithOptionalEnvironment = import.meta;
-
-	return importMetaWithOptionalEnvironment.env ?? {};
+	try {
+		return {
+			PROD: import.meta.env.PROD,
+			PUBLIC_BUGSINK_RELEASE: import.meta.env.PUBLIC_BUGSINK_RELEASE
+		};
+	} catch {
+		return {};
+	}
 }
 
 function parseBugsinkUrl(configuredDsn: string): Result<URL, Error> {
