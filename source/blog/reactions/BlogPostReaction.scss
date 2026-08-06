@@ -8,8 +8,6 @@
 
 .blog-post-reaction h2 {
 	color: variables.$purple;
-	font-size: 1.4rem;
-	font-weight: 700;
 	margin: 0 0 0.75rem;
 }
 
@@ -45,12 +43,13 @@
 	opacity: 0.65;
 }
 
-.blog-post-reaction-count,
-.blog-post-reaction-status {
+.blog-post-reaction-count {
 	color: variables.$comment;
-	font-size: 0.875rem;
+	font-size: 1rem;
 }
 
 .blog-post-reaction-status {
+	color: variables.$comment;
+	font-size: 0.875rem;
 	margin: 0;
 }

@@ -298,6 +298,11 @@ const blogPostUpdatedAt = of(blogPost.data.updatedAt);
 		padding: 1rem 1.5rem 1.5rem;
 	}
 
+	.blog-post-article-footer :global(h2) {
+		font-size: 1.4rem;
+		font-weight: 400;
+	}
+
 	@media (min-width: variables.$small-width) {
 		.blog-post-article-header {
 			@include mixins.blog-shell-page-header-surface(2rem);
