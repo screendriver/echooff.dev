@@ -477,6 +477,8 @@ The browser has to be called. Data has to be fetched. Events have to be handled.
 
 Clean Architecture does not remove side effects. It moves them to places where side effects are expected.
 
+That also applies when a caller intentionally does not wait for an asynchronous operation. A [fire-and-forget invoker](/blog/fire-and-forget-still-needs-an-owner) gives that work an explicit boundary without making the operation responsible for logging its own failure.
+
 The goal is not to make every line pure.
 
 The goal is to protect the lines that make decisions.

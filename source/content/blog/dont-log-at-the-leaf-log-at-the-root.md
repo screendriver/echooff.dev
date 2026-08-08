@@ -218,7 +218,7 @@ Fire-and-forget should mean that the caller does not wait for completion.
 
 It should not mean that nobody owns failure.
 
-The mechanics of such an execution boundary deserve a separate discussion. The architectural rule remains the same: establish ownership first, then report the final outcome at that boundary.
+I describe such an execution boundary in [Fire and forget still needs an owner](/blog/fire-and-forget-still-needs-an-owner). The architectural rule remains the same: establish ownership first, then report the final outcome at that boundary.
 
 ## This is not a ban on local instrumentation
 
