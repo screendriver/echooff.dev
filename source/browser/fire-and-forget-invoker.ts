@@ -5,7 +5,9 @@ export type FireAndForgetInvoker = {
 };
 
 export type CreateFireAndForgetInvokerOptions = {
-	/** The reporter must not throw. */
+	/**
+	The reporter must not throw.
+	*/
 	readonly reportFailure: (error: unknown) => void;
 };
 

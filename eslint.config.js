@@ -71,6 +71,7 @@ export default [
 			"dprint/typescript": "off",
 			"import/no-unused-modules": "off",
 			"restricted-syntax/no-unnecessary-arrow-function": "off",
+			"unicorn/consistent-arrow-return-style": "off",
 			"@stylistic/indent": [
 				"error",
 				"tab",
