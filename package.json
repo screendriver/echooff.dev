@@ -41,7 +41,7 @@
 		"@enormora/eslint-config-typescript": "0.0.67",
 		"@fontsource/jetbrains-mono": "5.3.0",
 		"@fontsource/source-sans-pro": "5.2.5",
-		"@hono/node-server": "2.1.0",
+		"@hono/node-server": "2.1.1",
 		"@octokit/graphql": "9.0.4",
 		"@testing-library/preact": "3.2.4",
 		"@types/better-sqlite3": "9.6.0",
