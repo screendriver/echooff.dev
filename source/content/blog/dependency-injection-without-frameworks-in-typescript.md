@@ -55,7 +55,7 @@ async function registerUser(
 This is already better than importing modules directly.
 
 The function reveals what it depends on.  
-Tests can supply fakes without rewriting modules.
+Tests can supply [test doubles](/blog/not-every-test-double-is-a-mock) without rewriting modules.
 
 But this pattern does not scale.
 
