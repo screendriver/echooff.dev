@@ -54,7 +54,7 @@
 		"astro-seo-schema": "7.0.0",
 		"common-tags": "1.8.2",
 		"concurrently": "10.0.5",
-		"eslint": "10.8.1",
+		"eslint": "10.9.0",
 		"feather-icons": "4.29.2",
 		"fishery": "2.4.0",
 		"get-port": "7.2.0",
