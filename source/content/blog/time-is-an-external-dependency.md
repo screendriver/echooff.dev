@@ -230,7 +230,7 @@ A small boundary prevents that relationship from spreading. It gives the system 
 
 ## Not every use of `Date` is a hidden dependency
 
-The goal is not to ban the `Date` class or pretend that every date-related operation needs an abstraction. Creating a `Date` from an explicit timestamp is deterministic. Comparing two timestamps is deterministic. Parsing external date input belongs at a validation boundary, and formatting dates belongs near the user interface where locale and time-zone decisions are known.
+The goal is not to ban the `Date` class or pretend that every date-related operation needs an abstraction. Creating a `Date` from an explicit timestamp is deterministic. Comparing two timestamps is deterministic. [Parsing external date input belongs at a validation boundary](/blog/runtime-validation-is-a-boundary-concern), and formatting dates belongs near the user interface where locale and time-zone decisions are known.
 
 The hidden dependency appears when code asks the environment what time it is or asks the runtime to execute something later. `Date.now()`, `new Date()` used to obtain the current moment, and global timer functions cross that boundary. They are perfectly valid at the edge of the application. They become a design problem when they are scattered through code that makes application decisions.
 

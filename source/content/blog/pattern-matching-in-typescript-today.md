@@ -418,7 +418,7 @@ The code is still explicit. But the nesting disappears.
 
 ## Pattern matching is not validation
 
-One thing I would be careful about: pattern matching is not a replacement for proper runtime validation at the boundaries of your application.
+One thing I would be careful about: pattern matching is not a replacement for [runtime validation at the boundaries of your application](/blog/runtime-validation-is-a-boundary-concern).
 
 If data comes from an API, local storage, the URL, `postMessage`, or any other external source, TypeScript does not magically make that data safe.
 

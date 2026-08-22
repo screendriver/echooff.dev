@@ -209,7 +209,7 @@ In these places, exceptions may happen because the application is dealing with t
 
 But the important part is what happens next.
 
-At the edge of the application, we can catch those exceptions and translate them into explicit return values like `Result`.
+At the edge of the application, we can catch those exceptions and translate them into explicit return values like `Result`. That boundary should also [validate and map unknown external data](/blog/runtime-validation-is-a-boundary-concern) before it becomes an application value.
 
 That keeps the core application logic predictable and free from hidden control flow.
 

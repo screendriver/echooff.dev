@@ -71,7 +71,7 @@ Call it a DMZ.
 
 The name is not important. The job is important: dirty data should not enter the application and pretend to be trusted.
 
-This is where runtime validation belongs. This is where date parsing belongs. This is where user input verification belongs. This is where network response mapping belongs. This is where unknown failures become semantic failures.
+This is where [runtime validation belongs](/blog/runtime-validation-is-a-boundary-concern). This is where date parsing belongs. This is where user input verification belongs. This is where network response mapping belongs. This is where unknown failures become semantic failures.
 
 The outside world gives you `unknown`.
 

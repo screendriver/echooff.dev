@@ -322,11 +322,11 @@ const street = findUser("42")
 
 ## Converting Nullable API Values
 
-Real applications often receive data that might be `null` or `undefined`, especially from APIs.
+Real applications often receive nullable fields from APIs.
 
-Instead of propagating these values throughout the system, convert them immediately.
+A [boundary parser should validate the external response](/blog/runtime-validation-is-a-boundary-concern) and convert those fields into the absence model used inside the application instead of propagating `null` or `undefined` throughout the system.
 
-With **true-myth** this is done using `of()`.
+Within that mapping, true-myth's `of()` can convert a nullable field into a `Maybe`.
 
 ```ts
 import { of } from "true-myth/maybe";
@@ -338,7 +338,7 @@ const street = of(apiResponse.address)
   .unwrapOr("Unknown street");
 ```
 
-Outside the system we may receive `null` or `undefined`.
+At the boundary we may receive `null` or `undefined`.
 
 Inside the system we work with **explicit Maybe values**.
 

@@ -33,7 +33,8 @@ Modern TypeScript is often at its best when it stays close to JavaScript, adds t
 ## `enum` solves the problem at the wrong level
 
 Most of the time, we want to describe a closed set of valid values.
-That is a type-level problem.
+
+Inside typed application code, that is a type-level problem. Values entering from the outside world still need [runtime validation at the boundary](/blog/runtime-validation-is-a-boundary-concern) before TypeScript can safely treat them as part of that set.
 
 This is what many enums in application code really mean:
 

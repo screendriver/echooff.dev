@@ -97,7 +97,7 @@ Maybe the identity service is slow. Maybe the notification service was redeploye
 
 None of that proves that the profile form change is wrong. The failure may describe a real problem in the overall system, but it is the wrong kind of red for that pull request.
 
-At the boundary, test the behavior you own. Test the request you create, the response you accept, the error cases you handle, and the way your product behaves when the dependency says no, responds late or returns invalid data.
+At the boundary, test the behavior you own. Test the request you create, the response you accept, the error cases you handle, and the way your product behaves when the dependency says no, responds late or returns invalid data. For invalid responses, that means testing [runtime validation at the boundary](/blog/runtime-validation-is-a-boundary-concern) with malformed values under your control instead of depending on a live service to misbehave.
 
 Those are your responsibilities. The live availability of another deployed service is usually not the right pull request signal.
 
