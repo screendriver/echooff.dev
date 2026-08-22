@@ -1,0 +1,42 @@
+---
+import { contactEmailAddress } from "../contact/contact-email.js";
+import { createBlogPostContactMailtoUrl } from "./blog-post-contact.js";
+
+export interface Props {
+	readonly articleTitle: string;
+	readonly articleUrl: string;
+}
+
+const { articleTitle, articleUrl } = Astro.props;
+const blogPostContactMailtoUrl = createBlogPostContactMailtoUrl(articleTitle, articleUrl);
+---
+
+<p class="blog-post-contact">
+	Have something to add or disagree with?
+	{" "}
+	<a aria-label={`Email ${contactEmailAddress} about this article`} href={blogPostContactMailtoUrl}> Email me. </a>
+</p>
+
+<style lang="scss">
+	@use "../styles/variables";
+
+	.blog-post-contact {
+		color: rgba(variables.$foreground, 0.72);
+		font-size: 0.95rem;
+		margin: 0.75rem 0 0;
+		padding: 0;
+	}
+
+	.blog-post-contact a {
+		color: variables.$cyan;
+		text-decoration: underline;
+		text-decoration-color: rgba(variables.$cyan, 0.55);
+		text-underline-offset: 0.2rem;
+	}
+
+	.blog-post-contact a:hover,
+	.blog-post-contact a:focus-visible {
+		color: variables.$pink;
+		text-decoration-color: rgba(variables.$pink, 0.55);
+	}
+</style>

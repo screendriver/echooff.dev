@@ -6,6 +6,7 @@ import { of } from "true-myth/maybe";
 import BlogArticleByline from "../../blog/BlogArticleByline.astro";
 import BlogBackLink from "../../blog/BlogBackLink.astro";
 import BlogPostContent from "../../blog/BlogPostContent.astro";
+import BlogPostContact from "../../blog/BlogPostContact.astro";
 import "../../blog/reactions/BlogPostReaction.scss";
 import { BlogPostReactionIsland } from "../../blog/reactions/BlogPostReactionIsland.tsx";
 import BlogPostMentions from "../../blog/mentions/BlogPostMentions.astro";
@@ -174,6 +175,7 @@ const blogPostUpdatedAt = of(blogPost.data.updatedAt);
 
 			<footer class="blog-post-article-footer" data-pagefind-ignore="all">
 				<BlogPostReactionIsland client:idle={{ timeout: 1000 }} postSlug={blogPost.id} />
+				<BlogPostContact articleTitle={blogPost.data.title} articleUrl={blogPostUrl} />
 				<BlogPostMentions blogPostId={blogPost.id} server:defer>
 					<section class="blog-post-mentions-loading" aria-live="polite" slot="fallback">
 						<p>Loading mentions...</p>
@@ -254,7 +256,7 @@ const blogPostUpdatedAt = of(blogPost.data.updatedAt);
 	.blog-post-mentions-loading {
 		border-top: 1px solid rgba(variables.$selection, 0.8);
 		color: rgba(variables.$foreground, 0.62);
-		margin-top: 2rem;
+		margin-top: 1rem;
 		padding-top: 1.5rem;
 	}
 
