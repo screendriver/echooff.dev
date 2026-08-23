@@ -13,7 +13,7 @@ import { contactEmailAddress } from "./contact-email.js";
 
 	<address>
 		<a aria-label={`Email ${contactEmailAddress}`} href={`mailto:${contactEmailAddress}`}>
-			<Fragment set:html={icons.mail?.toSvg({ width: 23, height: 23 })} />
+			<Fragment set:html={icons["at-sign"]?.toSvg({ width: 23, height: 23 })} />
 			<p>Email</p>
 		</a>
 
@@ -56,7 +56,7 @@ import { contactEmailAddress } from "./contact-email.js";
 		grid-template-columns: repeat(2, 1fr);
 		justify-items: center;
 		gap: 1.5rem;
-		padding: 1rem 0;
+		padding: 0.5rem 0 1rem;
 		font-style: normal;
 	}
 
@@ -78,7 +78,10 @@ import { contactEmailAddress } from "./contact-email.js";
 
 	a:last-child {
 		justify-self: start;
-		margin-left: 2.25rem;
+
+		@media (min-width: variables.$medium-width) {
+			margin-left: 2.25rem;
+		}
 	}
 
 	p {
