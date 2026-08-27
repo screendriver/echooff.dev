@@ -7,12 +7,12 @@ labels:
 
 steps:
     - name: install
-      image: node:26.7.0
+      image: node:26.8.1
       commands:
           - npm clean-install
 
     - name: test
-      image: node:26.7.0
+      image: node:26.8.1
       environment:
           GITHUB_API_BASE_URL: https://api.github.com
           GITHUB_TOKEN: fake_token_for_testing
