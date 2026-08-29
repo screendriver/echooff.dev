@@ -35,6 +35,8 @@ That cost is easy to ignore while a pull request is small, the code compiles and
 
 Boring code reduces the amount of context that must be reconstructed before useful work can begin. It makes the obvious path the correct path.
 
+A comment is not automatically the right way to expose that context. Names, structure, tests and history usually preserve intent more reliably, as I explore in [Comments are not a substitute for design](/blog/comments-are-not-a-substitute-for-design).
+
 This does not mean that every problem is simple.
 
 Distributed state, authorization, synchronization, payments and time-dependent behavior contain real complexity. Boring code does not deny that complexity. It prevents accidental complexity from competing with it.

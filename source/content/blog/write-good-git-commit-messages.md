@@ -241,6 +241,8 @@ That difference matters.
 
 Code shows what changed. Commit messages should explain the meaningful change. Sometimes they should explain why the change exists.
 
+Useful history is also why deleted implementation should not remain commented out beside the current code. I explore that distinction in [Comments are not a substitute for design](/blog/comments-are-not-a-substitute-for-design).
+
 They should not merely narrate the diff line by line.
 
 ## Good messages make reviews easier too

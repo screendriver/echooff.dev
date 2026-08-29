@@ -127,6 +127,8 @@ Once a bug is understood, it should move to the team that owns the affected area
 
 Leaving it in a generic backlog is the worst of both worlds. The organization keeps the emotional benefit of saying "we know about it", but the user still lives with the broken product.
 
+Moving a known defect into a `TODO` or `FIXME` comment is not ownership either. It only creates an even less visible backlog inside the source code. I explore that in [Comments are not a substitute for design](/blog/comments-are-not-a-substitute-for-design).
+
 ## The hard part is the definition
 
 A zero bug policy only works when the definition is strict.
