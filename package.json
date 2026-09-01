@@ -13,7 +13,7 @@
 		"@astrojs/node": "11.1.5",
 		"@astrojs/preact": "6.0.5",
 		"@enormora/wall-clock": "0.0.3",
-		"@sentry/browser": "10.72.0",
+		"@sentry/browser": "10.73.0",
 		"@sentry/node": "10.73.0",
 		"@sindresorhus/is": "8.1.0",
 		"arktype": "2.2.3",
