@@ -1,417 +1,169 @@
 ---
 title: "Prefer process.exitCode over process.exit() in Node.js"
-description: "process.exit() looks explicit, but it can terminate a Node.js process before pending work has finished. Prefer process.exitCode and let Node.js shut down naturally."
+description: "process.exit() forces Node.js to terminate and may abandon pending work. Set process.exitCode, return normally and keep process ownership at the application boundary."
 publishedAt: "2026-06-04T15:09:00+02:00"
+updatedAt: "2026-09-06T09:45:00+02:00"
 topic: "Node.js"
 ---
 
-In previous posts I wrote about [avoiding hidden failure paths](/blog/avoid-throwing-for-expected-failures-typescript), [making asynchronous failure explicit](/blog/prefer-task-over-promise-typescript), and [keeping runtime dependencies at the boundary](/blog/avoid-direct-browser-globals).
+`process.exit(1)` often appears at the end of a failure branch in a command-line tool or script. It reads as though it only means that the program failed and should report exit code `1`. In reality, it also tells Node.js to terminate the process immediately.
 
-This post is about the same idea in a smaller place:
+Most code that calls it does not need that second behavior. It needs to report failure to the shell and stop the current operation, but it does not need to interrupt the runtime before pending output or cleanup has finished.
 
-How should a Node.js program exit?
-
-This is not about memorizing another Node.js footgun.
-
-It is about where shutdown decisions belong.
-
-Many examples use this:
+Consider a small command-line entry point:
 
 ```typescript
 import process from "node:process";
 
 async function main(): Promise<void> {
-  const isConfigurationValid = await validateConfiguration();
+  const configuration = await readConfiguration();
 
-  if (isConfigurationValid === false) {
-    console.error("Invalid configuration.");
+  if (configuration === undefined) {
+    console.error("Missing configuration.");
     process.exit(1);
   }
 
-  await runApplication();
+  await executeCommand(configuration);
 }
 
 await main();
 ```
 
-At first glance, this looks reasonable.
+The failure branch looks decisive, but it gives an ordinary validation decision authority over the entire process. That is a stronger operation than the code requires.
 
-The configuration is invalid.
+## `process.exit()` terminates the runtime
 
-The program should fail.
+The [Node.js documentation](https://nodejs.org/api/process.html#processexitcode) distinguishes forced termination from a process ending naturally. Calling `process.exit()` terminates Node.js synchronously, even when asynchronous operations are still pending. That includes writes to `process.stdout` and `process.stderr`.
 
-So we exit with code `1`.
+Console output may be written asynchronously depending on what the stream is connected to. A message that appears reliably in a terminal may be truncated when output is piped, captured in CI or forwarded by logging infrastructure. The failure path can therefore discard the message that was supposed to explain the failure.
 
-Simple.
+The same problem applies to cleanup. Forced termination does not give ordinary application control flow time to finish work that still matters. It can cut off file writes, telemetry, graceful server shutdown and scope-bound asynchronous disposal.
 
-But `process.exit()` is not just an exit code.
+That behavior is sometimes intentional. It should not be an accidental consequence of choosing an exit status.
 
-It is also a shutdown instruction.
+## Record the outcome and return normally
 
-That distinction matters.
-
-Because once shutdown is hidden inside ordinary application code, it becomes harder to reason about what still runs and what gets skipped.
-
-## An exit code is not control flow
-
-An exit code describes how a process finished.
-
-`0` usually means success.
-
-A non-zero code usually means failure.
-
-That part is fine.
-
-The problem starts when the exit code becomes the control-flow mechanism.
-
-`process.exit(1)` does two things at once:
-
-It sets the exit status.
-
-And it tells Node.js to terminate the process now.
-
-Those are different responsibilities.
-
-**An exit code should describe the result of the program. It should not be the mechanism that interrupts the program.**
-
-This is the same kind of design problem we see in application code all the time.
-
-A function should decide what happened.
-
-The boundary should decide how that result is represented to the outside world.
-
-For a CLI, the outside world is the shell.
-
-For the shell, the result is an exit code.
-
-## `process.exit()` pulls the plug
-
-The [Node.js documentation](https://nodejs.org/api/process.html) is very direct about this.
-
-Calling `process.exit()` terminates the process synchronously.
-
-It can force the process to exit even when asynchronous work is still pending, including writes to `process.stdout` and `process.stderr`.
-
-That means this can lose output:
+For expected failure paths, set `process.exitCode` and leave through normal control flow:
 
 ```typescript
 import process from "node:process";
 
 async function main(): Promise<void> {
-  const isValid = await validateInput();
+  const configuration = await readConfiguration();
 
-  if (isValid === false) {
-    console.error(createLongErrorMessage());
-    process.exit(1);
-  }
-
-  await writeReport();
-}
-
-await main();
-```
-
-Maybe it works on your machine.
-
-Maybe it works when output goes to a terminal.
-
-Maybe it fails when output is piped in CI, sent through a socket, or collected by some logging infrastructure.
-
-The exact behavior depends on what the stream is connected to and on the platform.
-
-That makes it worse, not better.
-
-That is the annoying part.
-
-The bug is not obvious.
-
-The program looks correct.
-
-But the process may be killed before Node.js has finished flushing what you wanted to print.
-
-This is especially frustrating in command-line tools.
-
-The exact moment where you need a useful error message is the same moment where `process.exit()` can make that message incomplete.
-
-## Prefer setting `process.exitCode`
-
-A better default is to set `process.exitCode` and then return normally.
-
-```typescript
-import process from "node:process";
-
-async function main(): Promise<void> {
-  const isValid = await validateInput();
-
-  if (isValid === false) {
-    console.error(createLongErrorMessage());
+  if (configuration === undefined) {
+    console.error("Missing configuration.");
     process.exitCode = 1;
     return;
   }
 
-  await writeReport();
+  await executeCommand(configuration);
 }
 
 await main();
 ```
 
-This tells Node.js which status code to use when the process exits.
+`process.exitCode = 1` records the status that the shell should receive when the process ends. The `return` stops the current execution path. Once the event loop has no more work, Node.js exits with the recorded code.
 
-But it does not force the process to terminate immediately.
+Keeping those decisions separate makes the control flow more accurate. A failure result and immediate process termination are not the same thing. Most validation errors, missing configuration, rejected commands and failed requests require the former without requiring the latter.
 
-Node.js can finish the work that is already pending.
+The explicit `return` is therefore not redundant ceremony. It shows where execution stops without hiding a process-wide jump inside an ordinary branch. Code after the branch remains governed by JavaScript control flow rather than by a runtime escape hatch.
 
-The event loop can drain.
+`process.exitCode` does not await forgotten work or make detached operations safe. Cleanup that matters must still be part of the awaited control flow. When a scope owns a resource, [`using` and `await using`](/blog/make-resource-lifetime-explicit-with-using) can make that ownership and cleanup explicit. They still depend on the program being allowed to leave the scope normally.
 
-Output can be flushed.
+## Keep process ownership at the application boundary
 
-Cleanup that was explicitly awaited can finish.
+Replacing `process.exit()` with `process.exitCode` fixes the immediate shutdown problem, but application logic usually should not know about either one.
 
-To be precise: `process.exitCode` does not magically await work you forgot to await.
+The `process` object represents the Node.js runtime. A library function, parser or use case does not own that runtime merely because it detected a failure. The application entry point owns the translation from an application result to console output and an operating-system exit code.
 
-Cleanup that matters should still be explicit.
-
-It should still be awaited.
-
-That is the important difference.
-
-`process.exitCode = 1` records the outcome.
-
-`return` controls the program flow.
-
-Those responsibilities stay separate.
-
-## The `return` is not noise
-
-This is the part some people dislike.
-
-With `process.exit()`, the program stops immediately.
-
-With `process.exitCode`, you still need to return from the current flow.
-
-That is not a downside.
-
-That is the point.
-
-The control flow becomes visible.
+The inner operation can return a semantic result instead:
 
 ```typescript
-if (isConfigurationValid === false) {
-  console.error("Invalid configuration.");
-  process.exitCode = 1;
-  return;
-}
-```
-
-This code says exactly what happens:
-
-The program prints an error.
-
-It marks the process as failed.
-
-It stops executing the current path.
-
-There is no hidden global escape hatch.
-
-There is no invisible jump out of the program.
-
-There is just normal control flow.
-
-And normal control flow is easier to read, easier to test, and easier to reason about.
-
-## Keep `process` at the application boundary
-
-In larger programs, I would go one step further.
-
-Most code should not know about `process` at all.
-
-`process` is runtime infrastructure.
-
-It belongs at the boundary.
-
-Especially libraries should almost never call `process.exit()`.
-
-A library does not own the process.
-
-The application does.
-
-The inner application should receive the dependencies it needs and return a result.
-
-The entry point should provide those dependencies, then translate the result into console output and an exit code.
-
-```typescript
-import { isUndefined } from "@sindresorhus/is";
-
 type Configuration = {
   filePath: string;
 };
 
-type CliResult =
-  { type: "success" } | { type: "failure"; message: string; exitCode: 1 };
+type RunCommandResult =
+  { status: "succeeded" } | { status: "configurationMissing" };
 
-type RunDependencies = {
+type RunCommandDependencies = {
   readConfiguration: () => Promise<Configuration | undefined>;
-  execute: (configuration: Configuration) => Promise<void>;
+  executeCommand: (configuration: Configuration) => Promise<void>;
 };
 
-async function run(dependencies: RunDependencies): Promise<CliResult> {
-  const { readConfiguration, execute } = dependencies;
-
+export async function runCommand(
+  dependencies: RunCommandDependencies
+): Promise<RunCommandResult> {
+  const { readConfiguration, executeCommand } = dependencies;
   const configuration = await readConfiguration();
 
-  if (isUndefined(configuration)) {
-    return {
-      type: "failure",
-      message: "Missing configuration.",
-      exitCode: 1
-    };
+  if (configuration === undefined) {
+    return { status: "configurationMissing" };
   }
 
-  await execute(configuration);
+  await executeCommand(configuration);
 
-  return { type: "success" };
+  return { status: "succeeded" };
 }
 ```
 
-Then the entry point becomes the only place that talks to the process:
+The entry point is then the only place that touches the process:
 
 ```typescript
 import process from "node:process";
 
+import { runCommand } from "./run-command.js";
+
 async function main(): Promise<void> {
-  const result = await run({
+  const result = await runCommand({
     readConfiguration,
-    execute
+    executeCommand
   });
 
-  if (result.type === "failure") {
-    console.error(result.message);
-    process.exitCode = result.exitCode;
-    return;
+  if (result.status === "configurationMissing") {
+    console.error("Missing configuration.");
+    process.exitCode = 1;
   }
 }
 
 await main();
 ```
 
-That design is not about making the code look clever.
+This boundary is useful beyond avoiding premature shutdown. `runCommand()` describes the outcome in application terms without encoding console output or operating-system behavior. Another host can map the same result to its own failure policy.
 
-It is about making the boundary explicit.
-
-The application decides whether it succeeded or failed.
-
-The entry point decides how that result is exposed to the operating system.
-
-That is a clean separation.
-
-## Tests become simpler too
-
-When `process.exit()` is buried inside application logic, testing becomes awkward.
-
-You either avoid the path, mock the process, or run the code in a child process.
-
-None of that should be necessary for ordinary logic.
-
-If `run()` receives its dependencies and returns a result, the test can assert the behavior directly.
+It is also straightforward to test without intercepting a global function:
 
 ```typescript
 import assert from "node:assert";
 import test from "node:test";
 
+import { runCommand } from "./run-command.js";
+
 test("returns a failure when configuration is missing", async () => {
-  const result = await run({
+  const result = await runCommand({
     async readConfiguration() {
       return undefined;
     },
-    async execute() {
-      assert.fail("execute should not be called.");
+    async executeCommand() {
+      assert.fail("executeCommand should not be called.");
     }
   });
 
   assert.deepStrictEqual(result, {
-    type: "failure",
-    message: "Missing configuration.",
-    exitCode: 1
+    status: "configurationMissing"
   });
 });
 ```
 
-No process mocking.
+The test verifies observable application behavior. It does not mock `process`, prevent a real shutdown or run the function in a child process merely to inspect an expected failure.
 
-No global shutdown interception.
+## Immediate termination should be exceptional
 
-No special test runner magic.
+`process.exit()` is not forbidden. It is appropriate when immediate termination is genuinely the required behavior and the caller deliberately accepts that pending work may be abandoned.
 
-The program outcome is just data.
+That decision belongs close to the entry point because only the application boundary can reasonably own the whole process. Burying it inside ordinary application code makes every caller subject to a shutdown policy it cannot see or control.
 
-That is usually the easiest thing to test.
+For normal failure paths, the safer design is less dramatic. Return an explicit result, let the entry point report it, set `process.exitCode` and allow Node.js to finish through ordinary control flow.
 
-## What about fatal errors?
-
-This does not mean `process.exit()` must never exist.
-
-There are situations where terminating immediately is intentional.
-
-For example, a process may be in a corrupt state, a parent supervisor may be expected to restart it, or you may be writing very small glue code where there is no meaningful cleanup path.
-
-But that should be a deliberate decision.
-
-It should not be the default way to return a failure from normal application flow.
-
-Expected failures should be handled explicitly.
-
-Invalid input is expected.
-
-Missing configuration is expected.
-
-A failed HTTP request is expected.
-
-A command-line argument error is expected.
-
-Those cases do not need a forced process termination.
-
-They need a clear result, a useful message, and the right exit code.
-
-## A practical rule
-
-My default rule is simple:
-
-Use `process.exitCode` for normal failure paths.
-
-Return from the current function to stop the current flow.
-
-Keep `process` access at the entry point.
-
-Reserve `process.exit()` for cases where immediate termination is really the behavior you want.
-
-Most of the time, it is not.
-
-Most of the time, you want the program to finish deliberately.
-
-Not abruptly.
-
-## Final thought
-
-`process.exit()` feels explicit because it is visible.
-
-But visibility is not the same as clarity.
-
-It hides a shutdown decision inside ordinary application flow.
-
-It can cut off pending work.
-
-It makes tests more awkward.
-
-And it mixes two separate concerns: deciding the result and terminating the runtime.
-
-`process.exitCode` is less dramatic.
-
-That is exactly why it is usually better.
-
-Set the result.
-
-Return normally.
-
-Let Node.js finish what is already in progress.
-
-Good shutdown behavior should be boring.
+`process.exit(1)` combines two decisions: the program failed, and the runtime must stop now. Most code only needs to make the first decision.
