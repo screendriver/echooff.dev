@@ -82,3 +82,19 @@ export function createJsdomTestEnvironment(): JsdomTestEnvironment {
 
 	return { install, restore };
 }
+
+export function withJsdomTestEnvironment<TestResult>(
+	jsdomTestEnvironment: JsdomTestEnvironment,
+	testFunction: () => PromiseLike<TestResult> | TestResult
+): () => Promise<TestResult> {
+	return async function runTestWithJsdomTestEnvironment(): Promise<TestResult> {
+		jsdomTestEnvironment.install();
+
+		try {
+			return await testFunction();
+		} finally {
+			document.body.replaceChildren();
+			jsdomTestEnvironment.restore();
+		}
+	};
+}

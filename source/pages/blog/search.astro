@@ -68,6 +68,20 @@ const searchDescription = "Search all published echooff.dev blog posts.";
 	</section>
 </BlogShell>
 
+<script>
+	import { browserUnexpectedFailureReporter } from "../../browser/browser-failure-composition.ts";
+	import { initializeBlogSearchPage } from "../../blog/blog-search-page-browser.ts";
+	import { createPagefindInputFinder } from "../../blog/focus-pagefind-input.ts";
+
+	if (import.meta.env.PROD) {
+		initializeBlogSearchPage({
+			customElementRegistry: customElements,
+			findPagefindInput: createPagefindInputFinder(document),
+			unexpectedFailureReporter: browserUnexpectedFailureReporter
+		});
+	}
+</script>
+
 <style lang="scss">
 	@use "../../styles/variables";
 
