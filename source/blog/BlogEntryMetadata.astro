@@ -23,31 +23,27 @@ const { publishedAt, readingTimeLabel, topic, updatedAt } = Astro.props;
 		<span class="blog-entry-metadata-item blog-entry-date-metadata-item">
 			Published <LocalizedDateTime dateTime={publishedAt} />
 		</span>
-		{
-			updatedAt && (
-				<span class="blog-entry-metadata-item blog-entry-date-metadata-item">
-					Updated <LocalizedDateTime dateTime={updatedAt} />
-				</span>
-			)
-		}
-	</span>
-	{
-		(topic || readingTimeLabel) && (
-			<span class="blog-entry-metadata-group blog-entry-context-metadata-group">
-				{topic && (
-					<span class="blog-entry-metadata-item">
-						in{" "}
-						<BlogTopicLink href={createBlogTopicPath(topic.slug)} label={topic.label}>
-							{topic.label}
-						</BlogTopicLink>
-					</span>
-				)}
-				{readingTimeLabel && (
-					<span class="blog-entry-metadata-item blog-entry-reading-time">{readingTimeLabel}</span>
-				)}
+		{updatedAt && (
+			<span class="blog-entry-metadata-item blog-entry-date-metadata-item">
+				Updated <LocalizedDateTime dateTime={updatedAt} />
 			</span>
-		)
-	}
+		)}
+	</span>
+	{(topic || readingTimeLabel) && (
+		<span class="blog-entry-metadata-group blog-entry-context-metadata-group">
+			{topic && (
+				<span class="blog-entry-metadata-item">
+					in{" "}
+					<BlogTopicLink href={createBlogTopicPath(topic.slug)} label={topic.label}>
+						{topic.label}
+					</BlogTopicLink>
+				</span>
+			)}
+			{readingTimeLabel && (
+				<span class="blog-entry-metadata-item blog-entry-reading-time">{readingTimeLabel}</span>
+			)}
+		</span>
+	)}
 </p>
 
 <style lang="scss">

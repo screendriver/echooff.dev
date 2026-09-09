@@ -50,63 +50,59 @@ const {
 ---
 
 {
-	(
-		<PageShell
-			canonicalUrl={canonicalUrl}
-			description={description}
-			openGraphImageAlternativeText={openGraphImageAlternativeText}
-			openGraphImageUrl={openGraphImageUrl}
-			openGraphModifiedTime={openGraphModifiedTime}
-			openGraphPublishedTime={openGraphPublishedTime}
-			openGraphType={openGraphType}
-			openGraphUrl={openGraphUrl}
-			rssFeedUrl={rssFeedUrl}
-			robots={robots}
-			title={title}
-			twitterCardType={twitterCardType}
-		>
-			<slot name="head" slot="head" />
-			<slot name="search-engine-optimization-schema" slot="search-engine-optimization-schema" />
-			{showReadingProgressIndicator && <BlogReadingProgressIndicator client:load />}
-			<Header />
+	<PageShell
+		canonicalUrl={canonicalUrl}
+		description={description}
+		openGraphImageAlternativeText={openGraphImageAlternativeText}
+		openGraphImageUrl={openGraphImageUrl}
+		openGraphModifiedTime={openGraphModifiedTime}
+		openGraphPublishedTime={openGraphPublishedTime}
+		openGraphType={openGraphType}
+		openGraphUrl={openGraphUrl}
+		rssFeedUrl={rssFeedUrl}
+		robots={robots}
+		title={title}
+		twitterCardType={twitterCardType}
+	>
+		<slot name="head" slot="head" />
+		<slot name="search-engine-optimization-schema" slot="search-engine-optimization-schema" />
+		{showReadingProgressIndicator && <BlogReadingProgressIndicator client:load />}
+		<Header />
 
-			<main class="blog-shell-main">
-				<section class="blog-shell-panel" aria-label="Blog content">
-					{showPageHeader && (
-						<header class="blog-shell-page-header">
-							<div class="blog-shell-page-title-row">
-								<div class="blog-shell-page-heading-row">
-									<h1>{pageTitle}</h1>
-									<slot name="title-action" />
+		<main class="blog-shell-main">
+			<section class="blog-shell-panel" aria-label="Blog content">
+				{showPageHeader && (
+					<header class="blog-shell-page-header">
+						<div class="blog-shell-page-title-row">
+							<div class="blog-shell-page-heading-row">
+								<h1>{pageTitle}</h1>
+								<slot name="title-action" />
+							</div>
+
+							<div class="blog-shell-command-line" aria-hidden="true">
+								<div class="blog-shell-command-line-header">
+									<div class="blog-shell-command-line-buttons">
+										<div class="blog-shell-command-line-button red" />
+										<div class="blog-shell-command-line-button yellow" />
+										<div class="blog-shell-command-line-button green" />
+									</div>
 								</div>
-
-								<div class="blog-shell-command-line" aria-hidden="true">
-									<div class="blog-shell-command-line-header">
-										<div class="blog-shell-command-line-buttons">
-											<div class="blog-shell-command-line-button red" />
-											<div class="blog-shell-command-line-button yellow" />
-											<div class="blog-shell-command-line-button green" />
-										</div>
-									</div>
-									<div class="blog-shell-command-line-code">
-										<p class="blog-shell-page-kicker">{terminalCommand}</p>
-										{terminalOutput && (
-											<p class="blog-shell-command-line-output">{terminalOutput}</p>
-										)}
-									</div>
+								<div class="blog-shell-command-line-code">
+									<p class="blog-shell-page-kicker">{terminalCommand}</p>
+									{terminalOutput && <p class="blog-shell-command-line-output">{terminalOutput}</p>}
 								</div>
 							</div>
-							{intro && <p class="blog-shell-page-intro">{intro}</p>}
-						</header>
-					)}
+						</div>
+						{intro && <p class="blog-shell-page-intro">{intro}</p>}
+					</header>
+				)}
 
-					<slot />
-				</section>
-			</main>
+				<slot />
+			</section>
+		</main>
 
-			<Footer />
-		</PageShell>
-	)
+		<Footer />
+	</PageShell>
 }
 
 <style lang="scss">

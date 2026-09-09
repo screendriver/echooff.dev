@@ -8,54 +8,52 @@ export interface Props {
 const { paginationModel } = Astro.props;
 ---
 
-{
-	paginationModel.lastPage > 1 && (
-		<nav class="blog-pagination-navigation" aria-label="Blog archive pagination">
-			<div class="blog-pagination-navigation-summary">
-				<p class="blog-pagination-navigation-page-count">{paginationModel.pageCountLabel}</p>
-				<p class="blog-pagination-navigation-results">{paginationModel.resultsLabel}</p>
-			</div>
+{paginationModel.lastPage > 1 && (
+	<nav class="blog-pagination-navigation" aria-label="Blog archive pagination">
+		<div class="blog-pagination-navigation-summary">
+			<p class="blog-pagination-navigation-page-count">{paginationModel.pageCountLabel}</p>
+			<p class="blog-pagination-navigation-results">{paginationModel.resultsLabel}</p>
+		</div>
 
-			<div class="blog-pagination-navigation-links">
-				{paginationModel.previousPageHref ? (
-					<a class="blog-pagination-navigation-link" href={paginationModel.previousPageHref}>
-						Previous
-					</a>
-				) : (
-					<span class="blog-pagination-navigation-link is-disabled" aria-disabled="true">
-						Previous
-					</span>
-				)}
+		<div class="blog-pagination-navigation-links">
+			{paginationModel.previousPageHref ? (
+				<a class="blog-pagination-navigation-link" href={paginationModel.previousPageHref}>
+					Previous
+				</a>
+			) : (
+				<span class="blog-pagination-navigation-link is-disabled" aria-disabled="true">
+					Previous
+				</span>
+			)}
 
-				<ol class="blog-pagination-navigation-page-list">
-					{paginationModel.pageLinks.map((pageLink) => (
-						<li>
-							{pageLink.isCurrent ? (
-								<span class="blog-pagination-navigation-page-link is-current" aria-current="page">
-									{pageLink.pageNumber}
-								</span>
-							) : (
-								<a class="blog-pagination-navigation-page-link" href={pageLink.href}>
-									{pageLink.pageNumber}
-								</a>
-							)}
-						</li>
-					))}
-				</ol>
+			<ol class="blog-pagination-navigation-page-list">
+				{paginationModel.pageLinks.map((pageLink) => (
+					<li>
+						{pageLink.isCurrent ? (
+							<span class="blog-pagination-navigation-page-link is-current" aria-current="page">
+								{pageLink.pageNumber}
+							</span>
+						) : (
+							<a class="blog-pagination-navigation-page-link" href={pageLink.href}>
+								{pageLink.pageNumber}
+							</a>
+						)}
+					</li>
+				))}
+			</ol>
 
-				{paginationModel.nextPageHref ? (
-					<a class="blog-pagination-navigation-link" href={paginationModel.nextPageHref}>
-						Next
-					</a>
-				) : (
-					<span class="blog-pagination-navigation-link is-disabled" aria-disabled="true">
-						Next
-					</span>
-				)}
-			</div>
-		</nav>
-	)
-}
+			{paginationModel.nextPageHref ? (
+				<a class="blog-pagination-navigation-link" href={paginationModel.nextPageHref}>
+					Next
+				</a>
+			) : (
+				<span class="blog-pagination-navigation-link is-disabled" aria-disabled="true">
+					Next
+				</span>
+			)}
+		</div>
+	</nav>
+)}
 
 <style lang="scss">
 	@use "../styles/variables";

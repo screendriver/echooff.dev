@@ -93,35 +93,33 @@ const blogArchiveMetadata = createPaginatedBlogArchiveMetadata({
 			<BlogArchiveLink href="/blog/search">Search all posts</BlogArchiveLink>
 		</BlogArchiveNavigation>
 
-		{
-			blogIndexEntries.length > 0 ? (
-				<Fragment>
-					<BlogArchiveList>
-						{blogIndexEntries.map((blogIndexEntry) => (
-							<li>
-								<BlogIndexEntry
-									description={blogIndexEntry.description}
-									href={`/blog/${blogIndexEntry.slug}`}
-									title={blogIndexEntry.title}
-								>
-									<Fragment slot="footer">
-										<BlogEntryMetadata
-											publishedAt={blogIndexEntry.publishedAt}
-											readingTimeLabel={blogIndexEntry.readingTimeLabel}
-											topic={{ label: blogIndexEntry.topic, slug: blogIndexEntry.topicSlug }}
-											updatedAt={blogIndexEntry.updatedAt}
-										/>
-									</Fragment>
-								</BlogIndexEntry>
-							</li>
-						))}
-					</BlogArchiveList>
-					<BlogPaginationNavigation paginationModel={blogPaginationModel} />
-				</Fragment>
-			) : (
-				<BlogEmptyState>No blog posts published yet.</BlogEmptyState>
-			)
-		}
+		{blogIndexEntries.length > 0 ? (
+			<Fragment>
+				<BlogArchiveList>
+					{blogIndexEntries.map((blogIndexEntry) => (
+						<li>
+							<BlogIndexEntry
+								description={blogIndexEntry.description}
+								href={`/blog/${blogIndexEntry.slug}`}
+								title={blogIndexEntry.title}
+							>
+								<Fragment slot="footer">
+									<BlogEntryMetadata
+										publishedAt={blogIndexEntry.publishedAt}
+										readingTimeLabel={blogIndexEntry.readingTimeLabel}
+										topic={{ label: blogIndexEntry.topic, slug: blogIndexEntry.topicSlug }}
+										updatedAt={blogIndexEntry.updatedAt}
+									/>
+								</Fragment>
+							</BlogIndexEntry>
+						</li>
+					))}
+				</BlogArchiveList>
+				<BlogPaginationNavigation paginationModel={blogPaginationModel} />
+			</Fragment>
+		) : (
+			<BlogEmptyState>No blog posts published yet.</BlogEmptyState>
+		)}
 	</BlogArchiveSection>
 
 	<LocalizedDateTimeScript />

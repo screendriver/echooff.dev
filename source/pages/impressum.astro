@@ -23,14 +23,12 @@ const impressumPageUrl = new URL("/impressum", Astro.site ?? Astro.url).toString
 				<address>
 					{impressumDetails.legalName}
 					<br />
-					{
-						impressumDetails.addressLines.map((addressLine, addressLineIndex) => (
-							<Fragment>
-								{addressLine}
-								{addressLineIndex < impressumDetails.addressLines.length - 1 && <br />}
-							</Fragment>
-						))
-					}
+					{impressumDetails.addressLines.map((addressLine, addressLineIndex) => (
+						<Fragment>
+							{addressLine}
+							{addressLineIndex < impressumDetails.addressLines.length - 1 && <br />}
+						</Fragment>
+					))}
 				</address>
 			</section>
 

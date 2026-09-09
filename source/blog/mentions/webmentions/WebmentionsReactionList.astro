@@ -12,21 +12,17 @@ const totalReactionCount =
 	webmentionSectionModel.reactions.bookmarkCount;
 ---
 
-{
-	totalReactionCount > 0 && (
-		<ul class="webmention-reaction-list" aria-label="Webmention reactions">
-			{webmentionSectionModel.reactions.likeCount > 0 && (
-				<li>{webmentionSectionModel.reactions.likeCount} likes</li>
-			)}
-			{webmentionSectionModel.reactions.repostCount > 0 && (
-				<li>{webmentionSectionModel.reactions.repostCount} reposts</li>
-			)}
-			{webmentionSectionModel.reactions.bookmarkCount > 0 && (
-				<li>{webmentionSectionModel.reactions.bookmarkCount} bookmarks</li>
-			)}
-		</ul>
-	)
-}
+{totalReactionCount > 0 && (
+	<ul class="webmention-reaction-list" aria-label="Webmention reactions">
+		{webmentionSectionModel.reactions.likeCount > 0 && <li>{webmentionSectionModel.reactions.likeCount} likes</li>}
+		{webmentionSectionModel.reactions.repostCount > 0 && (
+			<li>{webmentionSectionModel.reactions.repostCount} reposts</li>
+		)}
+		{webmentionSectionModel.reactions.bookmarkCount > 0 && (
+			<li>{webmentionSectionModel.reactions.bookmarkCount} bookmarks</li>
+		)}
+	</ul>
+)}
 
 <style lang="scss">
 	@use "../../../styles/variables";

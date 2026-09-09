@@ -23,28 +23,28 @@ const featuredBlogIndexEntry = blogIndexEntries[0];
 	</header>
 
 	<div class="latest-writing-content">
-		{
-			featuredBlogIndexEntry ? (
-				<article class="featured-blog-post">
-					<a class="featured-blog-post-link" href={`/blog/${featuredBlogIndexEntry.slug}`}>
-						<h3>{featuredBlogIndexEntry.title}</h3>
-						<p>{featuredBlogIndexEntry.description}</p>
-					</a>
+		{featuredBlogIndexEntry ? (
+			<article class="featured-blog-post">
+				<a class="featured-blog-post-link" href={`/blog/${featuredBlogIndexEntry.slug}`}>
+					<h3>{featuredBlogIndexEntry.title}</h3>
+					<p>{featuredBlogIndexEntry.description}</p>
+				</a>
 
-					<footer class="featured-blog-post-metadata">
-						<BlogEntryMetadata
-							publishedAt={featuredBlogIndexEntry.publishedAt}
-							topic={{ label: featuredBlogIndexEntry.topic, slug: featuredBlogIndexEntry.topicSlug }}
-							updatedAt={featuredBlogIndexEntry.updatedAt}
-						/>
-					</footer>
-				</article>
-			) : (
-				<BlogEmptyState>No blog posts published yet.</BlogEmptyState>
-			)
-		}
+				<footer class="featured-blog-post-metadata">
+					<BlogEntryMetadata
+						publishedAt={featuredBlogIndexEntry.publishedAt}
+						topic={{ label: featuredBlogIndexEntry.topic, slug: featuredBlogIndexEntry.topicSlug }}
+						updatedAt={featuredBlogIndexEntry.updatedAt}
+					/>
+				</footer>
+			</article>
+		) : (
+			<BlogEmptyState>No blog posts published yet.</BlogEmptyState>
+		)}
 
-		<a class="all-posts-link" href="/blog">Browse the blog</a>
+		<a class="all-posts-link" href="/blog">
+			Browse the blog
+		</a>
 	</div>
 </section>
 

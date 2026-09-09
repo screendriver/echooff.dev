@@ -12,9 +12,11 @@ const blogPostContactMailtoUrl = createBlogPostContactMailtoUrl(articleTitle, ar
 ---
 
 <p class="blog-post-contact">
-	Have something to add or disagree with?
-	{" "}
-	<a aria-label={`Email ${contactEmailAddress} about this article`} href={blogPostContactMailtoUrl}> Email me. </a>
+	Have something to add or disagree with?{" "}
+	<a aria-label={`Email ${contactEmailAddress} about this article`} href={blogPostContactMailtoUrl}>
+		{" "}
+		Email me.{" "}
+	</a>
 </p>
 
 <style lang="scss">

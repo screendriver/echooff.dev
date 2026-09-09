@@ -35,14 +35,12 @@ const searchDescription = "Search all published echooff.dev blog posts.";
 	terminalCommand="$ search /blog"
 >
 	<Fragment slot="head">
-		{
-			import.meta.env.PROD && (
-				<Fragment>
-					<link href="/pagefind/pagefind-component-ui.css" rel="stylesheet" />
-					<script is:inline src="/pagefind/pagefind-component-ui.js" type="module" />
-				</Fragment>
-			)
-		}
+		{import.meta.env.PROD && (
+			<Fragment>
+				<link href="/pagefind/pagefind-component-ui.css" rel="stylesheet" />
+				<script is:inline src="/pagefind/pagefind-component-ui.js" type="module"></script>
+			</Fragment>
+		)}
 	</Fragment>
 
 	<section aria-label="Blog search" class="blog-search-page">
@@ -50,21 +48,19 @@ const searchDescription = "Search all published echooff.dev blog posts.";
 			<BlogBackLink href="/blog">Back to Blog</BlogBackLink>
 		</BlogArchiveNavigation>
 
-		{
-			import.meta.env.PROD ? (
-				<div class="blog-search-pagefind">
-					<pagefind-config base-url="/" />
-					<pagefind-input placeholder="Search all blog posts" />
-					<pagefind-summary default-message="Enter a search term to search all blog posts." />
-					<pagefind-results />
-				</div>
-			) : (
-				<p class="blog-search-development-message">
-					Search is generated during the production build. Run <code>just build</code> followed by{" "}
-					<code>just preview</code> to test it.
-				</p>
-			)
-		}
+		{import.meta.env.PROD ? (
+			<div class="blog-search-pagefind">
+				<pagefind-config base-url="/" />
+				<pagefind-input placeholder="Search all blog posts" />
+				<pagefind-summary default-message="Enter a search term to search all blog posts." />
+				<pagefind-results />
+			</div>
+		) : (
+			<p class="blog-search-development-message">
+				Search is generated during the production build. Run <code>just build</code> followed by{" "}
+				<code>just preview</code> to test it.
+			</p>
+		)}
 	</section>
 </BlogShell>
 

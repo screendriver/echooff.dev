@@ -51,28 +51,24 @@ if (topicCount === 1) {
 			<BlogBackLink href="/blog">Back to Blog</BlogBackLink>
 		</BlogArchiveNavigation>
 
-		{
-			topicArchiveEntries.length > 0 ? (
-				<BlogArchiveList>
-					{topicArchiveEntries.map((topicArchiveEntry) => (
-						<li>
-							<BlogIndexEntry
-								description={topicArchiveEntry.description}
-								href={`/blog/topics/${topicArchiveEntry.slug}`}
-								title={topicArchiveEntry.label}
-							>
-								<Fragment slot="footer">
-									{topicArchiveEntry.postCount === 1
-										? "1 post"
-										: `${topicArchiveEntry.postCount} posts`}
-								</Fragment>
-							</BlogIndexEntry>
-						</li>
-					))}
-				</BlogArchiveList>
-			) : (
-				<BlogEmptyState>No blog topics available yet.</BlogEmptyState>
-			)
-		}
+		{topicArchiveEntries.length > 0 ? (
+			<BlogArchiveList>
+				{topicArchiveEntries.map((topicArchiveEntry) => (
+					<li>
+						<BlogIndexEntry
+							description={topicArchiveEntry.description}
+							href={`/blog/topics/${topicArchiveEntry.slug}`}
+							title={topicArchiveEntry.label}
+						>
+							<Fragment slot="footer">
+								{topicArchiveEntry.postCount === 1 ? "1 post" : `${topicArchiveEntry.postCount} posts`}
+							</Fragment>
+						</BlogIndexEntry>
+					</li>
+				))}
+			</BlogArchiveList>
+		) : (
+			<BlogEmptyState>No blog topics available yet.</BlogEmptyState>
+		)}
 	</BlogArchiveSection>
 </BlogShell>

@@ -14,34 +14,32 @@ const { webmentionSectionModel } = Astro.props;
 
 {webmentionSectionModel.replies.length === 0 && <BlogEmptyState>No public webmentions yet.</BlogEmptyState>}
 
-{
-	webmentionSectionModel.replies.length > 0 && (
-		<ul class="webmention-reply-list">
-			{webmentionSectionModel.replies.map((webmentionReply) => (
-				<li class="webmention-reply-card">
-					<div class="webmention-reply-card-header">
-						<WebmentionsAuthorPhoto webmentionReply={webmentionReply} />
+{webmentionSectionModel.replies.length > 0 && (
+	<ul class="webmention-reply-list">
+		{webmentionSectionModel.replies.map((webmentionReply) => (
+			<li class="webmention-reply-card">
+				<div class="webmention-reply-card-header">
+					<WebmentionsAuthorPhoto webmentionReply={webmentionReply} />
 
-						<div class="webmention-reply-metadata">
-							<p class="webmention-reply-author-row">
-								<a href={webmentionReply.author.websiteUrl.unwrapOr(webmentionReply.sourceUrl)}>
-									{webmentionReply.author.name}
-								</a>
-								<span class="webmention-reply-type">{webmentionReply.type}</span>
-							</p>
-							<p class="webmention-reply-source">
-								<a href={webmentionReply.sourceUrl}>View source</a>
-								<WebmentionsPublishedAt webmentionReply={webmentionReply} />
-							</p>
-						</div>
+					<div class="webmention-reply-metadata">
+						<p class="webmention-reply-author-row">
+							<a href={webmentionReply.author.websiteUrl.unwrapOr(webmentionReply.sourceUrl)}>
+								{webmentionReply.author.name}
+							</a>
+							<span class="webmention-reply-type">{webmentionReply.type}</span>
+						</p>
+						<p class="webmention-reply-source">
+							<a href={webmentionReply.sourceUrl}>View source</a>
+							<WebmentionsPublishedAt webmentionReply={webmentionReply} />
+						</p>
 					</div>
+				</div>
 
-					<WebmentionsReplyContent webmentionReply={webmentionReply} />
-				</li>
-			))}
-		</ul>
-	)
-}
+				<WebmentionsReplyContent webmentionReply={webmentionReply} />
+			</li>
+		))}
+	</ul>
+)}
 
 <style lang="scss">
 	@use "../../../styles/variables";

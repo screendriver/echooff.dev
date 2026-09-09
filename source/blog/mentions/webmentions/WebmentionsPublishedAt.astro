@@ -9,11 +9,9 @@ export interface Props {
 const { webmentionReply } = Astro.props;
 ---
 
-{
-	webmentionReply.visiblePublishedAt.isJust && (
-		<span>
-			{" · "}
-			<LocalizedDateTime dateTime={webmentionReply.visiblePublishedAt.value} />
-		</span>
-	)
-}
+{webmentionReply.visiblePublishedAt.isJust && (
+	<span>
+		{" · "}
+		<LocalizedDateTime dateTime={webmentionReply.visiblePublishedAt.value} />
+	</span>
+)}

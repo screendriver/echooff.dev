@@ -71,30 +71,28 @@ const postCountLabel =
 			<BlogBackLink href="/blog/topics">Back to Blog Topics</BlogBackLink>
 		</BlogArchiveNavigation>
 
-		{
-			blogIndexEntries.length > 0 ? (
-				<BlogArchiveList>
-					{blogIndexEntries.map((blogIndexEntry) => (
-						<li>
-							<BlogIndexEntry
-								description={blogIndexEntry.description}
-								href={`/blog/${blogIndexEntry.slug}`}
-								title={blogIndexEntry.title}
-							>
-								<Fragment slot="footer">
-									<BlogEntryMetadata
-										publishedAt={blogIndexEntry.publishedAt}
-										updatedAt={blogIndexEntry.updatedAt}
-									/>
-								</Fragment>
-							</BlogIndexEntry>
-						</li>
-					))}
-				</BlogArchiveList>
-			) : (
-				<BlogEmptyState>No blog posts published for this topic yet.</BlogEmptyState>
-			)
-		}
+		{blogIndexEntries.length > 0 ? (
+			<BlogArchiveList>
+				{blogIndexEntries.map((blogIndexEntry) => (
+					<li>
+						<BlogIndexEntry
+							description={blogIndexEntry.description}
+							href={`/blog/${blogIndexEntry.slug}`}
+							title={blogIndexEntry.title}
+						>
+							<Fragment slot="footer">
+								<BlogEntryMetadata
+									publishedAt={blogIndexEntry.publishedAt}
+									updatedAt={blogIndexEntry.updatedAt}
+								/>
+							</Fragment>
+						</BlogIndexEntry>
+					</li>
+				))}
+			</BlogArchiveList>
+		) : (
+			<BlogEmptyState>No blog posts published for this topic yet.</BlogEmptyState>
+		)}
 	</BlogArchiveSection>
 
 	<LocalizedDateTimeScript />

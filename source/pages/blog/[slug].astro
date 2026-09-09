@@ -136,27 +136,23 @@ const blogPostUpdatedAt = of(blogPost.data.updatedAt);
 							]}
 						>
 							<span class="blog-post-article-metadata-item blog-post-article-date-metadata-item">
-								Published <LocalizedDateTime
-									className="dt-published"
-									dateTime={blogPost.data.publishedAt}
-								/>
+								Published{" "}
+								<LocalizedDateTime className="dt-published" dateTime={blogPost.data.publishedAt} />
 							</span>
-							{
-								blogPostUpdatedAt
-									.map((updatedAt) => {
-										return (
-											<span class="blog-post-article-metadata-item blog-post-article-date-metadata-item">
-												Updated{" "}
-												<LocalizedDateTime className="dt-updated" dateTime={updatedAt} />
-											</span>
-										);
-									})
-									.unwrapOr("")
-							}
+							{blogPostUpdatedAt
+								.map((updatedAt) => {
+									return (
+										<span class="blog-post-article-metadata-item blog-post-article-date-metadata-item">
+											Updated <LocalizedDateTime className="dt-updated" dateTime={updatedAt} />
+										</span>
+									);
+								})
+								.unwrapOr("")}
 							<span class="blog-post-article-metadata-item">
-								in <BlogTopicLink href={`/blog/topics/${topicDetails.slug}`}
-									>{topicDetails.label}</BlogTopicLink
-								>
+								in{" "}
+								<BlogTopicLink href={`/blog/topics/${topicDetails.slug}`}>
+									{topicDetails.label}
+								</BlogTopicLink>
 							</span>
 							<span class="blog-post-article-metadata-item blog-post-article-reading-time">
 								{blogPostReadingTimeLabel}
@@ -165,7 +161,10 @@ const blogPostUpdatedAt = of(blogPost.data.updatedAt);
 					</div>
 				</div>
 			</section>
-			<a class="u-url blog-post-screen-reader-only" data-pagefind-ignore="all" href={blogPostUrl}> Permalink </a>
+			<a class="u-url blog-post-screen-reader-only" data-pagefind-ignore="all" href={blogPostUrl}>
+				{" "}
+				Permalink{" "}
+			</a>
 		</header>
 
 		<div class="blog-post-article-body">

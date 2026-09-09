@@ -23,7 +23,9 @@ const resume = parsedResumeResult.value;
 	<hr />
 
 	<ol class="resume-timeline">
-		{resume.map((resumeJob) => <ResumeTimelineItem resumeJob={resumeJob} />)}
+		{resume.map((resumeJob) => (
+			<ResumeTimelineItem resumeJob={resumeJob} />
+		))}
 	</ol>
 </section>
 

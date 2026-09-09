@@ -12,9 +12,7 @@ const { link, title, description, style } = Astro.props;
 <li class:list={[style]}>
 	<a href={link.toString()} title={title}>
 		<slot />
-
-		<h3>{title}</h3>{" "}
-
+		<h3>{title}</h3>
 		<p>{description}</p>
 	</a>
 </li>

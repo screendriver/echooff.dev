@@ -8,19 +8,17 @@ export interface Props {
 const { webmentionReply } = Astro.props;
 ---
 
-{
-	webmentionReply.author.photoUrl.isJust && (
-		<img
-			class="webmention-author-photo"
-			src={webmentionReply.author.photoUrl.value}
-			alt=""
-			loading="lazy"
-			decoding="async"
-			width="56"
-			height="56"
-		/>
-	)
-}
+{webmentionReply.author.photoUrl.isJust && (
+	<img
+		class="webmention-author-photo"
+		src={webmentionReply.author.photoUrl.value}
+		alt=""
+		loading="lazy"
+		decoding="async"
+		width="56"
+		height="56"
+	/>
+)}
 
 <style lang="scss">
 	@use "../../../styles/variables";

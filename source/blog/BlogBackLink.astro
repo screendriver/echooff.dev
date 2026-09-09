@@ -7,7 +7,9 @@ const { href } = Astro.props;
 ---
 
 <a class="blog-back-link" href={href}>
-	<span><slot /></span>
+	<span>
+		<slot />
+	</span>
 </a>
 
 <style lang="scss">

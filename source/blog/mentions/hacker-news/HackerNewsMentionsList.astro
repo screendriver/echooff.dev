@@ -14,46 +14,44 @@ const { hackerNewsSectionModel } = Astro.props;
 
 {hackerNewsSectionModel.mentions.length === 0 && <BlogEmptyState>No public Hacker News mentions yet.</BlogEmptyState>}
 
-{
-	hackerNewsSectionModel.mentions.length > 0 && (
-		<ul>
-			{hackerNewsSectionModel.mentions.map((hackerNewsMention) => (
-				<li>
-					<article>
-						<header>
-							<h3>
-								<a href={hackerNewsMention.discussionUrl}>{hackerNewsMention.storyTitle}</a>
-							</h3>
-							<dl class="mention-metadata-list">
-								<dt class="screen-reader-only">Score</dt>
-								<dd class="meta-pill">
-									<ScoreIcon />
-									<span>{hackerNewsMention.pointCount} points</span>
-								</dd>
-								<dt class="screen-reader-only">Comments</dt>
-								<dd class="meta-pill">
-									<CommentIcon />
-									<span>{hackerNewsMention.commentCount} comments</span>
-								</dd>
-								{hackerNewsMention.visiblePublishedAt.isJust && (
-									<Fragment>
-										<dt class="meta-date-label">Published</dt>
-										<dd class="meta-date-value">
-											<LocalizedDateTime dateTime={hackerNewsMention.visiblePublishedAt.value} />
-										</dd>
-									</Fragment>
-								)}
-							</dl>
-						</header>
-						<footer>
-							<a href={hackerNewsMention.discussionUrl}>View discussion</a>
-						</footer>
-					</article>
-				</li>
-			))}
-		</ul>
-	)
-}
+{hackerNewsSectionModel.mentions.length > 0 && (
+	<ul>
+		{hackerNewsSectionModel.mentions.map((hackerNewsMention) => (
+			<li>
+				<article>
+					<header>
+						<h3>
+							<a href={hackerNewsMention.discussionUrl}>{hackerNewsMention.storyTitle}</a>
+						</h3>
+						<dl class="mention-metadata-list">
+							<dt class="screen-reader-only">Score</dt>
+							<dd class="meta-pill">
+								<ScoreIcon />
+								<span>{hackerNewsMention.pointCount} points</span>
+							</dd>
+							<dt class="screen-reader-only">Comments</dt>
+							<dd class="meta-pill">
+								<CommentIcon />
+								<span>{hackerNewsMention.commentCount} comments</span>
+							</dd>
+							{hackerNewsMention.visiblePublishedAt.isJust && (
+								<Fragment>
+									<dt class="meta-date-label">Published</dt>
+									<dd class="meta-date-value">
+										<LocalizedDateTime dateTime={hackerNewsMention.visiblePublishedAt.value} />
+									</dd>
+								</Fragment>
+							)}
+						</dl>
+					</header>
+					<footer>
+						<a href={hackerNewsMention.discussionUrl}>View discussion</a>
+					</footer>
+				</article>
+			</li>
+		))}
+	</ul>
+)}
 
 <style lang="scss">
 	@use "../../../styles/variables";

@@ -6,7 +6,11 @@ export interface Props {
 const { href } = Astro.props;
 ---
 
-<a class="blog-archive-link" href={href}><span><slot /></span></a>
+<a class="blog-archive-link" href={href}>
+	<span>
+		<slot />
+	</span>
+</a>
 
 <style lang="scss">
 	@use "../styles/variables";
