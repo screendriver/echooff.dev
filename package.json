@@ -17,7 +17,7 @@
 		"@sentry/node": "10.75.2",
 		"@sindresorhus/is": "8.1.0",
 		"arktype": "2.2.3",
-		"astro": "7.3.3",
+		"astro": "7.3.4",
 		"better-sqlite3": "13.0.3",
 		"date-fns": "4.4.0",
 		"ky": "2.1.0",
