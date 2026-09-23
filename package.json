@@ -65,7 +65,7 @@
 		"mocha": "12.0.2",
 		"modern-normalize": "3.0.1",
 		"pagefind": "1.5.2",
-		"prettier": "3.9.8",
+		"prettier": "3.9.9",
 		"prettier-plugin-astro": "1.0.1",
 		"rehype-autolink-headings": "7.1.0",
 		"rust-just": "1.56.0",
