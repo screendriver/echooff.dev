@@ -421,7 +421,7 @@ function createTrial(options: CreateTrialOptions): Trial {
 
 Now the dependency is visible. Production can pass the real wall clock. Tests can pass a deterministic clock.
 
-The exact shape does not matter. In my own code, I usually model this as a [wall clock abstraction](https://github.com/enormora/wall-clock). The application can ask for the current time, but it does not know where that time comes from.
+The exact shape does not matter. In my own code, I use [`@enormora/clock`](https://github.com/enormora/clock) to provide explicit time access. When an application only needs the current wall time, it can keep a narrower `WallClock` interface like this one. The application can ask for the current time, but it does not know where that time comes from.
 
 No fake timers. No waiting. No global patching. No magic.
 
