@@ -16,7 +16,7 @@
 		"@sentry/browser": "10.75.3",
 		"@sentry/node": "10.75.3",
 		"@sindresorhus/is": "8.1.0",
-		"arktype": "2.2.3",
+		"arktype": "2.2.5",
 		"astro": "7.3.5",
 		"better-sqlite3": "13.0.3",
 		"date-fns": "4.4.0",
