@@ -101,7 +101,7 @@ Imagine an application service that schedules a session refresh at an absolute t
 Calling `Date.now()` and `setTimeout()` directly would hide both dependencies. The injected clock makes them visible:
 
 ```typescript
-import type { Clock } from "@enormora/clock/clock";
+import type { Clock } from "@enormora/clock";
 
 type ScheduleSessionRefreshDependencies = {
   readonly clock: Clock;
@@ -142,7 +142,7 @@ That direction is important. The application defines the capability it needs, wh
 The real clock is created at the composition root:
 
 ```typescript
-import { createClock } from "@enormora/clock/clock";
+import { createClock } from "@enormora/clock";
 
 import { createScheduleSessionRefresh } from "./schedule-session-refresh.js";
 
@@ -161,7 +161,7 @@ Once the clock is explicit, testing time-based orchestration no longer requires 
 import assert from "node:assert";
 import test from "node:test";
 
-import { createDeterministicClock } from "@enormora/clock/deterministic-clock";
+import { createDeterministicClock } from "@enormora/clock";
 
 import { createScheduleSessionRefresh } from "./schedule-session-refresh.js";
 
