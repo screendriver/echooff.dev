@@ -1,5 +1,5 @@
 ---
-import { createWallClock } from "@enormora/wall-clock";
+import { createClock } from "@enormora/clock/clock";
 import HackerNewsMentions from "./hacker-news/HackerNewsMentions.astro";
 import Webmentions from "./webmentions/Webmentions.astro";
 import { createBlogPostAbsoluteUrl } from "../blog-site.js";
@@ -17,7 +17,7 @@ export interface Props {
 	readonly blogPostId: string;
 }
 
-const systemWallClock = createWallClock();
+const systemClock = createClock();
 const { blogPostId } = Astro.props;
 const blogPostUrl = createBlogPostAbsoluteUrl(Astro.site, blogPostId);
 const mentionCacheRepository = await (async () => {
@@ -53,7 +53,7 @@ const { hackerNewsSectionModel, webmentionSectionModel } = await loadBlogPostMen
 		logWarning: standardStreamRuntimeLogger.warn,
 		mentionCacheRepository,
 		requestTimeoutMilliseconds: runtimeMentionRequestTimeoutMilliseconds,
-		wallClock: systemWallClock
+		clock: systemClock
 	},
 	blogPostUrl
 );

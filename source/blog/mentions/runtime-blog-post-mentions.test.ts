@@ -2,7 +2,7 @@ import assert from "node:assert";
 import { suite, test } from "mocha";
 import { fake } from "sinon";
 import { isString } from "@sindresorhus/is";
-import { createDeterministicWallClock } from "@enormora/wall-clock";
+import { createDeterministicClock } from "@enormora/clock/deterministic-clock";
 import { nothing, of as maybeOf, type Maybe } from "true-myth/maybe";
 import { resolve as resolveTask, type Task } from "true-myth/task";
 import { Unit } from "true-myth/unit";
@@ -90,8 +90,8 @@ suite("loadBlogPostMentionsForTargetUrl()", function () {
 		const logInfo: TestRuntimeInfoLogger = logInfoFake;
 		const logWarning: TestRuntimeWarningLogger = logWarningFake;
 		const fetchImplementation: typeof fetch = fetchFake;
-		const wallClock = createDeterministicWallClock({
-			initialCurrentTimestampInMilliseconds: 1000
+		const clock = createDeterministicClock({
+			initialUnixEpochMicroseconds: 1_000_000n
 		});
 
 		await loadBlogPostMentionsForTargetUrl(
@@ -104,7 +104,7 @@ suite("loadBlogPostMentionsForTargetUrl()", function () {
 				logWarning,
 				mentionCacheRepository,
 				requestTimeoutMilliseconds: 5000,
-				wallClock
+				clock
 			},
 			targetUrl
 		);
@@ -189,8 +189,8 @@ suite("loadBlogPostMentionsForTargetUrl()", function () {
 		const logInfo: TestRuntimeInfoLogger = logInfoFake;
 		const logWarning: TestRuntimeWarningLogger = logWarningFake;
 		const fetchImplementation: typeof fetch = fetchFake;
-		const wallClock = createDeterministicWallClock({
-			initialCurrentTimestampInMilliseconds: 1000
+		const clock = createDeterministicClock({
+			initialUnixEpochMicroseconds: 1_000_000n
 		});
 
 		await loadBlogPostMentionsForTargetUrl(
@@ -203,7 +203,7 @@ suite("loadBlogPostMentionsForTargetUrl()", function () {
 				logWarning,
 				mentionCacheRepository,
 				requestTimeoutMilliseconds: 5000,
-				wallClock
+				clock
 			},
 			targetUrl
 		);

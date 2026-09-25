@@ -2,7 +2,7 @@ import assert from "node:assert";
 import { suite, test } from "mocha";
 import { fake } from "sinon";
 import { isPlainObject, isString } from "@sindresorhus/is";
-import { createDeterministicWallClock } from "@enormora/wall-clock";
+import { createDeterministicClock } from "@enormora/clock/deterministic-clock";
 import { just, nothing, of as maybeOf, type Maybe } from "true-myth/maybe";
 import { isOk } from "true-myth/result";
 import { reject as rejectTask, resolve as resolveTask, type Task } from "true-myth/task";
@@ -148,8 +148,8 @@ function createLoadMentionCacheSectionModelInput(
 		schemaVersion: mentionCacheSchemaVersion,
 		serviceName: "Webmention",
 		usableStaleMilliseconds: mentionCacheUsableStaleMilliseconds,
-		wallClock: createDeterministicWallClock({
-			initialCurrentTimestampInMilliseconds: Date.parse("2026-07-04T10:30:00.000Z")
+		clock: createDeterministicClock({
+			initialUnixEpochMicroseconds: BigInt(Date.parse("2026-07-04T10:30:00.000Z")) * 1000n
 		})
 	};
 
