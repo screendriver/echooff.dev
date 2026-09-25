@@ -215,7 +215,7 @@ test("stores a new subscriber", async () => {
 
 This is state verification. The test observes what became true after the operation.
 
-The deterministic wall clock from [Time is an external dependency](/blog/time-is-an-external-dependency) is another fake. It implements the clock contract and models the passage of time, but lets a test advance that time deliberately instead of waiting for the runtime.
+The deterministic clock from [Time is an external dependency](/blog/time-is-an-external-dependency) is another fake. It implements the clock contract and models the passage of time, but lets a test advance that time deliberately instead of waiting for the runtime.
 
 A fake is more capable than a stub, but that does not make it automatically better. It is another implementation of a contract, and another implementation can drift.
 

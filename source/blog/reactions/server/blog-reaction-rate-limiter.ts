@@ -1,5 +1,5 @@
 import { isUndefined } from "@sindresorhus/is";
-import type { WallClock } from "@enormora/wall-clock";
+import type { Clock } from "@enormora/clock/clock";
 import type { Maybe } from "true-myth/maybe";
 
 export const blogReactionMutationRateLimit = 30;
@@ -8,14 +8,14 @@ export const unknownReactionClientAddress = "unknown-client";
 
 export type BlogReactionRateLimitBucket = {
 	readonly requestCount: number;
-	readonly windowStartedAtMilliseconds: number;
+	readonly windowStartedAtMonotonicMilliseconds: number;
 };
 
 export type BlogReactionRateLimiterState = Map<string, BlogReactionRateLimitBucket>;
 
 export type BlogReactionRateLimiterOptions = {
 	readonly rateLimiterState: BlogReactionRateLimiterState;
-	readonly wallClock: WallClock;
+	readonly clock: Clock;
 };
 
 export type BlogReactionRateLimitDecision = {
@@ -29,19 +29,19 @@ export type BlogReactionRateLimiter = {
 
 type CheckMutationOptions = {
 	readonly clientAddress: Maybe<string>;
-	readonly currentTimestampInMilliseconds: number;
+	readonly currentMonotonicMilliseconds: number;
 	readonly rateLimiterState: BlogReactionRateLimiterState;
 };
 
 function removeExpiredRateLimitBuckets(
 	rateLimiterState: BlogReactionRateLimiterState,
-	currentTimestampInMilliseconds: number
+	currentMonotonicMilliseconds: number
 ): void {
 	for (const [clientAddress, rateLimitBucket] of rateLimiterState) {
-		const bucketExpiresAtMilliseconds =
-			rateLimitBucket.windowStartedAtMilliseconds + blogReactionRateLimitWindowMilliseconds;
+		const bucketExpiresAtMonotonicMilliseconds =
+			rateLimitBucket.windowStartedAtMonotonicMilliseconds + blogReactionRateLimitWindowMilliseconds;
 
-		if (currentTimestampInMilliseconds >= bucketExpiresAtMilliseconds) {
+		if (currentMonotonicMilliseconds >= bucketExpiresAtMonotonicMilliseconds) {
 			rateLimiterState.delete(clientAddress);
 		}
 	}
@@ -55,39 +55,39 @@ function createAllowedMutationDecision(): BlogReactionRateLimitDecision {
 }
 
 function createRateLimitedMutationDecision(
-	currentTimestampInMilliseconds: number,
+	currentMonotonicMilliseconds: number,
 	rateLimitBucket: BlogReactionRateLimitBucket
 ): BlogReactionRateLimitDecision {
-	const bucketExpiresAtMilliseconds =
-		rateLimitBucket.windowStartedAtMilliseconds + blogReactionRateLimitWindowMilliseconds;
+	const bucketExpiresAtMonotonicMilliseconds =
+		rateLimitBucket.windowStartedAtMonotonicMilliseconds + blogReactionRateLimitWindowMilliseconds;
 
 	return {
 		allowed: false,
-		retryAfterMilliseconds: bucketExpiresAtMilliseconds - currentTimestampInMilliseconds
+		retryAfterMilliseconds: bucketExpiresAtMonotonicMilliseconds - currentMonotonicMilliseconds
 	};
 }
 
 function checkMutation(checkMutationOptions: CheckMutationOptions): BlogReactionRateLimitDecision {
-	const { clientAddress, currentTimestampInMilliseconds, rateLimiterState } = checkMutationOptions;
+	const { clientAddress, currentMonotonicMilliseconds, rateLimiterState } = checkMutationOptions;
 	const clientAddressKey = clientAddress.unwrapOr(unknownReactionClientAddress);
 	const currentRateLimitBucket = rateLimiterState.get(clientAddressKey);
 
 	if (isUndefined(currentRateLimitBucket)) {
 		rateLimiterState.set(clientAddressKey, {
 			requestCount: 1,
-			windowStartedAtMilliseconds: currentTimestampInMilliseconds
+			windowStartedAtMonotonicMilliseconds: currentMonotonicMilliseconds
 		});
 
 		return createAllowedMutationDecision();
 	}
 
 	if (currentRateLimitBucket.requestCount >= blogReactionMutationRateLimit) {
-		return createRateLimitedMutationDecision(currentTimestampInMilliseconds, currentRateLimitBucket);
+		return createRateLimitedMutationDecision(currentMonotonicMilliseconds, currentRateLimitBucket);
 	}
 
 	rateLimiterState.set(clientAddressKey, {
 		requestCount: currentRateLimitBucket.requestCount + 1,
-		windowStartedAtMilliseconds: currentRateLimitBucket.windowStartedAtMilliseconds
+		windowStartedAtMonotonicMilliseconds: currentRateLimitBucket.windowStartedAtMonotonicMilliseconds
 	});
 
 	return createAllowedMutationDecision();
@@ -96,16 +96,16 @@ function checkMutation(checkMutationOptions: CheckMutationOptions): BlogReaction
 export function createBlogReactionRateLimiter(
 	blogReactionRateLimiterOptions: BlogReactionRateLimiterOptions
 ): BlogReactionRateLimiter {
-	const { rateLimiterState, wallClock } = blogReactionRateLimiterOptions;
+	const { rateLimiterState, clock } = blogReactionRateLimiterOptions;
 
 	return {
 		checkMutation(clientAddress) {
-			const { currentTimestampInMilliseconds } = wallClock;
-			removeExpiredRateLimitBuckets(rateLimiterState, currentTimestampInMilliseconds);
+			const currentMonotonicMilliseconds = Number(clock.currentMonotonicMicroseconds / 1000n);
+			removeExpiredRateLimitBuckets(rateLimiterState, currentMonotonicMilliseconds);
 
 			return checkMutation({
 				clientAddress,
-				currentTimestampInMilliseconds,
+				currentMonotonicMilliseconds,
 				rateLimiterState
 			});
 		}

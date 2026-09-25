@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { isError } from "@sindresorhus/is";
-import type { WallClock } from "@enormora/wall-clock";
+import type { Clock } from "@enormora/clock/clock";
 import { differenceInMilliseconds, isValid, parseISO, subDays } from "date-fns";
 import { nothing, type Maybe } from "true-myth/maybe";
 import { resolve as resolveTask, tryOrElse, type Task } from "true-myth/task";
@@ -67,7 +67,7 @@ export type LoadMentionCacheSectionModelInput<SectionModel extends MentionCacheS
 	readonly schemaVersion: number;
 	readonly serviceName: string;
 	readonly usableStaleMilliseconds: number;
-	readonly wallClock: WallClock;
+	readonly clock: Clock;
 };
 
 type RefreshMentionSectionModelInput<SectionModel extends MentionCacheSectionModel> = {
@@ -277,9 +277,9 @@ export function loadMentionCacheSectionModel<SectionModel extends MentionCacheSe
 			schemaVersion,
 			serviceName,
 			usableStaleMilliseconds,
-			wallClock
+			clock
 		} = loadMentionCacheSectionModelInput;
-		const requestedAt = wallClock.currentDate;
+		const requestedAt = clock.currentDate;
 		const cacheReadResult = await repository.readEntry(cacheKey);
 
 		if (cacheReadResult.isErr) {

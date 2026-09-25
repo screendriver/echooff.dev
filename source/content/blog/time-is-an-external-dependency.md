@@ -37,20 +37,18 @@ A more honest version receives the current timestamp explicitly:
 
 ```typescript
 type Session = {
-  readonly expiresAtTimestampInMilliseconds: number;
+  readonly expiresAtUnixEpochMilliseconds: number;
 };
 
 type IsSessionExpiredOptions = {
-  readonly currentTimestampInMilliseconds: number;
+  readonly currentUnixEpochMilliseconds: number;
   readonly session: Session;
 };
 
 export function isSessionExpired(options: IsSessionExpiredOptions): boolean {
-  const { currentTimestampInMilliseconds, session } = options;
+  const { currentUnixEpochMilliseconds, session } = options;
 
-  return (
-    currentTimestampInMilliseconds >= session.expiresAtTimestampInMilliseconds
-  );
+  return currentUnixEpochMilliseconds >= session.expiresAtUnixEpochMilliseconds;
 }
 ```
 
@@ -66,9 +64,9 @@ import { isSessionExpired } from "./is-session-expired.js";
 
 test("returns true when the current time reaches the expiration time", function () {
   const result = isSessionExpired({
-    currentTimestampInMilliseconds: 1_704_067_200_000,
+    currentUnixEpochMilliseconds: 1_704_067_200_000,
     session: {
-      expiresAtTimestampInMilliseconds: 1_704_067_200_000
+      expiresAtUnixEpochMilliseconds: 1_704_067_200_000
     }
   });
 
@@ -90,50 +88,49 @@ This is the smallest useful form of dependency injection. It does not require a 
 
 A clock becomes useful when code needs more than one value. An application service may need to observe time repeatedly, create values stamped with the current date, or schedule work for later. In that case, time is no longer just data passed into a decision. It is a capability used by orchestration code.
 
-## Use a wall clock for time-based orchestration
+## Use a clock for time-based orchestration
 
-A wall clock is the boundary through which application code observes the current time and schedules time-based work. Instead of allowing orchestration code to call `Date.now()`, `new Date()`, `setTimeout()` or `setInterval()` directly, it receives a small capability that exposes those operations explicitly.
+A clock is the boundary through which application code observes wall time, measures elapsed time and schedules time-based work. Instead of allowing orchestration code to call `Date.now()`, `new Date()`, `setTimeout()` or `setInterval()` directly, it receives a capability that exposes those operations explicitly.
 
 The clock does not own the application rules. It does not decide when a session expires or when a refresh should happen. It only provides controlled access to time. The application still owns every decision made with it.
 
-I created [`@enormora/wall-clock`](https://github.com/enormora/wall-clock) because I kept needing this boundary in different places. The package provides a deliberately small `WallClock` contract, a real implementation backed by the runtime and a deterministic implementation for tests. It is not a date library, a calendar library or a dependency injection framework. Its only purpose is to stop time from becoming a hidden global dependency.
+I created [`@enormora/clock`](https://github.com/enormora/clock) because I kept needing this boundary in different places. The package provides a `Clock` contract with explicit access to wall time, monotonic time and timers, plus a real implementation backed by the runtime and a deterministic implementation for tests. `currentUnixEpochMilliseconds` and `currentDate` represent wall time; `currentMonotonicMicroseconds` is for elapsed-time measurements. It is not a date library, a calendar library or a dependency injection framework. Its purpose is to stop time from becoming a hidden global dependency.
 
 Imagine an application service that schedules a session refresh at an absolute timestamp. It needs to know the current time so it can calculate the delay, and it needs a timer so it can run the refresh later.
 
-Calling `Date.now()` and `setTimeout()` directly would hide both dependencies. The wall clock makes them visible:
+Calling `Date.now()` and `setTimeout()` directly would hide both dependencies. The injected clock makes them visible:
 
 ```typescript
-import type { WallClock } from "@enormora/wall-clock/wall-clock";
+import type { Clock } from "@enormora/clock/clock";
 
 type ScheduleSessionRefreshDependencies = {
-  readonly wallClock: WallClock;
+  readonly clock: Clock;
 };
 
 type ScheduleSessionRefreshOptions = {
-  readonly refreshAtTimestampInMilliseconds: number;
+  readonly refreshAtUnixEpochMilliseconds: number;
   readonly refreshSession: () => void;
 };
 
 type ScheduleSessionRefresh = (
   options: ScheduleSessionRefreshOptions
-) => ReturnType<WallClock["setTimeout"]>;
+) => ReturnType<Clock["setTimeout"]>;
 
 export function createScheduleSessionRefresh(
   dependencies: ScheduleSessionRefreshDependencies
 ): ScheduleSessionRefresh {
-  const { wallClock } = dependencies;
+  const { clock } = dependencies;
 
   return function scheduleSessionRefresh(
     options: ScheduleSessionRefreshOptions
-  ): ReturnType<WallClock["setTimeout"]> {
-    const { refreshAtTimestampInMilliseconds, refreshSession } = options;
+  ): ReturnType<Clock["setTimeout"]> {
+    const { refreshAtUnixEpochMilliseconds, refreshSession } = options;
     const delayInMilliseconds = Math.max(
       0,
-      refreshAtTimestampInMilliseconds -
-        wallClock.currentTimestampInMilliseconds
+      refreshAtUnixEpochMilliseconds - clock.currentUnixEpochMilliseconds
     );
 
-    return wallClock.setTimeout(refreshSession, delayInMilliseconds);
+    return clock.setTimeout(refreshSession, delayInMilliseconds);
   };
 }
 ```
@@ -145,48 +142,48 @@ That direction is important. The application defines the capability it needs, wh
 The real clock is created at the composition root:
 
 ```typescript
-import { createWallClock } from "@enormora/wall-clock/wall-clock";
+import { createClock } from "@enormora/clock/clock";
 
 import { createScheduleSessionRefresh } from "./schedule-session-refresh.js";
 
 const scheduleSessionRefresh = createScheduleSessionRefresh({
-  wallClock: createWallClock()
+  clock: createClock()
 });
 ```
 
-Only this outermost wiring knows that production time comes from the runtime. The service depends on the `WallClock` contract, not on global APIs. Tests can provide another implementation through the same boundary without changing the service or intercepting the environment.
+Only this outermost wiring knows that production time comes from the runtime. The service depends on the `Clock` contract, not on global APIs. Tests can provide another implementation through the same boundary without changing the service or intercepting the environment.
 
 ## Tests should move time, not wait for it
 
-Once the clock is explicit, testing time-based orchestration no longer requires changing the global runtime. The test creates the same application service as production, but supplies a deterministic wall clock:
+Once the clock is explicit, testing time-based orchestration no longer requires changing the global runtime. The test creates the same application service as production, but supplies a deterministic clock:
 
 ```typescript
 import assert from "node:assert";
 import test from "node:test";
 
-import { createDeterministicWallClock } from "@enormora/wall-clock/deterministic-wall-clock";
+import { createDeterministicClock } from "@enormora/clock/deterministic-clock";
 
 import { createScheduleSessionRefresh } from "./schedule-session-refresh.js";
 
 test("refreshes the session at the scheduled time", function () {
-  const wallClock = createDeterministicWallClock({
-    initialCurrentTimestampInMilliseconds: 1_704_067_200_000
+  const clock = createDeterministicClock({
+    initialUnixEpochMicroseconds: 1_704_067_200_000_000n
   });
-  const scheduleSessionRefresh = createScheduleSessionRefresh({ wallClock });
+  const scheduleSessionRefresh = createScheduleSessionRefresh({ clock });
   let refreshCount = 0;
 
   scheduleSessionRefresh({
-    refreshAtTimestampInMilliseconds: 1_704_067_205_000,
+    refreshAtUnixEpochMilliseconds: 1_704_067_205_000,
     refreshSession() {
       refreshCount += 1;
     }
   });
 
-  wallClock.advanceByMilliseconds(4_999);
+  clock.advanceByMilliseconds(4_999);
 
   assert.strictEqual(refreshCount, 0);
 
-  wallClock.advanceByMilliseconds(1);
+  clock.advanceByMilliseconds(1);
 
   assert.strictEqual(refreshCount, 1);
 });
@@ -208,7 +205,7 @@ But they solve a different problem. [Jest timer mocks](https://jestjs.io/docs/ti
 
 That creates two forms of coupling. Time remains a hidden dependency in the production code, and the test now knows how a particular runner replaces and advances global time. Moving from Jest to Vitest, `node:test` or another runner like [Mocha](https://mochajs.org) means changing how the test controls the timeline even though the application behavior itself has not changed.
 
-A deterministic wall clock moves that control behind an explicit dependency. The test advances application time through `wallClock.advanceByMilliseconds()` regardless of which runner executes it. The runner may still define how a test is discovered, executed and reported, but it no longer defines how time passes inside the application.
+A deterministic clock moves that control behind an explicit dependency. The test advances application time through `clock.advanceByMilliseconds()` regardless of which runner executes it. The runner may still define how a test is discovered, executed and reported, but it no longer defines how time passes inside the application.
 
 The replacement also stays local. Only code that receives the deterministic clock observes the controlled timeline. Unrelated code in the same process does not suddenly run against a modified global scheduler, and the test constructs the application through the same boundary used in production.
 
@@ -226,7 +223,7 @@ An explicit clock changes that. When a production issue depends on a particular 
 
 At system scale, the important work is often making whole classes of behavior easier to understand, not only making one function easier to test. Time is one of those cross-cutting concerns that looks local until dozens of unrelated modules have each created their own hidden relationship with the runtime.
 
-A small boundary prevents that relationship from spreading. It gives the system one explicit vocabulary for current timestamps, current dates and timers while still allowing inner decision-making code to work with plain values wherever possible.
+A small boundary prevents that relationship from spreading. It gives the system one explicit vocabulary for Unix epoch timestamps, current dates, monotonic readings and timers while still allowing inner decision-making code to work with plain values wherever possible.
 
 ## Not every use of `Date` is a hidden dependency
 
@@ -234,7 +231,7 @@ The goal is not to ban the `Date` class or pretend that every date-related opera
 
 The hidden dependency appears when code asks the environment what time it is or asks the runtime to execute something later. `Date.now()`, `new Date()` used to obtain the current moment, and global timer functions cross that boundary. They are perfectly valid at the edge of the application. They become a design problem when they are scattered through code that makes application decisions.
 
-Wall-clock time is also not the correct tool for every measurement. Code that measures elapsed duration or performance usually needs a monotonic clock that cannot jump backwards when the system time changes. Making time explicit allows that distinction to exist. Hidden global access silently chooses an implementation before the application has even described what kind of time it needs.
+Wall-clock time is also not the correct tool for every measurement. Code that measures elapsed duration or performance needs a monotonic reading that cannot jump backwards when the system time changes. `@enormora/clock` exposes both `currentUnixEpochMilliseconds` for absolute instants and `currentMonotonicMicroseconds` for elapsed time through the same explicit `Clock` boundary. A deterministic clock lets tests advance that timeline without waiting. Hidden global access silently chooses an implementation before the application has even described what kind of time it needs.
 
 The point is not abstraction for its own sake. The point is control.
 

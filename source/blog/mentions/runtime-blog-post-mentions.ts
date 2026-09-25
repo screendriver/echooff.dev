@@ -1,5 +1,5 @@
 import { isError } from "@sindresorhus/is";
-import type { WallClock } from "@enormora/wall-clock";
+import type { Clock } from "@enormora/clock/clock";
 import { match } from "ts-pattern";
 import type { Result } from "true-myth/result";
 import { tryOrElse, type Task } from "true-myth/task";
@@ -39,7 +39,7 @@ type BlogPostMentionsDependencies = {
 	readonly logWarning: (message: string, error: unknown, properties: RuntimeLogProperties) => void;
 	readonly mentionCacheRepository: MentionCacheRepository;
 	readonly requestTimeoutMilliseconds: number;
-	readonly wallClock: WallClock;
+	readonly clock: Clock;
 };
 type MentionLoadingDependencies = {
 	readonly createTimeoutSignal: (timeoutMilliseconds: number) => AbortSignal;
@@ -145,14 +145,15 @@ function unwrapInfallibleResult<Value>(result: Result<Value, never>): Value {
 }
 
 function timeMentionCacheSectionLoad<SectionModel, RejectionReason>(
-	wallClock: WallClock,
+	clock: Clock,
 	loadSectionModel: () => Task<MentionCacheSectionLoadingResult<SectionModel>, RejectionReason>
 ): Task<TimedMentionCacheSectionLoadingResult<SectionModel>, RejectionReason> {
-	const startedAtMilliseconds = wallClock.currentTimestampInMilliseconds;
+	const startedAtMonotonicMicroseconds = clock.currentMonotonicMicroseconds;
 
 	return loadSectionModel().map((loadingResult) => {
-		const finishedAtMilliseconds = wallClock.currentTimestampInMilliseconds;
-		const durationMilliseconds = finishedAtMilliseconds - startedAtMilliseconds;
+		const finishedAtMonotonicMicroseconds = clock.currentMonotonicMicroseconds;
+		const durationMicroseconds = finishedAtMonotonicMicroseconds - startedAtMonotonicMicroseconds;
+		const durationMilliseconds = Number(durationMicroseconds) / 1000;
 
 		return {
 			...loadingResult,
@@ -165,10 +166,10 @@ export async function loadBlogPostMentionsForTargetUrl(
 	dependencies: BlogPostMentionsDependencies,
 	targetUrl: string
 ): Promise<BlogPostMentionsModel> {
-	const startedAtMilliseconds = dependencies.wallClock.currentTimestampInMilliseconds;
+	const startedAtMonotonicMicroseconds = dependencies.clock.currentMonotonicMicroseconds;
 	const mentionLoadingDependencies = createMentionLoadingDependencies(dependencies);
 	const [webmentionTaskResult, hackerNewsTaskResult] = await Promise.all([
-		timeMentionCacheSectionLoad(dependencies.wallClock, () => {
+		timeMentionCacheSectionLoad(dependencies.clock, () => {
 			return loadMentionCacheSectionModel({
 				cacheKey: createMentionCacheKey({
 					schemaVersion: mentionCacheSchemaVersion,
@@ -188,10 +189,10 @@ export async function loadBlogPostMentionsForTargetUrl(
 				schemaVersion: mentionCacheSchemaVersion,
 				serviceName: "Webmention",
 				usableStaleMilliseconds: mentionCacheUsableStaleMilliseconds,
-				wallClock: dependencies.wallClock
+				clock: dependencies.clock
 			});
 		}),
-		timeMentionCacheSectionLoad(dependencies.wallClock, () => {
+		timeMentionCacheSectionLoad(dependencies.clock, () => {
 			return loadMentionCacheSectionModel({
 				cacheKey: createMentionCacheKey({
 					schemaVersion: mentionCacheSchemaVersion,
@@ -211,7 +212,7 @@ export async function loadBlogPostMentionsForTargetUrl(
 				schemaVersion: mentionCacheSchemaVersion,
 				serviceName: "Hacker News",
 				usableStaleMilliseconds: mentionCacheUsableStaleMilliseconds,
-				wallClock: dependencies.wallClock
+				clock: dependencies.clock
 			});
 		})
 	]);
@@ -219,14 +220,15 @@ export async function loadBlogPostMentionsForTargetUrl(
 		unwrapInfallibleResult(webmentionTaskResult);
 	const hackerNewsLoadingResult: TimedMentionCacheSectionLoadingResult<HackerNewsSectionModel> =
 		unwrapInfallibleResult(hackerNewsTaskResult);
-	const finishedAtMilliseconds = dependencies.wallClock.currentTimestampInMilliseconds;
+	const finishedAtMonotonicMicroseconds = dependencies.clock.currentMonotonicMicroseconds;
+	const durationMicroseconds = finishedAtMonotonicMicroseconds - startedAtMonotonicMicroseconds;
 	const targetUrlValue = new URL(targetUrl);
 	const targetPathname = targetUrlValue.pathname;
 
 	dependencies.logInfo(
 		"Loaded blog post mentions",
 		createBlogPostMentionsLoadedLogProperties({
-			durationMilliseconds: finishedAtMilliseconds - startedAtMilliseconds,
+			durationMilliseconds: Number(durationMicroseconds) / 1000,
 			hackerNewsDurationMilliseconds: hackerNewsLoadingResult.durationMilliseconds,
 			hackerNewsState: hackerNewsLoadingResult.state,
 			targetPathname,

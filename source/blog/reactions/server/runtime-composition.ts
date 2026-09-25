@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import process from "node:process";
 import { isError } from "@sindresorhus/is";
-import { createWallClock } from "@enormora/wall-clock";
+import { createClock } from "@enormora/clock/clock";
 import { getCollection } from "astro:content";
 import { tryOrElse, type Task } from "true-myth/task";
 import { readRuntimeApplicationDatabaseTask } from "../../../database/runtime-application-database.ts";
@@ -53,7 +53,7 @@ const readRuntimeEnvironment = createRuntimeBlogReactionEnvironmentReader({
 function createRuntimeBlogReactionRateLimiter(): BlogReactionRateLimiter {
 	return createBlogReactionRateLimiter({
 		rateLimiterState: new Map(),
-		wallClock: createWallClock()
+		clock: createClock()
 	});
 }
 

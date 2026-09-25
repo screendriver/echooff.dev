@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { createDeterministicWallClock } from "@enormora/wall-clock";
+import { createDeterministicClock } from "@enormora/clock/deterministic-clock";
 import { suite, test } from "mocha";
 import { just, nothing, type Maybe } from "true-myth/maybe";
 import {
@@ -17,24 +17,24 @@ function createTestRateLimiterState(): BlogReactionRateLimiterState {
 type TestRateLimiter = {
 	readonly checkMutation: (clientAddress: Maybe<string>) => BlogReactionRateLimitDecision;
 	readonly rateLimiterState: BlogReactionRateLimiterState;
-	readonly wallClock: ReturnType<typeof createDeterministicWallClock>;
+	readonly clock: ReturnType<typeof createDeterministicClock>;
 };
 
 function createTestRateLimiter(
 	rateLimiterState: BlogReactionRateLimiterState = createTestRateLimiterState()
 ): TestRateLimiter {
-	const wallClock = createDeterministicWallClock({
-		initialCurrentTimestampInMilliseconds: 1000
+	const clock = createDeterministicClock({
+		initialUnixEpochMicroseconds: 1_000_000n
 	});
 	const blogReactionRateLimiter = createBlogReactionRateLimiter({
 		rateLimiterState,
-		wallClock
+		clock
 	});
 
 	return {
 		checkMutation: blogReactionRateLimiter.checkMutation,
 		rateLimiterState,
-		wallClock
+		clock
 	};
 }
 
@@ -72,12 +72,12 @@ suite("createBlogReactionRateLimiter()", function () {
 	});
 
 	test("returns the remaining duration of the current window", function () {
-		const { checkMutation, wallClock } = createTestRateLimiter();
+		const { checkMutation, clock } = createTestRateLimiter();
 
 		for (let requestNumber = 0; requestNumber < blogReactionMutationRateLimit; requestNumber += 1) {
 			checkMutation(just("192.0.2.1"));
 		}
-		wallClock.advanceByMilliseconds(12_345);
+		clock.advanceByMilliseconds(12_345);
 
 		const actualDecision = checkMutation(just("192.0.2.1"));
 		const expectedRetryAfterMilliseconds = blogReactionRateLimitWindowMilliseconds - 12_345;
@@ -89,13 +89,33 @@ suite("createBlogReactionRateLimiter()", function () {
 		assert.deepStrictEqual(actualDecision, expectedDecision);
 	});
 
-	test("resets a bucket after the fixed window", function () {
-		const { checkMutation, wallClock } = createTestRateLimiter();
+	test("ignores wall clock adjustments when measuring the rate limit window", function () {
+		const { checkMutation, clock } = createTestRateLimiter();
 
 		for (let requestNumber = 0; requestNumber < blogReactionMutationRateLimit; requestNumber += 1) {
 			checkMutation(just("192.0.2.1"));
 		}
-		wallClock.advanceByMilliseconds(blogReactionRateLimitWindowMilliseconds);
+
+		const nextUnixEpochMicroseconds =
+			clock.currentUnixEpochMicroseconds + BigInt(blogReactionRateLimitWindowMilliseconds) * 1000n;
+		clock.setCurrentUnixEpochMicroseconds(nextUnixEpochMicroseconds);
+
+		const actualDecision = checkMutation(just("192.0.2.1"));
+		const expectedDecision = {
+			allowed: false,
+			retryAfterMilliseconds: blogReactionRateLimitWindowMilliseconds
+		};
+
+		assert.deepStrictEqual(actualDecision, expectedDecision);
+	});
+
+	test("resets a bucket after the fixed window", function () {
+		const { checkMutation, clock } = createTestRateLimiter();
+
+		for (let requestNumber = 0; requestNumber < blogReactionMutationRateLimit; requestNumber += 1) {
+			checkMutation(just("192.0.2.1"));
+		}
+		clock.advanceByMilliseconds(blogReactionRateLimitWindowMilliseconds);
 
 		const actualDecision = checkMutation(just("192.0.2.1"));
 
@@ -134,12 +154,12 @@ suite("createBlogReactionRateLimiter()", function () {
 
 	test("removes expired buckets when a later mutation is checked", function () {
 		const rateLimiterState = createTestRateLimiterState();
-		const { checkMutation, wallClock } = createTestRateLimiter(rateLimiterState);
+		const { checkMutation, clock } = createTestRateLimiter(rateLimiterState);
 
 		checkMutation(just("192.0.2.1"));
 		assert.strictEqual(rateLimiterState.size, 1);
 
-		wallClock.advanceByMilliseconds(blogReactionRateLimitWindowMilliseconds);
+		clock.advanceByMilliseconds(blogReactionRateLimitWindowMilliseconds);
 		checkMutation(just("192.0.2.2"));
 
 		assert.strictEqual(rateLimiterState.size, 1);
