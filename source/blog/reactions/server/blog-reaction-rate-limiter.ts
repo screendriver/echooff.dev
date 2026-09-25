@@ -8,7 +8,7 @@ export const unknownReactionClientAddress = "unknown-client";
 
 export type BlogReactionRateLimitBucket = {
 	readonly requestCount: number;
-	readonly windowStartedAtMilliseconds: number;
+	readonly windowStartedAtMonotonicMilliseconds: number;
 };
 
 export type BlogReactionRateLimiterState = Map<string, BlogReactionRateLimitBucket>;
@@ -29,19 +29,19 @@ export type BlogReactionRateLimiter = {
 
 type CheckMutationOptions = {
 	readonly clientAddress: Maybe<string>;
-	readonly currentUnixEpochMilliseconds: number;
+	readonly currentMonotonicMilliseconds: number;
 	readonly rateLimiterState: BlogReactionRateLimiterState;
 };
 
 function removeExpiredRateLimitBuckets(
 	rateLimiterState: BlogReactionRateLimiterState,
-	currentUnixEpochMilliseconds: number
+	currentMonotonicMilliseconds: number
 ): void {
 	for (const [clientAddress, rateLimitBucket] of rateLimiterState) {
-		const bucketExpiresAtMilliseconds =
-			rateLimitBucket.windowStartedAtMilliseconds + blogReactionRateLimitWindowMilliseconds;
+		const bucketExpiresAtMonotonicMilliseconds =
+			rateLimitBucket.windowStartedAtMonotonicMilliseconds + blogReactionRateLimitWindowMilliseconds;
 
-		if (currentUnixEpochMilliseconds >= bucketExpiresAtMilliseconds) {
+		if (currentMonotonicMilliseconds >= bucketExpiresAtMonotonicMilliseconds) {
 			rateLimiterState.delete(clientAddress);
 		}
 	}
@@ -55,39 +55,39 @@ function createAllowedMutationDecision(): BlogReactionRateLimitDecision {
 }
 
 function createRateLimitedMutationDecision(
-	currentUnixEpochMilliseconds: number,
+	currentMonotonicMilliseconds: number,
 	rateLimitBucket: BlogReactionRateLimitBucket
 ): BlogReactionRateLimitDecision {
-	const bucketExpiresAtMilliseconds =
-		rateLimitBucket.windowStartedAtMilliseconds + blogReactionRateLimitWindowMilliseconds;
+	const bucketExpiresAtMonotonicMilliseconds =
+		rateLimitBucket.windowStartedAtMonotonicMilliseconds + blogReactionRateLimitWindowMilliseconds;
 
 	return {
 		allowed: false,
-		retryAfterMilliseconds: bucketExpiresAtMilliseconds - currentUnixEpochMilliseconds
+		retryAfterMilliseconds: bucketExpiresAtMonotonicMilliseconds - currentMonotonicMilliseconds
 	};
 }
 
 function checkMutation(checkMutationOptions: CheckMutationOptions): BlogReactionRateLimitDecision {
-	const { clientAddress, currentUnixEpochMilliseconds, rateLimiterState } = checkMutationOptions;
+	const { clientAddress, currentMonotonicMilliseconds, rateLimiterState } = checkMutationOptions;
 	const clientAddressKey = clientAddress.unwrapOr(unknownReactionClientAddress);
 	const currentRateLimitBucket = rateLimiterState.get(clientAddressKey);
 
 	if (isUndefined(currentRateLimitBucket)) {
 		rateLimiterState.set(clientAddressKey, {
 			requestCount: 1,
-			windowStartedAtMilliseconds: currentUnixEpochMilliseconds
+			windowStartedAtMonotonicMilliseconds: currentMonotonicMilliseconds
 		});
 
 		return createAllowedMutationDecision();
 	}
 
 	if (currentRateLimitBucket.requestCount >= blogReactionMutationRateLimit) {
-		return createRateLimitedMutationDecision(currentUnixEpochMilliseconds, currentRateLimitBucket);
+		return createRateLimitedMutationDecision(currentMonotonicMilliseconds, currentRateLimitBucket);
 	}
 
 	rateLimiterState.set(clientAddressKey, {
 		requestCount: currentRateLimitBucket.requestCount + 1,
-		windowStartedAtMilliseconds: currentRateLimitBucket.windowStartedAtMilliseconds
+		windowStartedAtMonotonicMilliseconds: currentRateLimitBucket.windowStartedAtMonotonicMilliseconds
 	});
 
 	return createAllowedMutationDecision();
@@ -100,12 +100,12 @@ export function createBlogReactionRateLimiter(
 
 	return {
 		checkMutation(clientAddress) {
-			const { currentUnixEpochMilliseconds } = clock;
-			removeExpiredRateLimitBuckets(rateLimiterState, currentUnixEpochMilliseconds);
+			const currentMonotonicMilliseconds = Number(clock.currentMonotonicMicroseconds / 1000n);
+			removeExpiredRateLimitBuckets(rateLimiterState, currentMonotonicMilliseconds);
 
 			return checkMutation({
 				clientAddress,
-				currentUnixEpochMilliseconds,
+				currentMonotonicMilliseconds,
 				rateLimiterState
 			});
 		}

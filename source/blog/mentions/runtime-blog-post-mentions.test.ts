@@ -72,9 +72,18 @@ suite("loadBlogPostMentionsForTargetUrl()", function () {
 	test("loads mentions through the persistent cache repository and logs one structured event", async function () {
 		const targetUrl = "https://example.com/blog/runtime-log-test";
 		const mentionCacheRepository = createMemoryMentionCacheRepository();
+		const initialUnixEpochMicroseconds = 1_000_000n;
+		const clock = createDeterministicClock({ initialUnixEpochMicroseconds });
 		const logInfoFake = fake<Parameters<TestRuntimeInfoLogger>, undefined>();
 		const logWarningFake = fake<Parameters<TestRuntimeWarningLogger>, undefined>();
+		let shouldAdvanceMonotonicClock = true;
 		const fetchFake = fake(async (requestUrl: RequestInfo | URL) => {
+			if (shouldAdvanceMonotonicClock) {
+				shouldAdvanceMonotonicClock = false;
+				clock.advanceByMilliseconds(15_000);
+				clock.setCurrentUnixEpochMicroseconds(initialUnixEpochMicroseconds);
+			}
+
 			const requestUrlText = readRequestUrlText(requestUrl);
 
 			if (requestUrlText.startsWith("https://webmention.io/api/mentions.jf2")) {
@@ -90,9 +99,6 @@ suite("loadBlogPostMentionsForTargetUrl()", function () {
 		const logInfo: TestRuntimeInfoLogger = logInfoFake;
 		const logWarning: TestRuntimeWarningLogger = logWarningFake;
 		const fetchImplementation: typeof fetch = fetchFake;
-		const clock = createDeterministicClock({
-			initialUnixEpochMicroseconds: 1_000_000n
-		});
 
 		await loadBlogPostMentionsForTargetUrl(
 			{
@@ -130,13 +136,13 @@ suite("loadBlogPostMentionsForTargetUrl()", function () {
 		assert.deepStrictEqual(logInfoFake.firstCall.args, [
 			"Loaded blog post mentions",
 			{
-				durationMilliseconds: 0,
+				durationMilliseconds: 15_000,
 				event: "blog_post_mentions_loaded",
-				hackerNewsDurationMilliseconds: 0,
+				hackerNewsDurationMilliseconds: 15_000,
 				hackerNewsState: "refreshed",
 				status: "ok",
 				targetPathname: "/blog/runtime-log-test",
-				webmentionDurationMilliseconds: 0,
+				webmentionDurationMilliseconds: 15_000,
 				webmentionState: "refreshed"
 			}
 		]);

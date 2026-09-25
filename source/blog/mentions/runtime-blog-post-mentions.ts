@@ -148,11 +148,12 @@ function timeMentionCacheSectionLoad<SectionModel, RejectionReason>(
 	clock: Clock,
 	loadSectionModel: () => Task<MentionCacheSectionLoadingResult<SectionModel>, RejectionReason>
 ): Task<TimedMentionCacheSectionLoadingResult<SectionModel>, RejectionReason> {
-	const startedAtUnixEpochMilliseconds = clock.currentUnixEpochMilliseconds;
+	const startedAtMonotonicMicroseconds = clock.currentMonotonicMicroseconds;
 
 	return loadSectionModel().map((loadingResult) => {
-		const finishedAtUnixEpochMilliseconds = clock.currentUnixEpochMilliseconds;
-		const durationMilliseconds = finishedAtUnixEpochMilliseconds - startedAtUnixEpochMilliseconds;
+		const finishedAtMonotonicMicroseconds = clock.currentMonotonicMicroseconds;
+		const durationMicroseconds = finishedAtMonotonicMicroseconds - startedAtMonotonicMicroseconds;
+		const durationMilliseconds = Number(durationMicroseconds) / 1000;
 
 		return {
 			...loadingResult,
@@ -165,7 +166,7 @@ export async function loadBlogPostMentionsForTargetUrl(
 	dependencies: BlogPostMentionsDependencies,
 	targetUrl: string
 ): Promise<BlogPostMentionsModel> {
-	const startedAtUnixEpochMilliseconds = dependencies.clock.currentUnixEpochMilliseconds;
+	const startedAtMonotonicMicroseconds = dependencies.clock.currentMonotonicMicroseconds;
 	const mentionLoadingDependencies = createMentionLoadingDependencies(dependencies);
 	const [webmentionTaskResult, hackerNewsTaskResult] = await Promise.all([
 		timeMentionCacheSectionLoad(dependencies.clock, () => {
@@ -219,14 +220,15 @@ export async function loadBlogPostMentionsForTargetUrl(
 		unwrapInfallibleResult(webmentionTaskResult);
 	const hackerNewsLoadingResult: TimedMentionCacheSectionLoadingResult<HackerNewsSectionModel> =
 		unwrapInfallibleResult(hackerNewsTaskResult);
-	const finishedAtUnixEpochMilliseconds = dependencies.clock.currentUnixEpochMilliseconds;
+	const finishedAtMonotonicMicroseconds = dependencies.clock.currentMonotonicMicroseconds;
+	const durationMicroseconds = finishedAtMonotonicMicroseconds - startedAtMonotonicMicroseconds;
 	const targetUrlValue = new URL(targetUrl);
 	const targetPathname = targetUrlValue.pathname;
 
 	dependencies.logInfo(
 		"Loaded blog post mentions",
 		createBlogPostMentionsLoadedLogProperties({
-			durationMilliseconds: finishedAtUnixEpochMilliseconds - startedAtUnixEpochMilliseconds,
+			durationMilliseconds: Number(durationMicroseconds) / 1000,
 			hackerNewsDurationMilliseconds: hackerNewsLoadingResult.durationMilliseconds,
 			hackerNewsState: hackerNewsLoadingResult.state,
 			targetPathname,
