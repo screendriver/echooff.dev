@@ -51,7 +51,7 @@ The right representation is the one that makes the actual decision obvious witho
 
 Concision is useful.
 
-Concision is not the same as simplicity.
+Concision is not the same as simplicity. An [explicit return](/blog/prefer-explicit-returns-in-typescript) makes one of those decisions visible: whether a function should expose the result of an operation it calls.
 
 ## Abstractions should be discovered
 

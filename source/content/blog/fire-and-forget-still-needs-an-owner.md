@@ -121,6 +121,8 @@ fireAndForgetInvoker.fireAndForget(() => {
 });
 ```
 
+The callback must return the Promise so the invoker can observe its rejection. An [explicit `return`](/blog/prefer-explicit-returns-in-typescript) makes that handoff visible.
+
 The resolved value is deliberately ignored. A synchronous failure while starting the operation and an asynchronous rejection after it started both reach the same boundary.
 
 The invoker accepts a function rather than an already running Promise for the same reason. Calling `fireAndForget(preloadAccount(accountId))` would start the operation before the invoker receives it. A synchronous failure during that call would happen outside the boundary.
