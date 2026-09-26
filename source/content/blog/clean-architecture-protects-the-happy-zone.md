@@ -1,105 +1,36 @@
 ---
 title: "Clean Architecture protects the happy zone"
-description: "Clean Architecture is not only about drawing onions or creating folders. It is about protecting pure application logic from the messy outside world."
+description: "Keep business rules independent of frameworks, external data and runtime state. Clear boundaries make those rules easier to understand and test."
 publishedAt: "2026-06-27T06:58:00+02:00"
+updatedAt: "2026-09-26T18:09:00+02:00"
 topic: "Architecture"
 ---
 
-Clean Architecture is one of those ideas that is easy to draw and hard to keep in real code.
+A checkout rule should be able to report a missing shipping address without knowing how the user interface explains the problem. When it calls a translation function, it also takes responsibility for choosing a UI message. A test of the rule then needs a translator even though the decision itself has nothing to do with language.
 
-The onion diagram is useful because it shows one important rule: source code dependencies point inward. Outer code may know inner code. Inner code must not know outer code.
+The same kind of coupling appears when a discount calculation reads browser storage or a trial calculation reads the system clock. To understand the decision, we also have to understand the environment in which it runs.
 
-That sounds simple until you look at a frontend application and notice how often this rule gets violated quietly.
+I want those decisions in a part of the application that can be understood and tested on its own. I call that part the happy zone. Clean Architecture provides a dependency rule that helps keep it that way.
 
-A use case receives a translation function. Business logic reads `new Date()` directly. Application code knows about a modal. A component passes raw network data deeper into the system because TypeScript was told to trust it. Storage, browser APIs, current time, user input and third-party responses slowly move closer to the center.
+## Dependencies point toward the rules
 
-None of these things look dramatic in isolation.
+The [dependency rule in Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) says that source code dependencies point inward. In practical terms, a React component can import a checkout rule, but the checkout rule should not import React or depend on the component's props. The rule describes which checkouts are allowed. The component decides how to display the result.
 
-Together, they make the important code expensive to change.
-
-That is the real point of the onion.
-
-Not folders.
-
-Boundaries.
+This applies to data types as well as function calls. A checkout rule that accepts an HTTP request object must know how to read its body and parameters. The caller can do that work and pass checkout data instead, leaving the rule independent of how the request was delivered.
 
 ![Clean Architecture protects the happy zone](../../assets/blog/clean-architecture-happy-zone/clean-architecture-happy-zone.svg)
 
-## The onion is useful, but it is not the architecture
+The diagram is a simplified way to think about these responsibilities. The happy zone contains the decisions I want to keep pure. The surrounding DMZ is boundary code that validates external values and maps them to application data. These are labels for this explanation, not a prescribed set of Clean Architecture layers.
 
-The onion matters, but not because circles are architecture.
+The diagram's "evil outside world" is shorthand for things those rules should not have to control. A network response may not match the expected contract. A stored value may come from an older application version. Reading the clock introduces a value that changes independently of the function's arguments. These dependencies need handling, but that handling does not belong in every business rule.
 
-It matters because it shows what should be stable. The further inward code lives, the less it should know about the outside world. The center should not know whether the application is rendered with React, whether data came from HTTP, whether a message is shown in a toast, or whether the current language is English or German.
+The benefit is concrete: changing how a value is stored should not require changing the rule that uses it, provided the value still means the same thing. The same reasoning applies to [direct access to browser globals](/blog/avoid-direct-browser-globals). Moving a function into a folder named `domain` does not create that separation if it still reads `localStorage`.
 
-The inner part should know the rules.
+## Check external data before passing it inward
 
-The outer part should know the world.
+A type assertion such as `(await response.json()) as Order` does not establish that the response is an order. [Type assertions are removed during compilation](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions); they do not check the value at runtime. A missing or incorrectly typed field can still reach the code that expects it.
 
-When that direction is respected, the application becomes easier to reason about. When it is ignored, every small change starts to touch too many places. A UI decision becomes an application decision. A browser detail becomes a business rule. A response shape from one API becomes a type that leaks everywhere.
-
-That is not Clean Architecture.
-
-That is coupling with nicer folder names.
-
-## The outside world is evil
-
-I do not mean evil in a dramatic way.
-
-I mean evil in a practical way.
-
-The outside world is everything you do not fully control: user input, network responses, browser APIs, storage, date and time, random values, environment variables, third-party libraries, rendering and framework behavior.
-
-All of these things are allowed to be messy. They are allowed to fail. They are allowed to change shape. They are allowed to be unavailable. They are allowed to be different tomorrow.
-
-The mistake is not that the outside world is messy.
-
-The mistake is letting that mess walk straight into the center of the application.
-
-Dirty code at the edge is normal.
-
-Dirty code in the center is expensive.
-
-## The DMZ exists for a reason
-
-Between the outside world and the happy zone, there should be a boundary.
-
-Call it a boundary.
-
-Call it an adapter layer.
-
-Call it a DMZ.
-
-The name is not important. The job is important: dirty data should not enter the application and pretend to be trusted.
-
-This is where [runtime validation belongs](/blog/runtime-validation-is-a-boundary-concern). This is where date parsing belongs. This is where user input verification belongs. This is where network response mapping belongs. This is where unknown failures become semantic failures.
-
-The outside world gives you `unknown`.
-
-The boundary turns it into application data.
-
-This is bad:
-
-```typescript
-import { isNumber, isPlainObject, isString } from "@sindresorhus/is";
-
-type Order = {
-  id: string;
-  totalInCents: number;
-};
-
-async function loadOrderTotal(): Promise<number> {
-  const response = await fetch("/api/current-order");
-  const order = (await response.json()) as Order;
-
-  return order.totalInCents;
-}
-```
-
-The type assertion does not validate anything. It only tells TypeScript to stop asking questions.
-
-The code looks typed, but the application is still trusting the outside world.
-
-A boundary should be more explicit:
+The boundary should check the assumptions the application relies on and construct the data it passes inward. For this example, an order must have a nonempty ID and a nonnegative, safe-integer total in cents:
 
 ```typescript
 type Order = {
@@ -112,7 +43,7 @@ type ParseOrderResponseResult =
   | { status: "invalid"; reason: "invalidOrderResponse" };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return isPlainObject(value);
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 function parseOrderResponse(externalOrder: unknown): ParseOrderResponseResult {
@@ -123,11 +54,15 @@ function parseOrderResponse(externalOrder: unknown): ParseOrderResponseResult {
   const id = externalOrder["id"];
   const totalInCents = externalOrder["totalInCents"];
 
-  if (!isString(id)) {
+  if (typeof id !== "string" || id.length === 0) {
     return { status: "invalid", reason: "invalidOrderResponse" };
   }
 
-  if (!isNumber(totalInCents)) {
+  if (
+    typeof totalInCents !== "number" ||
+    !Number.isSafeInteger(totalInCents) ||
+    totalInCents < 0
+  ) {
     return { status: "invalid", reason: "invalidOrderResponse" };
   }
 
@@ -135,27 +70,15 @@ function parseOrderResponse(externalOrder: unknown): ParseOrderResponseResult {
 }
 ```
 
-This is not an argument for handwritten parsers. In real code, I would often use Zod, ArkType, Valibot or a small parser here. The tool is not the architecture.
+The `Order` type belongs to the application. The parser belongs to the boundary and constructs an `Order` after checking the external value. A schema library could do the checking instead; the important part is that the application receives data with an established contract. I cover that in more detail in [Runtime validation is a boundary concern](/blog/runtime-validation-is-a-boundary-concern).
 
-The boundary is the architecture.
+This parser only deals with a decoded value. The HTTP code still has to handle unsuccessful responses and JSON decoding failures before calling it. Once it succeeds, application code no longer needs to ask whether `totalInCents` is a string or a missing property.
 
-The important part is that the happy zone receives an `Order`, not a random JSON blob with a TypeScript costume.
+That does not make the order valid for every operation. Whether a customer may pay for it or whether it qualifies for a discount remains a business decision. Checking the external representation and applying those rules are different responsibilities.
 
-This is also why I care about [avoiding direct browser globals](/blog/avoid-direct-browser-globals), [dependency injection without frameworks](/blog/dependency-injection-without-frameworks-in-typescript), and [not throwing for expected failures](/blog/avoid-throwing-for-expected-failures-typescript).
+## Keep decisions in ordinary functions
 
-They are different ways of protecting the same boundary.
-
-## The happy zone should be boring
-
-The center of the application should be boring.
-
-That is a compliment.
-
-Boring code is easy to read and easy to test. It does not need a browser to prove that it works. It does not need a test runner trick to make time stand still. It does not need a global mock to avoid touching the network.
-
-The happy zone is where the application decisions live. It should mostly be pure functions with explicit input and explicit output. It should avoid hidden state. When state is needed, that state should be small, explicit and immutable.
-
-This is the kind of code I want in the happy zone:
+Once the input has a known meaning, a rule can work with it directly. Suppose registered customers receive a ten percent discount when their basket total reaches 10,000 cents:
 
 ```typescript
 type Customer = {
@@ -190,108 +113,36 @@ function calculateDiscount(options: CalculateDiscountOptions): Discount {
 }
 ```
 
-No React. No HTTP. No browser. No translation. No current date. No hidden global state.
+This function does not care whether the basket came from an HTTP response, local storage or a test fixture. Its caller supplies the customer and basket and it returns the discount without changing either input. The same input values produce the same result.
 
-Just a rule.
+That makes the tests straightforward. A guest receives no discount even with a large basket. A registered customer receives none at 9,999 cents and ten percent at 10,000 cents. Testing those cases requires no browser or network setup.
 
-That does not make the whole application pure. It makes the important part protectable.
+This is what I mean by a [boring core](/blog/boring-code-is-a-feature). The rule may become more involved as the product changes, but its tests should remain about the rule. When testing a discount starts to require storage mocks or mounting a component, I would first ask why those dependencies are part of the calculation.
 
-This is the place where meaningful 100% test coverage becomes realistic. Not because coverage is a religion, but because the code is small enough, deterministic enough and explicit enough that testing all meaningful branches is boring.
+## Return meaning instead of presentation
 
-That is exactly what I want from important code.
+The checkout example from the opening has the same separation available to it. The rule can determine that a shipping address is missing without choosing the message the user sees.
 
-## Translations belong to the UI
+Passing a `translate` function into the rule makes the dependency explicit, but it does not make it appropriate. The rule still chooses translation keys and returns presentation text. A test now has to account for that presentation concern just to check whether checkout is allowed.
 
-Translations are a good example because they look harmless. I explore this boundary in more detail in [Translations belong to the user interface](/blog/translations-belong-to-the-user-interface).
-
-It is tempting to return translated strings from application code. The code already knows what failed, so why not return the message directly?
-
-Because a translated string is presentation.
-
-It is not application meaning.
-
-Imagine `translate` comes from the UI's i18n setup. Passing it as an argument makes the dependency visible, but visibility does not make it the right dependency.
-
-This is the wrong direction:
+Instead, `validate-checkout.ts` can return an application error:
 
 ```typescript
-import { isUndefined } from "@sindresorhus/is";
-
-type Translate = (key: string) => string;
-
 type Checkout = {
   shippingAddressId: string | undefined;
   totalInCents: number;
 };
 
-type ValidateCheckoutOptions = {
-  checkout: Checkout;
-  translate: Translate;
-};
-
-type ValidateCheckoutResult =
-  { status: "valid" } | { status: "invalid"; message: string };
-
-const paymentLimitInCents = 500_000;
-
-function validateCheckout(
-  options: ValidateCheckoutOptions
-): ValidateCheckoutResult {
-  const { checkout, translate } = options;
-
-  if (isUndefined(checkout.shippingAddressId)) {
-    return {
-      status: "invalid",
-      message: translate("checkout.error.shippingAddressMissing")
-    };
-  }
-
-  if (checkout.totalInCents > paymentLimitInCents) {
-    return {
-      status: "invalid",
-      message: translate("checkout.error.paymentLimitExceeded")
-    };
-  }
-
-  return { status: "valid" };
-}
-```
-
-The problem is not that `translate` is injected. Dependency injection does not make every dependency correct.
-
-The problem is the direction. The use case now knows about translations. It calls a UI concern and returns presentation instead of meaning.
-
-A translation key would not fix the boundary. Returning `checkout.error.paymentLimitExceeded` from this function would be less bad than returning an already translated string, but it would still make the inner layer know the shape of the translation catalog.
-
-Inside the use case, that key is a dependency leak.
-
-The application layer should return a semantic result:
-
-```typescript
-import { isUndefined } from "@sindresorhus/is";
-
-type Checkout = {
-  shippingAddressId: string | undefined;
-  totalInCents: number;
-};
-
-type ValidateCheckoutError = "shippingAddressMissing" | "paymentLimitExceeded";
-
-type ValidateCheckoutOptions = {
-  checkout: Checkout;
-};
+export type ValidateCheckoutError =
+  "shippingAddressMissing" | "paymentLimitExceeded";
 
 type ValidateCheckoutResult =
   { status: "valid" } | { status: "invalid"; error: ValidateCheckoutError };
 
 const paymentLimitInCents = 500_000;
 
-function validateCheckout(
-  options: ValidateCheckoutOptions
-): ValidateCheckoutResult {
-  const { checkout } = options;
-
-  if (isUndefined(checkout.shippingAddressId)) {
+export function validateCheckout(checkout: Checkout): ValidateCheckoutResult {
+  if (checkout.shippingAddressId === undefined) {
     return { status: "invalid", error: "shippingAddressMissing" };
   }
 
@@ -303,143 +154,84 @@ function validateCheckout(
 }
 ```
 
-Then the UI decides how that result is presented:
+A separate UI module imports the application error type and maps it to its translation catalog:
 
 ```typescript
-type ValidateCheckoutError = "shippingAddressMissing" | "paymentLimitExceeded";
+import type { ValidateCheckoutError } from "./validate-checkout.js";
 
 type CheckoutErrorTranslationKey =
-  | "checkout.error.paymentLimitExceeded"
-  | "checkout.error.shippingAddressMissing";
+  | "checkout.error.shippingAddressMissing"
+  | "checkout.error.paymentLimitExceeded";
 
 type Translate = (key: CheckoutErrorTranslationKey) => string;
 
-const validateCheckoutErrorTranslationKeys: Record<
+const checkoutErrorTranslationKeys: Record<
   ValidateCheckoutError,
   CheckoutErrorTranslationKey
 > = {
-  paymentLimitExceeded: "checkout.error.paymentLimitExceeded",
-  shippingAddressMissing: "checkout.error.shippingAddressMissing"
+  shippingAddressMissing: "checkout.error.shippingAddressMissing",
+  paymentLimitExceeded: "checkout.error.paymentLimitExceeded"
 };
 
-type FormatValidateCheckoutErrorOptions = {
+type FormatCheckoutErrorOptions = {
   error: ValidateCheckoutError;
   translate: Translate;
 };
 
-function formatValidateCheckoutError(
-  options: FormatValidateCheckoutErrorOptions
-): string {
+function formatCheckoutError(options: FormatCheckoutErrorOptions): string {
   const { error, translate } = options;
-  const translationKey = validateCheckoutErrorTranslationKeys[error];
 
-  return translate(translationKey);
+  return translate(checkoutErrorTranslationKeys[error]);
 }
 ```
 
-The inner layer returns meaning.
+The dependency now points from the UI toward the application. Renaming a translation key changes this mapping, not the checkout rule. Another caller can handle the same error without translating it at all.
 
-The outer layer maps that meaning to a translation key and translates it.
+Returning a translation key directly from the rule would retain the coupling to the catalog. `paymentLimitExceeded` describes a condition in the application; `checkout.error.paymentLimitExceeded` identifies an entry owned by the UI. Their similar names do not give them the same responsibility. [Translations belong to the user interface](/blog/translations-belong-to-the-user-interface) develops that distinction further.
 
-Here, knowing the key is fine. This function lives at the UI boundary. It maps application meaning to a UI catalog address, and then the UI can translate it, render it, log it, show a toast or attach it to a form field.
+## Make time an input to the decision
 
-That is the dependency rule in a practical frontend example. The same applies to labels, colors, modals, toasts, date formatting and layout decisions.
+A trial calculation can look self-contained while reading the clock through `new Date()`. Its result then depends on when it runs, even though its arguments do not include a start time.
 
-The application can decide what happened.
-
-The UI decides how humans see it.
-
-The names may look similar, but they have different owners. `paymentLimitExceeded` is application meaning. `checkout.error.paymentLimitExceeded` is a UI translation key.
-
-## Time is also outside world
-
-Time is another good example because it feels too small to matter.
-
-It is only `new Date()`.
-
-What could go wrong?
-
-A lot.
-
-When application logic reads the current time directly, the dependency is hidden. Tests become more complicated. Behavior becomes harder to reproduce. The function has an input that is not visible in its signature.
-
-This is a smell:
+For a rule that needs one timestamp I would pass that timestamp directly:
 
 ```typescript
 type Trial = {
-  customerId: string;
-  startsAt: Date;
-  expiresAt: Date;
-};
-
-function createTrial(customerId: string): Trial {
-  const startsAt = new Date();
-  const expiresAt = new Date(startsAt.getTime() + 14 * 24 * 60 * 60 * 1000);
-
-  return {
-    customerId,
-    startsAt,
-    expiresAt
-  };
-}
-```
-
-The function looks simple, but it secretly depends on the system clock.
-
-A better version makes time explicit:
-
-```typescript
-type WallClock = {
-  now: () => Date;
-};
-
-type Trial = {
-  customerId: string;
-  startsAt: Date;
-  expiresAt: Date;
+  readonly customerId: string;
+  readonly startsAt: Date;
+  readonly expiresAt: Date;
 };
 
 type CreateTrialOptions = {
   customerId: string;
-  wallClock: WallClock;
+  startsAt: Date;
 };
 
 const trialDurationInMilliseconds = 14 * 24 * 60 * 60 * 1000;
 
 function createTrial(options: CreateTrialOptions): Trial {
-  const { customerId, wallClock } = options;
-  const startsAt = wallClock.now();
-  const expiresAt = new Date(startsAt.getTime() + trialDurationInMilliseconds);
+  const { customerId, startsAt } = options;
+  const startTimeInMilliseconds = startsAt.getTime();
 
   return {
     customerId,
-    startsAt,
-    expiresAt
+    startsAt: new Date(startTimeInMilliseconds),
+    expiresAt: new Date(startTimeInMilliseconds + trialDurationInMilliseconds)
   };
 }
 ```
 
-Now the dependency is visible. Production can pass the real wall clock. Tests can pass a deterministic clock.
+The caller supplies a valid start date. This example defines the duration as fourteen 24-hour periods, rather than a calendar-day calculation. The function constructs its own dates from that input; unlike `new Date()` with no arguments, those constructor calls do not read the current time.
 
-The exact shape does not matter. In my own code, I use [`@enormora/clock`](https://github.com/enormora/clock) to provide explicit time access. When an application only needs the current wall time, it can keep a narrower `WallClock` interface like this one. The application can ask for the current time, but it does not know where that time comes from.
+Tests can supply a fixed start date and assert the expiration directly. The application code that starts the trial is responsible for obtaining the current time and passing it in.
 
-No fake timers. No waiting. No global patching. No magic.
+When a workflow needs to read time as it proceeds, an injected clock is useful. In my own code I use [`@enormora/clock`](https://github.com/enormora/clock) so that production and tests can provide different clock implementations. Reading an injected clock is still an effect. Injection makes that effect explicit and controllable; passing the resulting timestamp into a calculation keeps the calculation pure. I cover clock injection in [Time is an external dependency](/blog/time-is-an-external-dependency).
 
-That is the value of the abstraction.
+## Let the application define the operations it needs
 
-Not abstraction because abstraction sounds professional.
+Some application code must coordinate effects. A checkout workflow may validate the order, request a payment and react to the outcome. It cannot be reduced to a pure calculation just by moving code into another module.
 
-Abstraction because it gives control back to the code that needs to make a decision.
-
-## Dependency injection is the boring mechanism
-
-Dependency injection is often explained as a testing technique.
-
-That is too small.
-
-Testing is one benefit. The bigger benefit is direction. The application layer defines what it needs, and the outer layer provides the implementation.
-
-The use case does not need to know whether a payment is submitted through one provider, another provider, a fake provider or a local test double. It only needs to know what the dependency means.
+It can still avoid depending on a particular payment provider. The application can define the operation in its own terms:
 
 ```typescript
 type ChargePaymentRequest = {
@@ -457,50 +249,18 @@ type PaymentGateway = {
 };
 ```
 
-The interface belongs to the application. The implementation belongs to the infrastructure.
+The checkout workflow receives a `PaymentGateway`. It calls `charge` with an order ID and an amount, then handles the returned result. A separate module makes the provider-specific request and converts recognized responses into application results. This module is the payment adapter.
 
-That small distinction matters.
+The `PaymentGateway` type belongs to the application. The adapter imports that type and startup code creates the adapter and passes it to the checkout workflow. The workflow does not import the adapter or the provider's SDK. Passing the implementation in this way is ordinary [dependency injection without a framework](/blog/dependency-injection-without-frameworks-in-typescript).
 
-The inner layer says what it needs.
+At runtime, calling `charge` still reaches the payment provider. The dependency rule keeps the workflow independent of the provider-specific implementation; it does not prevent the workflow from requesting a payment. The workflow still performs effects, while the rules it uses can remain pure functions.
 
-The outer layer says how it is done.
+The result type describes the [expected failures](/blog/avoid-throwing-for-expected-failures-typescript) the application handles. It does not guarantee that the promise can never reject. The adapter and the application's error handling still need to account for unexpected failures.
 
-A dependency injection framework is optional.
+## Keep the separation useful
 
-A dependency direction is not.
+The boundary code needs tests too. A unit test for the discount does not prove that an HTTP response is parsed correctly or that the payment adapter sends the right request. Separating the code lets those tests answer different questions without making every business-rule test exercise the integration.
 
-## This is not about purity theater
+There is no need to reproduce every ring of a diagram as a directory or introduce an interface for every function. A small feature may need only a module containing its rules, boundary code for its external dependencies and a caller that connects them. Add a separation when it lets a real decision be understood or changed independently.
 
-Some code has to be dirty.
-
-The browser has to be called. Data has to be fetched. Events have to be handled. Storage has to be read. Translations have to be applied. Errors have to be shown.
-
-Clean Architecture does not remove side effects. It moves them to places where side effects are expected.
-
-That also applies when a caller intentionally does not wait for an asynchronous operation. A [fire-and-forget invoker](/blog/fire-and-forget-still-needs-an-owner) gives that work an explicit boundary without making the operation responsible for logging its own failure.
-
-The goal is not to make every line pure.
-
-The goal is to protect the lines that make decisions.
-
-That is a very different thing.
-
-## Final thought
-
-The onion is useful, but the onion is a reminder, not the goal.
-
-Clean Architecture is not about creating more folders. It is not about adding interfaces everywhere. It is not about pretending frontend applications are backend services.
-
-It is about boundaries.
-
-The outside world is messy. The DMZ protects the application from that mess. The happy zone contains the rules that should be stable, explicit and easy to test.
-
-That is where the important decisions belong.
-
-Not in React components. Not in browser adapters. Not in translation calls. Not behind `new Date()`. Not inside a random object that came from the network.
-
-Clean Architecture is not valuable because the diagram looks good.
-
-It is valuable because the center becomes boring.
-
-And boring code is much easier to trust.
+With that separation, changing the discount threshold does not involve browser storage and renaming a translation key does not involve the checkout rule. The code that reads storage and renders messages is still necessary. It just no longer has to participate in every decision the application makes.
