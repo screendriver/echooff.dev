@@ -1,63 +1,32 @@
 ---
 title: "Boring code is a feature"
-description: "Clever code may impress in a pull request. Boring code keeps a system understandable, changeable and useful for years."
+description: "Predictable code makes decisions visible and keeps changes local. Useful abstractions should reduce the work of understanding and maintaining a system."
 publishedAt: "2026-07-18T11:07:00+02:00"
+updatedAt: "2026-09-26T12:44:00+02:00"
 topic: "Architecture"
 ---
 
-Most production code should be boring.
+A small change to an authorization rule can require more work than the diff suggests. Before editing the condition, an engineer may need to understand a generic policy engine, find the configuration that selects the rule and check which other features share its assumptions.
 
-That can sound like an argument against ambition, modern language features or sophisticated engineering. It is not.
-
-Boring code is code that behaves the way a reader expects. Its dependencies are visible. Its control flow is unsurprising. Its names explain the decisions being made. Its abstractions correspond to concepts the system actually has.
-
-It does not ask every future reader to rediscover the trick that made the original author feel clever.
-
-Engineering culture often rewards visible sophistication. A generic abstraction can look more senior than a direct function. A dense expression can look more elegant than a few named steps. A new library can look more modern than ordinary language features.
-
-Sometimes those choices are correct.
-
-Too often, they optimize for how the code looks when it is written instead of how the system behaves when it has to change.
-
-Fancy code can be satisfying for one afternoon.
-
-Boring code keeps paying back for years.
+I want most production code to be boring. By that I mean that its names and control flow make the decisions clear, its dependencies are visible and its abstractions have an identifiable purpose. The reader should be able to spend their attention on whether the behavior is correct rather than on reconstructing how the implementation works.
 
 ## Boring code is predictable
 
-Code is written once, but it is reviewed, debugged, extended and explained many times.
+The author of a change has context that the next engineer may not share. They know why a branch exists and which edge cases shaped the implementation. Months later, someone investigating a failure may have to recover that reasoning from the code, tests and history. Assumptions that remain hidden become work for each person who needs to understand the behavior.
 
-The author has the entire problem cached in their head. They know why an abstraction exists, which edge cases matter and which apparently strange branch protects an important behavior. The next engineer only has the code.
+Making that context visible does not mean adding a comment beside every branch. A name can express the business decision and a focused test can preserve behavior that would otherwise look unnecessary. Some constraints still need an explanation, but a comment should not compensate for unclear structure, as I discuss in [Comments are not a substitute for design](/blog/comments-are-not-a-substitute-for-design).
 
-Every assumption that remains hidden transfers work from the author to every future reader.
+A payment workflow or a synchronization algorithm may still be difficult to understand. The goal is to avoid making the reader also account for hidden state or unrelated infrastructure. Boring code leaves room for the complexity the problem actually contains.
 
-That cost is easy to ignore while a pull request is small, the code compiles and the tests pass. It becomes visible later, when a requirement changes or a production issue must be understood by someone unfamiliar with the area.
+That is why I would not judge simplicity by the language features used. A `Result` type can make failure handling easier to follow, just as runtime validation makes assumptions about incoming data explicit. Pure functions and ordinary dependency injection can reduce the context needed to understand a rule. Code written entirely with basic language features can still hide state and obscure its decisions.
 
-Boring code reduces the amount of context that must be reconstructed before useful work can begin. It makes the obvious path the correct path.
-
-A comment is not automatically the right way to expose that context. Names, structure, tests and history usually preserve intent more reliably, as I explore in [Comments are not a substitute for design](/blog/comments-are-not-a-substitute-for-design).
-
-This does not mean that every problem is simple.
-
-Distributed state, authorization, synchronization, payments and time-dependent behavior contain real complexity. Boring code does not deny that complexity. It prevents accidental complexity from competing with it.
-
-A pure function can be boring. A `Result` type can be boring. Runtime validation can be boring. Dependency injection can be boring. A well-named transformation pipeline can be boring.
-
-The opposite is also true. Code can use only basic language features and still be a puzzle.
-
-The distinction is not imperative versus functional. It is not loops versus `map` and `filter`. It is not long code versus short code.
-
-The right representation is the one that makes the actual decision obvious without requiring hidden knowledge.
-
-Concision is useful.
-
-Concision is not the same as simplicity. An [explicit return](/blog/prefer-explicit-returns-in-typescript) makes one of those decisions visible: whether a function should expose the result of an operation it calls.
+The same applies to concision. A transformation expressed with `map` and `filter` may be clearer than a loop. Naming an intermediate value may make a dense expression easier to read. The useful question is how directly the code expresses the decision, not how many lines it occupies.
 
 ## Abstractions should be discovered
 
-One of the easiest ways to make code unnecessarily fancy is to build an abstraction for a future that has not happened yet. This violates [YAGNI](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it): you are paying today's complexity cost for requirements that may never exist.
+An abstraction built for requirements that do not exist yet still has to be understood and maintained. That is the concern behind [YAGNI](https://martinfowler.com/bliki/Yagni.html): we pay that cost whether or not the expected features arrive.
 
-Imagine that the first authorization rule in a feature is whether a user may publish an article. It would be possible to begin with generic predicate combinators:
+Suppose administrators and editors are allowed to publish articles. We could express that rule using generic predicate combinators:
 
 ```typescript
 type UserRole = "administrator" | "editor" | "reader";
@@ -90,9 +59,7 @@ export const canPublishArticle = anyOf([
 
 There is nothing inherently wrong with this code. In a system with many composable policies, `Predicate`, `anyOf` and `hasRole` may become useful vocabulary.
 
-But if this is the only rule, the abstraction does not simplify the system yet. It introduces a generic mechanism before the application has demonstrated that it needs one.
-
-The direct version describes the current domain without predicting the next one:
+For this one rule, though, they introduce a general way to construct policies before the application needs one. I would start with the direct version:
 
 ```typescript
 type UserRole = "administrator" | "editor" | "reader";
@@ -109,60 +76,18 @@ export function canPublishArticle(user: User): boolean {
 }
 ```
 
-This version is not better because fewer concepts are always better. It is better while the additional concepts have no proven purpose.
+Both versions are straightforward to test and both implement the same rule. I prefer the direct version here because the additional concepts in the first version have no demonstrated use yet. If the application already had a useful policy vocabulary, expressing the rule in that vocabulary could be the simpler choice.
 
-When more authorization rules appear, their similarities and differences become visible. An abstraction can then be designed from evidence instead of imagination.
+When more authorization rules appear, their similarities and differences become visible. An abstraction can then be designed around those requirements. [AHA programming](https://kentcdodds.com/blog/aha-programming), short for "avoid hasty abstractions", describes this approach without prescribing a fixed number of repetitions before extraction.
 
-This is the idea behind [AHA programming](https://kentcdodds.com/blog/aha-programming): avoid hasty abstractions.
-
-Some duplication can be fine in the beginning when it is deliberate. Two pieces of code may look similar today and still represent different concepts. Keeping them separate gives both implementations room to change independently.
-
-This is not an excuse to ignore duplication forever. It is a decision to postpone coupling until the code has taught us what actually belongs together.
-
-A little intentional duplication is often cheaper than the wrong abstraction.
-
-A good abstraction does not merely remove repeated lines.
-
-It removes a repeated concept.
+This does not require waiting for duplication before every abstraction. [Separating a business rule from a network dependency](/blog/clean-architecture-protects-the-happy-zone) can have an immediate purpose even with only one implementation. The question is whether the abstraction solves a problem the application has now.
 
 ## Boring code keeps change local
 
-Fancy abstractions often promise future speed. The next feature will only need another configuration object. The next integration will only need another adapter. The next rule will only need another strategy.
+Suppose publishing and deleting articles both initially allow administrators and editors. We could put that check in one `canManageArticles` function and use it for both operations. Later, the requirements change: editors may still publish, but only administrators may delete. Changing the shared condition would now change two permissions when only one should change.
 
-That promise is valuable when the future matches the model.
+Separate `canPublishArticle` and `canDeleteArticle` functions would let us update the deletion rule without changing publishing behavior. They may start with identical implementations, but they answer different questions. Code that deletes articles should still reuse `canDeleteArticle` so that the deletion rule is applied consistently. The mistake would be treating two different permissions as one rule merely because their current conditions match.
 
-When it does not, the abstraction turns one local change into a system-wide negotiation. A new requirement touches the generic type, the factory, the shared configuration, several tests and every consumer that depends on the old assumptions.
+Both functions could still use `hasRole` from the earlier example. Reusing a helper does not require combining the business decisions that use it.
 
-The code is reusable, but the change is not local.
-
-Good architecture is not the maximum amount of reuse. It is the ability to change one decision without accidentally changing unrelated decisions.
-
-The [happy zone in Clean Architecture](/blog/clean-architecture-protects-the-happy-zone) should be especially boring. It should contain domain decisions expressed with ordinary data and explicit dependencies. Infrastructure may be complicated. Frameworks may be complicated. The code that explains what the application means should not be.
-
-This is how boring code creates velocity.
-
-Engineering speed is not measured by how quickly code reaches a pull request. It is measured by how quickly a useful change reaches production safely and how little damage it creates for the next change.
-
-A direct implementation can be refactored once the right shape becomes visible. A speculative framework is harder to remove because the application has already been bent around it.
-
-Boring code also improves shared ownership. Reviewers can focus on behavior instead of decoding the implementation. Engineers can change unfamiliar areas without waiting for the one person who understands a private mechanism.
-
-A codebase should accumulate better defaults, not more personal signatures.
-
-## Final thought
-
-Boring code is not unambitious code.
-
-It is code that spends complexity where the product actually needs it. It makes important decisions visible, lets abstractions emerge from evidence and uses shared vocabulary instead of private tricks.
-
-Complexity is a budget.
-
-Spend it on the problem, not on proving that the implementation can be sophisticated.
-
-Fancy code may make an author feel clever today.
-
-Boring code lets everyone remain effective tomorrow.
-
-The best compliment for production code is not that it is ingenious.
-
-It is that someone changed it, and nothing surprised them.
+This is what keeping a change local means here: changing the deletion policy does not also require changing how publishing permissions are represented. Reviewers can focus on the deletion behavior and the tests for publishing keep their existing expectations. I would accept a little duplication to preserve that separation.
