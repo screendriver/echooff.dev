@@ -23,6 +23,11 @@
 			"matchPackageNames": ["hono", "@hono/*"]
 		},
 		{
+			"groupName": "Sentry dependencies",
+			"groupSlug": "sentry-dependencies",
+			"matchPackageNames": ["@sentry/browser", "@sentry/node"]
+		},
+		{
 			"matchFileNames": [".woodpecker/*.yaml"],
 			"matchUpdateTypes": ["minor", "patch"],
 			"automerge": true,
