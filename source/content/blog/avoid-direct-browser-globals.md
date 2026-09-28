@@ -1,360 +1,177 @@
 ---
 title: "Why you should not access browser globals directly"
-description: "Direct access to window, document, navigator and globalThis couples your code to the runtime, makes side effects harder to isolate, and leads to brittle tests."
+description: "Keep browser access at the boundary. Pass values or focused capabilities into application code so its behavior can be understood and tested independently."
 publishedAt: "2026-04-18T11:30:00+02:00"
+updatedAt: "2026-09-28T09:02:00+02:00"
 topic: "Architecture"
 ---
 
-Browser globals like `window`, `document`, `navigator`, `location`, `history`, `localStorage` or even `globalThis` often look harmless.
+A function that chooses between light and dark mode needs to know the user's preference and, when they choose to follow the system, the system preference. If it reads `window.matchMedia` internally, a test of that second case also has to arrange the browser API. A small decision now requires environment setup.
 
-They are available anyway.
-So why not just use them?
+I would separate reading the browser preference from deciding which color scheme to use. The browser still has to be accessed somewhere, but that access belongs in the code that connects the application to its environment. It should not be an implicit requirement of every function that uses the value.
 
-Because direct access to globals couples your code to a specific runtime, hides side effects behind seemingly simple function calls and makes isolation much harder than it needs to be.
+## A global read is still a dependency
 
-That is already a design problem in production code.
-
-But it becomes even more obvious once you try to write unit tests.
-
-## Browser globals are infrastructure
-
-`window`, `document`, and `navigator` are not just values.
-They are part of the environment your code happens to run in.
-
-That makes them infrastructure.
-
-Infrastructure is not the same thing as behavior.
-
-When your domain logic, application logic or user interface logic reaches into global browser state directly, it stops being a self-contained unit.
-It now depends on a runtime environment that exists outside the function.
-
-That has a few consequences:
-
-- the function is harder to understand in isolation
-- the code is harder to reuse in other environments
-- the side effects are less explicit
-- the tests now depend on runtime setup instead of just inputs and outputs
-
-This is the same mistake as reading from a database, the current date or time, or `process.env` directly in business logic.
-
-The browser environment is just another dependency boundary.
-
-## Direct global access hides dependencies
-
-Consider this example:
+Consider a theme setting with three choices: light, dark or system. A direct implementation might look like this:
 
 ```typescript
-export function getLanguage(): string {
-  return navigator.language;
+type ColorScheme = "light" | "dark";
+type ThemePreference = ColorScheme | "system";
+
+export function resolveColorScheme(preference: ThemePreference): ColorScheme {
+  if (preference !== "system") {
+    return preference;
+  }
+
+  const systemPrefersDarkMode = window.matchMedia(
+    "(prefers-color-scheme: dark)"
+  ).matches;
+
+  return systemPrefersDarkMode ? "dark" : "light";
 }
 ```
 
-At first glance, this looks small and simple.
+The explicit preference is an argument. The system preference is another input, but it is obtained inside the function. To test the `"system"` branch we have to make `window.matchMedia` available and control what it returns. The function cannot be understood entirely from the values passed to it.
 
-But the function is not pure.
-It reads external state.
-Its behavior depends on the environment.
-And the dependency is hidden.
+The same issue appears when code reads `navigator.language`, `document.title` or a value from `localStorage`. These reads do not necessarily change anything, but they depend on state outside the function. That is different from a calculation whose result depends only on its arguments.
 
-The function signature says: no input.
-Reality says: depends on `navigator`.
+The problem is not that those APIs are global identifiers. It is that code making a decision also takes responsibility for obtaining the information from a particular runtime. In the theme example, the precedence rule and the browser query have been combined even though they can be tested and changed separately.
 
-That mismatch matters.
+## Pass the value into the rule
 
-A function should communicate what it needs.
-If it depends on a language provider, that dependency should be explicit.
+The rule needs a boolean describing the system preference. It does not need a `Window`, a `MediaQueryList` or an object with a method that returns the boolean.
 
-For example:
+In `resolve-color-scheme.ts`, that gives us:
 
 ```typescript
-type LanguageProvider = {
-  getLanguage: () => string;
+export type ColorScheme = "light" | "dark";
+export type ThemePreference = ColorScheme | "system";
+
+type ResolveColorSchemeOptions = {
+  preference: ThemePreference;
+  systemPrefersDarkMode: boolean;
 };
 
-type GetLanguageOptions = {
-  languageProvider: LanguageProvider;
-};
+export function resolveColorScheme(
+  options: ResolveColorSchemeOptions
+): ColorScheme {
+  const { preference, systemPrefersDarkMode } = options;
 
-export function getLanguage(options: GetLanguageOptions): string {
-  const { languageProvider } = options;
+  if (preference !== "system") {
+    return preference;
+  }
 
-  return languageProvider.getLanguage();
+  return systemPrefersDarkMode ? "dark" : "light";
 }
 ```
 
-Now the dependency is visible.
-The function can run anywhere.
-And the test does not need a fake browser.
-
-This is not about adding a dependency injection framework.
-It is the same idea I described in [Dependency injection without frameworks](/blog/dependency-injection-without-frameworks-in-typescript): make dependencies visible, pass them explicitly and keep infrastructure at the edge.
-
-## `globalThis` is not a magic solution
-
-Some developers replace `window` with `globalThis` and think the problem is solved.
-
-It is not.
-
-`globalThis` gives you a standardized way to refer to the global object of the current environment.
-That does not mean the available APIs are the same across environments.
-
-A browser global object is not the same as a Node.js global object.
-
-Node.js does not suddenly provide a real `document` just because `globalThis` exists.
-And even where names overlap, behavior can still differ depending on the runtime.
-
-So this is not much better:
+A browser-only module can read the media query, call the rule and set the attribute used by the application's theme styles:
 
 ```typescript
-export function getTitle(): string {
-  return globalThis.document.title;
+import {
+  resolveColorScheme,
+  type ThemePreference
+} from "./resolve-color-scheme.js";
+
+export function applyThemePreference(preference: ThemePreference): void {
+  const systemPrefersDarkMode = window.matchMedia(
+    "(prefers-color-scheme: dark)"
+  ).matches;
+
+  const colorScheme = resolveColorScheme({
+    preference,
+    systemPrefersDarkMode
+  });
+
+  document.documentElement.dataset.colorScheme = colorScheme;
 }
 ```
 
-The coupling is still there.
-The side effect is still hidden.
-The runtime dependency is still implicit.
+This code intentionally depends on the browser. Its job is to connect the rule to browser state and the rendered page. The rule itself can now run with any supplied preferences, including values from a test.
 
-You did not remove the problem.
-You only changed the spelling.
+This applies the preference at the moment the function runs. [`matchMedia`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) also provides change events. To keep following the system the browser code would subscribe to those changes, apply the current preference again and remove the listener when it is no longer needed. The subscription belongs with the browser integration, not in `resolveColorScheme`.
 
-## Unit tests should not need a fake browser
+There is no need to add a `ColorSchemeReader` just to forward its return value through another function. Passing the boolean establishes the separation without introducing an additional interface. It is the same principle as keeping the [happy zone independent of external state](/blog/clean-architecture-protects-the-happy-zone).
 
-This usually becomes visible in tests.
+## Test the decision without arranging the browser
 
-Many teams run unit tests in Node.js.
-That is a good default.
-It is fast, simple and close to what unit tests actually need: executing JavaScript and checking behavior.
-
-But Node.js does not provide a real browser environment.
-
-There is no real `document`.
-No real `window`.
-No real [DOM](https://en.wikipedia.org/wiki/Document_Object_Model).
-
-So once production code reads browser globals directly, teams often react by adding `jsdom` or `happy-dom` to make the tests pass.
-
-That may make the error disappear.
-But it does not improve the design.
-
-Now the unit test only works because the test runner simulates a browser-like environment.
-That means the test is no longer exercising an isolated unit.
-It is exercising code plus a runtime simulation.
-
-That is already closer to integration testing than unit testing.
-
-A simulated DOM can be useful in the right place.
-But it is still an approximation.
-It should support intentional integration-style tests, component tests or browser-focused test scenarios.
-
-It should not be the foundation for ordinary unit tests.
-
-If your unit test only works once a fake browser has been installed, the design is usually telling you something.
-
-## The problem is architectural
-
-It is tempting to treat this as a test setup issue.
-
-It is not.
-
-Code that reads from globals directly is harder to compose and harder to move.
-
-Maybe today it runs in the browser.
-Tomorrow part of it runs during server-side rendering.
-Or in a worker.
-Or in Node.js during pre-rendering.
-Or in a CLI script.
-Or in a test without DOM access.
-
-Direct global access makes that transition harder because environment assumptions are spread everywhere.
-
-Once browser access is pushed behind an explicit boundary, the rest of the code becomes easier to reuse.
-
-That is a design win even before the first test is written.
-
-## Isolate browser access at the edge
-
-The better approach is simple:
-
-Keep browser-specific code at the edge of the system.
-Pass the values or capabilities inward.
-
-For example, instead of this:
+The important behavior is that an explicit preference takes precedence over the system, while `"system"` follows it. Those cases can be tested directly:
 
 ```typescript
-export function shouldUseDarkMode(): boolean {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-}
-```
-
-write this:
-
-```typescript
-type ColorSchemeReader = {
-  prefersDarkMode: () => boolean;
-};
-
-type ShouldUseDarkModeOptions = {
-  colorSchemeReader: ColorSchemeReader;
-};
-
-export function shouldUseDarkMode(options: ShouldUseDarkModeOptions): boolean {
-  const { colorSchemeReader } = options;
-
-  return colorSchemeReader.prefersDarkMode();
-}
-```
-
-And then provide the browser implementation at the edge:
-
-```typescript
-type ColorSchemeReader = {
-  prefersDarkMode: () => boolean;
-};
-
-export function createBrowserColorSchemeReader(): ColorSchemeReader {
-  return {
-    prefersDarkMode() {
-      return window.matchMedia("(prefers-color-scheme: dark)").matches;
-    }
-  };
-}
-```
-
-Now the browser dependency is isolated in one place.
-
-Your application logic stays portable.
-Your unit tests stay simple.
-And the side effect is explicit.
-
-## Pass values when you do not need capabilities
-
-In many cases, you do not even need to inject an object.
-You can pass the value directly.
-
-Instead of this:
-
-```typescript
-export function createGreeting(): string {
-  return document.title === "Admin" ? "Welcome back" : "Hello";
-}
-```
-
-prefer this:
-
-```typescript
-type CreateGreetingOptions = {
-  pageTitle: string;
-};
-
-export function createGreeting(options: CreateGreetingOptions): string {
-  const { pageTitle } = options;
-
-  return pageTitle === "Admin" ? "Welcome back" : "Hello";
-}
-```
-
-Then the composition root can read from the browser:
-
-```typescript
-const greeting = createGreeting({
-  pageTitle: document.title
-});
-```
-
-This keeps the dependency where it belongs.
-
-Read from the outside world once.
-Then pass plain data into the code that makes decisions.
-
-That is usually the simplest form of dependency injection.
-
-## Tests become smaller and more honest
-
-Once globals are removed from the unit, tests stop needing environment tricks.
-
-```typescript
-import assert from "node:assert/strict";
+import assert from "node:assert";
 import test from "node:test";
 
-import { createGreeting } from "./create-greeting.js";
+import { resolveColorScheme } from "./resolve-color-scheme.js";
 
-test("returns a welcome message for the admin page", () => {
-  const result = createGreeting({
-    pageTitle: "Admin"
+test("uses light when selected, even if the system prefers dark", () => {
+  const result = resolveColorScheme({
+    preference: "light",
+    systemPrefersDarkMode: true
   });
 
-  assert.equal(result, "Welcome back");
+  assert.strictEqual(result, "light");
 });
 
-test("returns a generic greeting for other pages", () => {
-  const result = createGreeting({
-    pageTitle: "Home"
+test("uses dark when selected, even if the system prefers light", () => {
+  const result = resolveColorScheme({
+    preference: "dark",
+    systemPrefersDarkMode: false
   });
 
-  assert.equal(result, "Hello");
+  assert.strictEqual(result, "dark");
+});
+
+test("follows a dark system preference when system is selected", () => {
+  const result = resolveColorScheme({
+    preference: "system",
+    systemPrefersDarkMode: true
+  });
+
+  assert.strictEqual(result, "dark");
+});
+
+test("follows a light system preference when system is selected", () => {
+  const result = resolveColorScheme({
+    preference: "system",
+    systemPrefersDarkMode: false
+  });
+
+  assert.strictEqual(result, "light");
 });
 ```
 
-This test runs in plain Node.js.
-No `jsdom`.
-No `happy-dom`.
-No fake DOM bootstrapping.
-No hidden browser contract.
+These tests need no `window` or media-query implementation. They also remain useful if the browser integration changes how it obtains or displays the preference. Their assertions describe the decision rather than the mechanism used to read its inputs.
 
-Just inputs and outputs.
+They do not prove that the media query is correct or that the page's styles respond to the attribute. Those are separate integration concerns. Keeping them out of the rule's tests makes it clear what each test establishes.
 
-That is what unit testing should feel like.
+## Pass an operation when a value is not enough
 
-## Browser wrappers should be boring
+A snapshot is sufficient for choosing a color scheme. Other code needs to perform an operation or read a value later rather than when the caller first supplies its inputs. In those cases a function can be the appropriate dependency.
 
-Another good side effect of this approach is that browser-specific code becomes small and boring.
+For example a workflow that copies generated text can accept a function with the signature `(text: string) => Promise<void>`. The browser implementation calls `navigator.clipboard.writeText(text)`. A test can supply an implementation that records the text or rejects, depending on the behavior being checked. The workflow does not need the entire `Navigator` object.
 
-That is a good thing.
+That operation still interacts with the outside world. Injecting it makes the dependency explicit and replaceable; it does not make the workflow pure. The [clipboard API's restrictions](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText) still apply and the caller must handle a rejected write rather than reporting success before it finishes.
 
-You usually do not need to unit test a one-line wrapper around `document.title` or `window.matchMedia`.
-The interesting behavior is not the wrapper.
-The interesting behavior is what your application does with the value.
+The distinction is whether the code needs information or the ability to do something. Prefer the value when it already has everything needed for the decision. Pass a focused function when the operation itself belongs to the workflow. Neither requires a container or a service registry, as I explain in [Dependency injection without frameworks](/blog/dependency-injection-without-frameworks-in-typescript).
 
-So keep browser access tiny.
-Keep it explicit.
-And spend your testing effort on the behavior that actually matters.
+## `globalThis` does not remove the dependency
 
-## Treat browser APIs like any other side effect
+Replacing `window.document` with `globalThis.document` does not separate a function from the document. [`globalThis`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis) provides a standard way to access the global `this` value across environments. It does not make the same APIs available in each one.
 
-The browser is an external system.
+The relevant question is still whether the function needs to read a document at all. If it only needs a title, the caller can supply the title. If it is responsible for updating the document, that implementation belongs in a dedicated browser-access module.
 
-It is available more often than a database or a network call, so people forget that.
-But architecturally, it is still external.
+Moving a global read to the top of a module does not help either. A module-level `window.matchMedia` call reads the browser during import, before any exported function is called. A module intended to be imported outside a browser should not perform that read merely because it was loaded.
 
-Reading from `window`, mutating `document`, inspecting `navigator`, calling `localStorage` or reaching into `globalThis` are all interactions with the environment.
+Keeping the access inside the browser integration makes that requirement explicit. It does not mean inventing a fallback browser for every other environment. Server-rendered code still needs a deliberate choice about which preferences are available there.
 
-That means they should be treated like side effects:
+## Browser code still needs browser tests
 
-- isolate them
-- make dependencies explicit
-- keep them at the boundary
-- test the behavior separately from the environment
+A dedicated browser-access module that manages focus or updates DOM elements is intentionally browser-dependent. A DOM test environment can be appropriate for that code. Tools such as [jsdom](https://github.com/jsdom/jsdom) implement browser APIs for testing but their presence alone does not determine whether a test is useful or how much code it exercises.
 
-A test environment that compensates for hidden dependencies is not proof of good design.
-It is often proof that the code and the environment have been coupled too early.
+I would question the setup when a test needs those tools only to evaluate a rule such as preference precedence. Before adding a simulated browser or patching a global, check whether the value could have been supplied directly. A missing browser API in a test may be exposing an unnecessary dependency in the implementation.
 
-Once you isolate browser APIs properly, your code becomes easier to reason about and easier to test.
+The browser integration still needs verification of its own. For the theme example, a browser test can check that selecting a preference changes the rendered theme and that following the system responds to changes. It does not need to repeat every case already covered by the rule's tests.
 
-And you no longer need a fake browser just to verify a simple function.
+Small wrappers do not automatically need separate unit tests but neither are they automatically correct. Selecting the wrong media query, forgetting to remove a listener or handling a rejected operation incorrectly are application mistakes. Test those responsibilities where their behavior is observable rather than treating the wrapper as trustworthy merely because it is short.
 
-## Closing thoughts
-
-Direct access to browser globals is convenient in the same way many bad architectural decisions are convenient: it saves a few seconds now and creates confusion later.
-
-The browser environment is infrastructure.
-Infrastructure belongs at the edge.
-
-Your units should not need `window`.
-They should not need `document`.
-They should not need `navigator`.
-And replacing them with `globalThis` does not change the underlying problem.
-
-Make the dependency explicit instead.
-
-That gives you clearer boundaries, more honest tests and code that is much easier to move, reuse, and trust.
+Direct access to browser globals belongs in dedicated browser-access modules. Pure rules receive values from their callers; workflows that need to perform browser operations receive explicit functions. In the theme example, `applyThemePreference` owns the browser access and passes a boolean into `resolveColorScheme`. The rule's tests check which preference wins, while browser tests check that the page applies the result correctly.
