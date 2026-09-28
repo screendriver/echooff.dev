@@ -121,6 +121,7 @@ suite("Bugsink configuration", function () {
 				release: testBugsinkConfiguration.release
 			}
 		);
+		assert.deepStrictEqual(serverOptions.dataCollection, createBugsinkDataCollection());
 		assert.deepStrictEqual(
 			integrations.map(function readIntegrationName(integration) {
 				return integration.name;

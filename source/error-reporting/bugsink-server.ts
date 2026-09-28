@@ -57,7 +57,6 @@ export function createBugsinkServerOptions(configuration: BugsinkConfiguration):
 			onUncaughtExceptionIntegration(),
 			onUnhandledRejectionIntegration()
 		],
-		registerEsmLoaderHooks: false,
 		release: configuration.release
 	};
 }

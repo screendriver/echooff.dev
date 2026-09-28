@@ -1,5 +1,4 @@
-import type { CaptureContext, Integration } from "@sentry/core";
-import type { BrowserOptions } from "@sentry/browser";
+import type { BrowserOptions, CaptureContext } from "@sentry/browser";
 import type { Maybe } from "true-myth/maybe";
 import {
 	bugsinkEnvironment,
@@ -11,11 +10,12 @@ import type { UnexpectedFailureContext, UnexpectedFailureReporter } from "../rep
 
 export type BrowserBugsinkSdkModule = {
 	readonly captureException: (error: unknown, captureContext?: CaptureContext) => unknown;
-	readonly dedupeIntegration: () => Integration;
+	readonly dedupeIntegration: () => BrowserBugsinkIntegration;
 	readonly init: (options: BrowserOptions) => unknown;
-	readonly linkedErrorsIntegration: () => Integration;
+	readonly linkedErrorsIntegration: () => BrowserBugsinkIntegration;
 };
 
+type BrowserBugsinkIntegration = Extract<NonNullable<BrowserOptions["integrations"]>, readonly unknown[]>[number];
 type BrowserBugsinkOptions = BrowserOptions;
 type BrowserBugsinkEvent = Parameters<NonNullable<BrowserOptions["beforeSend"]>>[0];
 type BrowserBugsinkCaptureContext = CaptureContext;
@@ -64,8 +64,7 @@ function createBugsinkBrowserOptions(
 			browserBugsinkSdk.dedupeIntegration(),
 			browserBugsinkSdk.linkedErrorsIntegration()
 		],
-		release: configuration.release,
-		sendDefaultPii: false
+		release: configuration.release
 	};
 }
 

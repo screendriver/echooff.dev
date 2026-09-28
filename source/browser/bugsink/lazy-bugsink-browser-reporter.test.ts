@@ -1,6 +1,7 @@
 import assert from "node:assert";
 import { suite, test } from "mocha";
 import { just, nothing } from "true-myth/maybe";
+import { createBugsinkDataCollection } from "../../error-reporting/bugsink-configuration.ts";
 import type { UnexpectedFailureContext, UnexpectedFailureReporter } from "../report-unexpected-browser-failure.ts";
 import { createLazyBugsinkBrowserReporter, type BrowserBugsinkSdkModule } from "./lazy-bugsink-browser-reporter.ts";
 
@@ -152,17 +153,17 @@ suite("createLazyBugsinkBrowserReporter()", function () {
 		);
 		assert.deepStrictEqual(
 			{
+				dataCollection: initializationOptions.dataCollection,
 				defaultIntegrations: initializationOptions.defaultIntegrations,
 				replaysOnErrorSampleRate: initializationOptions.replaysOnErrorSampleRate,
 				replaysSessionSampleRate: initializationOptions.replaysSessionSampleRate,
-				sendDefaultPii: initializationOptions.sendDefaultPii,
 				tracesSampleRate: initializationOptions.tracesSampleRate
 			},
 			{
+				dataCollection: createBugsinkDataCollection(),
 				defaultIntegrations: false,
 				replaysOnErrorSampleRate: undefined,
 				replaysSessionSampleRate: undefined,
-				sendDefaultPii: false,
 				tracesSampleRate: undefined
 			}
 		);
