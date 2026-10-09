@@ -1,283 +1,244 @@
 ---
 title: "Why your unit tests feel fragile"
-description: "Unit tests do not feel fragile because testing is hard. They feel fragile because our design mixes business logic and side effects."
+description: "Fragile tests often depend on implementation details. Explicit dependencies and separating decisions from effects help them protect the behavior that matters."
 publishedAt: "2026-03-01T09:58:00+01:00"
+updatedAt: "2026-10-09T17:09:00+02:00"
 topic: "Testing"
 ---
 
-You change one line of code.
+You change how a piece of code is organized without changing what it does. Several unit tests fail because they depend on an internal helper, an intercepted import or a particular sequence of internal calls.
 
-Five unit tests fail.
+A useful unit test should fail when the behavior it protects changes. A fragile test also fails when the implementation is reorganized behind the same contract. The problem is not that the test knows anything about the code. Every test depends on some interface. The problem is that the test knows more than a real caller needs to know.
 
-None of them should have.
+Teams often respond by adding more mocks. That can make the symptoms easier to manage, but it does not fix the design that made the tests depend on those details.
 
-If that feels familiar, the problem is probably not your test runner or
-testing framework.
+## Hidden dependencies make isolation difficult
 
-It is design.
+Consider a registration use case in `register-user.ts`. The request already contains a validated email address and a user ID. The workflow checks whether the terms were accepted, then saves the user and sends a welcome email:
 
-## What fragile tests feel like
+```typescript
+import { userRepository } from "./user-repository.js";
+import { welcomeEmailSender } from "./welcome-email-sender.js";
 
-Fragile tests usually share a pattern:
+type RegisterUserRequest = {
+  email: string;
+  hasAcceptedTerms: boolean;
+  userId: string;
+};
 
-- You replace half of the system with test doubles.
-- Refactoring internal details breaks unrelated tests.
-- Tests assert that specific functions were called.
-- Renaming a helper function causes failing tests.
-- Tests fail even though observable behavior has not changed.
+type User = {
+  email: string;
+  id: string;
+};
 
-Over time, something subtle happens.
+type RegisterUserResult =
+  | { status: "registered"; user: User }
+  | { status: "rejected"; reason: "termsNotAccepted" };
 
-You stop trusting the tests.\
-Or worse: you stop refactoring.
+export async function registerUser(
+  request: RegisterUserRequest
+): Promise<RegisterUserResult> {
+  const { email, hasAcceptedTerms, userId } = request;
 
-That is expensive.
+  if (!hasAcceptedTerms) {
+    return { status: "rejected", reason: "termsNotAccepted" };
+  }
 
----
+  const user = {
+    email,
+    id: userId
+  };
 
-## Step 1: hidden dependencies
+  await userRepository.save(user);
+  await welcomeEmailSender.send(email);
 
-Consider a simple registration flow.
-
-```ts
-import type { User } from "./user";
-import { database } from "./database";
-import { mailer } from "./mailer";
-import { logger } from "./logger";
-
-async function registerUser(email: string): Promise<User> {
-  const user = await database.save({ email });
-
-  await mailer.sendWelcomeEmail(email);
-
-  logger.info("User registered");
-
-  return user;
+  return { status: "registered", user };
 }
 ```
 
-To test this, many teams reach for module mocking:
+The signature suggests that this function only depends on the request. In reality, it also depends on a repository and an email sender imported from the surrounding runtime.
 
-```ts
-jest.mock("./mailer");
-vi.mock("./database"); // if you are using Vitest
-```
+To isolate this version from infrastructure, a test may ask the test runner to replace those imported modules. Module mocking makes that possible, but it also makes import paths and module loading part of the test setup. Moving a dependency or changing how it is imported can break the test before any product behavior has changed.
 
-Now:
+The function has hidden dependencies, so the test has to control how those dependencies are loaded. Making them explicit gives the application and its tests a simpler way to supply them.
 
-- The function does not reveal what it depends on.
-- Tests replace modules through global interception.
+## Dependency injection helps, but it is not the whole answer
 
-This is not just an architectural concern. It is also a runtime concern.
+Keep the request, user and result types above. Remove the concrete repository and email-sender imports, then replace the original function with a factory that receives those dependencies:
 
-With native ECMAScript modules, imports are static and read-only.\
-Module mocking only works because test runners rewrite or intercept
-modules at load time.
-
-Your tests no longer execute the same module system as your production
-code.
-
-As a result:
-
-- Refactoring file structure breaks tests.
-- Import paths become part of your test contract.
-
-If changing an import statement breaks your unit tests, your tests are
-not describing behavior.
-
-They are describing module structure.
-
-That is fragile by design.
-
----
-
-## Step 2: explicit dependencies, but mixed responsibilities
-
-A common improvement is to inject dependencies explicitly.
-
-```ts
-type Database = {
-  save: (user: { email: string }) => Promise<{ id: string; email: string }>;
+```typescript
+type UserRepository = {
+  save(user: User): Promise<void>;
 };
 
-type Mailer = {
-  sendWelcomeEmail: (email: string) => Promise<void>;
+type WelcomeEmailSender = {
+  send(email: string): Promise<void>;
 };
 
-type Logger = {
-  info: (message: string) => void;
+type RegisterUserDependencies = {
+  userRepository: UserRepository;
+  welcomeEmailSender: WelcomeEmailSender;
 };
 
-async function registerUser(
-  email: string,
-  database: Database,
-  mailer: Mailer,
-  logger: Logger
-) {
-  const user = await database.save({ email });
+export function createRegisterUser(
+  dependencies: RegisterUserDependencies
+): (request: RegisterUserRequest) => Promise<RegisterUserResult> {
+  const { userRepository, welcomeEmailSender } = dependencies;
 
-  await mailer.sendWelcomeEmail(email);
+  return async function registerUser(
+    request: RegisterUserRequest
+  ): Promise<RegisterUserResult> {
+    const { email, hasAcceptedTerms, userId } = request;
 
-  logger.info("User registered");
-
-  return user;
-}
-```
-
-This removes the need for module mocking.
-
-Dependencies are visible.
-
-That is better.
-
-But the function still mixes business decisions and side effects.
-
-If the internal structure changes but the observable behavior stays the
-same, the test fails.
-
-That is fragility.
-
----
-
-## Step 3: separating decisions from effects
-
-Instead of performing side effects directly, separate the decision from
-the execution.
-
-```ts
-type DomainEvent = { type: "UserRegistered"; email: string };
-
-function decideUserRegistration(email: string): DomainEvent[] {
-  return [
-    {
-      type: "UserRegistered",
-      email
+    if (!hasAcceptedTerms) {
+      return { status: "rejected", reason: "termsNotAccepted" };
     }
-  ];
+
+    const user = {
+      email,
+      id: userId
+    };
+
+    await userRepository.save(user);
+    await welcomeEmailSender.send(email);
+
+    return { status: "registered", user };
+  };
 }
 ```
 
-This function:
+The dependencies are now visible. Tests can supply small controlled implementations without replacing imported modules. Production and tests construct the function through the same interface, as described in [Dependency injection without frameworks in TypeScript](/blog/dependency-injection-without-frameworks-in-typescript).
 
-- Has no side effects.
-- Is deterministic.
-- Encodes business intent.
+The function still combines a product decision with the operations that follow it, though. To construct the workflow in a test about accepted terms, we still need to supply a repository and an email sender. Neither helps answer whether the request should be accepted.
 
-The test becomes simple.
+A workflow test may correctly assert that rejected requests call neither dependency and accepted requests call both. But making every test of a business rule understand those operations introduces setup that the rule itself does not need. We can separate the decision while preserving the registration behavior.
 
-```ts
-import assert from "node:assert/strict";
-import test from "node:test";
+## Separate decisions from effects
 
-test("emits a UserRegistered event", function () {
-  const events = decideUserRegistration("test@example.com");
+The product decision can be expressed without knowing how a user is stored or how an email is delivered. Keeping the same request and user types, extract it into a function alongside the workflow in `register-user.ts`:
 
-  assert.deepEqual(events, [
-    { type: "UserRegistered", email: "test@example.com" }
-  ]);
+```typescript
+type UserRegistrationDecision =
+  | { status: "accepted"; user: User }
+  | { status: "rejected"; reason: "termsNotAccepted" };
+
+export function decideUserRegistration(
+  request: RegisterUserRequest
+): UserRegistrationDecision {
+  const { email, hasAcceptedTerms, userId } = request;
+
+  if (!hasAcceptedTerms) {
+    return { status: "rejected", reason: "termsNotAccepted" };
+  }
+
+  return {
+    status: "accepted",
+    user: {
+      email,
+      id: userId
+    }
+  };
+}
+```
+
+This function has no hidden inputs. It does not write to a database or send a message. The user ID remains an input supplied by the caller and the result describes the decision in application language. An accepted request can proceed. It does not mean that a user has already been registered.
+
+The tests can describe those results directly:
+
+```typescript
+import assert from "node:assert";
+import { test } from "node:test";
+
+import { decideUserRegistration } from "./register-user.js";
+
+test("rejects registration when the terms were not accepted", () => {
+  const actualDecision = decideUserRegistration({
+    email: "person@example.com",
+    hasAcceptedTerms: false,
+    userId: "user-42"
+  });
+
+  const expectedDecision = {
+    status: "rejected",
+    reason: "termsNotAccepted"
+  };
+
+  assert.deepStrictEqual(actualDecision, expectedDecision);
+});
+
+test("accepts registration with the supplied user data", () => {
+  const actualDecision = decideUserRegistration({
+    email: "person@example.com",
+    hasAcceptedTerms: true,
+    userId: "user-42"
+  });
+
+  const expectedDecision = {
+    status: "accepted",
+    user: {
+      email: "person@example.com",
+      id: "user-42"
+    }
+  };
+
+  assert.deepStrictEqual(actualDecision, expectedDecision);
 });
 ```
 
-No fakes.\
-No interception.\
-No infrastructure.
+These assertions protect the rejection reason and the user data returned for an accepted request. No repository has to be configured and no assertion depends on how many internal functions happened to run. Changing the persistence or email implementation does not require changing these tests.
 
-Now we are testing behavior.
+## Keep effects in the workflow
 
----
+Separating the decision does not make the side effects disappear. A real registration still has to persist the user and request the welcome email. The factory now calls `decideUserRegistration` and deals with its result:
 
-## Executing side effects at the boundary
+```typescript
+export function createRegisterUser(
+  dependencies: RegisterUserDependencies
+): (request: RegisterUserRequest) => Promise<RegisterUserResult> {
+  const { userRepository, welcomeEmailSender } = dependencies;
 
-Side effects still exist.
+  return async function registerUser(
+    request: RegisterUserRequest
+  ): Promise<RegisterUserResult> {
+    const decision = decideUserRegistration(request);
 
-They just move to the boundary.
+    if (decision.status === "rejected") {
+      return decision;
+    }
 
-```ts
-import type { User } from "./user";
+    await userRepository.save(decision.user);
+    await welcomeEmailSender.send(decision.user.email);
 
-async function handleUserRegistered(
-  event: { type: "UserRegistered"; email: string },
-  dependencies: {
-    database: Database;
-    mailer: Mailer;
-    logger: Logger;
-  }
-): Promise<User> {
-  const user = await dependencies.database.save({
-    email: event.email
-  });
-
-  await dependencies.mailer.sendWelcomeEmail(event.email);
-
-  dependencies.logger.info("User registered");
-
-  return user;
+    return {
+      status: "registered",
+      user: decision.user
+    };
+  };
 }
 ```
 
-The business decision does not depend on how data is stored, how emails
-are sent, or how logs are written.
+The behavior is unchanged. Rejected requests still return without performing either effect. Accepted requests are saved and followed by the email request before the workflow reports `registered`. The difference is that tests of the terms rule no longer need to construct this workflow.
 
-And those infrastructure concerns do not contain business rules.
+For a single condition, I might keep the rule inside a small injected workflow. Extraction earns its place when the decision has enough cases or changes independently of the surrounding operations. It should make the code and its tests easier to work with.
 
-That separation allows each to change without breaking the other.
+## Test meaningful interactions
 
----
+The workflow is intentionally effectful. Its responsibility is to coordinate the operations, so a focused test may verify that an accepted registration is persisted and a welcome email is requested.
 
-## Why this reduces fragility
+Interaction testing is useful when the interaction is part of the behavior. A failed save may have to prevent a notification. Saving may have to finish before the email is requested. Those requirements deserve tests. Which private helper performs the call, or which intermediate object it creates, usually does not.
 
-Refactoring decision logic does not break infrastructure tests.\
-Changing infrastructure does not break business tests.
+[Test doubles](/blog/not-every-test-double-is-a-mock) are useful for exercising this behavior. A small fake repository can store users in memory and a controlled email sender can record the recipient or simulate a failure. The problem begins when tests duplicate the implementation line by line or enforce call order that has no observable meaning.
 
-Behavior changes less often than implementation.
+Saving the user and sending the email remain separate operations. If the email fails after saving succeeds, the user is already stored and the workflow needs a recovery policy.
 
-Stable tests reflect stable behavior.
+## Let the tests reveal design problems
 
----
+The decision tests and workflow tests now answer different questions. Neither proves that a database query stores the expected data or an email provider accepts a request. The adapters still need integration tests and broader tests can verify that the application connects those parts correctly.
 
-## Why this matters beyond tests
+This is the separation described in [Clean Architecture protects the happy zone](/blog/clean-architecture-protects-the-happy-zone). Product decisions can work with ordinary data while infrastructure handles the outside world. A unit does not have to be one function or one file; the useful separation is the one that lets a test exercise the behavior it needs to protect.
 
-Fragile tests do not just slow down test suites. They slow down
-systems.\
-When refactoring becomes risky, teams avoid structural improvements.\
-Avoided improvements turn into accumulated complexity.\
-Over time, the architecture stops evolving because the safety net cannot
-be trusted.
+Not every failure after a refactoring is evidence of a fragile test. A refactoring can accidentally change behavior and a good test should catch that. The signal becomes suspicious when tests fail because they depended on details the caller never needed to know.
 
-Unit tests are not only a verification tool. They are a feedback
-mechanism for design quality.
+Repeated false alarms consume time and make failures harder to trust. This is part of [developer experience](/blog/developer-experience-is-a-performance-feature): a structural change should not require rewriting expectations that never represented product behavior. High coverage cannot compensate for assertions that mostly preserve the current implementation.
 
----
-
-## A note on trade-offs
-
-Not every function needs to be pure.\
-Not every module needs strict separation of concerns.
-
-In small systems, combining decisions and side effects can be perfectly
-reasonable.
-
-As complexity increases, mixing decisions with infrastructure makes
-change more expensive and tests more fragile.
-
-This is not about architectural purity.
-
-It is about making responsibilities explicit.
-
----
-
-## Final thought
-
-When tests feel fragile, responsibilities are blurred.
-
-When decisions and side effects live together, tests must understand
-infrastructure.
-
-Infrastructure changes more often than behavior.
-
-If heavy interaction testing or module mocking is required, the
-architecture is likely the problem.
-
-Design determines testability.
-
-Clear boundaries produce stable tests.
+When testing a small rule requires setting up a repository, an email sender and other dependencies, I would first ask why the rule needs them. Making the dependencies explicit shows what the workflow needs. Separating the decision, when that separation is useful, lets its tests concentrate on the rule.
