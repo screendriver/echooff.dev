@@ -49,7 +49,7 @@ type MentionCacheFreshnessInput = {
 	readonly usableStaleMilliseconds: number;
 };
 
-type MentionCacheSectionModel = NonNullable<unknown>;
+type MentionCacheSectionModel = Record<string, unknown>;
 
 type ParseMentionCacheValueInput<SectionModel extends MentionCacheSectionModel> = {
 	readonly parseSectionModel: (serializedSectionModel: unknown) => Maybe<SectionModel>;

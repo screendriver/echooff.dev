@@ -29,7 +29,7 @@ export async function executeGraphQLQuery(options: ExecuteGraphQLQueryOptions): 
                 }
             }
         }`,
-		baseUrl: stripTrailingSlash(gitHubBaseUrl.toString()),
+		baseUrl: stripTrailingSlash(gitHubBaseUrl.href),
 		login: gitHubLogin,
 		headers: { authorization: `token ${gitHubApiToken}` }
 	});

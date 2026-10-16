@@ -75,8 +75,8 @@ function normalizeComparableUrl(urlValue: string): Maybe<string> {
 	});
 }
 
-function readValidAbsoluteUrl(objectValue: Record<string, unknown>, propertyName: string): Maybe<string> {
-	return readString(objectValue, propertyName).andThen(parseAbsoluteUrl);
+function readSubmittedUrl(hackerNewsApiHit: HackerNewsApiHit): Maybe<string> {
+	return readString(hackerNewsApiHit, "url").andThen(parseAbsoluteUrl);
 }
 
 function validateDateTimeString(value: string): Maybe<string> {
@@ -227,7 +227,7 @@ function readDiscussionUrl(hackerNewsApiHit: HackerNewsApiHit): Maybe<string> {
 }
 
 function readComparableSubmittedUrl(hackerNewsApiHit: HackerNewsApiHit): Maybe<string> {
-	return readValidAbsoluteUrl(hackerNewsApiHit, "url").andThen(normalizeComparableUrl);
+	return readSubmittedUrl(hackerNewsApiHit).andThen(normalizeComparableUrl);
 }
 
 function readCompleteMentionFields(hackerNewsApiHit: HackerNewsApiHit): {
@@ -255,7 +255,7 @@ function readCompleteMentionFields(hackerNewsApiHit: HackerNewsApiHit): {
 
 function readMentionFromApiHit(targetUrl: string, hackerNewsApiHit: HackerNewsApiHit): Maybe<HackerNewsMention> {
 	const targetComparableUrl = normalizeComparableUrl(targetUrl);
-	const submittedUrl = readValidAbsoluteUrl(hackerNewsApiHit, "url");
+	const submittedUrl = readSubmittedUrl(hackerNewsApiHit);
 	const submittedComparableUrl = readComparableSubmittedUrl(hackerNewsApiHit);
 
 	if (targetComparableUrl.isNothing || submittedComparableUrl.isNothing) {

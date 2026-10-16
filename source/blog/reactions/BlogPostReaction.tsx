@@ -157,11 +157,7 @@ export function BlogPostReaction(properties: Properties): ComponentChildren {
 	}, [fireAndForgetInvoker, postSlug, reactionClient]);
 
 	async function updateReaction(): Promise<void> {
-		if (mutationInFlightReference.current === true) {
-			return;
-		}
-
-		if (blogPostReactionState.status === "loading") {
+		if (mutationInFlightReference.current === true || blogPostReactionState.status === "loading") {
 			return;
 		}
 

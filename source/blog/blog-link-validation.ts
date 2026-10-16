@@ -80,13 +80,11 @@ function findBlogPostLinkValidationProblems(
 		const normalizedPathname = normalizePathname(resolvedHrefUrl.pathname);
 
 		if (!knownRoutePathnames.has(normalizedPathname)) {
-			return [
-				{
-					href,
-					message: `Target path "${normalizedPathname}" does not exist`,
-					sourceBlogPostSlug: renderedBlogPostDocument.blogPostSlug
-				}
-			];
+			return {
+				href,
+				message: `Target path "${normalizedPathname}" does not exist`,
+				sourceBlogPostSlug: renderedBlogPostDocument.blogPostSlug
+			};
 		}
 
 		if (resolvedHrefUrl.hash.length === 0) {
@@ -98,13 +96,11 @@ function findBlogPostLinkValidationProblems(
 		const hasExpectedHeadingSlug = knownHeadingSlugs?.has(expectedHeadingSlug) === true;
 
 		if (!hasExpectedHeadingSlug) {
-			return [
-				{
-					href,
-					message: `Fragment "${expectedHeadingSlug}" does not exist on "${normalizedPathname}"`,
-					sourceBlogPostSlug: renderedBlogPostDocument.blogPostSlug
-				}
-			];
+			return {
+				href,
+				message: `Fragment "${expectedHeadingSlug}" does not exist on "${normalizedPathname}"`,
+				sourceBlogPostSlug: renderedBlogPostDocument.blogPostSlug
+			};
 		}
 
 		return [];
