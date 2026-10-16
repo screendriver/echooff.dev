@@ -1,77 +1,31 @@
 ---
-title: "Why you should not ship test IDs to production"
-description: "React Testing Library works best with semantic queries like role and label. Shipping data-testid to production hides accessibility problems and turns test-only markup into an accidental contract."
+title: "Why you should not ship test IDs to production with React Testing Library"
+description: "React Testing Library should query the interface users receive. Shipping data-testid lets tests bypass semantics and turns test-only markup into production surface area."
 publishedAt: "2026-04-04T08:22:00+02:00"
+updatedAt: "2026-10-16T10:02:00+02:00"
 topic: "Testing"
 ---
 
-## The API is already telling you what to do
+[Testing Library's query priority](https://testing-library.com/docs/queries/about/) puts `getByRole`, `getByLabelText` and other user-facing queries before `getByTestId`.
 
-[Testing Library](https://testing-library.com) already gives away the answer in its API design.
+That order is not only about choosing a convenient selector. A selector defines which part of the interface a test protects.
 
-Its [query priority](https://testing-library.com/docs/queries/about/) recommends queries like `getByRole`, `getByLabelText`, and `getByText` first, and leaves `getByTestId` as a fallback.
-That is not a random preference.
-It is a signal about how tests should interact with UI.
+A role query makes the element's semantics part of the test. A label query makes the relationship between a form control and its label part of the test. A test ID makes only a private marker part of the test contract. The test can continue passing after the user-facing semantics have changed or disappeared.
 
-When a team reaches for `data-testid` too early, two things usually happen.
+That is why I do not ship `data-testid` attributes to production. When a test appears to need one, I first question the markup, the query or the boundary of the test. Adding a private selector may make the test easier to write but it does not improve the interface or its semantics.
 
-First, tests drift away from how the application is actually used.
-Second, inaccessible markup becomes easier to ship because the test can still find an element that a user cannot.
+## A passing test can protect the wrong thing
 
-You should go one step further for production systems:
-do not let `data-testid` land in shipped markup at all.
-
-## The name already tells the story
-
-It is called `data-testid`.
-Not `data-userid`.
-Not `data-accessibility-hook`.
-Not `data-business-identifier`.
-
-It is test-only information.
-
-Once something is clearly test-only, it does not belong in production markup by default.
-Production HTML should describe the UI for users and browsers.
-It should not carry attributes whose main purpose is helping a test runner find elements.
-
-This is not primarily about saving a few bytes.
-It is about keeping a clean boundary.
-
-Test code belongs to tests.
-Production markup belongs to the product.
-
-## React Testing Library works best when your markup is meaningful
-
-The core idea behind Testing Library is simple: the closer a test is to real user behavior, the more confidence it gives.
-
-That is why semantic queries come first.
-Roles, labels, and visible text are not random selectors.
-They are part of the user-facing contract of the UI.
-
-A button should be discoverable as a button.
-An input should be discoverable through its label.
-A dialog should be discoverable through its role and accessible name.
-
-`data-testid` does not help with any of that.
-It only helps the test runner.
-
-## A test can pass while the UI is still wrong
-
-This is where the accessibility argument becomes important.
-A test ID can make a broken component look tested.
+Consider a control that opens a widget:
 
 ```tsx
-import assert from "node:assert/strict";
-import test from "node:test";
 import type { FunctionComponent } from "react";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 
 type WidgetTriggerProperties = {
-  onOpen: () => void;
+  readonly onOpen: () => void;
 };
 
-const WidgetTrigger: FunctionComponent<WidgetTriggerProperties> = (
+export const WidgetTrigger: FunctionComponent<WidgetTriggerProperties> = (
   properties
 ) => {
   const { onOpen } = properties;
@@ -82,194 +36,116 @@ const WidgetTrigger: FunctionComponent<WidgetTriggerProperties> = (
     </div>
   );
 };
-
-test("opens the widget", async () => {
-  let wasOpened = false;
-  const user = userEvent.setup();
-
-  render(
-    <WidgetTrigger
-      onOpen={() => {
-        wasOpened = true;
-      }}
-    />
-  );
-
-  await user.click(screen.getByTestId("open-widget"));
-
-  assert.equal(wasOpened, true);
-});
 ```
 
-That test passes.
-But the UI is still wrong.
-
-A clickable `div` is not a button.
-It does not give you the right semantics.
-It is easy to get keyboard interaction wrong.
-It is easy to make screen reader behavior worse.
-
-Now look at the same behavior tested through the interface the user actually depends on.
+A test can find the element and click it:
 
 ```tsx
-import assert from "node:assert/strict";
-import test from "node:test";
-import type { FunctionComponent } from "react";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-
-type WidgetTriggerProperties = {
-  onOpen: () => void;
-};
-
-const WidgetTrigger: FunctionComponent<WidgetTriggerProperties> = (
-  properties
-) => {
-  const { onOpen } = properties;
-
-  return (
-    <button type="button" onClick={onOpen}>
-      Open widget
-    </button>
-  );
-};
-
-test("opens the widget", async () => {
-  let wasOpened = false;
-  const user = userEvent.setup();
-
-  render(
-    <WidgetTrigger
-      onOpen={() => {
-        wasOpened = true;
-      }}
-    />
-  );
-
-  await user.click(screen.getByRole("button", { name: "Open widget" }));
-
-  assert.equal(wasOpened, true);
-});
+await user.click(screen.getByTestId("open-widget"));
 ```
 
-This test is better for a simple reason:
-if someone breaks the semantics later, the test has a chance to fail for the right reason.
+The test passes but it protects very little of the interface. The element is not exposed as a button and the test does not care. It proves only that clicking an element carrying a particular attribute invokes a callback.
 
-That is not brittle coupling to implementation details.
-That is coupling to the part of the UI that users actually experience.
+The test ID did not make the markup wrong. It gave the test a way to ignore that the markup was wrong.
 
-## Test IDs can hide an accessibility problem
-
-If a role-based query cannot find your element, the problem is often not the test.
-The problem is the markup.
-
-Maybe a button is implemented as a `div`.
-Maybe an input has no associated label.
-Maybe the page structure has no meaningful landmarks.
-Maybe interactive controls have no accessible name.
-
-A `data-testid` makes all of those mistakes easier to ignore.
-It gives the team a shortcut around fixing the actual problem.
-
-That is why test IDs are often an accessibility smell.
-They do not merely select an element.
-They can hide that the element is not correctly exposed to real users.
-
-## Shipping test IDs creates an accidental API
-
-There is another problem once `data-testid` lands in production.
-It rarely stays local to the test that introduced it.
-
-End-to-end tests start depending on it.
-Support tooling starts depending on it.
-Maybe browser scripts or internal automation start depending on it.
-Suddenly a test-only attribute has become a production contract.
-
-Now renaming a selector becomes risky.
-Not because the product changed, but because hidden consumers started depending on a private implementation detail.
-
-You should not let test markup become part of your public surface area.
-That is another reason it should not ship by default.
-
-## The usual objection is text changes
-
-A common pushback is that roles, labels, and visible text change too often.
-That argument is usually weaker than people think.
-
-If the visible name of a button changes, the user experience changed.
-That is not noise.
-That is part of the contract.
-
-And in practice, Testing Library gives you enough tools to stay precise without falling back to test IDs immediately.
-You can scope queries with `within`.
-You can query dialogs, forms, navigation regions, lists, and buttons by role.
-You can target form fields by label.
+The component should [start with the semantic HTML element](/blog/start-with-semantic-html) that matches its behavior:
 
 ```tsx
-import test from "node:test";
-import { render, screen, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-
-test("confirms deletion from the dialog", async () => {
-  const user = userEvent.setup();
-
-  render(<DeleteAccountDialog />);
-
-  const dialog = screen.getByRole("dialog", {
-    name: "Delete account"
-  });
-
-  const confirmButton = within(dialog).getByRole("button", {
-    name: "Confirm"
-  });
-
-  await user.click(confirmButton);
-});
+<button type="button" onClick={onOpen}>
+  Open widget
+</button>
 ```
 
-That reads like the user flow.
-And when a test reads like the user flow, it usually ages better than people expect.
+The test can now locate the control through the interface it intends to protect:
 
-## The escape hatch is real, but it should stay an escape hatch
+```tsx
+await user.click(
+  screen.getByRole("button", {
+    name: "Open widget"
+  })
+);
+```
 
-To be fair, even the [Testing Library documentation for `ByTestId`](https://testing-library.com/docs/queries/bytestid/) keeps `getByTestId` around as an escape hatch.
-There are cases where matching by role, label, or text is hard or temporarily impractical.
+If the component later stops exposing a button with that accessible name the test has a useful reason to fail. That is not brittle coupling to an implementation detail. The role and name are part of the interface received by the user.
 
-That exists.
+A successful role query is not proof that the control is fully accessible. A `div` with `role="button"` may satisfy the query while still lacking the keyboard behavior of a native button. Focus handling, keyboard interaction, contrast, error communication and the surrounding document structure need appropriate testing and human evaluation.
 
-But an escape hatch is not a default architecture.
-And it is definitely not a good reason to normalize test-only attributes in production markup.
+The query protects one meaningful part of the contract. It does not verify the whole interface.
 
-A good rule is simple:
-if you absolutely need a test ID for a rare case, treat it as temporary and suspicious.
-Do not treat it as the preferred way to test React components.
-And do not let it become part of the shipped DOM.
-If a team still relies on it during a transition, it is better to strip it from production builds than normalize it as permanent markup.
+## Difficulty finding an element is useful feedback
 
-## What you should optimize for instead
+React Testing Library is most valuable when its queries create pressure toward meaningful markup.
 
-When you test React components with Testing Library, optimize for these things:
+If a test cannot find something intended to be a button, inspect whether it is actually a button. If an input cannot be found by its label, inspect whether the label is associated correctly. If a dialog has no accessible name, adding a test ID may make the test pass without fixing the interface.
 
-- semantic HTML first
-- accessible names for interactive elements
-- proper labels for form controls
-- queries by role, label, and visible text before anything else
-- `within` to scope queries to meaningful regions
-- test IDs only as a last resort, never as the default path
+The same applies when several elements match. Ambiguity does not automatically require a private identifier. Often the interface already provides structure that the test can use:
 
-That approach does more than make tests nicer.
-It pushes the component itself in a better direction.
+```tsx
+const dialog = screen.getByRole("dialog", {
+  name: "Delete account"
+});
 
-## The bottom line
+const confirmButton = within(dialog).getByRole("button", {
+  name: "Confirm"
+});
 
-If a test can only find an element through `data-testid`, first assume the UI or the test design needs improvement.
-Not that the missing attribute should be added to production.
+await user.click(confirmButton);
+```
 
-Treat `data-testid` as a test concern.
-And test concerns should not leak into the product by default.
+The test locates the confirmation button inside the dialog where the action belongs. It describes the interaction without inventing a globally unique hook.
 
-React Testing Library already points you toward the better path.
+Repeated rows, list items, forms and navigation regions can be handled in the same way. Find the meaningful region or item first, then query within it. An icon-only button needs an accessible name for users, not a test ID for the test runner. An interactive canvas needs an accessible alternative or interaction model, not a hidden selector that makes its accessibility problem invisible.
 
-So the position is straightforward:
-do not make test IDs your primary selector strategy.
-And definitely do not ship them to production markup.
+When no user-facing query fits, that is design feedback. Sometimes the markup is missing semantics. Sometimes the test is trying to observe an internal detail rather than behavior. Sometimes the scenario belongs in a smaller test of pure logic rather than a browser test. A test ID suppresses those questions instead of answering them.
+
+## A stable selector can provide false confidence
+
+Test IDs are often defended as more stable than roles, labels or visible text. That is true in a narrow sense. A test ID can remain unchanged while the wording, role or position of an element changes.
+
+But stability is useful only when the selector remains stable for the right reason.
+
+Suppose a button labeled "Save preferences" is accidentally changed to "Delete preferences". A test that finds it through `data-testid="save-preferences"` can still pass. The selector is stable because it ignores the user-facing regression.
+
+The same argument applies to semantics. A test ID can survive a button becoming a clickable `div`. It can survive a label becoming detached from its input. It can survive a dialog losing its accessible name. The selector becomes harder to break by becoming less capable of detecting meaningful breakage.
+
+Visible wording does change legitimately. That does not mean every test must duplicate every sentence in the interface. Scope the query to a meaningful region. Use role and structure when the context makes the target unambiguous. Run a localized test with a known locale and its expected accessible names. Separate copy-specific tests from workflow tests when their responsibilities differ.
+
+What I would not do is create a language-independent selector that bypasses the interface presented in each language. A workflow exercised in German still has a German accessible name. If the test cannot cope with that, the problem is in the test setup or its scope, not in the absence of `data-testid`.
+
+## Production automation does not justify test-only markup
+
+The strongest argument for shipping test IDs is usually end-to-end automation. Browser tests need selectors that survive refactoring so the application exposes a stable automation contract.
+
+Testing Library itself describes a test ID as a way to establish a stable API contract in the HTML when a non-semantic query is unavoidable. That is better than selecting through CSS classes or incidental DOM structure. It still does not answer whether a test-only contract belongs in production.
+
+I do not think it does.
+
+An end-to-end test should exercise the same interface that users receive. Roles, accessible names, labels, links, form structure and visible product state are part of that interface. When a browser test cannot navigate the product through those contracts it deserves investigation rather than another private attribute.
+
+There are legitimate cases where production software exposes machine-readable identifiers. Analytics, browser extensions, embedded integrations, support tooling or a public automation API may need a stable product-level contract. That contract should be designed, named, documented and maintained as part of the product.
+
+It is not a test ID merely because a test can also use it.
+
+The distinction is why the attribute exists. `data-testid` exists because a test wants a shortcut. A production integration identifier exists because the product intentionally supports another consumer. Calling both an "automation contract" hides that difference and allows test convenience to expand the production surface area.
+
+Once test IDs ship, they also tend to acquire consumers that were never considered when they were introduced. End-to-end tests depend on them first. Support scripts, browser automation and internal tools follow. Renaming a supposedly private selector then becomes risky because a test-only detail has turned into an undocumented API.
+
+That is not a reason to maintain the ID forever. It is a reason not to ship it in the first place.
+
+## Stripping attributes is a migration tool, not the design
+
+A build transform can remove `data-testid` attributes from production. That prevents them from becoming part of the shipped DOM. But it should not be the architectural goal.
+
+Browser tests that use those attributes against a special build are no longer exercising exactly the markup that reaches production. The transform may be simple, but the divergence exists solely because the tests depend on selectors the product does not need.
+
+For an existing codebase stripping test IDs can be a useful containment measure while tests are migrated. The better end state is to remove the dependency from both the tests and the production components. Tests should run against the production artifact and locate the interface through the contracts that artifact deliberately exposes.
+
+## Keep test concerns out of the product
+
+Testing Library keeps `getByTestId` as an escape hatch. An escape hatch can be useful while working around legacy markup or migrating a test suite, but it should not become a production design convention.
+
+When a test appears to need a test ID, inspect the problem before adding one. Fix missing semantics. Add an accessible name. Use the structure already present in the interface. Narrow the test to the behavior it owns. Move logic below the UI boundary when a browser is the wrong place to verify it.
+
+A test ID can make an element easy for a test runner to find. It cannot make the interface meaningful, accessible or representative of how the product is used.
+
+Production HTML should not carry attributes whose only consumer is the test suite. Test through the interface users receive and let difficulty doing so expose the design problem rather than hiding it.
