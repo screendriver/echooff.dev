@@ -161,8 +161,8 @@ suite("BlogReadingProgressIndicator component integration", function () {
 		jsdomTestEnvironment.install();
 	});
 
-	teardown(function () {
-		cleanup();
+	teardown(async function () {
+		await act(cleanup);
 		jsdomTestEnvironment.restore();
 	});
 
@@ -229,14 +229,16 @@ suite("BlogReadingProgressIndicator component integration", function () {
 		assert.strictEqual(readProgressFillElement(container).style.width, "75%");
 	});
 
-	test("cancels a pending frame and removes both listeners on unmount", function () {
+	test("cancels a pending frame and removes both listeners on unmount", async function () {
 		const testReadingProgressBrowser = createTestReadingProgressBrowser();
 		const { unmount } = render(
 			<BlogReadingProgressIndicator browserDependencies={testReadingProgressBrowser.dependencies} />
 		);
 		testReadingProgressBrowser.triggerScroll();
 
-		unmount();
+		await act(() => {
+			unmount();
+		});
 
 		assert.deepStrictEqual(testReadingProgressBrowser.getCancelledAnimationFrameIdentifiers(), [1]);
 		assert.strictEqual(testReadingProgressBrowser.getRemovedScrollListenerCount(), 1);

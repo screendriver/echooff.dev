@@ -166,7 +166,9 @@ async function exerciseInitialUnmountFailure(
 	const renderedReaction = renderBlogPostReaction(testBlogReactionClient, testFireAndForgetInvoker);
 	const loadingOperation = testFireAndForgetInvoker.executeNextOperation();
 
-	renderedReaction.unmount();
+	await act(() => {
+		renderedReaction.unmount();
+	});
 	await act(async () => {
 		deferredLoadReaction.reject(failure);
 		await loadingOperation;
@@ -201,7 +203,9 @@ async function exerciseMutationUnmountFailure(
 	});
 	const mutationOperation = testFireAndForgetInvoker.executeNextOperation();
 
-	renderedReaction.unmount();
+	await act(() => {
+		renderedReaction.unmount();
+	});
 	await act(async () => {
 		deferredAddReaction.reject(failure);
 		await mutationOperation;
@@ -218,8 +222,8 @@ suite("BlogPostReaction component integration", function () {
 		jsdomTestEnvironment.install();
 	});
 
-	teardown(function () {
-		cleanup();
+	teardown(async function () {
+		await act(cleanup);
 		jsdomTestEnvironment.restore();
 	});
 
