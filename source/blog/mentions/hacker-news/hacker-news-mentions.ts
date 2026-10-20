@@ -258,11 +258,11 @@ function readMentionFromApiHit(targetUrl: string, hackerNewsApiHit: HackerNewsAp
 	const submittedUrl = readSubmittedUrl(hackerNewsApiHit);
 	const submittedComparableUrl = readComparableSubmittedUrl(hackerNewsApiHit);
 
-	if (targetComparableUrl.isNothing || submittedComparableUrl.isNothing) {
-		return nothing();
-	}
-
-	if (submittedComparableUrl.value !== targetComparableUrl.value) {
+	if (
+		targetComparableUrl.isNothing ||
+		submittedComparableUrl.isNothing ||
+		submittedComparableUrl.value !== targetComparableUrl.value
+	) {
 		return nothing();
 	}
 

@@ -49,11 +49,7 @@ function createTestMentionSectionModel(text: string): TestMentionSectionModel {
 }
 
 function parseTestMentionSectionModel(serializedSectionModel: unknown): Maybe<TestMentionSectionModel> {
-	if (!isPlainObject(serializedSectionModel)) {
-		return nothing();
-	}
-
-	if (!isString(serializedSectionModel.text)) {
+	if (!isPlainObject(serializedSectionModel) || !isString(serializedSectionModel.text)) {
 		return nothing();
 	}
 

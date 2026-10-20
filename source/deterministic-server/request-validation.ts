@@ -33,11 +33,7 @@ function validatePresentHeader(request: Request, headerName: string): RequestVal
 }
 
 function validateGraphQlRequestBody(requestBody: unknown): RequestValidationResult {
-	if (!isPlainObject(requestBody)) {
-		return err(new TypeError("The request body must contain a query string."));
-	}
-
-	if (!isString(requestBody.query)) {
+	if (!isPlainObject(requestBody) || !isString(requestBody.query)) {
 		return err(new TypeError("The request body must contain a query string."));
 	}
 
