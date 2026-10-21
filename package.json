@@ -11,13 +11,13 @@
 	"scripts": {},
 	"dependencies": {
 		"@astrojs/node": "11.1.9",
-		"@astrojs/preact": "6.1.0",
+		"@astrojs/preact": "6.1.1",
 		"@enormora/clock": "0.0.3",
 		"@sentry/browser": "11.8.0",
 		"@sentry/node": "11.8.0",
 		"@sindresorhus/is": "8.1.0",
 		"arktype": "2.2.9",
-		"astro": "7.4.1",
+		"astro": "7.4.2",
 		"better-sqlite3": "13.0.3",
 		"date-fns": "4.4.0",
 		"ky": "2.2.0",
@@ -28,8 +28,8 @@
 		"ts-pattern": "5.9.2"
 	},
 	"devDependencies": {
-		"@astrojs/check": "0.9.11",
-		"@astrojs/markdown-remark": "7.3.3",
+		"@astrojs/check": "0.9.12",
+		"@astrojs/markdown-remark": "7.3.4",
 		"@astrojs/rss": "4.0.19",
 		"@astrojs/sitemap": "3.7.4",
 		"@enormora/eslint-config-astro-ts": "0.0.31",
