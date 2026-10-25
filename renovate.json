@@ -1,11 +1,8 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": ["github>enormora/renovate-config#1.0.4", "github>enormora/renovate-config:renovate-automerge#1.0.4"],
+	"commitMessagePrefix": "",
 	"dependencyDashboard": true,
-	"labels": ["renovate"],
-	"lockFileMaintenance": {
-		"enabled": true,
-		"automerge": true
-	},
 	"packageRules": [
 		{
 			"matchManagers": ["woodpecker"],
@@ -26,22 +23,6 @@
 			"groupName": "Sentry dependencies",
 			"groupSlug": "sentry-dependencies",
 			"matchPackageNames": ["@sentry/browser", "@sentry/node"]
-		},
-		{
-			"matchFileNames": [".woodpecker/*.yaml"],
-			"matchUpdateTypes": ["minor", "patch"],
-			"automerge": true,
-			"automergeType": "branch"
-		},
-		{
-			"matchPackageNames": ["eslint", "@enormora/eslint-config-*"],
-			"groupName": "eslint packages"
-		},
-		{
-			"matchDepTypes": ["dependencies", "devDependencies"],
-			"matchUpdateTypes": ["minor", "patch"],
-			"automerge": true,
-			"automergeType": "branch"
 		},
 		{
 			"groupName": "Node.js",
