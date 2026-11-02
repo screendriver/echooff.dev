@@ -1,8 +1,7 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": ["github>enormora/renovate-config#1.0.4", "github>enormora/renovate-config:renovate-automerge#1.0.4"],
-	"automergeType": "pr",
-	"automergeStrategy": "rebase",
+	"automergeType": "branch",
 	"commitMessagePrefix": "",
 	"dependencyDashboard": true,
 	"packageRules": [
