@@ -1,6 +1,9 @@
 ---
 when:
-    - event: [push, pull_request, manual]
+    - event: pull_request
+    - event: push
+      branch: [main, renovate/*]
+    - event: manual
 
 labels:
     platform: linux/amd64
