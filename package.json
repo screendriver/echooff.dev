@@ -68,7 +68,7 @@
 		"prettier": "3.9.10",
 		"prettier-plugin-astro": "1.1.2",
 		"rehype-autolink-headings": "7.1.0",
-		"rust-just": "1.56.0",
+		"rust-just": "1.59.0",
 		"sass-embedded": "1.107.1",
 		"sharp": "0.35.5",
 		"sinon": "22.1.0",
