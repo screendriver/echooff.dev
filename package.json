@@ -18,7 +18,7 @@
 		"@sindresorhus/is": "8.1.0",
 		"arktype": "2.2.9",
 		"astro": "7.4.12",
-		"better-sqlite3": "13.1.1",
+		"better-sqlite3": "13.2.0",
 		"date-fns": "4.4.0",
 		"ky": "2.2.0",
 		"kysely": "0.29.9",
