@@ -2,7 +2,7 @@
 when:
     - event: pull_request
     - event: push
-      branch: [main, renovate/*]
+      branch: main
     - event: manual
 
 labels:
