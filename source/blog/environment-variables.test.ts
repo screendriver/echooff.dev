@@ -10,41 +10,57 @@ import {
 	parseWebmentionApiUrl
 } from "./environment-variables.ts";
 
+type InputAssertionSchema = {
+	readonly assert: (input: unknown) => unknown;
+};
+
+function assertInputSchemaValue(inputSchema: InputAssertionSchema, input: unknown): void {
+	inputSchema.assert(input);
+}
+
+function parseInvalidRuntimeHackerNewsApiUrl(): void {
+	parseRuntimeHackerNewsApiUrl({
+		HACKER_NEWS_API_URL: "not a url"
+	});
+}
+
+function parseInvalidRuntimeWebmentionApiUrl(): void {
+	parseRuntimeWebmentionApiUrl({
+		WEBMENTION_API_URL: "not a url"
+	});
+}
+
 suite("hacker news API URL schema", function () {
 	test("does not allow booleans", function () {
-		const actualAssertionOperation = (): void => {
-			hackerNewsApiUrlInputSchema.assert(true);
-		};
 		const expectedErrorMessage = "must be a string (was boolean)";
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, hackerNewsApiUrlInputSchema, true), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("does not allow numbers", function () {
-		const actualAssertionOperation = (): void => {
-			hackerNewsApiUrlInputSchema.assert(42);
-		};
 		const expectedErrorMessage = "must be a string (was a number)";
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, hackerNewsApiUrlInputSchema, 42), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("does not allow empty strings", function () {
-		const actualAssertionOperation = (): void => {
-			hackerNewsApiUrlInputSchema.assert("");
-		};
 		const expectedErrorMessage = 'must be a URL string (was "")';
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, hackerNewsApiUrlInputSchema, ""), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("does not allow strings that are not a URL", function () {
-		const actualAssertionOperation = (): void => {
-			hackerNewsApiUrlInputSchema.assert("foo");
-		};
 		const expectedErrorMessage = 'must be a URL string (was "foo")';
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, hackerNewsApiUrlInputSchema, "foo"), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("allows a string URL", function () {
@@ -68,39 +84,35 @@ suite("hacker news API URL schema", function () {
 
 suite("webmention API URL schema", function () {
 	test("does not allow booleans", function () {
-		const actualAssertionOperation = (): void => {
-			webmentionApiUrlInputSchema.assert(true);
-		};
 		const expectedErrorMessage = "must be a string (was boolean)";
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, webmentionApiUrlInputSchema, true), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("does not allow numbers", function () {
-		const actualAssertionOperation = (): void => {
-			webmentionApiUrlInputSchema.assert(42);
-		};
 		const expectedErrorMessage = "must be a string (was a number)";
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, webmentionApiUrlInputSchema, 42), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("does not allow empty strings", function () {
-		const actualAssertionOperation = (): void => {
-			webmentionApiUrlInputSchema.assert("");
-		};
 		const expectedErrorMessage = 'must be a URL string (was "")';
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, webmentionApiUrlInputSchema, ""), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("does not allow strings that are not a URL", function () {
-		const actualAssertionOperation = (): void => {
-			webmentionApiUrlInputSchema.assert("foo");
-		};
 		const expectedErrorMessage = 'must be a URL string (was "foo")';
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, webmentionApiUrlInputSchema, "foo"), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("allows a string URL", function () {
@@ -139,14 +151,9 @@ suite("parseRuntimeHackerNewsApiUrl()", function () {
 	});
 
 	test("rejects invalid runtime Hacker News API URLs", function () {
-		const actualParseOperation = (): void => {
-			parseRuntimeHackerNewsApiUrl({
-				HACKER_NEWS_API_URL: "not a url"
-			});
-		};
 		const expectedErrorMessage = 'HACKER_NEWS_API_URL must be a URL string (was "not a url")';
 
-		assert.throws(actualParseOperation, { message: expectedErrorMessage });
+		assert.throws(parseInvalidRuntimeHackerNewsApiUrl, { message: expectedErrorMessage });
 	});
 });
 
@@ -169,13 +176,8 @@ suite("parseRuntimeWebmentionApiUrl()", function () {
 	});
 
 	test("rejects invalid runtime Webmention API URLs", function () {
-		const actualParseOperation = (): void => {
-			parseRuntimeWebmentionApiUrl({
-				WEBMENTION_API_URL: "not a url"
-			});
-		};
 		const expectedErrorMessage = 'WEBMENTION_API_URL must be a URL string (was "not a url")';
 
-		assert.throws(actualParseOperation, { message: expectedErrorMessage });
+		assert.throws(parseInvalidRuntimeWebmentionApiUrl, { message: expectedErrorMessage });
 	});
 });

@@ -244,16 +244,15 @@ suite("handleBlogReactionRequest()", function () {
 
 	test("does not rotate the cookie for a repeated PUT", async function () {
 		const unexpectedFailureRecorder = createUnexpectedFailureRecorder();
+		const addReactionTask = resolveTask({
+			createdAnonymousReactorIdentifier: nothing<string>(),
+			snapshot: {
+				count: 1,
+				reacted: true
+			}
+		});
 		const response = await handleBlogReactionRequest({
-			blogReactionApplicationService: createTestApplicationService({
-				addReactionTask: resolveTask({
-					createdAnonymousReactorIdentifier: nothing(),
-					snapshot: {
-						count: 1,
-						reacted: true
-					}
-				})
-			}),
+			blogReactionApplicationService: createTestApplicationService({ addReactionTask }),
 			logUnexpectedFailure: unexpectedFailureRecorder.logUnexpectedFailure,
 			request: createTestRequest({
 				anonymousReactorCookieValue: just(validAnonymousReactorIdentifier),

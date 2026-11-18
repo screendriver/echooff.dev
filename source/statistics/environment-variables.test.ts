@@ -7,41 +7,45 @@ import {
 } from "./environment-variable-input-schema.ts";
 import { parseGitHubApiToken, parseGitHubBaseUrl, parseGitHubLogin } from "./environment-variables.ts";
 
+type InputAssertionSchema = {
+	readonly assert: (input: unknown) => unknown;
+};
+
+function assertInputSchemaValue(inputSchema: InputAssertionSchema, input: unknown): void {
+	inputSchema.assert(input);
+}
+
 suite("gitHub base URL schema", function () {
 	test("does not allow booleans", function () {
-		const actualAssertionOperation = (): void => {
-			gitHubBaseUrlInputSchema.assert(true);
-		};
 		const expectedErrorMessage = "must be a string (was boolean)";
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, gitHubBaseUrlInputSchema, true), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("does not allow numbers", function () {
-		const actualAssertionOperation = (): void => {
-			gitHubBaseUrlInputSchema.assert(42);
-		};
 		const expectedErrorMessage = "must be a string (was a number)";
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, gitHubBaseUrlInputSchema, 42), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("does not allow empty strings", function () {
-		const actualAssertionOperation = (): void => {
-			gitHubBaseUrlInputSchema.assert("");
-		};
 		const expectedErrorMessage = 'must be a URL string (was "")';
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, gitHubBaseUrlInputSchema, ""), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("does not allow strings that are not an URL", function () {
-		const actualAssertionOperation = (): void => {
-			gitHubBaseUrlInputSchema.assert("foo");
-		};
 		const expectedErrorMessage = 'must be a URL string (was "foo")';
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, gitHubBaseUrlInputSchema, "foo"), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("allows a string URL", function () {
@@ -63,30 +67,27 @@ suite("gitHub base URL schema", function () {
 
 suite("gitHub login schema", function () {
 	test("does not allow booleans", function () {
-		const actualAssertionOperation = (): void => {
-			gitHubLoginInputSchema.assert(true);
-		};
 		const expectedErrorMessage = "must be a string (was boolean)";
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, gitHubLoginInputSchema, true), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("does not allow numbers", function () {
-		const actualAssertionOperation = (): void => {
-			gitHubLoginInputSchema.assert(42);
-		};
 		const expectedErrorMessage = "must be a string (was a number)";
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, gitHubLoginInputSchema, 42), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("does not allow empty strings", function () {
-		const actualAssertionOperation = (): void => {
-			gitHubLoginInputSchema.assert("");
-		};
 		const expectedErrorMessage = "must be non-empty";
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, gitHubLoginInputSchema, ""), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("allows non empty strings", function () {
@@ -106,30 +107,27 @@ suite("gitHub login schema", function () {
 
 suite("gitHub API token schema", function () {
 	test("does not allow booleans", function () {
-		const actualAssertionOperation = (): void => {
-			gitHubApiTokenInputSchema.assert(true);
-		};
 		const expectedErrorMessage = "must be a string (was boolean)";
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, gitHubApiTokenInputSchema, true), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("does not allow numbers", function () {
-		const actualAssertionOperation = (): void => {
-			gitHubApiTokenInputSchema.assert(42);
-		};
 		const expectedErrorMessage = "must be a string (was a number)";
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, gitHubApiTokenInputSchema, 42), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("does not allow empty strings", function () {
-		const actualAssertionOperation = (): void => {
-			gitHubApiTokenInputSchema.assert("");
-		};
 		const expectedErrorMessage = "must be non-empty";
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInputSchemaValue.bind(undefined, gitHubApiTokenInputSchema, ""), {
+			message: expectedErrorMessage
+		});
 	});
 
 	test("allows non empty strings", function () {

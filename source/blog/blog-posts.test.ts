@@ -10,6 +10,10 @@ import {
 } from "./blog-posts.ts";
 import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.ts";
 
+function formatInvalidDateTimeFallback(): void {
+	formatDateTimeFallback("not-a-date");
+}
+
 suite("sortBlogPostsByPublicationDateDescending()", function () {
 	test("sorts newer blog posts before older blog posts", function () {
 		const olderBlogPost = createBlogPostCollectionEntry({
@@ -88,12 +92,9 @@ suite("formatDateTimeFallback()", function () {
 	});
 
 	test("throws when the timestamp is invalid", function () {
-		const actualFormatOperation = (): void => {
-			formatDateTimeFallback("not-a-date");
-		};
 		const expectedErrorMessage = 'Date-time "not-a-date" is not a valid ISO 8601 date-time';
 
-		assert.throws(actualFormatOperation, { message: expectedErrorMessage });
+		assert.throws(formatInvalidDateTimeFallback, { message: expectedErrorMessage });
 	});
 });
 

@@ -17,6 +17,10 @@ type CreateBlogSearchPageBrowserDependenciesOptions = {
 	readonly unexpectedFailureReporter: UnexpectedFailureReporter;
 };
 
+function findNoPagefindInput(): null {
+	return null;
+}
+
 function createBlogSearchPageBrowserDependencies(
 	options: CreateBlogSearchPageBrowserDependenciesOptions
 ): BlogSearchPageBrowserDependencies {
@@ -83,9 +87,7 @@ suite("initializeBlogSearchPage()", function () {
 				throw expectedError;
 			}
 		};
-		const findPagefindInput: PagefindInputFinder = () => {
-			return null;
-		};
+		const findPagefindInput: PagefindInputFinder = findNoPagefindInput;
 
 		initializeBlogSearchPage(
 			createBlogSearchPageBrowserDependencies({

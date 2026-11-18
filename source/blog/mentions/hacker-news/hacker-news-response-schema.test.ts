@@ -2,6 +2,16 @@ import assert from "node:assert";
 import { suite, test } from "mocha";
 import { hackerNewsApiResponseSchema } from "./hacker-news-response-schema.ts";
 
+function assertInvalidHackerNewsResponse(): void {
+	hackerNewsApiResponseSchema.assert({
+		hits: [
+			{
+				objectID: 44_000_001
+			}
+		]
+	});
+}
+
 suite("hacker news response schema", function () {
 	test("accepts a valid payload", function () {
 		const validatedPayload = hackerNewsApiResponseSchema.assert({
@@ -23,17 +33,8 @@ suite("hacker news response schema", function () {
 	});
 
 	test("rejects an invalid payload", function () {
-		const actualAssertionOperation = (): void => {
-			hackerNewsApiResponseSchema.assert({
-				hits: [
-					{
-						objectID: 44_000_001
-					}
-				]
-			});
-		};
 		const expectedErrorMessage = "hits[0].objectID must be a string (was a number)";
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInvalidHackerNewsResponse, { message: expectedErrorMessage });
 	});
 });

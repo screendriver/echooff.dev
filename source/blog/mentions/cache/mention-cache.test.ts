@@ -319,6 +319,7 @@ suite("loadMentionCacheSectionModel()", function () {
 			)
 		);
 		const actualStoredEntry = repository.readStoredEntry(cacheKey);
+		const expectedSerializedSectionModel = JSON.stringify(createTestMentionSectionModel("fresh mentions"));
 		const expectedLoadingResult = {
 			sectionModel: createTestMentionSectionModel("fresh mentions"),
 			state: "refreshed"
@@ -331,7 +332,7 @@ suite("loadMentionCacheSectionModel()", function () {
 				cacheKey,
 				fetchedAt: "2026-07-04T10:30:00.000Z",
 				schemaVersion: mentionCacheSchemaVersion,
-				value: JSON.stringify(createTestMentionSectionModel("fresh mentions"))
+				value: expectedSerializedSectionModel
 			})
 		);
 	});

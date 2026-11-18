@@ -5,6 +5,10 @@ import { err, isErr, ok } from "true-myth/result";
 import { createBlogPostCollectionEntry } from "./blog-post-test-fixture.ts";
 import { createBlogRssFeedOptions } from "./blog-rss-feed.ts";
 
+function createBlogRssFeedOptionsWithoutConfiguredSite(): void {
+	createBlogRssFeedOptions([], undefined);
+}
+
 suite("createBlogRssFeedOptions()", function () {
 	test("creates RSS feed options from posts sorted by publication date descending", function () {
 		const configuredSiteUrl = new URL("https://example.com");
@@ -78,13 +82,13 @@ suite("createBlogRssFeedOptions()", function () {
 
 		const actualRssXml = await getRssString(actualRssFeedOptionsResult.value);
 
-		assert.match(actualRssXml, /xmlns:atom="http:\/\/www\.w3\.org\/2005\/Atom"/);
-		assert.match(actualRssXml, /<pubDate>Sat, 28 Feb 2026 11:39:00 GMT<\/pubDate>/);
+		assert.match(actualRssXml, /xmlns:atom="http:\/\/www\.w3\.org\/2005\/Atom"/u);
+		assert.match(actualRssXml, /<pubDate>Sat, 28 Feb 2026 11:39:00 GMT<\/pubDate>/u);
 		assert.match(
 			actualRssXml,
-			/<guid isPermaLink="true">https:\/\/example\.com\/blog\/why-i-started-this-blog<\/guid>/
+			/<guid isPermaLink="true">https:\/\/example\.com\/blog\/why-i-started-this-blog<\/guid>/u
 		);
-		assert.match(actualRssXml, /<atom:updated>2026-07-21T15:59:00\+02:00<\/atom:updated>/);
+		assert.match(actualRssXml, /<atom:updated>2026-07-21T15:59:00\+02:00<\/atom:updated>/u);
 	});
 
 	test("returns an error when a blog post update timestamp is invalid", function () {
@@ -109,11 +113,8 @@ suite("createBlogRssFeedOptions()", function () {
 	});
 
 	test("throws when Astro.site is not configured", function () {
-		const actualOperation = (): void => {
-			createBlogRssFeedOptions([], undefined);
-		};
 		const expectedErrorMessage = "Astro.site must be configured to create absolute blog URLs";
 
-		assert.throws(actualOperation, { message: expectedErrorMessage });
+		assert.throws(createBlogRssFeedOptionsWithoutConfiguredSite, { message: expectedErrorMessage });
 	});
 });

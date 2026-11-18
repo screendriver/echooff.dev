@@ -49,7 +49,7 @@ suite("Bugsink browser architecture", function () {
 		const pageShell = await readRepositorySource("source/layouts/PageShell.astro");
 		const applicationCaddyfile = await readRepositorySource("Caddyfile");
 
-		assert.doesNotMatch(pageShell, /cdn|sentry\.io|loader/i);
+		assert.doesNotMatch(pageShell, /cdn|sentry\.io|loader/iu);
 		assert.doesNotMatch(applicationCaddyfile, /bugsink\.82r\.de|reverse_proxy.*bugsink/u);
 	});
 

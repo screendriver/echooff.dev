@@ -12,7 +12,7 @@ import { blogReactionErrorResponseSchema } from "../../../blog/reactions/blog-re
 import { isSqliteBusyError } from "../../../database/sqlite-database-error.ts";
 import { standardStreamRuntimeLogger } from "../../../blog/runtime-logger.ts";
 import { readRuntimeBlogReactionApplicationServiceTask } from "../../../blog/reactions/server/runtime-composition.ts";
-import * as BugsinkServerReporting from "../../../error-reporting/bugsink-server.ts";
+import { reportUnexpectedServerFailure } from "../../../error-reporting/bugsink-server.ts";
 
 export const prerender = false;
 
@@ -89,7 +89,7 @@ function createRuntimeUnavailableResponse(error: unknown, method: BlogReactionHt
 	});
 
 	if (statusCode === 500) {
-		BugsinkServerReporting.reportUnexpectedServerFailure({
+		reportUnexpectedServerFailure({
 			error: normalizeUnexpectedRuntimeFailure(error),
 			method,
 			pathname,
@@ -122,7 +122,7 @@ async function handleAstroBlogReactionRequest(
 				statusCode
 			});
 
-			BugsinkServerReporting.reportUnexpectedServerFailure({
+			reportUnexpectedServerFailure({
 				error,
 				method,
 				pathname: context.url.pathname,

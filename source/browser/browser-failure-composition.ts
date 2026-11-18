@@ -19,17 +19,17 @@ if (bugsinkIsProductionBuild && buildBugsinkConfigurationResult.isErr) {
 
 const browserBugsinkConfiguration = buildBugsinkConfigurationResult.unwrapOr(nothing<BugsinkConfiguration>());
 
-function createWindowBrowserFailureCapabilities(): BrowserFailureBootstrapCapabilities {
-	function readBrowserWindow(): Window {
-		const browserWindow = document.defaultView;
+function readBrowserWindow(): Window {
+	const browserWindow = document.defaultView;
 
-		if (browserWindow === null) {
-			throw new Error("The browser window is unavailable.");
-		}
-
-		return browserWindow;
+	if (browserWindow === null) {
+		throw new Error("The browser window is unavailable.");
 	}
 
+	return browserWindow;
+}
+
+function createWindowBrowserFailureCapabilities(): BrowserFailureBootstrapCapabilities {
 	return {
 		addEventListener(eventName, listener): void {
 			const browserWindow = readBrowserWindow();

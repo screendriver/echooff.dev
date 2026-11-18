@@ -17,6 +17,10 @@ import {
 	getConfiguredSiteUrlOrThrow
 } from "./blog-site.ts";
 
+function getConfiguredSiteUrlWithoutSite(): void {
+	getConfiguredSiteUrlOrThrow(undefined);
+}
+
 suite("getConfiguredSiteUrlOrThrow()", function () {
 	test("returns the configured site URL", function () {
 		const configuredSiteUrl = new URL("https://example.com");
@@ -27,12 +31,9 @@ suite("getConfiguredSiteUrlOrThrow()", function () {
 	});
 
 	test("throws when Astro.site is not configured", function () {
-		const actualOperation = (): void => {
-			getConfiguredSiteUrlOrThrow(undefined);
-		};
 		const expectedErrorMessage = "Astro.site must be configured to create absolute blog URLs";
 
-		assert.throws(actualOperation, { message: expectedErrorMessage });
+		assert.throws(getConfiguredSiteUrlWithoutSite, { message: expectedErrorMessage });
 	});
 });
 

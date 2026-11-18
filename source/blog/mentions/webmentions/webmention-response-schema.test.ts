@@ -2,6 +2,18 @@ import assert from "node:assert";
 import { suite, test } from "mocha";
 import { webmentionApiResponseSchema } from "./webmention-response-schema.ts";
 
+function assertInvalidWebmentionResponse(): void {
+	webmentionApiResponseSchema.assert({
+		children: [
+			{
+				author: {
+					name: 42
+				}
+			}
+		]
+	});
+}
+
 suite("webmention response schema", function () {
 	test("accepts a valid payload", function () {
 		const validatedPayload = webmentionApiResponseSchema.assert({
@@ -28,19 +40,8 @@ suite("webmention response schema", function () {
 	});
 
 	test("rejects an invalid payload", function () {
-		const actualAssertionOperation = (): void => {
-			webmentionApiResponseSchema.assert({
-				children: [
-					{
-						author: {
-							name: 42
-						}
-					}
-				]
-			});
-		};
 		const expectedErrorMessage = "children[0].author.name must be a string (was a number)";
 
-		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
+		assert.throws(assertInvalidWebmentionResponse, { message: expectedErrorMessage });
 	});
 });

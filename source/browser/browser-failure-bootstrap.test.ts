@@ -93,7 +93,6 @@ suite("createBrowserFailureBootstrap()", function () {
 
 	test("delegates the original unhandled rejection reason, including non-Error values", function () {
 		const { bootstrap, listeners, reportedFailures } = createTestBootstrap();
-		const expectedReason = "rejected string";
 
 		bootstrap.install();
 		const unhandledRejectionListener = listeners.get("unhandledrejection");
@@ -102,6 +101,7 @@ suite("createBrowserFailureBootstrap()", function () {
 			throw new Error("Expected an unhandled-rejection listener.");
 		}
 
+		const expectedReason = "rejected string";
 		unhandledRejectionListener({ reason: expectedReason });
 
 		assert.deepStrictEqual(reportedFailures, [

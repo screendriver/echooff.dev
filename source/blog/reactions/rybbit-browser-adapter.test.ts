@@ -18,6 +18,10 @@ function requireRybbitBrowserApi(browserApi: RybbitBrowserApi | undefined): Rybb
 	return browserApi;
 }
 
+function createCallableRybbitGlobal(): string {
+	return "rybbit";
+}
+
 suite("readRybbitBrowserApiFromGlobal()", function () {
 	test("adapts an ordinary object and forwards the exact event data", function () {
 		const actualEvent: RybbitEventCall = {
@@ -74,10 +78,7 @@ suite("readRybbitBrowserApiFromGlobal()", function () {
 			eventName: "",
 			properties: {}
 		};
-		function rybbitGlobal(): string {
-			return "rybbit";
-		}
-		const rybbitGlobalWithEvent = Object.assign(rybbitGlobal, {
+		const rybbitGlobalWithEvent = Object.assign(createCallableRybbitGlobal, {
 			event(eventName: string, properties: RybbitEventProperties): void {
 				actualEvent.eventName = eventName;
 				actualEvent.properties = properties;
