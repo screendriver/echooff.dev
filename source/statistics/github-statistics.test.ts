@@ -81,9 +81,9 @@ suite("gitHub statistics schema", function () {
 			}
 		});
 
-		const actualAssertionOperation = (): void => {
+		function actualAssertionOperation(): void {
 			gitHubStatisticsResponseSchema.assert(gitHubStatistics);
-		};
+		}
 		const expectedErrorMessage = "user.repositories.totalCount must be non-negative (was -42)";
 
 		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
@@ -98,9 +98,9 @@ suite("gitHub statistics schema", function () {
 			}
 		} as unknown as GitHubStatistics);
 
-		const actualAssertionOperation = (): void => {
+		function actualAssertionOperation(): void {
 			gitHubStatisticsResponseSchema.assert(gitHubStatistics);
-		};
+		}
 		const expectedErrorMessage = "user.repositories.totalCount must be a number (was a string)";
 
 		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
@@ -130,9 +130,9 @@ suite("gitHub statistics schema", function () {
 			}
 		});
 
-		const actualAssertionOperation = (): void => {
+		function actualAssertionOperation(): void {
 			gitHubStatisticsResponseSchema.assert(gitHubStatistics);
-		};
+		}
 		const expectedErrorMessage = "user.starredRepositories.totalCount must be non-negative (was -42)";
 
 		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });
@@ -147,9 +147,9 @@ suite("gitHub statistics schema", function () {
 			}
 		} as unknown as GitHubStatistics);
 
-		const actualAssertionOperation = (): void => {
+		function actualAssertionOperation(): void {
 			gitHubStatisticsResponseSchema.assert(gitHubStatistics);
-		};
+		}
 		const expectedErrorMessage = "user.starredRepositories.totalCount must be a number (was a string)";
 
 		assert.throws(actualAssertionOperation, { message: expectedErrorMessage });

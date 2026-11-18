@@ -348,7 +348,7 @@ suite("loadWebmentionsForTargetUrl()", function () {
 		);
 		const fetchImplementation: typeof fetch = fetchFake;
 
-		const actualLoadOperation = async (): Promise<Awaited<ReturnType<typeof loadWebmentionsForTargetUrl>>> => {
+		async function actualLoadOperation(): Promise<Awaited<ReturnType<typeof loadWebmentionsForTargetUrl>>> {
 			return loadWebmentionsForTargetUrl(
 				{
 					createTimeoutSignal(timeoutMilliseconds) {
@@ -359,7 +359,7 @@ suite("loadWebmentionsForTargetUrl()", function () {
 				},
 				"https://example.com/blog/why-i-started-this-blog"
 			);
-		};
+		}
 		const expectedErrorMessage = "Webmention API request failed with status 503";
 
 		await assert.rejects(actualLoadOperation, { message: expectedErrorMessage });

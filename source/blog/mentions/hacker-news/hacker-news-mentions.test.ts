@@ -252,9 +252,7 @@ suite("loadHackerNewsMentionsForTargetUrl()", function () {
 		);
 		const fetchImplementation: typeof fetch = fetchFake;
 
-		const actualLoadOperation = async (): Promise<
-			Awaited<ReturnType<typeof loadHackerNewsMentionsForTargetUrl>>
-		> => {
+		async function actualLoadOperation(): Promise<Awaited<ReturnType<typeof loadHackerNewsMentionsForTargetUrl>>> {
 			return loadHackerNewsMentionsForTargetUrl(
 				{
 					createTimeoutSignal(timeoutMilliseconds) {
@@ -265,7 +263,7 @@ suite("loadHackerNewsMentionsForTargetUrl()", function () {
 				},
 				"https://example.com/blog/why-i-started-this-blog"
 			);
-		};
+		}
 		const expectedErrorMessage = "Hacker News API request failed with status 503";
 
 		await assert.rejects(actualLoadOperation, { message: expectedErrorMessage });
