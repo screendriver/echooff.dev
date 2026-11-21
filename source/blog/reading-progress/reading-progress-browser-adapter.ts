@@ -1,16 +1,12 @@
 import type { ReadingProgressSnapshot } from "./reading-progress.ts";
 
-export type ReadingProgressEventListenerOptions = {
-	readonly passive: true;
-};
-
 export type ReadingProgressBrowserDependencies = {
 	readonly cancelAnimationFrame: (animationFrameIdentifier: number) => void;
 	readonly readDocumentScrollHeight: () => number;
 	readonly readVerticalScrollOffset: () => number;
 	readonly readViewportHeight: () => number;
-	readonly registerResizeListener: (listener: () => void, options: ReadingProgressEventListenerOptions) => () => void;
-	readonly registerScrollListener: (listener: () => void, options: ReadingProgressEventListenerOptions) => () => void;
+	readonly registerResizeListener: (listener: () => void) => () => void;
+	readonly registerScrollListener: (listener: () => void) => () => void;
 	readonly requestAnimationFrame: (callback: FrameRequestCallback) => number;
 };
 
@@ -42,15 +38,15 @@ export function createReadingProgressBrowserDependencies(): ReadingProgressBrows
 		readViewportHeight() {
 			return browserWindow.innerHeight;
 		},
-		registerResizeListener(listener, options) {
-			browserWindow.addEventListener("resize", listener, options);
+		registerResizeListener(listener) {
+			browserWindow.addEventListener("resize", listener);
 
 			return function removeResizeListener(): void {
 				browserWindow.removeEventListener("resize", listener);
 			};
 		},
-		registerScrollListener(listener, options) {
-			browserWindow.addEventListener("scroll", listener, options);
+		registerScrollListener(listener) {
+			browserWindow.addEventListener("scroll", listener);
 
 			return function removeScrollListener(): void {
 				browserWindow.removeEventListener("scroll", listener);

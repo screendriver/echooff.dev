@@ -5,15 +5,12 @@ import { calculateReadingProgressPercentage } from "./reading-progress.ts";
 import {
 	createReadingProgressBrowserDependencies,
 	readReadingProgressSnapshot,
-	type ReadingProgressBrowserDependencies,
-	type ReadingProgressEventListenerOptions
+	type ReadingProgressBrowserDependencies
 } from "./reading-progress-browser-adapter.ts";
 
 export type Properties = {
 	readonly browserDependencies?: ReadingProgressBrowserDependencies;
 };
-
-const passiveListenerOptions: ReadingProgressEventListenerOptions = { passive: true };
 
 export function BlogReadingProgressIndicator(properties: Properties): ComponentChildren {
 	const [progressPercentage, setProgressPercentage] = useState(0);
@@ -48,14 +45,8 @@ export function BlogReadingProgressIndicator(properties: Properties): ComponentC
 		}
 
 		updateProgressPercentage();
-		const removeScrollListener = readingProgressBrowserDependencies.registerScrollListener(
-			scheduleProgressUpdate,
-			passiveListenerOptions
-		);
-		const removeResizeListener = readingProgressBrowserDependencies.registerResizeListener(
-			scheduleProgressUpdate,
-			passiveListenerOptions
-		);
+		const removeScrollListener = readingProgressBrowserDependencies.registerScrollListener(scheduleProgressUpdate);
+		const removeResizeListener = readingProgressBrowserDependencies.registerResizeListener(scheduleProgressUpdate);
 
 		return function cleanupReadingProgressEffect(): void {
 			componentIsMounted = false;

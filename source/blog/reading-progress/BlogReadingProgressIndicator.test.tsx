@@ -2,10 +2,7 @@ import assert from "node:assert";
 import { act, cleanup, render } from "@testing-library/preact";
 import { setup, suite, teardown, test } from "mocha";
 import { createJsdomTestEnvironment, type JsdomTestEnvironment } from "../../test-support/jsdom-test-environment.ts";
-import type {
-	ReadingProgressBrowserDependencies,
-	ReadingProgressEventListenerOptions
-} from "./reading-progress-browser-adapter.ts";
+import type { ReadingProgressBrowserDependencies } from "./reading-progress-browser-adapter.ts";
 import { BlogReadingProgressIndicator } from "./BlogReadingProgressIndicator.tsx";
 
 type TestAnimationFrame = {
@@ -26,8 +23,6 @@ type TestReadingProgressBrowser = {
 	readonly triggerResize: () => void;
 	readonly triggerScroll: () => void;
 	readonly getCancelledAnimationFrameIdentifiers: () => readonly number[];
-	readonly getRegisteredResizeListenerOptions: () => ReadingProgressEventListenerOptions;
-	readonly getRegisteredScrollListenerOptions: () => ReadingProgressEventListenerOptions;
 	readonly getRegisteredResizeListenerCount: () => number;
 	readonly getRegisteredScrollListenerCount: () => number;
 	readonly getRemovedResizeListenerCount: () => number;
@@ -42,8 +37,6 @@ function failWhenReadingProgressListenerIsNotRegistered(): never {
 function createTestReadingProgressBrowser(): TestReadingProgressBrowser {
 	let registeredResizeListener: () => void = failWhenReadingProgressListenerIsNotRegistered;
 	let registeredScrollListener: () => void = failWhenReadingProgressListenerIsNotRegistered;
-	let registeredResizeListenerOptions: ReadingProgressEventListenerOptions = { passive: true };
-	let registeredScrollListenerOptions: ReadingProgressEventListenerOptions = { passive: true };
 	let registeredResizeListenerCount = 0;
 	let registeredScrollListenerCount = 0;
 	let removedResizeListenerCount = 0;
@@ -68,18 +61,16 @@ function createTestReadingProgressBrowser(): TestReadingProgressBrowser {
 		readViewportHeight() {
 			return viewportHeight;
 		},
-		registerResizeListener(listener, options) {
+		registerResizeListener(listener) {
 			registeredResizeListener = listener;
-			registeredResizeListenerOptions = options;
 			registeredResizeListenerCount += 1;
 
 			return function removeTestResizeListener(): void {
 				removedResizeListenerCount += 1;
 			};
 		},
-		registerScrollListener(listener, options) {
+		registerScrollListener(listener) {
 			registeredScrollListener = listener;
-			registeredScrollListenerOptions = options;
 			registeredScrollListenerCount += 1;
 
 			return function removeTestScrollListener(): void {
@@ -103,14 +94,8 @@ function createTestReadingProgressBrowser(): TestReadingProgressBrowser {
 		getRegisteredResizeListenerCount() {
 			return registeredResizeListenerCount;
 		},
-		getRegisteredResizeListenerOptions() {
-			return registeredResizeListenerOptions;
-		},
 		getRegisteredScrollListenerCount() {
 			return registeredScrollListenerCount;
-		},
-		getRegisteredScrollListenerOptions() {
-			return registeredScrollListenerOptions;
 		},
 		getRemovedResizeListenerCount() {
 			return removedResizeListenerCount;
@@ -189,14 +174,12 @@ suite("BlogReadingProgressIndicator component integration", function () {
 		assert.strictEqual(readProgressFillElement(container).style.width, "25%");
 	});
 
-	test("registers passive scroll and resize listeners exactly once", function () {
+	test("registers scroll and resize listeners exactly once", function () {
 		const testReadingProgressBrowser = createTestReadingProgressBrowser();
 		render(<BlogReadingProgressIndicator browserDependencies={testReadingProgressBrowser.dependencies} />);
 
 		assert.strictEqual(testReadingProgressBrowser.getRegisteredScrollListenerCount(), 1);
 		assert.strictEqual(testReadingProgressBrowser.getRegisteredResizeListenerCount(), 1);
-		assert.deepStrictEqual(testReadingProgressBrowser.getRegisteredScrollListenerOptions(), { passive: true });
-		assert.deepStrictEqual(testReadingProgressBrowser.getRegisteredResizeListenerOptions(), { passive: true });
 	});
 
 	test("coalesces scroll and resize events until one animation frame", function () {
