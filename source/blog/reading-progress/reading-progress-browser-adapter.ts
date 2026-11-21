@@ -41,14 +41,14 @@ export function createReadingProgressBrowserDependencies(): ReadingProgressBrows
 		registerResizeListener(listener) {
 			browserWindow.addEventListener("resize", listener);
 
-			return function removeResizeListener(): void {
+			return function removeResizeListener() {
 				browserWindow.removeEventListener("resize", listener);
 			};
 		},
 		registerScrollListener(listener) {
 			browserWindow.addEventListener("scroll", listener);
 
-			return function removeScrollListener(): void {
+			return function removeScrollListener() {
 				browserWindow.removeEventListener("scroll", listener);
 			};
 		},

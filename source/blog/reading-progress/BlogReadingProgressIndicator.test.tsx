@@ -65,7 +65,7 @@ function createTestReadingProgressBrowser(): TestReadingProgressBrowser {
 			registeredResizeListener = listener;
 			registeredResizeListenerCount += 1;
 
-			return function removeTestResizeListener(): void {
+			return function removeTestResizeListener() {
 				removedResizeListenerCount += 1;
 			};
 		},
@@ -73,7 +73,7 @@ function createTestReadingProgressBrowser(): TestReadingProgressBrowser {
 			registeredScrollListener = listener;
 			registeredScrollListenerCount += 1;
 
-			return function removeTestScrollListener(): void {
+			return function removeTestScrollListener() {
 				removedScrollListenerCount += 1;
 			};
 		},
