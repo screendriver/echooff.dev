@@ -23,7 +23,7 @@ The deployment pipeline should not make those product decisions implicitly. Merg
 
 That still requires collaboration. Engineering needs to establish technical readiness and safe operating limits. Product needs to decide who should receive the feature and what a successful introduction looks like. Both need to understand what happens if the rollout stops. Engineers also need the authority to disable harmful behavior during an incident.
 
-This is consistent with [owning the software we run](https://www.echooff.dev/blog/devops-is-a-skill-not-a-role). Feature flags remove a scheduling dependency while keeping responsibility for the product with the team.
+This is consistent with [owning the software we run](/blog/devops-is-a-skill-not-a-role). Feature flags remove a scheduling dependency while keeping responsibility for the product with the team.
 
 ## Build the feature in small steps
 
