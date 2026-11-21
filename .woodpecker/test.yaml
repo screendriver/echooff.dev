@@ -1,8 +1,9 @@
 ---
 when:
     - event: pull_request
+      evaluate: 'not (CI_COMMIT_SOURCE_BRANCH startsWith "renovate/" && CI_PIPELINE_AUTHOR == "renovate-bot")'
     - event: push
-      branch: main
+      branch: [main, renovate/**]
     - event: manual
 
 labels:
